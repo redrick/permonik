@@ -1,0 +1,199 @@
+{
+  "klekani": {
+    "act": 1, "giver": "permonik", "main": true,
+    "name": {"cs": "Klekání", "en": "The Evening Bell"},
+    "desc": {"cs": "Zvon na Hoře přestal zvonit klekání. Dokud mlčí, chodí po štolách Klekánice a bere každého, kdo se nevrátil domů.", "en": "The bell of the Mountain no longer rings the evening Angelus. While it is silent the Klekánice walks the galleries and takes everyone who has not come home."},
+    "steps": [
+      {"id": "descend", "text": {"cs": "Sestup do Dolu Osel, do druhého patra.", "en": "Descend into the Osel Mine, to the second level."}, "goal": {"reach": "act1_floor2"}},
+      {"id": "kill", "text": {"cs": "Najdi Klekánici. Zraň ji můžeš, jen když stojí ve tvém světle.", "en": "Find the Klekánice. She can only be wounded while she stands within your light."}, "goal": {"kill": "klekanice"}},
+      {"id": "report", "text": {"cs": "Vrať se k Permoníkovi u šachty.", "en": "Return to Permoník at the shaft head."}, "goal": {"talk": "permonik"}}
+    ],
+    "reward": {"xp": 400, "gold": 200, "skill_points": 1}
+  },
+  "kostnice": {
+    "act": 1, "giver": "permonik", "main": true,
+    "name": {"cs": "Kostnice", "en": "The Ossuary"},
+    "desc": {"cs": "Pod Sedlcem se kosti z kostnice daly do pohybu. Čtyřicet tisíc mrtvých si zvolilo krále.", "en": "Beneath Sedlec the bones of the ossuary have begun to move. Forty thousand dead have chosen themselves a king."},
+    "steps": [
+      {"id": "descend", "text": {"cs": "Sestup do třetího patra, do kostnice pod Sedlcem.", "en": "Descend to the third level, the ossuary beneath Sedlec."}, "goal": {"reach": "act1_floor3"}},
+      {"id": "kill", "text": {"cs": "Rozbij Kostníka ze Sedlce. Jednou se znovu složí.", "en": "Shatter the Bone Lord of Sedlec. He will put himself back together once."}, "goal": {"kill": "kostnik"}},
+      {"id": "report", "text": {"cs": "Vrať se k Permoníkovi.", "en": "Return to Permoník."}, "goal": {"talk": "permonik"}}
+    ],
+    "reward": {"xp": 900, "gold": 350, "stat_points": 5}
+  },
+  "dusicky": {
+    "act": 1, "giver": "permonik", "main": true,
+    "name": {"cs": "Dušičky v hrníčcích", "en": "Souls under Teacups"},
+    "desc": {"cs": "Dolní patra zaplavila voda. Vodník Hastrman tam schovává duše utopených havířů pod obrácenými hrníčky.", "en": "The lower levels have flooded. Vodník Hastrman keeps the souls of drowned miners there, under upturned teacups."},
+    "steps": [
+      {"id": "descend", "text": {"cs": "Sestup do zatopeného čtvrtého patra.", "en": "Descend to the flooded fourth level."}, "goal": {"reach": "act1_floor4"}},
+      {"id": "kill", "text": {"cs": "Zabij Vodníka. Rozbij hrníčky s dušičkami, jinak se mu z tůní hojí rány.", "en": "Kill the Vodník. Smash the soul-teacups, or his pools will keep healing his wounds."}, "goal": {"kill": "vodnik"}},
+      {"id": "strana", "text": {"cs": "Ve vodníkově doupěti leží promáčený list pergamenu. Seber ho.", "en": "A sodden leaf of parchment lies in the Vodník's lair. Pick it up."}, "goal": {"pick": "strana_kroniky"}},
+      {"id": "kronika", "text": {"cs": "Odnes list kronikáři Kosmovi.", "en": "Bring the leaf to Kosmas the chronicler."}, "goal": {"talk": "kosmas"}},
+      {"id": "report", "text": {"cs": "Vrať se k Permoníkovi.", "en": "Return to Permoník."}, "goal": {"talk": "permonik"}}
+    ],
+    "reward": {"xp": 1800, "gold": 600, "skill_points": 1, "items": ["hrnek"]}
+  },
+  "srdce_zvonu": {
+    "act": 1, "giver": "senkyrka_bara", "main": false,
+    "name": {"cs": "Srdce zvonu", "en": "The Heart of the Bell"},
+    "desc": {"cs": "Zvonu na Hoře někdo vyrval srdce a hodil ho do dolu. Bez srdce zvon nezazvoní a bez klekání nikdo nedojde večer domů.", "en": "Someone tore the clapper out of the Mountain's bell and threw it down the mine. Without its heart the bell cannot ring, and without the evening bell no one gets home at night."},
+    "steps": [
+      {"id": "find", "text": {"cs": "Najdi srdce zvonu. Bára říká, že ho slyšela cinkat ve třetím patře.", "en": "Find the bell's clapper. Bára says she heard it clinking on the third level."}, "goal": {"pick": "srdce_zvonu"}},
+      {"id": "return", "text": {"cs": "Přines srdce zvonu Báře do krčmy.", "en": "Bring the clapper to Bára at the tavern."}, "goal": {"talk": "senkyrka_bara"}},
+      {"id": "forge", "text": {"cs": "Zanes srdce kováři Hněvkovi, ať ho zase pověsí.", "en": "Take the clapper to Hněvek the smith so he can hang it again."}, "goal": {"talk": "kovar_hnevek"}}
+    ],
+    "reward": {"xp": 1200, "gold": 300, "items": ["srdce_zvonu_cep"]}
+  },
+
+  "medulinin_odkaz": {
+    "act": 2, "giver": "permonik", "main": true,
+    "name": {"cs": "Medulínin odkaz", "en": "Medulína's Bequest"},
+    "desc": {"cs": "Brdy mají tři pověsti: rytíře Fabiána, dobrou Medulínu a zlou Megeru. Megera si pod Vojtěšskou šachtou rozdělala kotle.", "en": "The Brdy hills have three legends: the knight Fabián, good Medulína and wicked Megera. Megera has lit her cauldrons beneath the Vojtěch shaft."},
+    "steps": [
+      {"id": "medulina", "text": {"cs": "Promluv s kořenářkou Medulínou. Zná Megeru líp než kdo jiný.", "en": "Speak with Medulína the herb woman. She knows Megera better than anyone."}, "goal": {"talk": "korenarka_medulina"}},
+      {"id": "kill", "text": {"cs": "Najdi Megeru ve druhém patře. Přenáší se mezi kotli.", "en": "Find Megera on the second level. She leaps from cauldron to cauldron."}, "goal": {"kill": "megera"}},
+      {"id": "report", "text": {"cs": "Vrať se k Permoníkovi.", "en": "Return to Permoník."}, "goal": {"talk": "permonik"}}
+    ],
+    "reward": {"xp": 3000, "gold": 800, "skill_points": 1}
+  },
+  "valdecky_jezdec": {
+    "act": 2, "giver": "permonik", "main": true,
+    "name": {"cs": "Valdecký jezdec", "en": "The Rider of Valdek"},
+    "desc": {"cs": "Divoký Prokop z Valdeka jezdí štolami na kostlivém koni, jako kdysi jezdil po brdských cestách.", "en": "Wild Prokop of Valdek rides the galleries on a skeletal horse, as he once rode the roads of Brdy."},
+    "steps": [
+      {"id": "descend", "text": {"cs": "Sestup do třetího patra.", "en": "Descend to the third level."}, "goal": {"reach": "act2_floor3"}},
+      {"id": "kill", "text": {"cs": "Sraz Prokopa z koně. Útočí v přímce, uhýbej do bočních chodeb.", "en": "Unhorse Prokop. He charges in straight lines; dodge into the side tunnels."}, "goal": {"kill": "prokop"}},
+      {"id": "report", "text": {"cs": "Vrať se k Permoníkovi.", "en": "Return to Permoník."}, "goal": {"talk": "permonik"}}
+    ],
+    "reward": {"xp": 4500, "gold": 1000, "stat_points": 5, "items": ["semikova_podkova"]}
+  },
+  "zrcadla_v_sevcine": {
+    "act": 2, "giver": "permonik", "main": true,
+    "name": {"cs": "Zrcadla v Ševčině", "en": "The Mirrors of Ševčín"},
+    "desc": {"cs": "V ševčinské žíle se ze slepičího vejce vylíhl bazilišek. Kdo se mu podívá do očí, zkamení.", "en": "In the Ševčín vein a basilisk has hatched from a rooster's egg. Whoever meets its eyes turns to stone."},
+    "steps": [
+      {"id": "kovar", "text": {"cs": "Zeptej se kováře Vojtěcha na stará zrcadla v Ševčině.", "en": "Ask Vojtěch the smith about the old mirrors of Ševčín."}, "goal": {"talk": "kovar_vojtech"}},
+      {"id": "kill", "text": {"cs": "Zabij baziliška. Schovávej se za pilíře a nech zrcadla, ať mu vrátí jeho vlastní pohled.", "en": "Kill the basilisk. Hide behind pillars and let the mirrors turn its own gaze back on it."}, "goal": {"kill": "bazilisek"}},
+      {"id": "strana", "text": {"cs": "Mezi střepy kamenného těla leží list pergamenu. Seber ho.", "en": "A leaf of parchment lies among the shards of its stone body. Pick it up."}, "goal": {"pick": "strana_kroniky"}},
+      {"id": "kronika", "text": {"cs": "Odnes list Kosmovi.", "en": "Bring the leaf to Kosmas."}, "goal": {"talk": "kosmas"}},
+      {"id": "report", "text": {"cs": "Vrať se k Permoníkovi.", "en": "Return to Permoník."}, "goal": {"talk": "permonik"}}
+    ],
+    "reward": {"xp": 6500, "gold": 1500, "skill_points": 1}
+  },
+  "tremsinske_siny": {
+    "act": 2, "giver": "tremsinsky_muzicek", "main": false,
+    "name": {"cs": "Třemšínské šíny", "en": "The Třemšín Ingots"},
+    "desc": {"cs": "Mužíček z Třemšína kdysi střežil tři zlaté šíny. Les je spolkl a teď leží někde ve Vojtěšské šachtě.", "en": "The little man of Třemšín once guarded three golden ingots. The forest swallowed them, and now they lie somewhere in the Vojtěch shaft."},
+    "steps": [
+      {"id": "siny", "text": {"cs": "Najdi tři zlaté šíny v prvních třech patrech Vojtěšské šachty.", "en": "Find the three golden ingots on the first three levels of the Vojtěch shaft."}, "goal": {"pick": "zlaty_sin", "count": 3}},
+      {"id": "return", "text": {"cs": "Vrať šíny třemšínskému mužíčkovi.", "en": "Return the ingots to the little man of Třemšín."}, "goal": {"talk": "tremsinsky_muzicek"}}
+    ],
+    "reward": {"xp": 4000, "gold": 0, "items": ["tremsinsky_prsten"]}
+  },
+
+  "dve_srdce": {
+    "act": 3, "giver": "permonik", "main": true,
+    "name": {"cs": "Dvě srdce", "en": "Two Hearts"},
+    "desc": {"cs": "Strzyga se narodila se dvěma srdci a dvěma dušemi. Jednu duši pohřbili, druhá z hrobu vylezla.", "en": "The Strzyga was born with two hearts and two souls. They buried one soul; the other climbed out of the grave."},
+    "steps": [
+      {"id": "descend", "text": {"cs": "Sestup do druhého patra Dolu Svornost.", "en": "Descend to the second level of the Svornost Mine."}, "goal": {"reach": "act3_floor2"}},
+      {"id": "kill", "text": {"cs": "Zabij Strzygu. Obakrát.", "en": "Kill the Strzyga. Both times."}, "goal": {"kill": "strzyga"}},
+      {"id": "report", "text": {"cs": "Vrať se k Permoníkovi.", "en": "Return to Permoník."}, "goal": {"talk": "permonik"}}
+    ],
+    "reward": {"xp": 9000, "gold": 1800, "skill_points": 1}
+  },
+  "proklete_tolary": {
+    "act": 3, "giver": "permonik", "main": true,
+    "name": {"cs": "Prokleté tolary", "en": "The Cursed Thalers"},
+    "desc": {"cs": "Ve staré mincovně razí čert Ohnivec tolary, které pálí do dlaně a koušou do prstů.", "en": "In the old mint the devil Ohnivec strikes thalers that burn the palm and bite the fingers."},
+    "steps": [
+      {"id": "descend", "text": {"cs": "Sestup do třetího patra, do staré mincovny.", "en": "Descend to the third level, the old mint."}, "goal": {"reach": "act3_floor3"}},
+      {"id": "kill", "text": {"cs": "Zabij mincíře Ohnivce. Nesahej na hromádky zlata, dokud nepřestanou cvakat.", "en": "Kill Ohnivec the minter. Don't touch the piles of gold until they stop snapping."}, "goal": {"kill": "ohnivec"}},
+      {"id": "report", "text": {"cs": "Vrať se k Permoníkovi.", "en": "Return to Permoník."}, "goal": {"talk": "permonik"}}
+    ],
+    "reward": {"xp": 12000, "gold": 3500, "stat_points": 5}
+  },
+  "pec": {
+    "act": 3, "giver": "permonik", "main": true,
+    "name": {"cs": "Pec", "en": "The Oven"},
+    "desc": {"cs": "Na samém dně, tam, kde staří havíři říkali Peklo, roztápí Ježibaba pec.", "en": "At the very bottom, where the old miners said Hell began, Ježibaba is stoking her oven."},
+    "steps": [
+      {"id": "descend", "text": {"cs": "Sestup do Pekla, čtvrtého patra.", "en": "Descend into Hell, the fourth level."}, "goal": {"reach": "act3_floor4"}},
+      {"id": "kill", "text": {"cs": "Zabij Ježibabu. Když se pec rozpálí, uhas ji mrtvou vodou z kbelíků.", "en": "Kill Ježibaba. When the oven blazes, douse it with dead water from the buckets."}, "goal": {"kill": "jezibaba"}},
+      {"id": "strana", "text": {"cs": "V popelu pece leží ohořelý list. Seber ho.", "en": "A scorched leaf lies in the oven's ashes. Pick it up."}, "goal": {"pick": "strana_kroniky"}},
+      {"id": "kronika", "text": {"cs": "Odnes list Kosmovi.", "en": "Bring the leaf to Kosmas."}, "goal": {"talk": "kosmas"}},
+      {"id": "report", "text": {"cs": "Vrať se k Permoníkovi.", "en": "Return to Permoník."}, "goal": {"talk": "permonik"}}
+    ],
+    "reward": {"xp": 16000, "gold": 2500, "skill_points": 1, "stat_points": 5}
+  },
+  "ziva_a_mrtva_voda": {
+    "act": 3, "giver": "lekarnik_agricola", "main": false,
+    "name": {"cs": "Živá a mrtvá voda", "en": "The Living and the Dead Water"},
+    "desc": {"cs": "Doktor Agricola nevěří pohádkám, ale věří pokusu. Chce zkusit, co babky na Šumavě vaří odjakživa: mrtvou vodou se rány zacelí, živou se vrátí duše.", "en": "Doctor Agricola does not believe in fairy tales, but he believes in experiment. He wants to try what the old women of Šumava have always brewed: dead water closes wounds, living water brings back the soul."},
+    "steps": [
+      {"id": "voda", "text": {"cs": "Načerpej mrtvou vodu v Pekle, tam, kde Ježibaba drží kbelíky.", "en": "Draw dead water in Hell, where Ježibaba keeps her buckets."}, "goal": {"pick": "mrtva_voda"}},
+      {"id": "return", "text": {"cs": "Přines mrtvou vodu doktoru Agricolovi.", "en": "Bring the dead water to Doctor Agricola."}, "goal": {"talk": "lekarnik_agricola"}}
+    ],
+    "reward": {"xp": 8000, "gold": 1000, "items": ["kapradi_kvet", "ziva_voda_velka", "ziva_voda_velka"]}
+  },
+
+  "kalinov_most": {
+    "act": 4, "giver": "permonik", "main": true,
+    "name": {"cs": "Kalinový most", "en": "The Kalinov Bridge"},
+    "desc": {"cs": "Přes Smorodinu vede jen jeden most a na něm sedí Saň Tříhlavá.", "en": "Only one bridge crosses the Smorodina, and the Three-Headed Saň sits upon it."},
+    "steps": [
+      {"id": "descend", "text": {"cs": "Dojdi ke Kalinovému mostu.", "en": "Go down to the Kalinov Bridge."}, "goal": {"reach": "act4_floor2"}},
+      {"id": "kill", "text": {"cs": "Zabij Saň. Uťatá hlava doroste, pokud pahýl nespálíš.", "en": "Kill the Saň. A severed head grows back unless you burn the stump."}, "goal": {"kill": "san"}},
+      {"id": "report", "text": {"cs": "Vrať se do tábora k Permoníkovi.", "en": "Return to Permoník in the camp."}, "goal": {"talk": "permonik"}}
+    ],
+    "reward": {"xp": 22000, "gold": 3500, "skill_points": 1}
+  },
+  "vijova_vicka": {
+    "act": 4, "giver": "permonik", "main": true,
+    "name": {"cs": "Vijova víčka", "en": "Vij's Eyelids"},
+    "desc": {"cs": "Vij nevidí, dokud mu sluhové nezvednou víčka. Pak už nevidí nikdo jiný.", "en": "Vij cannot see until his servants lift his eyelids. After that, no one else sees anything ever again."},
+    "steps": [
+      {"id": "descend", "text": {"cs": "Sestup do Vijovy jeskyně.", "en": "Descend into Vij's Hollow."}, "goal": {"reach": "act4_floor3"}},
+      {"id": "kill", "text": {"cs": "Zabij Vije. Nejdřív pobij ty, kdo mu zvedají víčka.", "en": "Kill Vij. First kill those who lift his eyelids."}, "goal": {"kill": "vij"}},
+      {"id": "report", "text": {"cs": "Vrať se k Permoníkovi.", "en": "Return to Permoník."}, "goal": {"talk": "permonik"}}
+    ],
+    "reward": {"xp": 28000, "gold": 4000, "stat_points": 5}
+  },
+  "kostejova_smrt": {
+    "act": 4, "giver": "permonik", "main": true,
+    "name": {"cs": "Kostějova smrt", "en": "Koschei's Death"},
+    "desc": {"cs": "Kostěj Nesmrtelný nemá smrt v sobě. Je to jehla ve vejci, vejce v kachně, kachna v zajíci, zajíc v truhle a truhla pod dubem.", "en": "Koschei the Deathless does not keep his death inside him. It is a needle in an egg, the egg in a duck, the duck in a hare, the hare in a chest, and the chest under an oak."},
+    "steps": [
+      {"id": "dub", "text": {"cs": "Najdi starý dub ve čtvrtém patře Navu.", "en": "Find the old oak on the fourth level of Nav."}, "goal": {"use": "dub"}},
+      {"id": "truhla", "text": {"cs": "Rozbij železem kovanou truhlu pod dubem.", "en": "Break open the iron-bound chest beneath the oak."}, "goal": {"use": "truhla_kostej"}},
+      {"id": "vejce", "text": {"cs": "Chyť zajíce, chyť kachnu a vezmi si vejce.", "en": "Catch the hare, catch the duck, and take the egg."}, "goal": {"pick": "vejce"}},
+      {"id": "kill", "text": {"cs": "Postav se Kostějovi a zlom jehlu uprostřed boje.", "en": "Face Koschei and snap the needle in the middle of the fight."}, "goal": {"kill": "kostej"}},
+      {"id": "strana", "text": {"cs": "V Kostějově korunovačním plášti je zašitý poslední list. Vezmi ho.", "en": "The last leaf is sewn into Koschei's coronation cloak. Take it."}, "goal": {"pick": "strana_kroniky"}},
+      {"id": "kronika", "text": {"cs": "Odnes list Kosmovi.", "en": "Bring the leaf to Kosmas."}, "goal": {"talk": "kosmas"}},
+      {"id": "report", "text": {"cs": "Vrať se k Permoníkovi.", "en": "Return to Permoník."}, "goal": {"talk": "permonik"}}
+    ],
+    "reward": {"xp": 35000, "gold": 5000, "skill_points": 1}
+  },
+  "posledni_sichta": {
+    "act": 4, "giver": "predak_matej", "main": false,
+    "name": {"cs": "Poslední šichta", "en": "The Last Shift"},
+    "desc": {"cs": "Padesát havířů z Dolu Osel sedí na břehu Smorodiny se zhaslými kahany. Jejich jména si odnesly navky. Bez jména se duše nedostane přes řeku.", "en": "Fifty miners of the Osel Mine sit on the bank of the Smorodina with their lamps gone out. The navky carried off their names. Without a name no soul can cross the river."},
+    "steps": [
+      {"id": "navky", "text": {"cs": "Zabij navky, které drží jména havířů z Osla. Padesát jmen, padesát kahanů.", "en": "Kill the navky that hold the names of the Osel miners. Fifty names, fifty lamps."}, "goal": {"kill": "navka", "count": 50}},
+      {"id": "return", "text": {"cs": "Vrať se k předákovi Matějovi a přečti mu jména.", "en": "Return to Matěj the foreman and read him the names."}, "goal": {"talk": "predak_matej"}}
+    ],
+    "reward": {"xp": 30000, "gold": 0, "stat_points": 5, "skill_points": 1, "items": ["svatojanska_rosa_velka", "svatojanska_rosa_velka"]}
+  },
+  "permonik_final": {
+    "act": 4, "giver": "permonik", "main": true,
+    "name": {"cs": "Srdce hory", "en": "The Heart of the Mountain"},
+    "desc": {"cs": "Čtyři pečeti jsou zlomené a všechny svítí v jednom kahanu. Mužíček ukazuje dolů.", "en": "The four seals are broken, and all of them burn in a single lamp. The little man points downwards."},
+    "steps": [
+      {"id": "descend", "text": {"cs": "Sestup do Srdce hory.", "en": "Descend into the Heart of the Mountain."}, "goal": {"reach": "act4_floor5"}},
+      {"id": "kill", "text": {"cs": "Zabij Permoníka. Rozbij kahan.", "en": "Kill Permoník. Smash the lamp."}, "goal": {"kill": "permonik_obr"}},
+      {"id": "konec", "text": {"cs": "Vrať se do tábora. Kosmas čeká s perem.", "en": "Return to the camp. Kosmas is waiting with his quill."}, "goal": {"talk": "kosmas"}}
+    ],
+    "reward": {"xp": 60000, "gold": 10000, "skill_points": 1, "stat_points": 5}
+  }
+}

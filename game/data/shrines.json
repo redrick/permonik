@@ -1,0 +1,42 @@
+{
+  "perun": {
+    "name": {"cs": "Perunova modla", "en": "Idol of Perun"}, "prop": "modla_perun",
+    "effect": {"mods": [{"stat": "lightning_dmg", "value": 20}, {"stat": "res_lightning", "value": 25}], "duration": 120},
+    "msg": {"cs": "Někde nad horou zahřmělo. Tvé zbraně jiskří.", "en": "Somewhere above the mountain, thunder rolls. Your weapons crackle."}
+  },
+  "veles": {
+    "name": {"cs": "Velesova modla", "en": "Idol of Veles"}, "prop": "modla_veles",
+    "effect": {"mods": [{"stat": "gold_find", "value": 75}, {"stat": "magic_find", "value": 40}], "duration": 180},
+    "msg": {"cs": "Pán podsvětí a stád ti ukázal, kde se lesknou poklady.", "en": "The lord of the underworld and the herds shows you where treasure glints."}
+  },
+  "mokos": {
+    "name": {"cs": "Mokošina modla", "en": "Idol of Mokosh"}, "prop": "modla_mokos",
+    "effect": {"heal": 1, "mods": [{"stat": "hp_pct", "value": 15}], "duration": 300},
+    "msg": {"cs": "Matka země tě vzala do náruče. Rány se zacelily.", "en": "Mother Earth takes you in her arms. Your wounds close."}
+  },
+  "svarog": {
+    "name": {"cs": "Svarogova modla", "en": "Idol of Svarog"}, "prop": "modla_svarog",
+    "effect": {"mods": [{"stat": "fire_dmg", "value": 20}, {"stat": "res_fire", "value": 25}], "duration": 120},
+    "msg": {"cs": "Nebeský kovář ti rozžhavil zbraň do běla.", "en": "The heavenly smith heats your weapon white."}
+  },
+  "morana": {
+    "name": {"cs": "Moranina modla", "en": "Idol of Morana"}, "prop": "modla_morana",
+    "effect": {"mods": [{"stat": "cold_dmg", "value": 30}, {"stat": "res_cold", "value": 30}], "curse": {"stat": "hp_pct", "value": -10}, "duration": 150},
+    "msg": {"cs": "Paní zimy ti vdechla mráz do zbraní. Něco si za to vzala.", "en": "The Lady of Winter breathes frost into your weapons. She takes something in return."}
+  },
+  "stribog": {
+    "name": {"cs": "Stribogova modla", "en": "Idol of Stribog"}, "prop": "modla_stribog",
+    "effect": {"mods": [{"stat": "move_speed", "value": 25}, {"stat": "attack_speed", "value": 15}, {"stat": "cast_speed", "value": 15}], "duration": 120},
+    "msg": {"cs": "Chodbou se prohnal vítr, který tu nemá co dělat. Nese tě s sebou.", "en": "A wind that has no business down here races through the gallery. It carries you with it."}
+  },
+  "triglav": {
+    "name": {"cs": "Triglavova modla", "en": "Idol of Triglav"}, "prop": "modla_triglav",
+    "effect": {"random": 1, "duration": 120},
+    "msg": {"cs": "Tři tváře se na tebe podívaly. Jedna se usmála.", "en": "Three faces look at you. One of them smiles."}
+  },
+  "rod": {
+    "name": {"cs": "Rodova modla", "en": "Idol of Rod"}, "prop": "modla_rod",
+    "effect": {"mods": [{"stat": "xp_pct", "value": 20}], "duration": 300},
+    "msg": {"cs": "Rod, který přede osudy, ti přidal pár nití.", "en": "Rod, who spins the threads of fate, adds a few to yours."}
+  }
+}

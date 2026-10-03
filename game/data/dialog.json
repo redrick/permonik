@@ -1,0 +1,874 @@
+{
+  "permonik": [
+    {"if": ["act:1", "quest:klekani:none"],
+     "lines": [
+      {"who": "permonik", "text": {"cs": "Zdař… zdař hlubina, poutníku. Hora je nemocná. Pomůžeš?", "en": "Good luck… good luck to the deep, wanderer. The Mountain is sick. Will you help?"},
+       "text_zbojnice": {"cs": "Zdař… zdař hlubina, poutnice. Hora je nemocná. Pomůžeš?", "en": "Good luck… good luck to the deep, wanderer. The Mountain is sick. Will you help?"},
+       "text_vedma": {"cs": "Zdař… zdař hlubina, poutnice. Hora je nemocná. Pomůžeš?", "en": "Good luck… good luck to the deep, wanderer. The Mountain is sick. Will you help?"}},
+      {"who": "hero", "text": {"cs": "Kdo jsi?", "en": "Who are you?"},
+       "text_havir": {"cs": "Zdař Bůh, dědo. Kdo jsi? Takového jako ty jsem v Hoře nikdy nepotkal.", "en": "God give luck, old man. Who are you? I've never met anyone like you in the Mountain."},
+       "text_zbojnice": {"cs": "Hej, mužíčku. Kdo jsi a proč mi koukáš na opasek?", "en": "Hey, little man. Who are you, and why are you eyeing my belt?"},
+       "text_vedma": {"cs": "Znám tvůj hlas. Ve snech slýchám zvon pod vodou, a někdy někoho, kdo se u toho směje. Kdo jsi?", "en": "I know your voice. In my dreams I hear a bell under water, and sometimes someone laughing beside it. Who are you?"}},
+      {"who": "permonik", "text": {"cs": "Ale, kdo bych byl. Starý havíř, co už nefárá. Říkají mi Permoník. Zvon na věži přestal zvonit klekání a od té doby se z Osla nikdo nevrátil. Padesát kahanů sjelo dolů. Ani jeden nahoru.", "en": "Oh, who would I be. An old miner who no longer goes down. They call me Permoník. The bell in the tower stopped ringing the evening Angelus, and since then no one has come back out of Osel. Fifty lamps went down. Not one came up."}},
+      {"who": "permonik", "text": {"cs": "Ve druhém patře chodí Klekánice. Bílá paní. Bere, koho najde venku po klekání, a ve štole je teď po klekání pořád.", "en": "On the second level walks the Klekánice. The White Lady. She takes whoever she finds out after the evening bell, and down in the gallery it is always after the evening bell now."}},
+      {"who": "permonik", "text": {"cs": "Na, vezmi si můj kahan. Svítí studeně, ale svítí dlouho. A nesundávej ho, človíčku. Ve tmě pod Horou je kahan život.", "en": "Here, take my lamp. Its light is cold, but it burns a long time. And don't take it off, little one. In the dark beneath the Mountain a lamp is a life."}},
+      {"who": "hero", "text": {"cs": "Sestoupím.", "en": "I'll go down."},
+       "text_havir": {"cs": "Můj táta sjel s tou partou. Jestli tam dole něco zbylo, najdu to.", "en": "My father went down with that crew. If anything is left of them down there, I'll find it."},
+       "text_zbojnice": {"cs": "Dole je stříbro? Tak jo. Klekánici přidám zdarma.", "en": "There's silver down there? Fine. I'll throw in the Klekánice for free."},
+       "text_vedma": {"cs": "Ten plamen je studený jako voda v mém snu. Dobře. Půjdu.", "en": "That flame is as cold as the water in my dream. Very well. I'll go."}}
+     ],
+     "do": ["quest_start:klekani", "give:permonikuv_kahan"]},
+
+    {"if": ["act:1", "quest:dusicky:step=report"],
+     "lines": [
+      {"who": "permonik", "text": {"cs": "Ukaž mi kahan. (Mužíček se nakloní nad plamen, až mu modře zasvítí v očích.) Vidíš? Svítí víc. To voda pustila. Voda pustila…", "en": "Show me the lamp. (The little man leans over the flame until his eyes glow blue.) You see? It shines brighter. The water has let go. The water has let go…"}},
+      {"who": "hero", "text": {"cs": "Plamen je jasnější. A studenější.", "en": "The flame is brighter. And colder."},
+       "text_havir": {"cs": "Světla je víc, ale ruce mám zmrzlé.", "en": "There's more light, but my hands are frozen."},
+       "text_zbojnice": {"cs": "Svítí to líp. Co jsi do něj nalil, dědku?", "en": "It burns better. What did you pour into it, grandad?"},
+       "text_vedma": {"cs": "Ten plamen teď voní jako řeka.", "en": "The flame smells of the river now."}},
+      {"who": "permonik", "text": {"cs": "Hora je zdravější, ale nemoc sedí hlouběji. Staré cesty pod Čechami vedou na západ, pod Brdy, do Příbrami. Tam mě mají rádi, tam mají sošky. Půjdeme? Zdař… zdař hlubina.", "en": "The Mountain is healthier, but the sickness sits deeper. The old roads beneath Bohemia run west, under the Brdy hills, to Příbram. They love me there; they have statues. Shall we go? Good luck… good luck to the deep."}}
+     ],
+     "do": ["quest_done:dusicky", "slide:act1_end", "next_act"]},
+    {"if": ["act:1", "quest:dusicky:step=kronika"],
+     "lines": [{"who": "permonik", "text": {"cs": "Nejdřív za Kosmou, viď? Jen ať si čte. Staří lidé rádi čtou.", "en": "Kosmas first, is it? Let him read. Old people do love to read."}}]},
+    {"if": ["act:1", "quest:dusicky:step=strana"],
+     "lines": [{"who": "permonik", "text": {"cs": "Ve vodě zůstal nějaký papír. Starý pisálek Kosmas by ho chtěl. Mně je to jedno, ale jemu ne.", "en": "Some scrap of paper was left in the water. Old Kosmas the scribbler would want it. It's nothing to me, but it is to him."}}]},
+    {"if": ["act:1", "quest:dusicky:active"],
+     "lines": [{"who": "permonik", "text": {"cs": "Hrníčky, človíčku. Rozbij každý hrníček, co najdeš. Dušičky musí ven. Všechny. Ať jsou venku.", "en": "The teacups, little one. Smash every teacup you find. The little souls must get out. All of them. Let them out."}}]},
+    {"if": ["act:1", "quest:kostnice:step=report"],
+     "lines": [
+      {"who": "hero", "text": {"cs": "Než se rozpadl, řekl něco divného. Že ten se světýlkem nemá stín.", "en": "Before he fell apart he said something strange. That the one with the little light has no shadow."},
+       "text_havir": {"cs": "Kostník mluvil, než se sesypal. Ten se světýlkem prý nemá stín. Myslel tebe, dědo?", "en": "The Bone Lord talked before he crumbled. The one with the little light, he said, has no shadow. Did he mean you, old man?"},
+       "text_zbojnice": {"cs": "Ta hromada kostí o tobě mluvila. Prý nemáš stín.", "en": "That heap of bones was talking about you. Says you've got no shadow."},
+       "text_vedma": {"cs": "Mrtvý král řekl: ten se světýlkem nemá stín. Mrtví nelžou. Jen se pletou.", "en": "The dead king said: the one with the little light has no shadow. The dead don't lie. They only get confused."}},
+      {"who": "permonik", "text": {"cs": "(Mužíček se zasměje.) Kosti mluví z cesty, človíčku. V kostnici se každý pomate, i mrtvý. A podívej se, kde stojím: u kahanu. Kde by se vzal stín u kahanu?", "en": "(The little man laughs.) Bones babble, little one. Everyone goes a bit soft in an ossuary, even the dead. And look where I stand: right by the lamp. Where would a shadow come from, right by the lamp?"}},
+      {"who": "permonik", "text": {"cs": "Ale teď to hlavní. Dole je voda. Vodník Hastrman zatopil celé patro a pod hrníčky drží dušičky utopených. Ty dušičky ho hojí. Rozbij hrníčky, pusť je ven. Všechny. Ať jsou venku.", "en": "But now, what matters. There is water below. Vodník Hastrman has flooded the whole level, and he keeps the souls of the drowned under teacups. Those little souls heal him. Smash the teacups, let them out. All of them. Let them out."}}
+     ],
+     "do": ["quest_done:kostnice", "quest_start:dusicky"]},
+    {"if": ["act:1", "quest:kostnice:active"],
+     "lines": [{"who": "permonik", "text": {"cs": "V kostnici se kosti skládají znovu. Když ho rozbiješ, nečekej, že zůstane ležet. Počkej, až se složí, a rozbij ho podruhé.", "en": "In the ossuary the bones put themselves back together. When you shatter him, don't expect him to stay down. Wait until he rebuilds himself, and shatter him again."}}]},
+    {"if": ["act:1", "quest:klekani:step=report"],
+     "lines": [
+      {"who": "permonik", "text": {"cs": "Bílá paní je pryč? Slyšel jsem, jak se štolou nese ticho. Dobré ticho.", "en": "The White Lady is gone? I heard the silence travel up the gallery. A good silence."}},
+      {"who": "permonik", "text": {"cs": "Ale to byla jen hlídačka u dveří. Pod ní, v kostnici pod Sedlcem, se kosti postavily na nohy. Čtyřicet tisíc mrtvých, človíčku, a někdo jim nasadil korunu.", "en": "But she was only the watchwoman at the door. Below her, in the ossuary beneath Sedlec, the bones have stood up. Forty thousand dead, little one, and someone has set a crown upon them."}},
+      {"who": "hero", "text": {"cs": "Kosti zůstanou ležet.", "en": "The bones will lie down again."},
+       "text_havir": {"cs": "Na Sedlci leží půlka mého rodu. Ať si lehnou zpátky.", "en": "Half my family lies at Sedlec. Let them lie back down."},
+       "text_zbojnice": {"cs": "Kosti nekoušou. Teda většinou.", "en": "Bones don't bite. Mostly."},
+       "text_vedma": {"cs": "Mrtví se nezvedají sami. Někdo je volá.", "en": "The dead do not rise on their own. Someone calls them."}},
+      {"who": "permonik", "text": {"cs": "Volá, nevolá… Zdař… zdař hlubina.", "en": "Calls, doesn't call… Good luck… good luck to the deep."}}
+     ],
+     "do": ["quest_done:klekani", "quest_start:kostnice"]},
+    {"if": ["act:1", "quest:klekani:active"],
+     "lines": [{"who": "permonik", "text": {"cs": "Klekánice se bojí světla, ale miluje tmu kolem něj. Drž ji v kahanu, jinak ji nezraníš. Zdař…", "en": "The Klekánice fears the light, but she loves the dark around it. Keep her inside your lamplight or you will never wound her. Good luck…"}}]},
+    {"if": ["act:1", "quest:srdce_zvonu:done", "!flag:perm_zvon"],
+     "lines": [{"who": "permonik", "text": {"cs": "(Mužíček si přitiskne dlaně k uším a pak se usměje.) Hlasitý, ten zvon. Hodně hlasitý. No, ať si zvoní. Ať si lidi chodí domů.", "en": "(The little man presses his palms to his ears, then smiles.) Loud, that bell. Very loud. Well, let it ring. Let the people walk home."}}],
+     "do": ["flag:perm_zvon"]},
+    {"if": ["act:1"],
+     "lines": [{"who": "permonik", "text": {"cs": "Zdař… zdař hlubina. Kahan ti pěkně svítí, človíčku. Nesundávej ho.", "en": "Good luck… good luck to the deep. Your lamp burns nicely, little one. Don't take it off."}}]},
+
+    {"if": ["act:2", "quest:medulinin_odkaz:none"],
+     "lines": [
+      {"who": "permonik", "text": {"cs": "Zdař… zdař hlubina! Cítíš, jak to tu voní? Smůla, mech a stříbro. Březové Hory, človíčku. Tady mě mají rádi.", "en": "Good luck… good luck to the deep! Can you smell it? Pine resin, moss and silver. Březové Hory, little one. They love me here."}},
+      {"who": "permonik", "text": {"cs": "Podívej se na ty sošky na rozích. Vousy, čepička, kahan. To jsem já. Celé město je plné mě. (Mužíček jednu sošku pohladí po hlavě.)", "en": "Look at the statues on the corners. Beard, little cap, lamp. That's me. The whole town is full of me. (The little man strokes one statue on the head.)"}},
+      {"who": "permonik", "text": {"cs": "Ale les je nemocný. Brdy prorůstají do Vojtěšské šachty a v kořenech se usadila Megera, ta stará čarodějnice z pověsti. Dobrá Medulína o ní ví všechno. Zajdi za ní.", "en": "But the forest is sick. The Brdy hills are growing down into the Vojtěch shaft, and Megera has settled in the roots, the old witch from the legend. Good Medulína knows everything about her. Go and see her."}},
+      {"who": "hero", "text": {"cs": "Půjdu za Medulínou.", "en": "I'll go to Medulína."},
+       "text_havir": {"cs": "Tolik soch. Jako by se tě tu báli, ne že by tě měli rádi.", "en": "So many statues. As if they were afraid of you here, not fond of you."},
+       "text_zbojnice": {"cs": "Ty sošky se na mě koukají. Všechny najednou.", "en": "Those statues are watching me. All of them at once."},
+       "text_vedma": {"cs": "Sošky mají oči z rudy. Svítí jako tvůj plamen.", "en": "The statues have eyes of ore. They glow like your flame."}},
+      {"who": "permonik", "text": {"cs": "(Mužíček se zasměje.) To se ti jen zdá, človíčku. Kahan nesundávej.", "en": "(The little man laughs.) You're imagining things, little one. Keep the lamp on."}}
+     ],
+     "do": ["quest_start:medulinin_odkaz"]},
+    {"if": ["act:2", "quest:zrcadla_v_sevcine:step=report"],
+     "lines": [
+      {"who": "permonik", "text": {"cs": "(Mužíček se dívá do kahanu dlouho. Příliš dlouho.) Dva. Dva plamínky v jednom kahanu. Voda a kámen.", "en": "(The little man gazes into the lamp for a long time. Too long.) Two. Two little flames in one lamp. Water and stone."}},
+      {"who": "hero", "text": {"cs": "Kosmas říká, že kámen drží něčí kosti.", "en": "Kosmas says the stone holds someone's bones."},
+       "text_havir": {"cs": "Kosmas čte z těch listů divné věci. Kámen drží jeho kosti. Čí kosti, dědo?", "en": "Kosmas reads strange things off those leaves. The stone holds his bones. Whose bones, old man?"},
+       "text_zbojnice": {"cs": "Ten tvůj pisálek tvrdí, že někoho držíme. Teda drželi.", "en": "That scribbler of yours claims we're holding someone down. Were, rather."},
+       "text_vedma": {"cs": "Voda drží žíly. Kámen drží kosti. Čí tělo to po kouscích pouštím, Permoníku?", "en": "Water holds the veins. Stone holds the bones. Whose body am I setting loose, piece by piece, Permoník?"}},
+      {"who": "permonik", "text": {"cs": "(Mužíček se usměje a pohladí kahan.) Hory, človíčku. Tělo hory. Kosti, žíly, dech. Hora je živá, to ví každý havíř.", "en": "(The little man smiles and strokes the lamp.) The mountain's, little one. The body of the mountain. Bones, veins, breath. A mountain is alive, every miner knows that."}},
+      {"who": "permonik", "text": {"cs": "Brdy se uzdraví. Ale nemoc je hlouběji, pořád hlouběji. Hluboké cesty vedou na sever, do Jáchymova. Tam pod mincovnou září smolinec a staří havíři tomu místu říkali Peklo. Zdař… zdař hlubina.", "en": "Brdy will heal. But the sickness goes deeper, ever deeper. The deep roads lead north, to Jáchymov. There the pitchblende glows beneath the mint, and the old miners called that place Hell. Good luck… good luck to the deep."}}
+     ],
+     "do": ["quest_done:zrcadla_v_sevcine", "slide:act2_end", "next_act"]},
+    {"if": ["act:2", "quest:zrcadla_v_sevcine:step=kronika"],
+     "lines": [{"who": "permonik", "text": {"cs": "Kosmas, Kosmas. Jdi za ním, ať to máš z krku.", "en": "Kosmas, Kosmas. Go and see him, get it over with."}}]},
+    {"if": ["act:2", "quest:zrcadla_v_sevcine:step=strana"],
+     "lines": [{"who": "permonik", "text": {"cs": "Ve střepech zůstal zase papír. Ten starý pisálek by ho chtěl… zase.", "en": "There's paper among the shards again. The old scribbler would want it… again."}}]},
+    {"if": ["act:2", "quest:valdecky_jezdec:step=report"],
+     "lines": [
+      {"who": "permonik", "text": {"cs": "Rytíř bez koně je jen chlap v plechu. Výborně, človíčku. Můj človíčku.", "en": "A knight without a horse is just a man in a tin can. Well done, little one. My little one."}},
+      {"who": "permonik", "text": {"cs": "A teď to důležité. Ve Ševčinské žíle sedí bazilišek. Kdo se mu podívá do očí, zkamení. Kamenem drží hlubinu… tedy, Hora je pod ním celá ztuhlá. (Rychle.) Kovář Vojtěch ví o zrcadlech, co tam dole visí. Zeptej se ho.", "en": "And now, what matters. A basilisk sits in the Ševčín vein. Whoever looks it in the eye turns to stone. With stone it holds the deep… that is, the whole Mountain has gone stiff beneath it. (Quickly.) Vojtěch the smith knows about the mirrors hanging down there. Ask him."}}
+     ],
+     "do": ["quest_done:valdecky_jezdec", "quest_start:zrcadla_v_sevcine"]},
+    {"if": ["act:2", "quest:medulinin_odkaz:step=report"],
+     "lines": [
+      {"who": "permonik", "text": {"cs": "Megera je pryč a les se trochu nadechl. Ale v galeriích pod ní dupe kůň. Divoký Prokop z Valdeka, prokletý jezdec, rytíř bez cti.", "en": "Megera is gone, and the forest breathes a little easier. But beneath her, a horse is stamping in the galleries. Wild Prokop of Valdek, the cursed rider, a knight without honour."}},
+      {"who": "permonik", "text": {"cs": "Ukaž kahan, človíčku. Pořád ho máš? Hodně dobře.", "en": "Show me the lamp, little one. Still wearing it? Very good."}},
+      {"who": "hero", "text": {"cs": "Prokop padne.", "en": "Prokop will fall."},
+       "text_havir": {"cs": "Rytíře jsem nikdy neměl rád. Tenhle bude první, kterého srazím.", "en": "Never liked knights. This one'll be the first I knock down."},
+       "text_zbojnice": {"cs": "Loupeživý rytíř? Konečně někdo z oboru.", "en": "A robber knight? Finally, someone in my line of work."},
+       "text_vedma": {"cs": "Kdo jezdí po smrti, ten jezdí kvůli slibu. Zjistím komu.", "en": "Whoever rides after death rides because of a promise. I'll find out to whom."}}
+     ],
+     "do": ["quest_done:medulinin_odkaz", "quest_start:valdecky_jezdec"]},
+    {"if": ["act:2", "flag:met_fabian", "!flag:perm_fabian"],
+     "lines": [
+      {"who": "hero", "text": {"cs": "Na kraji lesa stojí někdo z mechu a šišek. Říká, že nemáš stín.", "en": "Someone made of moss and pine cones stands at the edge of the forest. He says you have no shadow."},
+       "text_havir": {"cs": "Ten chlap z mechu u lesa říká, že nemáš stín. Už druhý, kdo to říká, dědo.", "en": "That moss-man by the forest says you've got no shadow. That's the second one to say it, old man."},
+       "text_zbojnice": {"cs": "Šiškový dědek u lesa tvrdí, že nemáš stín. Zajímavé, ne?", "en": "The pine-cone grandad by the woods says you've got no shadow. Interesting, isn't it?"},
+       "text_vedma": {"cs": "Duch lesa mi řekl, že nemáš stín. Duchové lesa nelžou o stínech. Stíny jsou jejich řemeslo.", "en": "The forest spirit told me you have no shadow. Forest spirits don't lie about shadows. Shadows are their trade."}},
+      {"who": "permonik", "text": {"cs": "(Na okamžik se mužíček přestane usmívat.) Fabián. Fabián je prokletý rytíř. Prokletí lžou.", "en": "(For a moment the little man stops smiling.) Fabián. Fabián is a cursed knight. The cursed lie."}},
+      {"who": "permonik", "text": {"cs": "Ať si mluví se stromy. Stromy ho poslouchají. Ty poslouchej mě.", "en": "Let him talk to the trees. The trees listen to him. You listen to me."}}
+     ],
+     "do": ["flag:perm_fabian"]},
+    {"if": ["act:2", "quest:zrcadla_v_sevcine:step=kovar"],
+     "lines": [{"who": "permonik", "text": {"cs": "Vojtěch. U výhně. Zrcadla. Nezdržuj se, človíčku.", "en": "Vojtěch. At the forge. Mirrors. Don't dawdle, little one."}}]},
+    {"if": ["act:2", "quest:zrcadla_v_sevcine:active"],
+     "lines": [{"who": "permonik", "text": {"cs": "Nedívej se mu do očí. Nech zrcadla, ať se dívají za tebe.", "en": "Don't look it in the eye. Let the mirrors do the looking for you."}}]},
+    {"if": ["act:2", "quest:valdecky_jezdec:active"],
+     "lines": [{"who": "permonik", "text": {"cs": "Prokop jezdí jen rovně. Rytíři nikdy neuměli zatáčet. Uhni do boční chodby a nech ho, ať si rozbije hlavu o skálu.", "en": "Prokop only rides straight. Knights never could take a corner. Step into a side tunnel and let him split his head on the rock."}}]},
+    {"if": ["act:2", "quest:medulinin_odkaz:step=medulina"],
+     "lines": [{"who": "permonik", "text": {"cs": "Medulína bydlí v chaloupce na kraji lesa. Ona ti řekne, kde má Megera kotle.", "en": "Medulína lives in the cottage at the edge of the woods. She'll tell you where Megera keeps her cauldrons."}}]},
+    {"if": ["act:2", "quest:medulinin_odkaz:active"],
+     "lines": [{"who": "permonik", "text": {"cs": "Megera skáče mezi kotli. Kde je kotel, tam bude i ona. Nedej jí vydechnout.", "en": "Megera leaps between her cauldrons. Wherever there's a cauldron, there she'll be. Don't give her time to breathe."}}]},
+    {"if": ["act:2", "quest:tremsinske_siny:done", "!flag:perm_siny"],
+     "lines": [{"who": "permonik", "text": {"cs": "Třemšínský? Ten starý pařez ti dal prsten? Ukaž… (Mužíček natáhne ruku, pak ji stáhne.) Ne, nech si ho. Zlato je pro lidi. Já mám rád stříbro. A světlo.", "en": "The Třemšín one? That old stump gave you a ring? Let me see… (The little man reaches out, then draws his hand back.) No, keep it. Gold is for people. I like silver. And light."}}],
+     "do": ["flag:perm_siny"]},
+    {"if": ["act:2"],
+     "lines": [{"who": "permonik", "text": {"cs": "Zdař… zdař hlubina. Sošky ti mávají, človíčku. Vidíš? Celé město je moje… naše.", "en": "Good luck… good luck to the deep. The statues are waving at you, little one. See? The whole town is mine… ours."}}]},
+
+    {"if": ["act:3", "quest:dve_srdce:none"],
+     "lines": [
+      {"who": "permonik", "text": {"cs": "(Mužíček tentokrát nečeká u šachty. Jde vedle tebe, krok za krokem, a jeho kahan se dotýká tvého.) Jáchymov, kahánku. Tady razí tolary a celý svět jim závidí.", "en": "(This time the little man does not wait at the shaft. He walks beside you, step for step, his lamp touching yours.) Jáchymov, my little lamp. They strike thalers here, and the whole world envies them."}},
+      {"who": "permonik", "text": {"cs": "Ještě dvě pečeti a Hora se uzdraví. Jen dvě. Cítíš, jak je kahan těžší? To je dobře. Těžké světlo svítí dál.", "en": "Two more seals and the Mountain will be healed. Only two. Can you feel how heavy the lamp has grown? That's good. Heavy light reaches further."}},
+      {"who": "hero", "text": {"cs": "Pečeti? Celou dobu mluvíš o nemoci.", "en": "Seals? All this time you've talked about a sickness."},
+       "text_havir": {"cs": "Pečeti? Celou dobu mluvíš o nemoci, dědo.", "en": "Seals? All this time you've been talking about a sickness, old man."},
+       "text_zbojnice": {"cs": "Pečeti. Jasně. A já myslela, že tu hledáme stříbro.", "en": "Seals. Right. And here I thought we were looking for silver."},
+       "text_vedma": {"cs": "Pečeť je něco, co se nemá otevírat.", "en": "A seal is a thing that is not meant to be opened."}},
+      {"who": "permonik", "text": {"cs": "Nemoc, pečeti, kdo by se chytal slov. Ve druhém patře Svornosti vylezla z hrobu Strzyga. Narodila se se dvěma srdci. Musíš zastavit obě.", "en": "Sickness, seals, who'd quibble over words. On the second level of Svornost the Strzyga has climbed out of her grave. She was born with two hearts. You must stop them both."}},
+      {"who": "permonik", "text": {"cs": "Kahánku… ne, neboj, tak ti teď budu říkat. Svítíš mi.", "en": "My little lamp… no, don't fret, that's what I'll call you now. You shine for me."}}
+     ],
+     "do": ["quest_start:dve_srdce"]},
+    {"if": ["act:3", "quest:pec:step=report"],
+     "lines": [
+      {"who": "hero", "text": {"cs": "Kosmas přečetl třetí list. Říká, že havíři volali ty čtyři strážce proti tobě.", "en": "Kosmas read the third leaf. He says the miners called those four guardians against you."},
+       "text_havir": {"cs": "Kosmas říká, že havíři volali strážce proti tobě. Že desátek, jeden kahan z deseti, sis bral ty.", "en": "Kosmas says the miners called the guardians against you. That the tithe, one lamp in ten, was yours to take."},
+       "text_zbojnice": {"cs": "Tvůj pisálek tvrdí, že jsme celou dobu odemykali zámek. Že v té lucerně nosím tebe.", "en": "Your scribbler says we've been picking a lock this whole time. That it's you I'm carrying in this lantern."},
+       "text_vedma": {"cs": "Oheň drží jeho dech a smrt jeho jméno. Kosmas to přečetl nahlas a tvůj plamen se při tom zachvěl.", "en": "Fire holds his breath, and death holds his name. Kosmas read it aloud, and your flame shivered as he did."}},
+      {"who": "permonik", "text": {"cs": "(Mužíček se dlouho usmívá. Pak promluví tiše a laskavě, jako když se chlácholí dítě.) Kosmas je starý, kahánku. Starým lidem se pletou písmena, a pak se jim pletou i lidi.", "en": "(The little man smiles for a long time. Then he speaks, softly and kindly, as one soothes a child.) Kosmas is old, my little lamp. Old men get their letters muddled, and then they get people muddled too."}},
+      {"who": "permonik", "text": {"cs": "Kdo tě vyvedl z Osla? Kdo ti dal světlo? Kdo tě nikdy nenechal ve tmě?", "en": "Who led you out of Osel? Who gave you light? Who never once left you in the dark?"}},
+      {"who": "permonik", "text": {"cs": "(Země se zachvěje. Šachta za vámi se s rachotem zavírá, kámen po kameni.) Nahoru už to nejde, kahánku. Jen dolů. Ale dole je to pěkné. Uvidíš.", "en": "(The earth shudders. The shaft behind you grinds shut, stone by stone.) There's no way up any more, my little lamp. Only down. But it's lovely down there. You'll see."}}
+     ],
+     "do": ["quest_done:pec", "slide:act3_end", "next_act"]},
+    {"if": ["act:3", "quest:pec:step=kronika"],
+     "lines": [{"who": "permonik", "text": {"cs": "Kosmas ti bude číst. Kosmas je starý, kahánku. Ať si čte.", "en": "Kosmas will read to you. Kosmas is old, my little lamp. Let him read."}}]},
+    {"if": ["act:3", "quest:pec:step=strana"],
+     "lines": [{"who": "permonik", "text": {"cs": "Zase papír? Nech ho tam, ať shoří. … No dobře. Vezmi si ho.", "en": "Paper again? Leave it there to burn. … Oh, very well. Take it."}}]},
+    {"if": ["act:3", "quest:pec:active"],
+     "lines": [{"who": "permonik", "text": {"cs": "Pec, kahánku. Uhas ji, rozbij ji, a pak už nic. Nic mezi námi a Horou.", "en": "The oven, my little lamp. Put it out, break it, and then nothing more. Nothing between us and the Mountain."}}]},
+    {"if": ["act:3", "quest:proklete_tolary:step=report"],
+     "lines": [
+      {"who": "permonik", "text": {"cs": "Ohnivec je pryč. Teď už jen jedna. Jedna, kahánku!", "en": "Ohnivec is gone. Only one left now. One, my little lamp!"}},
+      {"who": "permonik", "text": {"cs": "Na samém dně Svornosti, v Pekle, si Ježibaba rozdělala pec. Myslí si, že ji ta pec ochrání. (Mužíček se zasměje, poprvé trochu moc nahlas.) Nic ji neochrání.", "en": "At the very bottom of Svornost, in Hell, Ježibaba has lit her oven. She thinks the oven will protect her. (The little man laughs, for the first time a little too loudly.) Nothing will protect her."}}
+     ],
+     "do": ["quest_done:proklete_tolary", "quest_start:pec"]},
+    {"if": ["act:3", "quest:proklete_tolary:active"],
+     "lines": [{"who": "permonik", "text": {"cs": "Kovadliny plivou oheň. Nestůj před nimi. A ty tolary si nenechávej, prokleté peníze se vždycky vrátí k tomu, kdo je razil.", "en": "The anvils spit fire. Don't stand in front of them. And don't keep those thalers; cursed coin always finds its way back to whoever struck it."}}]},
+    {"if": ["act:3", "quest:dve_srdce:step=report"],
+     "lines": [
+      {"who": "permonik", "text": {"cs": "Výborně, kahánku, výborně. (Mužíček tleská drobnýma rukama.) Ve staré mincovně razí čert Ohnivec tolary, které pálí. Zbav nás ho.", "en": "Splendid, my little lamp, splendid. (The little man claps his tiny hands.) In the old mint the devil Ohnivec is striking thalers that burn. Rid us of him."}}
+     ],
+     "do": ["quest_done:dve_srdce", "quest_start:proklete_tolary"]},
+    {"if": ["act:3", "quest:dve_srdce:active"],
+     "lines": [{"who": "permonik", "text": {"cs": "Dvě srdce, dvě duše. Až padne první, nezastavuj se. Druhá je rychlejší a zlejší.", "en": "Two hearts, two souls. When the first falls, don't stop. The second is quicker and crueller."}}]},
+    {"if": ["act:3", "quest:ziva_a_mrtva_voda:done", "!flag:perm_voda"],
+     "lines": [{"who": "permonik", "text": {"cs": "Mrtvá voda? (Mužíček nakrčí nos.) Ten doktor si hraje s věcmi, kterým nerozumí. Ať si zapisuje. Papír snese všechno.", "en": "Dead water? (The little man wrinkles his nose.) That doctor is meddling with things he doesn't understand. Let him write it down. Paper will put up with anything."}}],
+     "do": ["flag:perm_voda"]},
+    {"if": ["act:3"],
+     "lines": [{"who": "permonik", "text": {"cs": "Zdař… zdař hlubina, kahánku. Jsem tu. Jsem pořád tady vedle tebe.", "en": "Good luck… good luck to the deep, my little lamp. I'm here. I'm always right here beside you."}}]},
+
+    {"if": ["act:4", "quest:permonik_final:done"],
+     "lines": [{"who": "permonik", "text": {"cs": "(Tam, kde stával mužíček, není nic. Ani stín.)", "en": "(Where the little man used to stand there is nothing. Not even a shadow.)"}}]},
+    {"if": ["act:4", "quest:kalinov_most:none"],
+     "lines": [
+      {"who": "permonik", "text": {"cs": "(Mužíček sedí u ohně, který nehřeje, a usmívá se.)", "en": "(The little man sits by a fire that gives no warmth, and smiles.)"}},
+      {"who": "permonik", "text": {"cs": "Zdař…", "en": "Good luck…"}},
+      {"who": "hero", "text": {"cs": "Kde to jsme?", "en": "Where are we?"},
+       "text_havir": {"cs": "Dědo. Kde to jsme? Proč nic neříkáš?", "en": "Old man. Where are we? Why aren't you saying anything?"},
+       "text_zbojnice": {"cs": "Žádné povídání, žádné „kahánku“? Tohle se mi líbí ještě míň.", "en": "No chatter, no “my little lamp”? I like this even less."},
+       "text_vedma": {"cs": "Nav. Jsme pod kořeny světa. Odsud se nevracíme, že ne?", "en": "Nav. We are beneath the roots of the world. We don't come back from here, do we?"}},
+      {"who": "permonik", "text": {"cs": "(Ukáže prstem k řece, ke Kalinovému mostu. Usmívá se. Víc neřekne.)", "en": "(He points a finger at the river, at the Kalinov Bridge. He smiles. He says nothing more.)"}}
+     ],
+     "do": ["quest_start:kalinov_most"]},
+    {"if": ["act:4", "quest:kostejova_smrt:step=report"],
+     "lines": [
+      {"who": "hero", "text": {"cs": "Kostěj řekl, že byl jeho smrt. Že když ho zlomím, bude nesmrtelný.", "en": "Koschei said he was his death. That if I broke him, he would be deathless."},
+       "text_havir": {"cs": "Kostěj říkal, že byl tvoje smrt, dědo. Teď už žádnou nemáš, co?", "en": "Koschei said he was your death, old man. You haven't got one any more, have you?"},
+       "text_zbojnice": {"cs": "Ta jehla byla tvoje smrt. Já jsem ji zlomila. Tak co teď?", "en": "That needle was your death. I snapped it. So what now?"},
+       "text_vedma": {"cs": "Voda, kámen, oheň, smrt. Všechno svítí v mé ruce. A ty se usmíváš.", "en": "Water, stone, fire, death. All of it burns in my hand. And you are smiling."}},
+      {"who": "permonik", "text": {"cs": "(Mužíček se usmívá.)", "en": "(The little man smiles.)"}},
+      {"who": "permonik", "text": {"cs": "Zdař…", "en": "Good luck…"}},
+      {"who": "permonik", "text": {"cs": "(Natáhne ruku ke kahanu. Těsně před plamenem ji zastaví. Pak se otočí a jde dolů, do tmy. A ty jdeš za ním, protože kahan jde za ním.)", "en": "(He reaches for the lamp. He stops a hair's breadth from the flame. Then he turns and walks down, into the dark. And you follow him, because the lamp follows him.)"}}
+     ],
+     "do": ["quest_done:kostejova_smrt", "quest_start:permonik_final"]},
+    {"if": ["act:4", "quest:permonik_final:active"],
+     "lines": [{"who": "permonik", "text": {"cs": "(Mužíček na tebe čeká na kraji tmy. Nemá stín. Nikdy neměl.)", "en": "(The little man waits for you at the edge of the dark. He has no shadow. He never had.)"}}]},
+    {"if": ["act:4", "quest:kostejova_smrt:step=kronika"],
+     "lines": [{"who": "permonik", "text": {"cs": "(Mužíček se dívá ke Kosmovi. Kosmas se na něj nedívá.)", "en": "(The little man looks over at Kosmas. Kosmas does not look back.)"}}]},
+    {"if": ["act:4", "quest:kostejova_smrt:active"],
+     "lines": [{"who": "permonik", "text": {"cs": "(Mužíček kreslí prstem do popela dub, truhlu, zajíce, kachnu, vejce a jehlu. Pak jehlu přeškrtne a usměje se.)", "en": "(With one finger the little man draws in the ashes an oak, a chest, a hare, a duck, an egg and a needle. Then he strikes out the needle and smiles.)"}}]},
+    {"if": ["act:4", "quest:vijova_vicka:step=report"],
+     "lines": [
+      {"who": "permonik", "text": {"cs": "(Mužíček se k tobě nakloní tak blízko, že cítíš chlad jeho plamene.) Ještě jeden.", "en": "(The little man leans in so close that you feel the chill of his flame.) One more."}}
+     ],
+     "do": ["quest_done:vijova_vicka", "quest_start:kostejova_smrt"]},
+    {"if": ["act:4", "quest:vijova_vicka:active"],
+     "lines": [{"who": "permonik", "text": {"cs": "(Mužíček si přiloží prsty k víčkům a pomalu je zvedne. Pak se bez hlasu zasměje.)", "en": "(The little man puts his fingers to his eyelids and slowly lifts them. Then he laughs without a sound.)"}}]},
+    {"if": ["act:4", "quest:kalinov_most:step=report"],
+     "lines": [
+      {"who": "permonik", "text": {"cs": "(Usmívá se. Dívá se na kahan, ne na tebe.)", "en": "(He smiles. He is looking at the lamp, not at you.)"}},
+      {"who": "permonik", "text": {"cs": "Dolů.", "en": "Down."}}
+     ],
+     "do": ["quest_done:kalinov_most", "quest_start:vijova_vicka"]},
+    {"if": ["act:4", "quest:kalinov_most:active"],
+     "lines": [{"who": "permonik", "text": {"cs": "(Mužíček ukazuje k mostu.)", "en": "(The little man points towards the bridge.)"}}]},
+    {"if": ["act:4"],
+     "lines": [{"who": "permonik", "text": {"cs": "(Mužíček se jen usmívá. Kahan v tvé ruce se mu zrcadlí v očích.)", "en": "(The little man only smiles. The lamp in your hand is mirrored in his eyes.)"}}]},
+    {"if": ["always"],
+     "lines": [{"who": "permonik", "text": {"cs": "Zdař… zdař hlubina.", "en": "Good luck… good luck to the deep."}}]}
+  ],
+
+  "kosmas": [
+    {"if": ["act:1", "quest:dusicky:step=kronika"],
+     "lines": [
+      {"who": "hero", "text": {"cs": "Tohle leželo u Vodníka.", "en": "This was lying in the Vodník's lair."}},
+      {"who": "kosmas", "text": {"cs": "(Kosmas list opatrně rozloží na stole a vysuší ho rukávem.) Pergamen, telecí. Písmo z doby krále Václava, a ne kancelářské. Psal to havíř, kterého někdo naučil psát jen kvůli tomuhle.", "en": "(Kosmas carefully unfolds the leaf on the table and dries it with his sleeve.) Parchment, calfskin. A hand from King Wenceslas's time, and not a chancery hand. A miner wrote this, someone taught to write for this alone."}},
+      {"who": "kosmas", "text": {"cs": "„… a čtyři zavázáni jsou. Voda drží jeho žíly.“ Víc se přečíst nedá. Čí žíly? Žíly hory? Stříbrné žíly?", "en": "“… and four are bound by oath. Water holds his veins.” The rest is illegible. Whose veins? The mountain's? The silver veins?"}},
+      {"who": "kosmas", "text": {"cs": "Tohle je ta pátá kniha. Jsem si jistý. A někdo ji roztrhal a listy rozdal tak, aby je nikdo nikdy nesložil dohromady.", "en": "This is the fifth book. I am certain of it. And someone tore it apart and gave the leaves away, so that no one could ever put them together again."}},
+      {"who": "hero", "text": {"cs": "Najdu další listy.", "en": "I'll find the other leaves."},
+       "text_havir": {"cs": "Tak ji složíme.", "en": "Then we'll put it together."},
+       "text_zbojnice": {"cs": "Rozdal je strašidlům. Kdo dává papíry strašidlům?", "en": "He gave them to monsters. Who hands paperwork to monsters?"},
+       "text_vedma": {"cs": "Voda drží. Kdo drží, ten nese.", "en": "Water holds. Whoever holds, carries."}},
+      {"who": "kosmas", "text": {"cs": "Nos mi je. Každý.", "en": "Bring them to me. Every one."}}
+     ],
+     "do": ["take:strana_kroniky", "flag:kronika_1", "quest_step:dusicky:report"]},
+    {"if": ["act:1", "!flag:kosmas_met"],
+     "lines": [
+      {"who": "kosmas", "text": {"cs": "Pozor na schod, je vyšlapaný od roku třináctistého. Jsem Kosmas, kronikář Hory. Jmenuju se po tom starém pražském děkanovi a stejně jako on píšu hlavně o tom, co se nepovedlo.", "en": "Mind the step, it has been worn down since the year thirteen hundred. I am Kosmas, chronicler of the Mountain. I am named after the old dean of Prague, and like him I write mostly about the things that went wrong."}},
+      {"who": "kosmas", "text": {"cs": "Král Václav dal Hoře horní právo, Ius regale montanorum. Čtyři knihy. Mezi havíři se ale šeptá o páté. O smlouvě, kterou nepsali králové.", "en": "King Wenceslas gave the Mountain its mining law, the Ius regale montanorum. Four books. But among the miners there are whispers of a fifth. Of a covenant no king ever wrote."}},
+      {"who": "hero", "text": {"cs": "Co v ní stojí?", "en": "What does it say?"},
+       "text_havir": {"cs": "Táta o ní mluvil, když pil. Havířská smlouva.", "en": "My father talked about it when he drank. The Miners' Covenant."},
+       "text_zbojnice": {"cs": "Smlouva? Smlouvy znám. Vždycky na nich vydělá ten, kdo je nepsal.", "en": "A covenant? I know covenants. The one who profits is always the one who didn't write it."},
+       "text_vedma": {"cs": "Smlouvy s hlubinou se nepíšou inkoustem.", "en": "Covenants with the deep are not written in ink."}},
+      {"who": "kosmas", "text": {"cs": "Nevím. Zatím. Kdyby tam dole bylo cokoli psaného, přines mi to. A nos mi i věci, kterým nerozumíš. Poznám skoro každou.", "en": "I don't know. Not yet. If there's anything written down there, bring it to me. And bring me the things you don't understand. I can name almost any of them."}}
+     ],
+     "do": ["flag:kosmas_met"]},
+    {"if": ["act:1", "quest:kostnice:done", "!flag:kosmas_r_kostnik"],
+     "lines": [
+      {"who": "kosmas", "text": {"cs": "Kostnice. Opat Jindřich kdysi přivezl ze Svaté země hrst hlíny z Golgoty a rozsypal ji na sedleckém hřbitově. Od té doby tam chtěl ležet každý. Po moru v roce 1318 tam bylo třicet tisíc hrobů. A pak přišly války.", "en": "The ossuary. Long ago Abbot Henry brought a handful of earth from Golgotha and scattered it over the Sedlec cemetery. Ever since, everyone has wanted to lie there. After the plague of 1318 there were thirty thousand graves. And then came the wars."}},
+      {"who": "hero", "text": {"cs": "Než se rozpadl, řekl, že ten se světýlkem nemá stín.", "en": "Before he fell apart, he said the one with the little light has no shadow."}},
+      {"who": "kosmas", "text": {"cs": "(Kosmas zvedne oči od knihy. Dlouho se dívá ke dveřím, za kterými venku svítí modrý plamen.) Zapíšu si to.", "en": "(Kosmas lifts his eyes from the book. For a long time he looks towards the door, beyond which a blue flame is burning.) I'll write that down."}}
+     ],
+     "do": ["flag:kosmas_r_kostnik"]},
+    {"if": ["act:1", "quest:klekani:done", "!flag:kosmas_r_klekanice"],
+     "lines": [{"who": "kosmas", "text": {"cs": "Klekánice. Když jsem byl kluk, matka nás po klekání zamykala a říkala: kdo není doma, toho si vezme. Myslel jsem, že je to pohádka na vychování. Asi byla i pravdivá.", "en": "The Klekánice. When I was a boy, my mother locked us in after the evening bell and said: whoever isn't home, she takes. I thought it was a tale to make children behave. It seems it was also true."}}],
+     "do": ["flag:kosmas_r_klekanice"]},
+    {"if": ["act:1"],
+     "lines": [{"who": "kosmas", "text": {"cs": "Přines mi, co neznáš, a já ti řeknu, co to je. Za tu službu nic nechci. Jen vyprávění.", "en": "Bring me what you don't know, and I'll tell you what it is. I ask nothing for the service. Only the story."}}]},
+
+    {"if": ["act:2", "quest:zrcadla_v_sevcine:step=kronika"],
+     "lines": [
+      {"who": "kosmas", "text": {"cs": "(Kosmas přiloží nový list k prvnímu. Natržené okraje do sebe zapadnou jako zuby.) Stejná ruka. „… a kámen drží jeho kosti.“", "en": "(Kosmas lays the new leaf beside the first. The torn edges fit together like teeth.) The same hand. “… and stone holds his bones.”"}},
+      {"who": "kosmas", "text": {"cs": "Voda drží žíly. Kámen drží kosti. To není popis hory. To je popis těla. Někoho svázali, jako se svazuje… (zarazí se) jako se svazuje vězeň.", "en": "Water holds the veins. Stone holds the bones. That is not a description of a mountain. It is a description of a body. Someone was bound, the way one binds… (he stops) the way one binds a prisoner."}},
+      {"who": "hero", "text": {"cs": "Koho?", "en": "Who?"},
+       "text_havir": {"cs": "Koho svázali, Kosmo?", "en": "Who did they bind, Kosmas?"},
+       "text_zbojnice": {"cs": "Vězeň? A my mu rozvazujeme ruce?", "en": "A prisoner? And we're untying his hands?"},
+       "text_vedma": {"cs": "Tělo pod horou. Tak proto se mi hora zdá živá.", "en": "A body under the mountain. So that is why the mountain feels alive to me."}},
+      {"who": "kosmas", "text": {"cs": "Jméno tu není. Je tu jen „on“. Pořád on, on, jeho. Jako by se ho báli napsat.", "en": "There is no name here. Only “he”. He, he, his, over and over. As if they were afraid to write it down."}}
+     ],
+     "do": ["take:strana_kroniky", "flag:kronika_2", "quest_step:zrcadla_v_sevcine:report"]},
+    {"if": ["act:2", "!flag:kosmas_met_2"],
+     "lines": [
+      {"who": "kosmas", "text": {"cs": "Neboj se, nezbláznil jsem se. Tedy ne víc než obvykle. Hluboké cesty vedou z Hory až sem a kronikář jde tam, kam jde příběh.", "en": "Don't worry, I haven't lost my mind. No more than usual. The deep roads run from the Mountain all the way here, and a chronicler goes where the story goes."}},
+      {"who": "kosmas", "text": {"cs": "Příbramští mají permoníky rádi. Na každém rohu soška, v každé kuchyni hrnek se skřítkem. Zvláštní. V Hoře o něm skoro nikdo nevěděl, a tady je ho všude plno.", "en": "The people of Příbram love their permoníci. A statue on every corner, a mug with the little man on it in every kitchen. Strange. In the Mountain hardly anyone knew of him, and here he is everywhere."}}
+     ],
+     "do": ["flag:kosmas_met_2"]},
+    {"if": ["act:2", "quest:medulinin_odkaz:done", "!flag:kosmas_r_megera"],
+     "lines": [{"who": "kosmas", "text": {"cs": "Tři pověsti z Brd: Fabián, Medulína, Megera. Rytíř, dobrá a zlá. Je zvláštní dívat se, jak jedna pověst končí. Zapíšu to dřív, než to lidé začnou vyprávět jinak.", "en": "Three legends of Brdy: Fabián, Medulína, Megera. The knight, the good one and the wicked one. It is strange to watch a legend come to an end. I'll write it down before people start telling it differently."}}],
+     "do": ["flag:kosmas_r_megera"]},
+    {"if": ["act:2"],
+     "lines": [{"who": "kosmas", "text": {"cs": "Přines, co nepoznáš. Já zatím skládám střepy.", "en": "Bring me what you can't identify. Meanwhile I'll keep piecing the shards together."}}]},
+
+    {"if": ["act:3", "quest:pec:step=kronika"],
+     "lines": [
+      {"who": "kosmas", "text": {"cs": "(Kosmas přiloží třetí list ke dvěma předchozím. Ruce se mu třesou tak, že ho musí přidržet loktem.) „… oheň drží jeho dech. A smrt drží jeho jméno.“", "en": "(Kosmas lays the third leaf beside the other two. His hands shake so badly that he has to pin it down with his elbow.) “… fire holds his breath. And death holds his name.”"}},
+      {"who": "kosmas", "text": {"cs": "Čtyři strážci. Voda, kámen, oheň, smrt. My jsme je nevolali proti horám. Volali jsme je proti němu.", "en": "Four guardians. Water, stone, fire, death. We did not call them against the mountains. We called them against him."}},
+      {"who": "kosmas", "text": {"cs": "Rozumíš? Havíři z Hory neuzavřeli smlouvu s hlubinou. Uzavřeli ji proti hlubině. Proti tomu, kdo si bral desátek. Jeden kahan z deseti. A pak celá města.", "en": "Do you understand? The miners of the Mountain did not make a covenant with the deep. They made it against the deep. Against the one who took the tithe. One lamp in ten. And then whole towns."}},
+      {"who": "hero", "text": {"cs": "Permoník.", "en": "Permoník."},
+       "text_havir": {"cs": "Desátek. Padesát kahanů z Osla.", "en": "The tithe. Fifty lamps from Osel."},
+       "text_zbojnice": {"cs": "A já mu nesu klíče v lucerně.", "en": "And I'm carrying his keys around in a lantern."},
+       "text_vedma": {"cs": "Ten plamen. Celou dobu jsem nosila jeho dech.", "en": "That flame. All this time I have been carrying his breath."}},
+      {"who": "kosmas", "text": {"cs": "Strážci nebyli dobří, to ne. Držet v sobě boží sílu po staletí, z toho shnije každý. Ale byli to zámky. A ty neseš klíče.", "en": "The guardians were not good, no. Hold a god's power inside you for centuries and anyone would rot. But they were locks. And you are carrying the keys."}},
+      {"who": "hero", "text": {"cs": "Kahan nejde sundat. Zkouším to už od Brd.", "en": "The lamp won't come off. I've been trying since Brdy."}},
+      {"who": "kosmas", "text": {"cs": "Pak ho nes. A nos i tohle. Je v ní všechno, co jsem zapsal od klekání. Kdyby přišlo nejhorší, přečti mu ji nahlas. Nic jiného ti dát nemůžu.", "en": "Then carry it. And carry this as well. Everything I have written since the evening bell is in it. If the worst comes, read it to him aloud. I have nothing else to give you."}}
+     ],
+     "do": ["take:strana_kroniky", "flag:kronika_3", "give:kosmova_kronika", "quest_step:pec:report"]},
+    {"if": ["act:3", "!flag:kosmas_met_3"],
+     "lines": [
+      {"who": "kosmas", "text": {"cs": "Zase já. Z Příbrami jsem šel pod zemí tři dny a celou cestu jsem slyšel, jak nade mnou dýchá hora.", "en": "Me again. I walked underground for three days from Příbram, and the whole way I heard the mountain breathing above me."}},
+      {"who": "kosmas", "text": {"cs": "Prokážu ti tu laskavost a neřeknu nahlas, co si myslím o prvních dvou listech. Ještě ne. Chci třetí.", "en": "I'll do you the kindness of not saying aloud what I think of the first two leaves. Not yet. I want the third."}}
+     ],
+     "do": ["flag:kosmas_met_3"]},
+    {"if": ["act:3", "quest:proklete_tolary:done", "!flag:kosmas_stin"],
+     "lines": [{"who": "kosmas", "text": {"cs": "Řeknu ti něco a budeš si myslet, že jsem blázen. Dnes ráno svítilo nad mincovnou slunce. Ten tvůj mužíček stál na náměstí. A dlažba pod ním byla celá světlá.", "en": "I'll tell you something, and you'll think I'm mad. This morning the sun was shining over the mint. That little man of yours was standing in the square. And the cobbles beneath him were bright all over."}}],
+     "do": ["flag:kosmas_stin"]},
+    {"if": ["act:3", "quest:dve_srdce:done", "!flag:kosmas_r_strzyga"],
+     "lines": [{"who": "kosmas", "text": {"cs": "Dvě srdce, dvě duše. Stará víra říká, že strzyga neumře, dokud se nezastaví obě. Když jsem to psal, napadlo mě, že každá pečeť je taky dvojí. Jedna strana drží. Druhá je držená.", "en": "Two hearts, two souls. The old belief says a strzyga cannot die until both have stopped. As I wrote it down it occurred to me that every seal is double, too. One side holds. The other is held."}}],
+     "do": ["flag:kosmas_r_strzyga"]},
+    {"if": ["act:3", "quest:pec:done"],
+     "lines": [{"who": "kosmas", "text": {"cs": "Kniha je u tebe. Čti ji, až nebudeš vědět, kdo jsi.", "en": "The book is with you. Read it when you no longer know who you are."}}]},
+    {"if": ["act:3"],
+     "lines": [{"who": "kosmas", "text": {"cs": "Nos mi věci, které neznáš. A dívej se mu pod nohy, když svítí slunce.", "en": "Bring me the things you don't know. And look at his feet when the sun is shining."}}]},
+
+    {"if": ["act:4", "quest:permonik_final:step=konec"],
+     "lines": [
+      {"who": "kosmas", "text": {"cs": "(Kosmas sedí u ohně a píše. Když tě uvidí, odloží pero.) Jsi tu. A on ne.", "en": "(Kosmas sits by the fire, writing. When he sees you, he lays down his quill.) You're here. And he isn't."}},
+      {"who": "kosmas", "text": {"cs": "Slyšel jsem, co řekl. Vrátný. Desátek nesl dál, dolů, k tomu, kdo spí pod Navem. (Kosmas se podívá k řece.) Takže smlouva nekončí. Jen má další stránku.", "en": "I heard what he said. A doorkeeper. He carried the tithe further, down, to the one who sleeps beneath Nav. (Kosmas looks towards the river.) So the covenant does not end. It merely has another page."}},
+      {"who": "hero", "text": {"cs": "Napiš ji.", "en": "Write it."},
+       "text_havir": {"cs": "Tak ji napiš, Kosmo. A napiš do ní padesát jmen.", "en": "Then write it, Kosmas. And put fifty names in it."},
+       "text_zbojnice": {"cs": "Napiš ji. A mě tam dej hezčí, než jsem.", "en": "Write it. And make me prettier than I am."},
+       "text_vedma": {"cs": "Napiš ji. Já už žádné sny nemám. Zvon přestal tonout.", "en": "Write it. I have no dreams any more. The bell has stopped drowning."}},
+      {"who": "kosmas", "text": {"cs": "Napíšu šestou knihu. Nebude v ní žádný král a žádná smlouva. Jen jméno toho, kdo sešel dolů s cizím kahanem a vrátil se bez něj. Převozník říká, že teď nás převeze. Nic neneseme.", "en": "I shall write the sixth book. There will be no king in it, and no covenant. Only the name of the one who went down with another's lamp and came back without it. The ferryman says he will take us across now. We carry nothing."}}
+     ],
+     "do": ["quest_done:permonik_final", "flag:kronika_5", "slide:epilogue", "slide:dlc_tease"]},
+    {"if": ["act:4", "quest:kostejova_smrt:step=kronika"],
+     "lines": [
+      {"who": "kosmas", "text": {"cs": "(Poslední list je zašitý do kusu Kostějova pláště. Kosmas ho vypáře nožíkem na brka.) „… a smrt drží jeho jméno, aby nikdy nebyl celý.“", "en": "(The last leaf is sewn into a scrap of Koschei's cloak. Kosmas unpicks it with his quill-knife.) “… and death holds his name, that he may never be whole.”"}},
+      {"who": "kosmas", "text": {"cs": "A pod tím, jinou rukou, rychle, jako by psal někdo, kdo už slyšel kroky: „Kdo ponese všechny čtyři pečeti v jednom světle, ponese jeho. Nedávejte mu kahan. Nikdy mu nedávejte kahan.“", "en": "And beneath it, in another hand, hurried, as if written by someone who could already hear footsteps: “Whoever carries all four seals in a single light carries him. Do not give him a lamp. Never give him a lamp.”"}},
+      {"who": "hero", "text": {"cs": "Pozdě.", "en": "Too late."},
+       "text_havir": {"cs": "Pozdě, Kosmo. Dal mi ho první den.", "en": "Too late, Kosmas. He gave it to me on the first day."},
+       "text_zbojnice": {"cs": "No. Tak to jsme pěkně zvorali.", "en": "Well. We've made a proper mess of that, then."},
+       "text_vedma": {"cs": "Nesla jsem ho celou cestu. Jeho dech, jeho kosti, jeho žíly. Teď nesu i jeho jméno.", "en": "I carried it the whole way. His breath, his bones, his veins. Now I carry his name as well."}},
+      {"who": "kosmas", "text": {"cs": "Smrt držela jeho jméno, a dokud ho držela, nebyl celý. Teď je jehla zlomená. (Kosmas zavře knihu.) Tak ho aspoň doveď k jeho konci. Ty, ne on.", "en": "Death held his name, and while it did, he was never whole. Now the needle is broken. (Kosmas closes the book.) Then at least lead him to his end. You, not him."}}
+     ],
+     "do": ["take:strana_kroniky", "flag:kronika_4", "quest_step:kostejova_smrt:report"]},
+    {"if": ["act:4", "!flag:kosmas_met_4"],
+     "lines": [
+      {"who": "kosmas", "text": {"cs": "Ano, jsem tu. Skočil jsem za tebou, než se země zavřela. Kronikář, který nebyl u konce, píše jen pověsti.", "en": "Yes, I'm here. I jumped after you before the earth closed. A chronicler who wasn't there at the end writes only legends."}},
+      {"who": "kosmas", "text": {"cs": "A víš, co je zvláštní? Tady dole je mi lépe než nahoře. Mrtví poslouchají, když jim čtu.", "en": "And do you know what's strange? I feel better down here than I did above. The dead listen when I read to them."}}
+     ],
+     "do": ["flag:kosmas_met_4"]},
+    {"if": ["act:4", "quest:permonik_final:done"],
+     "lines": [{"who": "kosmas", "text": {"cs": "Šestá kniha má zatím jen první větu: „Zvon na Hoře zvoní klekání.“ To stačí na začátek.", "en": "The sixth book has only its first sentence so far: “The bell of the Mountain rings the evening Angelus.” That will do for a beginning."}}]},
+    {"if": ["act:4"],
+     "lines": [{"who": "kosmas", "text": {"cs": "Čtu mrtvým horníkům z kroniky. Nejradši mají kapitolu o pivu.", "en": "I read to the dead miners from the chronicle. Their favourite chapter is the one about beer."}}]},
+    {"if": ["always"],
+     "lines": [{"who": "kosmas", "text": {"cs": "Přines mi, co neznáš.", "en": "Bring me what you do not know."}}]}
+  ],
+
+  "senkyrka_bara": [
+    {"if": ["quest:srdce_zvonu:step=return"],
+     "lines": [
+      {"who": "senkyrka_bara", "text": {"cs": "Ty ho máš! Panenko Maria, to je ono, ještě je na něm rez od lana. Ale je prasklé, podívej.", "en": "You've got it! Holy Mother, that's it, there's still rust from the rope on it. But look, it's cracked."}},
+      {"who": "senkyrka_bara", "text": {"cs": "Nes ho Hněvkovi. Kovář ho pověsí zpátky, i kdyby ho měl svařit vlastními zuby.", "en": "Take it to Hněvek. The smith will hang it back up, even if he has to weld it with his own teeth."}}
+     ],
+     "do": ["quest_step:srdce_zvonu:forge"]},
+    {"if": ["quest:srdce_zvonu:none"],
+     "lines": [
+      {"who": "senkyrka_bara", "text": {"cs": "Pojď dál, ať nestojíš ve tmě. Po klekání se venku nestojí. Teda, nestálo by se, kdyby nějaké klekání bylo.", "en": "Come in, don't stand out there in the dark. No one stands outside after the evening bell. Well, no one would, if there were an evening bell."}},
+      {"who": "senkyrka_bara", "text": {"cs": "Někdo zvonu na věži vyrval srdce. Celé, železné, těžké jako tele. Hlídač přísahá, že viděl, jak se samo kutálí k šachtě a skáče dolů.", "en": "Someone tore the heart out of the bell in the tower. The whole thing, iron, heavy as a calf. The watchman swears he saw it roll to the shaft on its own and jump in."}},
+      {"who": "senkyrka_bara", "text": {"cs": "Když jdou chlapi v noci do sklepa pro víno, slyší ho cinkat. Hluboko. Snad ve třetím patře. Přines ho a budu ti nalévat do smrti. Tvé, ne mé.", "en": "When the men go down to the cellar for wine at night, they hear it clinking. Deep down. The third level, maybe. Bring it back and I'll pour for you till you die. Yours, not mine."}},
+      {"who": "hero", "text": {"cs": "Přinesu ho.", "en": "I'll bring it."},
+       "text_havir": {"cs": "Zvon na Hoře mlčí poprvé, co pamatuju. Přinesu ho, Báro.", "en": "First time in my life the Mountain's bell has gone quiet. I'll bring it, Bára."},
+       "text_zbojnice": {"cs": "Do smrti nalévat? To beru.", "en": "Pour for me till I die? Deal."},
+       "text_vedma": {"cs": "Ten zvon mi zvoní ve snech. Pod vodou. Přinesu ho.", "en": "That bell rings in my dreams. Under water. I'll bring it."}}
+     ],
+     "do": ["quest_start:srdce_zvonu"]},
+    {"if": ["quest:srdce_zvonu:step=forge"],
+     "lines": [{"who": "senkyrka_bara", "text": {"cs": "Hněvek už ve výhni dmýchá. Nes mu to srdce.", "en": "Hněvek is already working the bellows. Take him that heart."}}]},
+    {"if": ["quest:srdce_zvonu:active"],
+     "lines": [{"who": "senkyrka_bara", "text": {"cs": "Třetí patro. Cinká tam, když je ticho. A tam dole je ticho pořád.", "en": "The third level. It clinks when it's quiet. And down there it's always quiet."}}]},
+    {"if": ["quest:srdce_zvonu:done", "!flag:bara_r_zvon"],
+     "lines": [{"who": "senkyrka_bara", "text": {"cs": "Slyšíš? Zvoní klekání. Lidi se zase vracejí domů a v krčmě je plno. Tvůj džbánek bude vždycky plný.", "en": "Hear that? The evening bell. People are coming home again and the tavern is full. Your jug will always be full."}}],
+     "do": ["flag:bara_r_zvon", "heal"]},
+    {"if": ["quest:kostnice:done", "!flag:bara_r_kostnik"],
+     "lines": [{"who": "senkyrka_bara", "text": {"cs": "Na Sedlci prý kosti zas leží. Hrobník přišel na pivo celý bílý. Říkal, že jedna lebka se na něj ještě usmála, ale pak si to rozmyslela.", "en": "They say the bones at Sedlec are lying still again. The gravedigger came in for a beer, white as chalk. Said one skull smiled at him, but then thought better of it."}}],
+     "do": ["flag:bara_r_kostnik"]},
+    {"if": ["quest:klekani:done", "!flag:bara_r_klekanice"],
+     "lines": [{"who": "senkyrka_bara", "text": {"cs": "Prý je Klekánice pryč. Holky se zase odvažují ke studni po setmění. Ne moc daleko, ale odvažují.", "en": "They say the Klekánice is gone. The girls dare go to the well after dark again. Not far, but they dare."}}],
+     "do": ["flag:bara_r_klekanice"]},
+    {"if": ["always"],
+     "lines": [{"who": "senkyrka_bara", "text": {"cs": "Pivo, chleba, sýr a zprávy. Zprávy jsou zadarmo, ostatní ne.", "en": "Beer, bread, cheese and news. The news is free, the rest isn't."}}]}
+  ],
+
+  "kovar_hnevek": [
+    {"if": ["quest:srdce_zvonu:step=forge"],
+     "lines": [
+      {"who": "kovar_hnevek", "text": {"cs": "(Kovář obrací srdce zvonu v dlaních.) Prasklé po celé délce. Takhle zvonit nebude. Leda by…", "en": "(The smith turns the clapper over in his hands.) Cracked all the way down. It won't ring like this. Unless…"}},
+      {"who": "kovar_hnevek", "text": {"cs": "Rozpůlím ho. Z jedné půlky ukovu nové srdce a zvon bude zvonit líp než dřív. Z druhé půlky… počkej.", "en": "I'll split it. From one half I'll forge a new heart, and the bell will ring better than before. From the other half… wait."}},
+      {"who": "kovar_hnevek", "text": {"cs": "(Celou noc buší kladivo. Ráno ti Hněvek podá cep se závažím, které zazvoní, kdykoli s ním máchneš.) Půlka srdce bije na věži, půlka v tvé ruce. Ať tě slyší až dole.", "en": "(All night the hammer rings. In the morning Hněvek hands you a flail whose weight chimes every time you swing it.) Half the heart beats in the tower, half in your hand. Let them hear you all the way down."}}
+     ],
+     "do": ["take:srdce_zvonu", "quest_done:srdce_zvonu", "flag:zvon_zvoni"]},
+    {"if": ["!flag:hnevek_met"],
+     "lines": [
+      {"who": "kovar_hnevek", "text": {"cs": "Hněvek. Kovář. Kuju krumpáče, podkovy a mříže do oken, protože po klekání jsou mříže potřeba.", "en": "Hněvek. Smith. I forge picks, horseshoes and bars for windows, because after the evening bell bars are needed."}},
+      {"who": "kovar_hnevek", "text": {"cs": "Jestli máš něco zlomeného, nos to sem. Zlomené věci mám rád. Aspoň vím, co s nimi.", "en": "If you've got anything broken, bring it here. I like broken things. At least I know what to do with them."}}
+     ],
+     "do": ["flag:hnevek_met"]},
+    {"if": ["quest:kostnice:done", "!flag:hnevek_r_kostnik"],
+     "lines": [{"who": "kovar_hnevek", "text": {"cs": "Říkají, že sedlecké kosti zase leží. Dobře. Moje babička je mezi nimi a nikdy neměla ráda, když ji někdo budil.", "en": "They say the Sedlec bones are lying down again. Good. My grandmother's among them, and she never liked being woken."}}],
+     "do": ["flag:hnevek_r_kostnik"]},
+    {"if": ["quest:klekani:done", "!flag:hnevek_r_klekanice"],
+     "lines": [{"who": "kovar_hnevek", "text": {"cs": "Klekánice je pryč? Tak to ty mříže z oken zase sundám. Vlastně ne. Nechám je tam. Pro jistotu.", "en": "The Klekánice is gone? Then I'll take the bars off the windows again. Actually, no. I'll leave them. Just in case."}}],
+     "do": ["flag:hnevek_r_klekanice"]},
+    {"if": ["flag:zvon_zvoni"],
+     "lines": [{"who": "kovar_hnevek", "text": {"cs": "Od té doby, co zvon zvoní, chodí chlapi zase do práce a já mám čím obchodovat. Podívej se, co jsem ukoval.", "en": "Ever since the bell started ringing, the men are back at work and I've got something to trade again. Have a look at what I've forged."}}]},
+    {"if": ["always"],
+     "lines": [{"who": "kovar_hnevek", "text": {"cs": "Kladivo, kovadlina, oheň. Na nic jiného tu nevěřím.", "en": "Hammer, anvil, fire. I don't believe in anything else around here."}}]}
+  ],
+
+  "korenarka_dorota": [
+    {"if": ["!flag:dorota_met"],
+     "lines": [{"who": "korenarka_dorota", "text": {"cs": "Dorota. Kořenářka. Mám živou vodu na rány a svatojánskou rosu na unavenou hlavu. Kdo je raněný, toho zahojím zadarmo. Kdo chce něco s sebou, ten platí.", "en": "Dorota. Herb woman. I've living water for wounds and St John's dew for a weary head. The wounded I heal for free. Whoever wants something to take along pays."}}],
+     "do": ["flag:dorota_met", "heal"]},
+    {"if": ["class:vedma", "!flag:dorota_vedma"],
+     "lines": [
+      {"who": "korenarka_dorota", "text": {"cs": "Ty voníš mateřídouškou a kouřem. Šumava, viď? U nás se o vás říká, že umíte vařit z mlhy.", "en": "You smell of wild thyme and smoke. Šumava, isn't it? Round here they say your kind can cook with fog."}},
+      {"who": "hero", "text": {"cs": "Z mlhy ne. Z rosy, z kořenů a z toho, co ostatní nechtějí slyšet.", "en": "Not with fog. With dew, with roots, and with what other people don't want to hear."}},
+      {"who": "korenarka_dorota", "text": {"cs": "Tak to si rozumíme. Dej si pozor na toho mužíčka s modrým světlem. Bylinky kolem něj vadnou.", "en": "Then we understand each other. Be careful of that little man with the blue light. Herbs wilt around him."}}
+     ],
+     "do": ["flag:dorota_vedma"]},
+    {"if": ["quest:kostnice:done", "!flag:dorota_r_kostnik"],
+     "lines": [{"who": "korenarka_dorota", "text": {"cs": "Kosti zase leží. Zapálila jsem za ně svíčku v kostnici. Plamen se naklonil k šachtě, jako by tam táhlo.", "en": "The bones lie still again. I lit a candle for them in the ossuary. The flame leaned towards the shaft, as if there were a draught."}}],
+     "do": ["flag:dorota_r_kostnik"]},
+    {"if": ["quest:klekani:done", "!flag:dorota_r_klekanice"],
+     "lines": [{"who": "korenarka_dorota", "text": {"cs": "Klekánice je pryč, ale ty, které si vzala, se nevrátí. To není výčitka. Jen to říkám, aby to někdo řekl nahlas.", "en": "The Klekánice is gone, but the ones she took won't come back. That's not a reproach. I only say it so that someone says it out loud."}}],
+     "do": ["flag:dorota_r_klekanice"]},
+    {"if": ["always"],
+     "lines": [{"who": "korenarka_dorota", "text": {"cs": "Kdo krvácí, ať si sedne. Kdo nekrvácí, ať si vybere.", "en": "If you're bleeding, sit down. If you're not, take your pick."}}],
+     "do": ["heal"]}
+  ],
+
+  "korenarka_medulina": [
+    {"if": ["quest:medulinin_odkaz:step=medulina"],
+     "lines": [
+      {"who": "korenarka_medulina", "text": {"cs": "Megera. (Medulína odloží košík.) V pověsti jsme tři: rytíř Fabián, já a ona. Lidi si myslí, že stojíme proti sobě. Ve skutečnosti jsme jen tři tváře téhož lesa.", "en": "Megera. (Medulína sets down her basket.) In the legend there are three of us: the knight Fabián, me, and her. People think we stand against each other. In truth we are only three faces of the same forest."}},
+      {"who": "korenarka_medulina", "text": {"cs": "Megera nebyla vždycky zlá. Ale kdysi dávno jí někdo zespodu slíbil, že les nikdy neshoří, když bude držet kořeny pevně ve skále. Držela je tak pevně, až zčernaly. Ona s nimi.", "en": "Megera was not always wicked. But long ago someone from below promised her the forest would never burn, so long as she held its roots fast in the rock. She held them so fast that they turned black. And she with them."}},
+      {"who": "korenarka_medulina", "text": {"cs": "Kotle má ve druhém patře. Skáče z jednoho do druhého jako žába z leknínu na leknín. Na, vezmi si rosu, ať máš čistou hlavu, až na tebe začne mluvit.", "en": "Her cauldrons are on the second level. She hops from one to the next like a frog from lily pad to lily pad. Here, take some dew, to keep your head clear when she starts talking to you."}},
+      {"who": "hero", "text": {"cs": "Je mi líto. Byla to tvoje sestra?", "en": "I'm sorry. Was she your sister?"},
+       "text_zbojnice": {"cs": "Sestra, nesestra. Když kouše, musí pryč.", "en": "Sister or not. If it bites, it has to go."},
+       "text_vedma": {"cs": "Kdo drží kořeny ve skále, ten drží něco pod skálou. Co držela, Medulíno?", "en": "Whoever holds roots in the rock holds something beneath the rock. What was she holding, Medulína?"}},
+      {"who": "korenarka_medulina", "text": {"cs": "V pověsti ano. V lese jsme všechny sestry. Jdi.", "en": "In the legend, yes. In the forest we are all sisters. Go."}}
+     ],
+     "do": ["quest_step:medulinin_odkaz:kill", "give:svatojanska_rosa"]},
+    {"if": ["quest:medulinin_odkaz:done", "!flag:medulina_r_megera"],
+     "lines": [{"who": "korenarka_medulina", "text": {"cs": "Je po ní. (Medulína dlouho mlčí.) Na jejím kotli zasadím kapradí. Ať tam aspoň něco kvete.", "en": "She's gone. (Medulína is silent for a long time.) I'll plant fern in her cauldron. So that at least something blooms there."}}],
+     "do": ["flag:medulina_r_megera"]},
+    {"if": ["quest:zrcadla_v_sevcine:done", "!flag:medulina_r_bazilisek"],
+     "lines": [{"who": "korenarka_medulina", "text": {"cs": "Kořeny v šachtě povolily. Cítím to v kolenou. Les se uvolnil, ale nepoděkoval. Les děkuje, jen když je za co.", "en": "The roots in the shaft have loosened. I feel it in my knees. The forest has relaxed, but it hasn't said thank you. The forest only gives thanks when there's something to thank for."}}],
+     "do": ["flag:medulina_r_bazilisek"]},
+    {"if": ["!flag:medulina_met"],
+     "lines": [{"who": "korenarka_medulina", "text": {"cs": "Medulína. Bylinkářka. V lese mi říkají dobrá paní, ve městě tetka. Obojí je pravda.", "en": "Medulína. Herbalist. In the forest they call me the good lady, in town they call me auntie. Both are true."}}],
+     "do": ["flag:medulina_met", "heal"]},
+    {"if": ["always"],
+     "lines": [{"who": "korenarka_medulina", "text": {"cs": "Bylinky pro raněné, rosa pro unavené. Zadarmo pro ty, kdo krvácejí.", "en": "Herbs for the wounded, dew for the weary. Free to those who bleed."}}],
+     "do": ["heal"]}
+  ],
+
+  "kovar_vojtech": [
+    {"if": ["quest:zrcadla_v_sevcine:step=kovar"],
+     "lines": [
+      {"who": "kovar_vojtech", "text": {"cs": "Zrcadla v Ševčině? Ty věšel ještě můj děda. Bazilišek se tam vylíhl už jednou, za mého pradědy, z vejce, které snesl kohout.", "en": "The mirrors in Ševčín? My grandfather hung those. The basilisk hatched down there once before, in my great-grandfather's day, from an egg laid by a rooster."}},
+      {"who": "kovar_vojtech", "text": {"cs": "Bazilišek zabíjí pohledem. Ale pohled se dá vrátit. Děda nechal v té žíle pověsit velká zrcadla. Kdo baziliška vyláká před zrcadlo, ten ho nechá zkamenět vlastníma očima.", "en": "A basilisk kills with a look. But a look can be sent back. Grandfather had great mirrors hung in that vein. Lure the basilisk in front of one, and you let its own eyes turn it to stone."}},
+      {"who": "kovar_vojtech", "text": {"cs": "Na, tady je střep z dědova zrcadla. Kdyby ti ve tmě něco zíralo do zad, podívej se do něj dřív, než se otočíš.", "en": "Here, a shard of Grandfather's mirror. If something in the dark is staring at your back, look into this before you turn around."}}
+     ],
+     "do": ["give:zrcadlo_strep", "quest_step:zrcadla_v_sevcine:kill"]},
+    {"if": ["!flag:vojtech_met"],
+     "lines": [
+      {"who": "kovar_vojtech", "text": {"cs": "Vojtěch. Kovář. Jmenuju se po šachtě, nebo šachta po mně, to se v rodině neví.", "en": "Vojtěch. Smith. I'm named after the shaft, or the shaft's named after me; the family can't agree."}},
+      {"who": "kovar_vojtech", "text": {"cs": "Vojtěšská je nejhlubší šachta na světě. Žádná jiná nesahá tak hluboko. Dole je takové teplo, že by se tam dalo péct.", "en": "The Vojtěch is the deepest shaft in the world. No other reaches so far down. At the bottom it's so hot you could bake bread."}}
+     ],
+     "do": ["flag:vojtech_met"]},
+    {"if": ["quest:valdecky_jezdec:done", "!flag:vojtech_r_prokop"],
+     "lines": [{"who": "kovar_vojtech", "text": {"cs": "Prokopův kůň prý měl podkovy z kosti. Kdybys nějakou našel, ukaž mi ji. Rád bych věděl, kdo mu je přibil.", "en": "They say Prokop's horse was shod with bone. If you ever find one of those shoes, show me. I'd like to know who nailed them on."}}],
+     "do": ["flag:vojtech_r_prokop"]},
+    {"if": ["quest:zrcadla_v_sevcine:done", "!flag:vojtech_r_bazilisek"],
+     "lines": [{"who": "kovar_vojtech", "text": {"cs": "Dědova zrcadla posloužila. Napíšu mu to na hrob. Křídou, aby to déšť smyl, než si toho všimne farář.", "en": "Grandfather's mirrors did their job. I'll write it on his grave. In chalk, so the rain washes it off before the priest notices."}}],
+     "do": ["flag:vojtech_r_bazilisek"]},
+    {"if": ["always"],
+     "lines": [{"who": "kovar_vojtech", "text": {"cs": "Výheň je rozpálená. Co je zlomené, spravím. Co je celé, prodám.", "en": "The forge is hot. What's broken I'll mend. What's whole I'll sell."}}]}
+  ],
+
+  "hostinsky_kuba": [
+    {"if": ["!flag:kuba_met"],
+     "lines": [{"who": "hostinsky_kuba", "text": {"cs": "Kuba! Hostinský, výčepní, a když je potřeba, i vyhazovač. Sedni si, sedni. Kdo jde do Vojtěšské, dá si napřed jedno, aby měl za čím se vracet.", "en": "Kuba! Innkeeper, tapster, and when needed, bouncer. Sit down, sit down. Anyone going into the Vojtěch has one first, so they've got something to come back for."}}],
+     "do": ["flag:kuba_met"]},
+    {"if": ["quest:valdecky_jezdec:done", "!flag:kuba_r_prokop"],
+     "lines": [{"who": "hostinsky_kuba", "text": {"cs": "Divoký Prokop! Když jsem byl malý, babička říkala: jez, nebo si pro tebe přijede Prokop z Valdeka. Tak jsem jedl. Vidíš ten výsledek.", "en": "Wild Prokop! When I was small, Granny used to say: eat up, or Prokop of Valdek will come and fetch you. So I ate. You can see the result."}}],
+     "do": ["flag:kuba_r_prokop"]},
+    {"if": ["quest:medulinin_odkaz:done", "!flag:kuba_r_megera"],
+     "lines": [{"who": "hostinsky_kuba", "text": {"cs": "Prý je po Megeře. Moje žena tvrdí, že ji jednou potkala na Padrti, jak sbírá žáby. Od té doby jí nechutnají nakládané okurky.", "en": "They say Megera's dead. My wife claims she once met her up at Padrť, collecting frogs. She hasn't been able to stomach pickled gherkins since."}}],
+     "do": ["flag:kuba_r_megera"]},
+    {"if": ["always"],
+     "lines": [{"who": "hostinsky_kuba", "text": {"cs": "Pivo z Příbrami, chleba z Příbrami, zprávy odevšad. A sošky permoníků po groši. Jedna se domů vždycky hodí.", "en": "Beer from Příbram, bread from Příbram, news from everywhere. And little permoník statues, a groš apiece. There's always room for one at home."}}]}
+  ],
+
+  "fabian": [
+    {"if": ["!flag:met_fabian"],
+     "lines": [
+      {"who": "fabian", "text": {"cs": "(Postava z mechu a šišek si vyndá z úst dýmku.) Pomalu. Les nemá rád, když se do něj vbíhá.", "en": "(The figure of moss and pine cones takes the pipe from its mouth.) Slowly. The forest doesn't like being run into."}},
+      {"who": "fabian", "text": {"cs": "Ten tvůj mužíček nemá stín. Já mám aspoň mech.", "en": "That little man of yours has no shadow. At least I have moss."}},
+      {"who": "hero", "text": {"cs": "Kdo jsi?", "en": "Who are you?"},
+       "text_havir": {"cs": "Ty jsi Fabián? Myslel jsem, že jsi jen pohádka pro děti.", "en": "You're Fabián? I thought you were just a children's story."},
+       "text_zbojnice": {"cs": "Mech? To má být výhoda?", "en": "Moss? Is that supposed to be an advantage?"},
+       "text_vedma": {"cs": "Vidím, co jsi. Prokletý. A vidím, že nelžeš.", "en": "I see what you are. Cursed. And I see that you are not lying."}},
+      {"who": "fabian", "text": {"cs": "Byl jsem rytíř. Teď jsem les. Bloudím po Brdech a hledám cestu, kterou jsem kdysi ztratil. A tobě radím: dívej se pod nohy. Ne pod svoje. Pod jeho.", "en": "I was a knight. Now I am forest. I wander the Brdy hills looking for a path I once lost. And my advice to you: watch the ground at your feet. Not yours. His."}}
+     ],
+     "do": ["flag:met_fabian"]},
+    {"if": ["quest:zrcadla_v_sevcine:step=strana", "!flag:fabian_dva"],
+     "lines": [
+      {"who": "fabian", "text": {"cs": "(Fabián vyfoukne kouř. Kouř se stáčí ke kahanu, jako by ho to tam táhlo.) Už jsou jen dva.", "en": "(Fabián blows out smoke. The smoke curls towards the lamp, as if drawn there.) Only two left now."}},
+      {"who": "hero", "text": {"cs": "Dva čeho?", "en": "Two of what?"}},
+      {"who": "fabian", "text": {"cs": "Dva zámky na dveřích. Kdo nese klíče, ten se ptát nemusí. Na, šiška z mého vousu. Když ji budeš mít u sebe, les si tě zapamatuje. Dole se to bude hodit. Tam žádný les není.", "en": "Two locks on the door. Whoever carries the keys needn't ask. Here, a cone from my beard. Keep it with you and the forest will remember you. That will be useful below. There is no forest down there."}}
+     ],
+     "do": ["give:fabianova_siska", "flag:fabian_dva"]},
+    {"if": ["quest:zrcadla_v_sevcine:step=kronika", "!flag:fabian_dva"],
+     "lines": [
+      {"who": "fabian", "text": {"cs": "(Fabián vyfoukne kouř. Kouř se stáčí ke kahanu, jako by ho to tam táhlo.) Už jsou jen dva.", "en": "(Fabián blows out smoke. The smoke curls towards the lamp, as if drawn there.) Only two left now."}},
+      {"who": "hero", "text": {"cs": "Dva čeho?", "en": "Two of what?"}},
+      {"who": "fabian", "text": {"cs": "Dva zámky na dveřích. Kdo nese klíče, ten se ptát nemusí. Na, šiška z mého vousu. Když ji budeš mít u sebe, les si tě zapamatuje. Dole se to bude hodit. Tam žádný les není.", "en": "Two locks on the door. Whoever carries the keys needn't ask. Here, a cone from my beard. Keep it with you and the forest will remember you. That will be useful below. There is no forest down there."}}
+     ],
+     "do": ["give:fabianova_siska", "flag:fabian_dva"]},
+    {"if": ["quest:zrcadla_v_sevcine:step=report", "!flag:fabian_dva"],
+     "lines": [
+      {"who": "fabian", "text": {"cs": "(Fabián vyfoukne kouř. Kouř se stáčí ke kahanu, jako by ho to tam táhlo.) Už jsou jen dva.", "en": "(Fabián blows out smoke. The smoke curls towards the lamp, as if drawn there.) Only two left now."}},
+      {"who": "hero", "text": {"cs": "Dva čeho?", "en": "Two of what?"}},
+      {"who": "fabian", "text": {"cs": "Dva zámky na dveřích. Kdo nese klíče, ten se ptát nemusí. Na, šiška z mého vousu. Když ji budeš mít u sebe, les si tě zapamatuje. Dole se to bude hodit. Tam žádný les není.", "en": "Two locks on the door. Whoever carries the keys needn't ask. Here, a cone from my beard. Keep it with you and the forest will remember you. That will be useful below. There is no forest down there."}}
+     ],
+     "do": ["give:fabianova_siska", "flag:fabian_dva"]},
+    {"if": ["quest:valdecky_jezdec:done", "!flag:fabian_r_prokop"],
+     "lines": [{"who": "fabian", "text": {"cs": "Prokop byl rytíř jako já. Jezdil ještě dlouho potom, co už neměl kam. To se stává, když ti někdo slíbí cestu a dá ti jen tmu.", "en": "Prokop was a knight, like me. He kept riding long after he had anywhere to go. That's what happens when someone promises you a road and gives you only darkness."}}],
+     "do": ["flag:fabian_r_prokop"]},
+    {"if": ["quest:medulinin_odkaz:done", "!flag:fabian_r_megera"],
+     "lines": [{"who": "fabian", "text": {"cs": "Megera je mrtvá a já jsem pořád les. Myslíš, že ta, co proklíná, nosí kletbu v hlavě? Ne. Kletby nejdou z hlavy. Jdou z hloubky.", "en": "Megera is dead and I am still forest. You think the one who curses carries the curse in her head? No. Curses don't come from the head. They come from the deep."}}],
+     "do": ["flag:fabian_r_megera"]},
+    {"if": ["flag:fabian_dva"],
+     "lines": [{"who": "fabian", "text": {"cs": "Dva zámky. Pak už jen dveře.", "en": "Two locks. Then only the door."}}]},
+    {"if": ["always"],
+     "lines": [{"who": "fabian", "text": {"cs": "Les mluví pomalu. Poslouchej pomalu.", "en": "The forest speaks slowly. Listen slowly."}}]}
+  ],
+
+  "tremsinsky_muzicek": [
+    {"if": ["quest:tremsinske_siny:step=return"],
+     "lines": [
+      {"who": "tremsinsky_muzicek", "text": {"cs": "(Mužíček šíny očichá, jeden po druhém.) Jeden. Dva. Tři. Ano. Ano. Ano.", "en": "(The little man sniffs the ingots, one after another.) One. Two. Three. Yes. Yes. Yes."}},
+      {"who": "tremsinsky_muzicek", "text": {"cs": "Tady je prsten. Nos ho na ruce, ve které držíš kahan. Ať ta ruka ví, co drží.", "en": "Here is the ring. Wear it on the hand that holds the lamp. So that hand knows what it is holding."}}
+     ],
+     "do": ["take:zlaty_sin", "take:zlaty_sin", "take:zlaty_sin", "quest_done:tremsinske_siny"]},
+    {"if": ["quest:tremsinske_siny:none"],
+     "lines": [
+      {"who": "tremsinsky_muzicek", "text": {"cs": "(Mužíček s kůrou místo tváře si pohladí vousy, které mu sahají po kolena.) Hm. Hmm. Hmmm. Člověk. Dlouho se tu žádný nezastavil.", "en": "(The little man with bark for a face strokes a beard that reaches his knees.) Hm. Hmm. Hmmm. A human. It's been a long time since one stopped here."}},
+      {"who": "tremsinsky_muzicek", "text": {"cs": "Na Třemšíně jsem hlídal tři zlaté šíny. Hlídal jsem je, dokud jsem nezestárl, a pak ještě tři sta let. Pak les spolkl kopec, kopec spolkl šíny a šíny spadly do té díry, které říkáte Vojtěšská.", "en": "On Třemšín I guarded three golden ingots. I guarded them until I grew old, and then three hundred years more. Then the forest swallowed the hill, the hill swallowed the ingots, and the ingots fell into that hole you call the Vojtěch."}},
+      {"who": "tremsinsky_muzicek", "text": {"cs": "Najdi je. Jsou tři a já počítám jen do tří, tak ať se nespletu. Za to ti dám prsten. Prsten, který pamatuje, kdy byl Třemšín ještě hora.", "en": "Find them. There are three, and I can only count to three, so mind I don't get muddled. For that I'll give you a ring. A ring that remembers when Třemšín was still a mountain."}},
+      {"who": "hero", "text": {"cs": "Najdu je.", "en": "I'll find them."},
+       "text_zbojnice": {"cs": "Zlato v dole a prsten navrch? Tohle je první rozumná nabídka pod Brdy.", "en": "Gold in a mine and a ring on top? First sensible offer I've had under Brdy."}}
+     ],
+     "do": ["quest_start:tremsinske_siny"]},
+    {"if": ["quest:tremsinske_siny:active"],
+     "lines": [{"who": "tremsinsky_muzicek", "text": {"cs": "Jeden, dva, tři. Kolik jich máš? Málo. Hledej dál. V prvních třech patrech, tam, kde kořeny prorážejí strop.", "en": "One, two, three. How many have you got? Not enough. Keep looking. On the first three levels, where the roots break through the roof."}}]},
+    {"if": ["quest:tremsinske_siny:done"],
+     "lines": [{"who": "tremsinsky_muzicek", "text": {"cs": "Tři šíny. Spím teď klidně. Spi taky. Jestli můžeš.", "en": "Three ingots. I sleep soundly now. You sleep too. If you can."}}]},
+    {"if": ["always"],
+     "lines": [{"who": "tremsinsky_muzicek", "text": {"cs": "Hm. Hmm.", "en": "Hm. Hmm."}}]}
+  ],
+
+  "kovar_krystof": [
+    {"if": ["!flag:krystof_met"],
+     "lines": [
+      {"who": "kovar_krystof", "text": {"cs": "Kryštof, mincovní kovář. Razím tolary. Tedy razil jsem, dokud nám čert nezabral starou mincovnu.", "en": "Kryštof, mint-smith. I strike thalers. Well, I did, until a devil took over the old mint."}},
+      {"who": "kovar_krystof", "text": {"cs": "Víš, že se tolarům po celém světě říká po nás? Joachimsthaler, thaler, tolar. Za mořem jednou budou platit dolary a ani nebudou vědět, že je to jáchymovský peníz.", "en": "Did you know the whole world names thalers after us? Joachimsthaler, thaler, tolar. One day across the sea they'll pay in dollars and never know it's Jáchymov coin."}}
+     ],
+     "do": ["flag:krystof_met"]},
+    {"if": ["quest:proklete_tolary:done", "!flag:krystof_r_ohnivec"],
+     "lines": [{"who": "kovar_krystof", "text": {"cs": "Ohnivec je pryč a tolary přestaly kousat. Většinou. Jeden mi dneska ráno ukousl kus nehtu, ale to byl starý kus.", "en": "Ohnivec is gone and the thalers have stopped biting. Mostly. One took a bit of my fingernail this morning, but it was an old bit."}}],
+     "do": ["flag:krystof_r_ohnivec"]},
+    {"if": ["quest:dve_srdce:done", "!flag:krystof_r_strzyga"],
+     "lines": [{"who": "kovar_krystof", "text": {"cs": "Hrobník chtěl, abych mu ukoval železný kůl pro strzygu. Dva kůly, pro jistotu. Teď je prý nepotřebuje. Prodám ti je levně.", "en": "The gravedigger wanted me to forge him an iron stake for the strzyga. Two stakes, to be safe. Now he says he doesn't need them. I'll sell them to you cheap."}}],
+     "do": ["flag:krystof_r_strzyga"]},
+    {"if": ["always"],
+     "lines": [{"who": "kovar_krystof", "text": {"cs": "Kladivo a razidlo. Ukovu ti i meč, když zaplatíš. Tolarem, ne grošem. Tady jsme v Jáchymově.", "en": "Hammer and die. I'll forge you a sword too, if you pay. In thalers, not groše. This is Jáchymov."}}]}
+  ],
+
+  "lekarnik_agricola": [
+    {"if": ["quest:ziva_a_mrtva_voda:step=return"],
+     "lines": [
+      {"who": "lekarnik_agricola", "text": {"cs": "(Agricola kápne trochu mrtvé vody na řez na hřbetu ruky. Řez se zavře bez jizvy.) Mirabile. Musím to zapsat. A pak to musím přeškrtnout, protože by mi to nikdo nevěřil.", "en": "(Agricola lets a drop of dead water fall on a cut across the back of his hand. The cut closes without a scar.) Mirabile. I must write this down. And then I must strike it out, because no one would believe me."}},
+      {"who": "lekarnik_agricola", "text": {"cs": "Smíchal jsem mrtvou vodu s živou podle receptu tvých babek a přidal květ kapradí, který mi kdysi dal jeden havíř za léčbu. Kdo to vypije, zapomene, čemu se naučil, a naučí se znovu. Nos to u sebe pro den, kdy budeš chtít být někým jiným.", "en": "I have mixed the dead water with the living, after your old women's recipe, and added a fern flower a miner once gave me in payment. Whoever drinks it forgets what they have learned, and learns anew. Keep it for the day you wish to be someone else."}}
+     ],
+     "do": ["take:mrtva_voda", "quest_done:ziva_a_mrtva_voda"]},
+    {"if": ["quest:ziva_a_mrtva_voda:none"],
+     "lines": [
+      {"who": "lekarnik_agricola", "text": {"cs": "Georgius Agricola, městský lékař. Vlastně Georg Bauer, ale latina se lépe tiskne.", "en": "Georgius Agricola, town physician. Georg Bauer, properly, but Latin prints better."}},
+      {"who": "lekarnik_agricola", "text": {"cs": "Píšu knihu o všem, co se v dolech dělá. De re metallica. O žilách, čerpadlech, větrání a jedech v rudě. A v jedné menší knížce i o tom, co v dolech žije: De animantibus subterraneis.", "en": "I am writing a book about everything done in mines. De re metallica. On veins, pumps, ventilation and the poisons in ore. And in a smaller book, on what lives in the mines as well: De animantibus subterraneis."}},
+      {"who": "lekarnik_agricola", "text": {"cs": "Teď mě ale zajímá něco jiného. Babky na Šumavě tvrdí, že mrtvá voda zacelí rány a živá vrátí duši. Pohádkám nevěřím, ale pokusu ano. Až budeš dole v Pekle, načerpej mi mrtvou vodu. Prý ji tam ta čarodějnice drží v kbelících.", "en": "But just now something else interests me. The old women of Šumava claim that dead water closes wounds and living water restores the soul. I do not believe in fairy tales, but I believe in experiment. When you are down in Hell, draw me some dead water. They say the witch keeps it there in buckets."}},
+      {"who": "hero", "text": {"cs": "Přinesu ji.", "en": "I'll bring it."},
+       "text_vedma": {"cs": "Babky na Šumavě nelžou, doktore. Jen to neříkají latinsky.", "en": "The old women of Šumava don't lie, doctor. They just don't say it in Latin."}}
+     ],
+     "do": ["quest_start:ziva_a_mrtva_voda"]},
+    {"if": ["quest:ziva_a_mrtva_voda:active"],
+     "lines": [{"who": "lekarnik_agricola", "text": {"cs": "Mrtvá voda je těžší než obyčejná a neodráží světlo. Poznáš ji, až se do ní podíváš a neuvidíš se.", "en": "Dead water is heavier than ordinary water and reflects no light. You'll know it when you look into it and do not see yourself."}}]},
+    {"if": ["quest:dve_srdce:done", "!flag:agricola_demon"],
+     "lines": [
+      {"who": "lekarnik_agricola", "text": {"cs": "Ve své knížce o podzemních tvorech jsem rozlišil dva druhy. Jedni jsou malí, smějí se, tlučou do skály a havířům nic neudělají. Těm se tu říká kobolti a podle nich se jmenuje kobalt.", "en": "In my little book on subterranean creatures I distinguished two kinds. The first are small; they laugh, knock on the rock, and do the miners no harm. Here they are called kobolds, and cobalt is named after them."}},
+      {"who": "lekarnik_agricola", "text": {"cs": "Ti druzí jsou zlí. Mají podobu malých havířů a havíři je mají rádi. Zabíjejí dechem. Napsal jsem, že nejhorší z démonů je ten, kterému se věří.", "en": "The others are wicked. They take the shape of little miners, and the miners are fond of them. They kill with their breath. I wrote that the worst of demons is the one that is trusted."}}
+     ],
+     "do": ["flag:agricola_demon"]},
+    {"if": ["always"],
+     "lines": [{"who": "lekarnik_agricola", "text": {"cs": "Ošetřím zadarmo, prodám za peníze. Medicína je věda, lékárna je obchod.", "en": "I treat for free and sell for money. Medicine is a science; the apothecary is a shop."}}],
+     "do": ["heal"]}
+  ],
+
+  "senkyrka_rozina": [
+    {"if": ["!flag:rozina_met"],
+     "lines": [{"who": "senkyrka_rozina", "text": {"cs": "Rozina. Nalévám. Úsměv nečekej, nespala jsem od Hromnic.", "en": "Rozina. I pour. Don't expect a smile, I haven't slept since Candlemas."}}],
+     "do": ["flag:rozina_met"]},
+    {"if": ["quest:proklete_tolary:done", "!flag:rozina_r_ohnivec"],
+     "lines": [{"who": "senkyrka_rozina", "text": {"cs": "Hosti zas platí tolary, které nepálí. Spropitné stejně nikdo nedá.", "en": "The customers are paying with thalers that don't burn again. Still nobody tips."}}],
+     "do": ["flag:rozina_r_ohnivec"]},
+    {"if": ["quest:dve_srdce:done", "!flag:rozina_r_strzyga"],
+     "lines": [{"who": "senkyrka_rozina", "text": {"cs": "Strzyga je pryč? Dobře. Chodila mi pod okno a volala mě matčiným hlasem. Matka je přitom živá a hlas má horší.", "en": "The Strzyga's gone? Good. She used to come under my window and call me in my mother's voice. My mother's still alive, mind, and her voice is worse."}}],
+     "do": ["flag:rozina_r_strzyga"]},
+    {"if": ["always"],
+     "lines": [{"who": "senkyrka_rozina", "text": {"cs": "Pivo, kořalka, postel. Postel je nejdražší. V Jáchymově se nespí.", "en": "Beer, spirits, a bed. The bed costs most. Nobody sleeps in Jáchymov."}}]}
+  ],
+
+  "predak_matej": [
+    {"if": ["quest:posledni_sichta:step=return", "class:havir"],
+     "lines": [
+      {"who": "predak_matej", "text": {"cs": "(Čteš jména jedno po druhém. Pokaždé se jeden ze zhaslých kahanů v táboře rozsvítí.)", "en": "(You read the names one by one. Each time, one of the dead lamps in the camp flickers alight.)"}},
+      {"who": "predak_matej", "text": {"cs": "Všech padesát. (Matěj se poprvé usměje.) A ten poslední, co se rozsvítil… to byl tvůj táta. Říkal, že na tebe počká na druhém břehu. Nespěchej za ním.", "en": "All fifty. (For the first time, Matěj smiles.) And the last one to light… that was your father. He said he'd wait for you on the far bank. Don't hurry after him."}},
+      {"who": "hero", "text": {"cs": "Řekni mu, že zvon na Hoře zase zvoní.", "en": "Tell him the bell of the Mountain rings again."}},
+      {"who": "predak_matej", "text": {"cs": "Nemáme groše ani stříbro. Máme jen to, co se havíř naučí za třicet let šichet. Vezmi si to. A zdař Bůh. Celé.", "en": "We have no groše and no silver. Only what a miner learns in thirty years of shifts. Take it. And God give you luck. All of it."}}
+     ],
+     "do": ["quest_done:posledni_sichta"]},
+    {"if": ["quest:posledni_sichta:step=return"],
+     "lines": [
+      {"who": "predak_matej", "text": {"cs": "(Čteš jména jedno po druhém. Pokaždé se jeden ze zhaslých kahanů v táboře rozsvítí.)", "en": "(You read the names one by one. Each time, one of the dead lamps in the camp flickers alight.)"}},
+      {"who": "predak_matej", "text": {"cs": "Všech padesát. (Matěj se poprvé usměje.) Teď nás převozník vezme. Ale ještě ne. Ještě počkáme. Chceme vidět, jak to dopadne.", "en": "All fifty. (For the first time, Matěj smiles.) Now the ferryman will take us. But not yet. We'll wait a while. We want to see how it ends."}},
+      {"who": "predak_matej", "text": {"cs": "Nemáme groše ani stříbro. Máme jen to, co se havíř naučí za třicet let šichet. Vezmi si to. A zdař Bůh. Celé.", "en": "We have no groše and no silver. Only what a miner learns in thirty years of shifts. Take it. And God give you luck. All of it."}}
+     ],
+     "do": ["quest_done:posledni_sichta"]},
+    {"if": ["quest:posledni_sichta:none", "class:havir"],
+     "lines": [
+      {"who": "predak_matej", "text": {"cs": "(Bledý muž sedí na kameni a v klíně drží zhaslý kahan.) Zdař Bůh. Celé. Tady dole se to musí říkat celé, jinak tě nepozná ani vlastní stín.", "en": "(A pale man sits on a stone with a dead lamp in his lap.) God give luck. All of it. Down here you have to say it all, or not even your own shadow will know you."}},
+      {"who": "hero", "text": {"cs": "Matěji? Předáku Matěji z Osla? Znal jsi mého tátu. Sjel s vámi.", "en": "Matěj? Foreman Matěj of Osel? You knew my father. He went down with you."}},
+      {"who": "predak_matej", "text": {"cs": "Znal. Znám. Sedí tady s námi, jen nemá jméno. Navky nám vzaly jména, všem padesáti. Bez jména nikoho převozník nepřeveze.", "en": "I knew him. I know him. He's sitting here with us, only he has no name. The navky took our names, all fifty of us. Without a name the ferryman won't take anyone across."}},
+      {"who": "predak_matej", "text": {"cs": "Každá navka, co chodí kolem řeky, má v hrsti jedno jméno. Přines je, synku. Všech padesát. A tátovo nakonec, ať se vyspí.", "en": "Every navka that walks by the river has one name clutched in her fist. Bring them, lad. All fifty. And your father's last, so he can get some sleep."}}
+     ],
+     "do": ["quest_start:posledni_sichta"]},
+    {"if": ["quest:posledni_sichta:none"],
+     "lines": [
+      {"who": "predak_matej", "text": {"cs": "(Bledý muž sedí na kameni a v klíně drží zhaslý kahan.) Zdař Bůh. Celé. Tady dole se to musí říkat celé, jinak tě nepozná ani vlastní stín.", "en": "(A pale man sits on a stone with a dead lamp in his lap.) God give luck. All of it. Down here you have to say it all, or not even your own shadow will know you."}},
+      {"who": "predak_matej", "text": {"cs": "Matěj, předák z Osla. Sjeli jsme padesát a padesát nás tu sedí. Poslední šichta, říkají tomu. Nekončí.", "en": "Matěj, foreman of Osel. Fifty of us went down and fifty of us sit here. The Last Shift, they call it. It never ends."}},
+      {"who": "predak_matej", "text": {"cs": "Navky nám vzaly jména. Bez jména nikoho převozník nepřeveze. Každá navka, co chodí kolem řeky, má v hrsti jedno. Přines je. Všech padesát.", "en": "The navky took our names. Without a name the ferryman won't take anyone across. Every navka that walks by the river has one clutched in her fist. Bring them. All fifty."}},
+      {"who": "hero", "text": {"cs": "Přinesu je.", "en": "I'll bring them."},
+       "text_zbojnice": {"cs": "Padesát jmen. Jánošík by je zpíval. Já je radši přinesu.", "en": "Fifty names. Jánošík would have sung them. I'd rather bring them back."},
+       "text_vedma": {"cs": "Jméno je to poslední, co se pouští. Přinesu je.", "en": "A name is the last thing one lets go of. I'll bring them."}}
+     ],
+     "do": ["quest_start:posledni_sichta"]},
+    {"if": ["quest:posledni_sichta:active"],
+     "lines": [{"who": "predak_matej", "text": {"cs": "Kolik jmen neseš? Málo. Navky chodí u vody, v mlze. Mají studené ruce a v nich teplá jména.", "en": "How many names are you carrying? Too few. The navky walk by the water, in the mist. Cold hands, and warm names in them."}}]},
+    {"if": ["quest:vijova_vicka:done", "!flag:matej_perm"],
+     "lines": [{"who": "predak_matej", "text": {"cs": "Toho mužíčka znám. Stál u šachty, když jsme sjížděli. Každému z nás posvítil do tváře. Pak se zasmál a řekl „Zdař…“, a dál nic.", "en": "I know that little man. He stood at the shaft as we went down. He shone his lamp in each of our faces. Then he laughed and said “Good luck…”, and nothing more."}}],
+     "do": ["flag:matej_perm"]},
+    {"if": ["quest:posledni_sichta:done"],
+     "lines": [{"who": "predak_matej", "text": {"cs": "Padesát kahanů svítí. Na druhý břeh pojedeme, až to skončí. Ne dřív.", "en": "Fifty lamps are burning. We'll cross to the far bank when this is over. Not before."}}]},
+    {"if": ["always"],
+     "lines": [{"who": "predak_matej", "text": {"cs": "Zdař Bůh. Celé.", "en": "God give luck. All of it."}}]}
+  ],
+
+  "anicka": [
+    {"if": ["has:hrnek", "!flag:anicka_hrnek"],
+     "lines": [
+      {"who": "anicka", "text": {"cs": "To je hrníček z naší poličky! S modrou kytičkou. Maminka jich měla šest.", "en": "That's a cup from our shelf! With the little blue flower. Mummy had six of them."}},
+      {"who": "anicka", "text": {"cs": "Mužíček nás prosil, ať otevřeme hrníčky. Klepal na ně každý večer, ťuk, ťuk. Proč tolik chtěl, ať jsme venku?", "en": "The little man begged us to open the cups. He knocked on them every evening, tap, tap. Why did he want us out so badly?"}},
+      {"who": "hero", "text": {"cs": "Nevím, Aničko.", "en": "I don't know, Anička."},
+       "text_havir": {"cs": "Protože dokud jste byli pod hrníčky, držela voda. A on chtěl, aby povolila.", "en": "Because while you were under the cups, the water held. And he wanted it to let go."},
+       "text_zbojnice": {"cs": "Protože jste mu tam překáželi, holka.", "en": "Because you were in his way, girl."},
+       "text_vedma": {"cs": "Protože dušička pod hrníčkem drží vodu. A on chtěl vodu.", "en": "Because a soul beneath a cup holds the water. And he wanted the water."}},
+      {"who": "anicka", "text": {"cs": "Můžu si ho nechat? Pro tatínka. Ať má z čeho pít, až se mu rozsvítí kahan.", "en": "Can I keep it? For Daddy. So he has something to drink from when his lamp lights up."}}
+     ],
+     "do": ["take:hrnek", "flag:anicka_hrnek", "xp:2500"]},
+    {"if": ["quest:permonik_final:done"],
+     "lines": [{"who": "anicka", "text": {"cs": "Mužíček je pryč? (Anička se usměje.) Teď už nikdo neklepe na hrníčky.", "en": "The little man is gone? (Anička smiles.) Now nobody will knock on the cups any more."}}]},
+    {"if": ["!flag:anicka_met"],
+     "lines": [
+      {"who": "anicka", "text": {"cs": "(Holčička s mokrými vlasy drží hrníček oběma rukama.) Ahoj. Já jsem Anička. Tatínek je havíř. Tedy byl.", "en": "(A little girl with wet hair holds a teacup in both hands.) Hello. I'm Anička. My daddy is a miner. Was, I mean."}},
+      {"who": "anicka", "text": {"cs": "Utopila jsem se v Oslu, když přišla voda. Vodník mě dal pod hrníček. Pod hrníčkem je tma, ale teplo. A ticho. Pak přišla tvoje ruka a pustila nás ven.", "en": "I drowned in Osel when the water came. The Vodník put me under a cup. It's dark under a cup, but warm. And quiet. Then your hand came and let us out."}}
+     ],
+     "do": ["flag:anicka_met"]},
+    {"if": ["quest:kostejova_smrt:done", "!flag:anicka_r_kostej"],
+     "lines": [{"who": "anicka", "text": {"cs": "Mužíček se teď směje pořád. I když spí. Vlastně nespí. Jen zavře oči a směje se.", "en": "The little man laughs all the time now. Even when he's asleep. Actually he doesn't sleep. He just closes his eyes and laughs."}}],
+     "do": ["flag:anicka_r_kostej"]},
+    {"if": ["always"],
+     "lines": [{"who": "anicka", "text": {"cs": "Navky si se mnou nechtějí hrát. Jsou moc smutné. Já jsem smutná jen trochu.", "en": "The navky won't play with me. They're too sad. I'm only a little bit sad."}}]}
+  ],
+
+  "prevoznik": [
+    {"if": ["quest:permonik_final:done"],
+     "lines": [{"who": "prevoznik", "text": {"cs": "Teď tě vezmu. Neseš jen sebe. To se veze lehce.", "en": "Now I'll take you. You carry only yourself. That's a light load."}}]},
+    {"if": ["!flag:prevoznik_met"],
+     "lines": [
+      {"who": "prevoznik", "text": {"cs": "(Muž v kápi se opírá o bidlo. Jeho hlas zní jako voda pod ledem.) Smorodina. Kdo ji přejde, ten se nevrací. Kdo ji nepřejde, ten taky ne.", "en": "(A hooded man leans on his pole. His voice sounds like water under ice.) The Smorodina. Whoever crosses it doesn't return. Whoever doesn't cross it doesn't either."}},
+      {"who": "prevoznik", "text": {"cs": "Vozím z břehu na břeh. Groš za cestu, jako vždycky. Ale tebe nevezmu. Neseš moc.", "en": "I ferry from bank to bank. A groš a crossing, as always. But I won't take you. You're carrying too much."}},
+      {"who": "hero", "text": {"cs": "Co nesu?", "en": "What am I carrying?"}},
+      {"who": "prevoznik", "text": {"cs": "Světlo, které není tvoje.", "en": "A light that isn't yours."}}
+     ],
+     "do": ["flag:prevoznik_met"]},
+    {"if": ["quest:kalinov_most:done", "!flag:prevoznik_r_san"],
+     "lines": [{"who": "prevoznik", "text": {"cs": "Most je volný. Mně je to jedno. Most vede jen tam. Já vozím i zpátky.", "en": "The bridge is clear. It's all the same to me. The bridge only goes one way. I ferry back as well."}}],
+     "do": ["flag:prevoznik_r_san"]},
+    {"if": ["always"],
+     "lines": [{"who": "prevoznik", "text": {"cs": "Groš za cestu. Ty ale ještě nejedeš.", "en": "A groš a crossing. But you're not going yet."}}]}
+  ],
+
+  "_gossip": {
+    "kovar_hnevek": [
+      {"cs": "Kutná Hora se jmenuje po kutně. Mnich ze Sedlce usnul na stráni, a když se probudil, rostly kolem něj stříbrné výhonky. Hodil na ně kutnu, aby to místo zase našel.", "en": "Kutná Hora is named after a monk's habit. A monk from Sedlec fell asleep on the hillside, and when he woke, silver shoots had sprouted all around him. He threw his habit over them so he could find the place again."},
+      {"cs": "Ve Vlašském dvoře razí Vlaši z Florencie pražské groše. Každý groš je čistší než svědomí toho, kdo ho utratí.", "en": "In the Italian Court the Florentines strike Prague groše. Every groš is purer than the conscience of whoever spends it."},
+      {"cs": "Osel je nejhlubší důl v zemi. Přes dvě stě padesát sáhů. Tak hluboko, že havíři tam dole už neříkají Zdař Bůh nahlas. Jen to šeptají.", "en": "Osel is the deepest mine in the land. Over two hundred and fifty fathoms. So deep that down there the miners no longer say God give luck aloud. They only whisper it."},
+      {"cs": "Za válek házeli lidi do šachet na Kaňku. Živé. Dodnes tam kahany zhasínají samy od sebe.", "en": "During the wars they threw people down the shafts on Kaněk hill. Alive. To this day lamps go out there on their own."},
+      {"cs": "Svaté Barboře, patronce havířů, staví chrám tak veliký, že se dostaví až za sto let. Havíři říkají, že dřív Osel prokopou na dno.", "en": "They're building St Barbara, patron of miners, a church so big it won't be finished for a hundred years. The miners say they'll dig Osel to the bottom first."},
+      {"cs": "Havíř nosí kožený flek vzadu, aby si nesedl do mokrého. Kdo ho nosí vepředu, je buď opilý, nebo z Jihlavy.", "en": "A miner wears his leather apron at the back, so he doesn't sit in the wet. Anyone wearing it at the front is either drunk or from Jihlava."},
+      {"cs": "Moje kladivo zvoní jinak, když je zvon na věži zticha. Jako by se bálo.", "en": "My hammer rings differently when the bell in the tower is silent. As if it were afraid."},
+      {"cs": "Až uvidíš na hromádce rudy malé šlápoty, nesahej na ni. To si tam někdo něco odložil.", "en": "If you see tiny footprints on a heap of ore, don't touch it. Someone has set something aside there."}
+    ],
+    "korenarka_dorota": [
+      {"cs": "Živá voda hojí, mrtvá zacelí. Kdo zná obě, ten vyléčí i mrtvého. Já znám jen tu první.", "en": "Living water heals, dead water mends. Whoever knows both can cure even the dead. I only know the first."},
+      {"cs": "Kapradí kvete jen o svatojánské noci, a jen tomu, kdo se nebojí. Ten květ spraví i to, co se pokazit nemělo.", "en": "The fern blooms only on St John's Night, and only for one who isn't afraid. That flower mends even what should never have been broken."},
+      {"cs": "Bludičky vodí lidi do bažin. Ve štole žádná bažina není, tak je vodí do zatopených komor. Za světýlkem nikdy nechoď.", "en": "Will-o'-the-wisps lead people into marshes. There are no marshes in the galleries, so they lead them into flooded chambers. Never follow a little light."},
+      {"cs": "Klekánice si bere děti, které nejsou po klekání doma. Dospělé si bere taky, jen o tom matky nezpívají.", "en": "The Klekánice takes children who aren't home after the evening bell. She takes grown-ups too; mothers just don't sing about that."},
+      {"cs": "Kdo pije dolovou vodu, tomu prý pak ve snu mluví hora. Já radši piju pivo.", "en": "They say whoever drinks mine water hears the mountain talk in their dreams. I'd rather drink beer."},
+      {"cs": "Myši utekly z Hory týden předtím, než zvon zmlkl. Myši vědí věci.", "en": "The mice fled the Mountain a week before the bell went silent. Mice know things."},
+      {"cs": "Šotek ti ukradne groš a nechá ti za něj kamínek. Kamínek si schovej. Šotek se pro něj jednou vrátí a zaplatí.", "en": "A šotek will steal your groš and leave a pebble in its place. Keep the pebble. One day the šotek will come back for it and pay."},
+      {"cs": "Svatojánská rosa se sbírá před východem slunce, do lněného plátna. Když u toho mluvíš, zhořkne.", "en": "St John's dew is gathered before sunrise, into linen cloth. If you talk while you gather it, it turns bitter."}
+    ],
+    "senkyrka_bara": [
+      {"cs": "Havíři sem chodívali po šichtě. Padesát jich sjelo do Osla a jejich korbele tu visí na hácích. Nikdo na ně nesáhne.", "en": "The miners used to come here after their shift. Fifty of them went down Osel, and their tankards still hang on the hooks. Nobody touches them."},
+      {"cs": "Z Osla prý v noci vytéká voda, která teče do kopce.", "en": "They say at night water comes out of Osel and flows uphill."},
+      {"cs": "Mincmistr pije jen víno a platí jen novými groši. Staré groše prý zvoní falešně.", "en": "The mint-master drinks only wine and pays only in new groše. He says old ones ring false."},
+      {"cs": "Kdo usne v krčmě po klekání, toho tu nechám spát. Ven nikoho nevyženu. Teď ne.", "en": "Whoever falls asleep in the tavern after the evening bell, I let them sleep here. I won't throw anyone out. Not now."},
+      {"cs": "Ten malý dědeček s kahanem? Sedává u šachty a nikdy si nedá ani pivo. Jednou stál přímo pod lucernou a… ne. To byl jen klam.", "en": "That little old man with the lamp? He sits by the shaft and never has so much as a beer. Once he stood right under the street lantern and… no. It was just a trick of the light."},
+      {"cs": "Hlídač ze zvonice přísahá, že srdce zvonu samo skočilo do šachty. Hlídač toho vypije hodně, ale nikdy nelže.", "en": "The bell-tower watchman swears the clapper jumped down the shaft by itself. The watchman drinks a lot, but he never lies."},
+      {"cs": "Kdo umře v Hoře, toho pohřbí v Sedlci. Kdo umře v Oslu, toho pohřbí Osel.", "en": "Whoever dies in the Mountain is buried at Sedlec. Whoever dies in Osel, Osel buries."},
+      {"cs": "Zdař Bůh, říká se tu. Kdo to neřekne celé, ten tu není doma.", "en": "God give luck, we say here. Whoever doesn't say it all isn't from round here."}
+    ],
+    "kovar_vojtech": [
+      {"cs": "Dole ve Vojtěšské je takové horko, že havíři fárají jen v košili.", "en": "Down in the Vojtěch it's so hot the miners work in nothing but their shirts."},
+      {"cs": "Na Březových Horách dávají permoníkovi kůrku chleba na práh štoly. Kdo zapomene, tomu se ztratí kladivo.", "en": "In Březové Hory they leave the permoník a crust of bread on the threshold of the adit. Whoever forgets loses their hammer."},
+      {"cs": "Pod Příbramí je ještě něco jiného než stříbro. Těžké a tiché. Jednou to otráví půl kraje. Snad to nikdy nikdo nenajde.", "en": "There's something else under Příbram besides silver. Heavy and quiet. One day it will poison half the land. Let's hope nobody ever finds it."},
+      {"cs": "Na Svatou Horu vede tolik schodů, kolik je ve Vojtěšské žebříků. Nikdo to nepočítal, ale všichni to vědí.", "en": "There are as many steps up to Svatá Hora as there are ladders in the Vojtěch. Nobody has counted, but everybody knows."},
+      {"cs": "Děda říkal, že permoník chodí štolami a ťuká na skálu tam, kde je stříbro. Pak dodal: a tam, kde je propast, ťuká taky.", "en": "Grandfather said the permoník walks the galleries and taps on the rock where there's silver. Then he added: and he taps where there's a chasm, too."},
+      {"cs": "Kořeny z Brd prorazily výdřevu ve třetím patře. Smrkové kořeny. A ten smrk stojí na Třemšíně, deset mil odsud.", "en": "Roots from Brdy have broken through the timbering on the third level. Spruce roots. And that spruce stands on Třemšín, ten leagues from here."},
+      {"cs": "Ukovu ti cokoli. Jen sošku permoníka ne. Ty dělá Kuba a já mu je nekupuju.", "en": "I'll forge you anything. Except a permoník statue. Kuba makes those, and I don't buy them from him."},
+      {"cs": "V Ševčině se kdysi kopalo stříbro tak bohaté, že se žíla dala krájet jako sýr.", "en": "Once the silver in Ševčín ran so rich you could slice the vein like cheese."}
+    ],
+    "korenarka_medulina": [
+      {"cs": "Kdo utrhne kapradí květ, ten rozumí řeči zvířat. Kdo ho utrhne a ohlédne se, ten rozumí už jen zvířatům.", "en": "Whoever picks the fern flower understands the speech of animals. Whoever picks it and looks back understands only animals from then on."},
+      {"cs": "Brdy jsou starší než města, starší než doly. Rostou tu smrky, které pamatují, kdy byly pod kopci jen kameny.", "en": "Brdy is older than the towns, older than the mines. Spruces grow here that remember when there was nothing under the hills but stone."},
+      {"cs": "Hejkal křičí hej, hej. Kdo mu odpoví, toho si osedlá a jezdí na něm do rána. Neodpovídej.", "en": "The hejkal shouts hey, hey. Whoever answers, he saddles and rides till morning. Don't answer."},
+      {"cs": "Divé ženy nejsou zlé. Jen chtějí, aby jim lidé nechávali na mezích chleba. Teď už nikdo nenechává, tak si berou samy.", "en": "The wild women aren't wicked. They only want people to leave bread for them at the field's edge. Nobody does any more, so they help themselves."},
+      {"cs": "Na Toku je kámen, který v noci teple dýchá. Nesedej si na něj.", "en": "Up on Tok there's a stone that breathes warm at night. Don't sit on it."},
+      {"cs": "Můra si sedá spícím na prsa. Když se probudíš a nemůžeš se hnout, řekni jí: přijď ráno, dám ti sůl. Ráno pak někdo přijde pro sůl. Nedávej mu ji.", "en": "The můra sits on sleepers' chests. If you wake and can't move, tell her: come in the morning and I'll give you salt. In the morning someone will come for salt. Don't give it to them."},
+      {"cs": "Fabián nebyl zlý rytíř. Byl hloupý. Slíbil něco někomu, kdo bydlí hlouběji, než sahají kořeny.", "en": "Fabián wasn't a wicked knight. He was a foolish one. He promised something to someone who lives deeper than the roots reach."},
+      {"cs": "Kolem sošek permoníků bylinky nerostou. Jen tak to říkám.", "en": "Herbs don't grow around the permoník statues. I'm just saying."}
+    ],
+    "hostinsky_kuba": [
+      {"cs": "Sošky permoníků prodávám po groši. Poutníci ze Svaté Hory je berou po hrstech.", "en": "I sell permoník statues for a groš each. Pilgrims from Svatá Hora take them by the handful."},
+      {"cs": "Na Padrťských rybnících prý v noci chodí světélka. Rybáři je nechávají plout. Kdo za nimi jde, ten už nikdy neloví.", "en": "They say little lights walk on the Padrť ponds at night. The fishermen let them drift. Whoever follows them never fishes again."},
+      {"cs": "Prokop z Valdeka byl loupežník, žádný rytíř. Rytíř by v hostinci platil. Prokop nezaplatil nikde.", "en": "Prokop of Valdek was a robber, not a knight. A knight would pay at the inn. Prokop never paid anywhere."},
+      {"cs": "Moje pivo je nejlepší pod Brdy. Konkurence je slabá, ostatní hostinští šli do Vojtěšské a nevrátili se.", "en": "My beer is the best under Brdy. The competition is weak; the other innkeepers went into the Vojtěch and didn't come back."},
+      {"cs": "Kdo v noci slyší v lese kroky a nikoho nevidí, je to Fabián. Kdo slyší smích a nikoho nevidí, to už Fabián není.", "en": "If you hear footsteps in the forest at night and see no one, that's Fabián. If you hear laughter and see no one, that isn't Fabián."},
+      {"cs": "Havíři po šichtě pijou vždycky na zdraví toho, kdo s nimi nesjel. Je to zvyk. Nikdo neví proč.", "en": "After a shift the miners always drink to the health of whoever didn't go down with them. It's a custom. No one knows why."},
+      {"cs": "Ty sošky mají kahany, víš? Jedna mi jednou v noci svítila. Modře. Ještě ten den jsem ji prodal.", "en": "Ever notice those statues carry lamps? One of them glowed at me one night. Blue. I sold it that very day."},
+      {"cs": "Na Třemšíně sedí mužíček a počítá do tří. Kdo ho naučí počítat do čtyř, toho prý obdaruje. Zatím se to nikomu nepovedlo.", "en": "There's a little man on Třemšín who counts to three. They say whoever teaches him to count to four gets a gift. Nobody's managed it yet."}
+    ],
+    "fabian": [
+      {"cs": "Mech roste na severní straně stromů. Na které straně roste na tobě?", "en": "Moss grows on the north side of trees. Which side does it grow on you?"},
+      {"cs": "Stromy rostou nahoru, aby utekly tomu, co je dole. Nikdy se jim to nepovede, ale snaží se.", "en": "Trees grow upwards to escape what lies below. They never will, but they try."},
+      {"cs": "Kdysi jsem hledal cestu domů. Teď jsem cesta. Kdo jde po Brdech správně, jde po mně.", "en": "Once I searched for the way home. Now I am the way. Whoever walks Brdy rightly walks on me."},
+      {"cs": "Kahany svítí teple. Hniloba svítí studeně. Tvůj kahan je studený.", "en": "Lamps burn warm. Rot glows cold. Your lamp is cold."},
+      {"cs": "Šiška padá daleko od stromu, když fouká vítr. Ty jsi daleko od domova. Jaký vítr tě sem přinesl?", "en": "A cone falls far from the tree when the wind blows. You are far from home. What wind brought you here?"},
+      {"cs": "Megera, Medulína a já. Tři pověsti. Každý z nás tří slíbil něco dolů. Jen jedna to slíbila dobře.", "en": "Megera, Medulína and I. Three legends. Each of us three promised something to the deep. Only one of us promised well."},
+      {"cs": "Stín je první věc, kterou dostaneš, když se narodíš na světlo. Kdo ho nemá, ten se na světlo nikdy nenarodil.", "en": "A shadow is the first thing you are given when you are born into the light. Whoever has none was never born into the light at all."},
+      {"cs": "Až budeš dole a nebudeš vědět kudy, dýchni na šišku. Les si vzpomene.", "en": "When you are below and do not know the way, breathe on the cone. The forest will remember."}
+    ],
+    "tremsinsky_muzicek": [
+      {"cs": "Jeden, dva, tři. Víc čísel nepotřebuju. Čtyři je moc. Čtyři je pečeť.", "en": "One, two, three. I need no more numbers. Four is too many. Four is a seal."},
+      {"cs": "Na Třemšíně jsem byl, když byl ještě horou. Teď je to kopec. Jednou to bude kámen. Pak nic.", "en": "I was on Třemšín when it was still a mountain. Now it's a hill. One day it will be a stone. Then nothing."},
+      {"cs": "Zlato je těžké a líné. Stříbro je lehké a utíká. Proto ho havíři honí.", "en": "Gold is heavy and lazy. Silver is light and runs away. That's why miners chase it."},
+      {"cs": "Mám vousy po kolena, protože jsem tři sta let neměl nůž. Nože měli jen ti malí s kahany.", "en": "My beard reaches my knees because I had no knife for three hundred years. Only the little ones with lamps had knives."},
+      {"cs": "Kdo mě najde v lese, má štěstí. Kdo mě najde v dole, ten se ztratil.", "en": "Whoever finds me in the forest is lucky. Whoever finds me in a mine is lost."},
+      {"cs": "Mužíček s modrým světlem? Hm. Hmm. Ten počítá jen do deseti. A pak si jedno vezme.", "en": "The little man with the blue light? Hm. Hmm. He only counts to ten. And then he takes one."},
+      {"cs": "Kůra na tváři svědí, když prší. Pod zemí neprší. Pod zemí svědí pořád.", "en": "The bark on my face itches when it rains. It doesn't rain underground. Underground it itches all the time."}
+    ],
+    "kovar_krystof": [
+      {"cs": "Páni Šlikové tu začali razit tolary. Stříbra bylo tolik, že ho razili dřív, než se král stačil zeptat, komu patří.", "en": "The Schlick counts began striking thalers here. There was so much silver they minted it before the king could ask whose it was."},
+      {"cs": "Smolinec je černý a lesklý jako smůla. Havíři ho nenávidí. Kde začne smolinec, tam končí stříbro. Proto mu Němci říkají Pech. Smůla.", "en": "Pitchblende is black and glossy as pitch. The miners hate it. Where pitchblende begins, the silver ends. That's why the Germans call it Pech. Bad luck."},
+      {"cs": "Když v Pekle buší čerti, cinkají v mincovně razidla. Musíme je pak znovu brousit.", "en": "When the devils hammer down in Hell, the dies in the mint start ringing. We have to grind them all over again."},
+      {"cs": "Ohnivec byl kdysi mincíř jako já. Šidil na váze. Tak si ho peklo vzalo do služby. Tam se šidí poctivě.", "en": "Ohnivec was a minter once, like me. Cheated on the scales. So Hell took him into service. Down there they cheat honestly."},
+      {"cs": "Kobalt se jmenuje po koboltech, nikl po nicklovi. Skřítci kradou z rudy stříbro a nechávají v ní jed. Samí skřítci, kam se podíváš.", "en": "Cobalt is named after kobolds, nickel after the nickel-goblin. The little folk steal the silver from the ore and leave poison behind. Little folk wherever you look."},
+      {"cs": "Rozinu nevzbudí ani zvon. Vzbudí ji jen cinknutí tolaru o pult.", "en": "Not even a bell wakes Rozina. Only the clink of a thaler on the counter."},
+      {"cs": "Kdo najde v Pekle tolar, ať ho nedává do kapsy, ale do vody. Když nesyčí, je poctivý.", "en": "Whoever finds a thaler in Hell shouldn't put it in his pocket but in water. If it doesn't hiss, it's honest."},
+      {"cs": "Za Krušnými horami razí tolary taky. Ale bez chuti.", "en": "Over the Ore Mountains they strike thalers too. But without any flavour."}
+    ],
+    "lekarnik_agricola": [
+      {"cs": "Smolinec barví sklo do žlutozelena. A kdo nad ním dlouho sedí, tomu padají vlasy. Ještě nevím, co z toho je důležitější.", "en": "Pitchblende stains glass a yellowish green. And whoever sits over it too long loses his hair. I do not yet know which of the two matters more."},
+      {"cs": "Kazatel Mathesius tvrdí, že hora je Boží pokladnice a havíř Boží výběrčí. Já tvrdím, že havíř jsou především plíce, a ty mu hora krade.", "en": "The preacher Mathesius maintains the mountain is God's treasury and the miner God's tax collector. I maintain the miner is above all a pair of lungs, and the mountain steals them."},
+      {"cs": "Ve vodách pod Jáchymovem je cosi, co léčí klouby a zabíjí trpělivost. Jednou sem budou jezdit lázeňští hosté. Hloupí lidé, ale platící.", "en": "In the waters beneath Jáchymov there is something that cures the joints and kills patience. One day spa guests will come here. Foolish people, but paying ones."},
+      {"cs": "Napsal jsem o hornictví dialog Bermannus. Nikdo ho nečetl. Teď píšu knihu se stovkami obrázků čerpadel. Ta snad bude mít větší úspěch.", "en": "I wrote a dialogue on mining, the Bermannus. No one read it. Now I am writing a book with hundreds of pictures of pumps. That one may do better."},
+      {"cs": "Viděl jsem světlonoše. Dýchne na tvou svíci a ta se zmenší. Přírodní jev, zatím bez vysvětlení. Nedoporučuji.", "en": "I have seen a lantern-bearer. It breathes on your candle and the candle shrinks. A natural phenomenon, as yet unexplained. Not recommended."},
+      {"cs": "Za tři sta let si sem pro smolinec přijede paní z Paříže a uvaří z něj světlo, které svítí ve tmě. Netuším, proč to říkám. Zdálo se mi to.", "en": "In three hundred years a lady from Paris will come here for pitchblende and boil out of it a light that shines in the dark. I have no idea why I say this. I dreamt it."},
+      {"cs": "Upír nepije krev, jak se říká. Pije teplo. Proto jsou po něm mrtví studení, a ne bledí. Zapsal jsem to latinsky, aby to tolik nestrašilo.", "en": "A vampire does not drink blood, as they say. It drinks warmth. That is why its dead are cold rather than pale. I wrote it in Latin so it would frighten less."},
+      {"cs": "Ti malí s kahany, o kterých jsem psal, nemají rádi zvony. Psal jsem to? Nevím. Měl bych.", "en": "The little ones with lamps that I wrote about dislike bells. Did I write that? I don't know. I should."}
+    ],
+    "senkyrka_rozina": [
+      {"cs": "Za tři roky jsem dvakrát viděla v červnu padat sníh. Oba dny se ve Svornosti zavalila štola.", "en": "In three years I've seen snow fall in June twice. Both days a gallery caved in at Svornost."},
+      {"cs": "Havíři z Pekla pijou jen kořalku. Pivo jim prý v puse vře.", "en": "The miners from Hell drink nothing but spirits. They say beer boils in their mouths."},
+      {"cs": "Kazatel Mathesius říkal v kázání, že Bůh je první havíř. Pak přišel čert a řekl, že on je první mincíř.", "en": "The preacher Mathesius said in a sermon that God was the first miner. Then the devil came along and said he was the first minter."},
+      {"cs": "Spávám s nožem pod polštářem. Ne kvůli čertům. Kvůli hostům.", "en": "I sleep with a knife under my pillow. Not because of the devils. Because of the customers."},
+      {"cs": "Jednou se mi zdálo, že na kopcích kolem Jáchymova stojí dráty a věže a lidé v šedém kopou smolinec. Bez kahanů. Probudila jsem se s pláčem a nevěděla proč.", "en": "Once I dreamt that on the hills around Jáchymov stood wire and towers, and people in grey were digging pitchblende. Without lamps. I woke up crying and didn't know why."},
+      {"cs": "Tolary od Ohnivce jsem házela do vědra s vodou. Celou noc syčely.", "en": "I threw Ohnivec's thalers into a bucket of water. They hissed all night."},
+      {"cs": "Doktor Agricola mi léčil kašel. Řekl, ať míň dýchám. Prý to pomáhá na všechno.", "en": "Doctor Agricola treated my cough. He told me to breathe less. Says it helps with everything."},
+      {"cs": "Kdo tady umře, toho sní hora. Kdo neumře, toho sní práce. Na zdraví.", "en": "Whoever dies here, the mountain eats. Whoever doesn't, the work eats. Cheers."}
+    ],
+    "predak_matej": [
+      {"cs": "Kahan zhasne, když v havíři dohoří život. Nám tady zhasly všechny najednou. To se dřív nestávalo.", "en": "A lamp goes out when the life burns out of a miner. Ours all went out at once. That never used to happen."},
+      {"cs": "Desátek. Každý desátý kahan. Staří havíři o tom mluvili jen u kořalky. Mysleli jsme, že je to pověra. Padesát je pět desátků. Spočítej si to.", "en": "The tithe. Every tenth lamp. The old miners only spoke of it over a bottle. We thought it was superstition. Fifty is five tithes. Do the sum."},
+      {"cs": "V Navu není den ani noc. Jen šichta. Kdo tu chce spát, musí nejdřív dopracovat.", "en": "In Nav there is no day and no night. Only the shift. Whoever wants to sleep here has to finish work first."},
+      {"cs": "Smorodina voní pálenou smůlou. Kdo se z ní napije, zapomene, kdo byl. Proto ji obcházíme.", "en": "The Smorodina smells of burnt pitch. Whoever drinks from it forgets who they were. That's why we walk around it."},
+      {"cs": "Navky bývaly holky, které nosily havířům oběd do dolu. Pak je nikdo nepochoval. Teď berou, co můžou.", "en": "The navky used to be the girls who carried the miners' dinners down the mine. Then nobody buried them. Now they take whatever they can."},
+      {"cs": "Černí psi hlídají rozcestí. Neber nic, co leží na rozcestí. Ani groš. Zvlášť ne groš.", "en": "Black dogs guard the crossroads. Take nothing that lies at a crossroads. Not even a groš. Especially not a groš."},
+      {"cs": "Odfáral jsem přes šest tisíc šicht. Tahle je nejdelší a nejtišší.", "en": "I've worked over six thousand shifts. This one is the longest and the quietest."},
+      {"cs": "Ti malí s nožíky, permoníčci. Na Březových Horách z nich dělají sošky. Tady dole se ví, z čeho jsou: z hlíny a z toho, co zbylo z kahanů.", "en": "The little ones with knives, the permoníčci. In Březové Hory they make statues of them. Down here everyone knows what they're made of: clay, and whatever was left of the lamps."}
+    ],
+    "anicka": [
+      {"cs": "Pod hrníčkem je tma, ale teplá tma. Taková, jako když se schováš pod peřinu.", "en": "Under a cup it's dark, but a warm dark. Like when you hide under the eiderdown."},
+      {"cs": "Vodník každý večer ťukl na hrníček, aby věděl, že tam jsem. Myslím, že se bál, že odejdu.", "en": "Every evening the Vodník tapped on the cup to know I was still there. I think he was afraid I'd leave."},
+      {"cs": "Tatínek říkal, že kahan je havířova duše. Tak proč ten mužíček sbírá kahany?", "en": "Daddy said a lamp is a miner's soul. So why does the little man collect lamps?"},
+      {"cs": "Tady dole nikdo nespí. Já taky ne. Tak počítám kahany. Padesát. Pořád padesát.", "en": "Nobody sleeps down here. Me neither. So I count the lamps. Fifty. Always fifty."},
+      {"cs": "Navky mi zaplétaly vlasy. Pak mi chtěly vzít jméno. Neřekla jsem jim ho. Ty ho taky nikomu neříkej.", "en": "The navky plaited my hair. Then they wanted to take my name. I didn't tell them. Don't you tell anyone yours, either."},
+      {"cs": "Viděla jsem velké oko. Tam dole, pod řekou. Bylo zavřené. Myslím, že spí.", "en": "I saw a big eye. Down there, under the river. It was closed. I think it's asleep."},
+      {"cs": "Převozník mi dal groš na cestu. Ale já ještě nechci jet. Chci počkat na tatínka.", "en": "The ferryman gave me a groš for the crossing. But I don't want to go yet. I want to wait for Daddy."},
+      {"cs": "Mužíček se umí smát bez pusy. Viděla jsem to.", "en": "The little man can laugh without a mouth. I've seen it."}
+    ],
+    "prevoznik": [
+      {"cs": "Groš za cestu. Pražský groš, ne tolar. Na druhém břehu tolary neberou.", "en": "A groš a crossing. A Prague groš, not a thaler. They don't take thalers on the far bank."},
+      {"cs": "Kalinový most je z rozžhaveného železa. Kdo po něm jde, ten se chce ohlédnout. Kdo se ohlédne, spadne.", "en": "The Kalinov Bridge is made of red-hot iron. Whoever crosses it wants to look back. Whoever looks back falls."},
+      {"cs": "Pod Navem je ještě něco. Tam nevozím. Tam se nevozí.", "en": "There is something beneath Nav as well. I don't ferry there. No one ferries there."},
+      {"cs": "Veles tu pase stáda duší. Já mu je jen převážím. Platí líp než lidi.", "en": "Veles pastures his herds of souls here. I only ferry them for him. He pays better than people do."},
+      {"cs": "Každý rok sem připluje zvon. Utopený zvon z nějaké vsi. Rozezvoní se, až když se vrátí domů.", "en": "Every year a bell drifts down here. A drowned bell from some village. It rings only once it's home again."},
+      {"cs": "Řeka teče z kořenů světového stromu. Proto je hořká. Kořeny pijí všechno, co spadne.", "en": "The river flows from the roots of the world tree. That's why it's bitter. Roots drink everything that falls."},
+      {"cs": "Mrtví nic nenesou. Podle toho je poznám. Ty neseš. Proto tě nevezu.", "en": "The dead carry nothing. That's how I know them. You carry something. That's why I won't take you."},
+      {"cs": "Ten malý s kahanem na druhém břehu nikdy nebyl. Chodí jen tam, kudy se nechodí.", "en": "The little one with the lamp has never been to the far bank. He only walks where no one walks."}
+    ]
+  }
+}

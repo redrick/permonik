@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Permoník · Desátek z hlubin</title>
+<meta name="description" content="A dark action RPG in the spirit of the first Diablo, set in Czech silver mines and Slavic folklore. Hand-drawn, Czech and English.">
+<meta property="og:title" content="Permoník · Desátek z hlubin">
+<meta property="og:description" content="A dark action RPG in Czech silver mines and Slavic folklore. Who carries the light?">
+<meta property="og:image" content="https://antas.cz/permonik/screenshots/vodnik.jpg">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="img/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=Alegreya:ital,wght@0,400;0,600;1,400&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --night: #0b0a0d;
+    --soot: #141218;
+    --rock: #1d1a20;
+    --rock-2: #26222a;
+    --line: #4a3a28;
+    --bone: #e8dcc0;
+    --muted: #a99c86;
+    --dim: #7a6e5e;
+    --flame: #ffb85c;
+    --ember: #e07a2c;
+    --blood: #a01818;
+    --cold: #cfe8ff;
+    --cold-2: #7fb0ff;
+    --gold: #d6b25e;
+    --magic: #7f9bff;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; background: var(--night); }
+  body {
+    margin: 0; background: var(--night); color: var(--bone);
+    font: 1.15rem/1.6 "Alegreya", Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, .btn, .lang button { font-family: "Pirata One", "Alegreya", serif; font-weight: 400; letter-spacing: .02em; }
+  h2 { font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1; margin: 0 0 .4em; color: var(--bone); }
+  h3 { font-size: 1.6rem; margin: 0 0 .3em; color: var(--flame); }
+  p { margin: 0 0 1em; }
+  a { color: var(--flame); }
+  img { max-width: 100%; display: block; }
+  .hand { font-family: "Patrick Hand", sans-serif; }
+
+  html[data-lang="en"] [lang="cs"]:not(html) { display: none !important; }
+  html[data-lang="cs"] [lang="en"]:not(html) { display: none !important; }
+
+  .wrap { width: min(1120px, 100% - 32px); margin-inline: auto; }
+
+  /* top bar */
+  .bar { position: absolute; inset: 0 0 auto 0; z-index: 6; display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; }
+  .bar .logo { display: flex; gap: 8px; align-items: center; color: var(--bone); text-decoration: none; font-family: "Pirata One"; font-size: 1.4rem; }
+  .bar .logo img { width: 22px; filter: drop-shadow(0 0 6px var(--cold-2)); }
+  .lang { display: flex; gap: 6px; }
+  .lang button { font-size: 1.05rem; cursor: pointer; padding: 4px 12px; border-radius: 8px; border: 1px solid var(--line); background: #1a1714cc; color: var(--muted); }
+  .lang button[aria-pressed="true"] { color: var(--night); background: var(--flame); border-color: var(--flame); }
+
+  /* hero: the page is dark, your cursor is the lamp */
+  .hero { position: relative; min-height: min(100vh, 900px); overflow: hidden; display: grid; align-items: center;
+    background: #000 url("img/menu_bg.jpg") center / cover no-repeat; }
+  .hero::after { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 2;
+    background: radial-gradient(circle var(--r, 260px) at var(--mx, 70%) var(--my, 55%), transparent 0, rgba(0,0,0,.35) 45%, rgba(0,0,0,.88) 100%); }
+  .hero-inner { position: relative; z-index: 3; padding: 110px 0 80px; }
+  .hero .title { width: min(620px, 92%); margin: 0 0 6px -8px; filter: drop-shadow(0 6px 18px #000); }
+  .hero .pitch { font-size: clamp(1.2rem, 2.2vw, 1.5rem); max-width: 34ch; text-shadow: 0 2px 8px #000; }
+  .hook { font-family: "Patrick Hand"; font-size: 1.35rem; color: var(--cold); margin: 0 0 1.2em; text-shadow: 0 0 12px #3b6ea8; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 1.6em; padding: 0; list-style: none; }
+  .chips li { background: #120f0dcc; border: 1px solid var(--line); border-radius: 999px; padding: 2px 12px; font-size: 1rem; color: var(--muted); }
+  .ctas { display: flex; flex-wrap: wrap; gap: 14px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; font-size: 1.5rem; text-decoration: none; color: #1b120a;
+    padding: 8px 24px; border-radius: 10px; background: linear-gradient(#ffcf8a, var(--ember)); border: 1px solid #ffdca6;
+    box-shadow: 0 0 24px #ff9a3a55, 0 4px 0 #6a3a14; transition: translate .1s, box-shadow .1s; }
+  .btn:hover { translate: 0 2px; box-shadow: 0 0 34px #ff9a3a88, 0 2px 0 #6a3a14; }
+  .btn.alt { background: #15120fdd; color: var(--bone); border-color: var(--line); box-shadow: 0 4px 0 #000; }
+  .btn[aria-disabled="true"] { opacity: .55; pointer-events: none; }
+  .btn small { font-family: "Patrick Hand"; font-size: 1rem; }
+  .guide { position: absolute; right: max(4vw, 16px); bottom: 70px; z-index: 3; width: clamp(90px, 11vw, 150px); text-align: center; }
+  .guide img { width: 100%; filter: drop-shadow(0 0 22px #7fb0ff66); animation: bob 4s ease-in-out infinite; }
+  .guide span { display: block; font-family: "Patrick Hand"; color: var(--cold); font-size: 1rem; margin-top: 6px; text-shadow: 0 0 10px #000; }
+  @keyframes bob { 50% { translate: 0 -5px; } }
+  .ember { position: absolute; bottom: -10px; width: 3px; height: 3px; border-radius: 50%; background: var(--flame); box-shadow: 0 0 6px var(--flame); z-index: 3; animation: rise linear infinite; pointer-events: none; }
+  @keyframes rise { to { translate: var(--dx, 20px) -105vh; opacity: 0; } }
+
+  section { padding: 90px 0; position: relative; }
+  .lead { font-size: 1.3rem; max-width: 62ch; color: var(--muted); }
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .shot { border: 1px solid var(--line); border-radius: var(--radius); box-shadow: 0 20px 50px #000a; overflow: hidden; background: #000; }
+  .rock { background: linear-gradient(var(--soot), var(--rock)); border-block: 1px solid #2b241d; }
+
+  /* heroes */
+  .classes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 36px; }
+  .class { background: var(--rock-2); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; }
+  .class img { width: 100%; aspect-ratio: 2/3; object-fit: cover; }
+  .class > div { padding: 18px 20px 22px; }
+  .class .trees { font-family: "Patrick Hand"; color: var(--flame); font-size: 1.05rem; margin-bottom: .5em; }
+  .class p { color: var(--muted); margin: 0; font-size: 1.05rem; }
+
+  /* acts */
+  .acts { display: grid; gap: 22px; margin-top: 36px; }
+  .act { display: grid; grid-template-columns: 1.1fr 1fr; gap: 0; background: var(--rock-2); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .act:nth-child(even) { grid-template-columns: 1fr 1.1fr; }
+  .act:nth-child(even) img { order: 2; }
+  .act img { width: 100%; height: 100%; object-fit: cover; min-height: 220px; }
+  .act > div { padding: 26px 30px; }
+  .act .num { font-family: "Pirata One"; color: var(--dim); font-size: 1.1rem; }
+  .act .where { font-family: "Patrick Hand"; color: var(--muted); }
+  .act .foes { font-family: "Patrick Hand"; color: var(--flame); margin-top: .6em; }
+
+  /* bestiary */
+  .strip { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 12px; margin-top: 30px; }
+  .beast { background: radial-gradient(circle at 50% 70%, #3a2f24 0, #17141a 70%); border: 1px solid #2f2820; border-radius: 12px; padding: 10px 8px 8px; text-align: center; transition: translate .15s; }
+  .beast:hover { translate: 0 -4px; border-color: var(--flame); }
+  .beast img { height: 92px; width: auto; margin: 0 auto; object-fit: contain; }
+  .beast b { display: block; font-family: "Patrick Hand"; font-weight: 400; font-size: 1.05rem; margin-top: 6px; }
+  .beast span { display: block; color: var(--dim); font-size: .85rem; line-height: 1.3; }
+
+  .bosses { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 18px; margin-top: 30px; }
+  .boss { background: radial-gradient(circle at 50% 75%, #3b1a14 0, #120e10 72%); border: 1px solid #3a2420; border-radius: var(--radius); padding: 16px 16px 18px; }
+  .boss img { height: 170px; width: auto; margin: 0 auto 10px; object-fit: contain; filter: drop-shadow(0 6px 10px #000); }
+  .boss h3 { font-size: 1.45rem; margin: 0; color: var(--bone); }
+  .boss .act-tag { font-family: "Patrick Hand"; color: var(--ember); font-size: .95rem; }
+  .boss p { color: var(--muted); font-size: 1rem; margin: .3em 0 0; }
+
+  /* loot */
+  .loot { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+  .loot img { height: 76px; width: auto; background: #120f0d; border: 1px solid #3a2f24; border-radius: 8px; padding: 6px; }
+  .rarity { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 16px; font-family: "Patrick Hand"; font-size: 1.2rem; }
+  .rarity .n { color: var(--bone); } .rarity .m { color: var(--magic); } .rarity .u { color: var(--gold); }
+  .facts { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; margin-top: 44px; text-align: center; }
+  .fact b { display: block; font-family: "Pirata One"; font-weight: 400; font-size: 3rem; color: var(--flame); line-height: 1; }
+  .fact span { color: var(--muted); font-size: 1rem; }
+
+  /* gallery */
+  .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 30px; }
+  .gallery figure { margin: 0; }
+  .gallery figcaption { text-align: center; color: var(--dim); margin-top: 8px; font-family: "Patrick Hand"; }
+  .gallery .shot { cursor: zoom-in; aspect-ratio: 16/10; object-fit: cover; width: 100%; }
+
+  .crafted .swatches { display: flex; gap: 14px; align-items: flex-end; margin-top: 18px; }
+  .crafted .swatches img { height: 170px; width: auto; }
+
+  .play { text-align: center; background: radial-gradient(ellipse at 50% 120%, #4a2a10 0, var(--night) 65%); }
+  .play .ctas { justify-content: center; margin-top: 24px; }
+  pre { text-align: left; display: inline-block; background: #000; color: #f6ecd6; border: 1px solid var(--line); border-radius: 10px; padding: 14px 20px; font-size: .95rem; overflow-x: auto; max-width: 100%; margin-top: 28px; }
+
+  footer { background: #050405; color: var(--muted); padding: 40px 0; font-size: 1rem; border-top: 1px solid #221c16; }
+  footer .cols { display: grid; grid-template-columns: 2fr 1fr; gap: 32px; }
+  footer ul { margin: 0; padding-left: 1.1em; }
+
+  dialog { border: 1px solid var(--line); border-radius: var(--radius); padding: 0; max-width: min(1400px, 94vw); background: #000; }
+  dialog::backdrop { background: rgba(0, 0, 0, .85); }
+  dialog img { width: 100%; }
+
+  @media (max-width: 900px) {
+    .split, .act, .act:nth-child(even), footer .cols, .classes { grid-template-columns: 1fr; }
+    .act:nth-child(even) img { order: 0; }
+    .gallery { grid-template-columns: 1fr 1fr; }
+    .facts { grid-template-columns: repeat(3, 1fr); }
+    .guide { display: none; }
+    section { padding: 60px 0; }
+  }
+  @media (max-width: 560px) { .gallery { grid-template-columns: 1fr; } }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .ember { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero" id="top">
+  <div class="bar">
+    <a class="logo" href="#top"><img src="img/icon.png" alt=""> Permoník</a>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" data-set="cs" aria-pressed="false">CS</button>
+      <button type="button" data-set="en" aria-pressed="true">EN</button>
+    </div>
+  </div>
+  <div class="wrap hero-inner">
+    <img class="title" src="img/title.png" alt="Permoník: Desátek z hlubin">
+    <p class="hook"><span lang="en">“Zdař… zdař hlubina, wanderer. The mountain is sick. Will you help?”</span><span lang="cs">„Zdař… zdař hlubina, poutníku. Hora je nemocná. Pomůžeš?“</span></p>
+    <p class="pitch">
+      <span lang="en">A dark action RPG in the spirit of the first Diablo. Descend into Czech silver mines, through Slavic folklore, all the way down to Nav.</span>
+      <span lang="cs">Temná akční RPG v duchu prvního Diabla. Sestup do českých stříbrných dolů, skrz slovanské pověsti, až dolů do Navi.</span>
+    </p>
+    <ul class="chips">
+      <li>🇨🇿 Čeština · 🇬🇧 English</li>
+      <li><span lang="en">hand-drawn</span><span lang="cs">kresleno ručně</span></li>
+      <li><span lang="en">4 acts · level 100</span><span lang="cs">4 dějství · úroveň 100</span></li>
+      <li>Linux · Windows</li>
+    </ul>
+    <div class="ctas">
+      <a class="btn" href="#play"><span lang="en">Descend</span><span lang="cs">Sestoupit</span> ▾</a>
+      <a class="btn alt" href="https://github.com/redrick/permonik"><span lang="en">Source on GitHub</span><span lang="cs">Zdroják na GitHubu</span></a>
+    </div>
+  </div>
+  <div class="guide"><img src="img/permonik.png" alt="Permoník, the little mine spirit with a cold blue lamp"><span lang="en">no shadow?</span><span lang="cs">žádný stín?</span></div>
+</header>
+
+<main>
+
+<section id="story">
+  <div class="wrap split">
+    <div>
+      <h2><span lang="en">Who carries the light?</span><span lang="cs">Kdo nese světlo?</span></h2>
+      <p class="lead" lang="en">The evening bell of Kutná Hora has stopped ringing. Fifty miners went down the Osel mine and never came back.
+        At the shaft head waits a kind little man with a white beard and a lamp burning cold and blue. He gives you the lamp
+        and asks for one thing: put down the monsters that are killing the mountain.</p>
+      <p class="lead" lang="cs">Na Hoře přestal zvonit klekání. Padesát havířů sestoupilo do Dolu Osel a už se nevrátilo.
+        U šachty čeká laskavý mužíček s bílým vousem a kahanem, který hoří studeně a modře. Dá ti svůj kahan
+        a prosí jen o jedno: zbav horu nestvůr, které ji zabíjejí.</p>
+      <p lang="en">Every guardian you slay breaks a seal, and your lamp burns a little brighter. The miners greet each other with
+        “Zdař Bůh!”. Permoník never quite finishes it. And whose shadow is missing on the boards?</p>
+      <p lang="cs">Každý strážce, kterého skolíš, zlomí jednu pečeť a tvůj kahan zazáří o kousek jasněji. Havíři se zdraví
+        „Zdař Bůh!“. Permoník to nikdy nedořekne. A čí stín chybí na prknech?</p>
+    </div>
+    <img class="shot" src="img/slide_intro_3.jpg" alt="Permoník offering the cold blue lamp at the shaft head" loading="lazy">
+  </div>
+</section>
+
+<section class="rock" id="heroes">
+  <div class="wrap">
+    <h2><span lang="en">Three who went down</span><span lang="cs">Tři, kteří sestoupili</span></h2>
+    <p class="lead"><span lang="en">Each with three skill trees of four skills, twenty ranks each. Five attribute points and a skill point every level, up to level 100.</span><span lang="cs">Každý má tři stromy po čtyřech dovednostech, každá dvacet stupňů. Pět bodů vlastností a bod dovednosti za každou úroveň, až do stovky.</span></p>
+    <div class="classes">
+      <article class="class">
+        <img src="img/class_havir.png" alt="Havíř, the miner" loading="lazy">
+        <div>
+          <h3><span lang="en">Havíř · Miner</span><span lang="cs">Havíř</span></h3>
+          <div class="trees">Krumpáč · Střelný prach · Bratrstvo</div>
+          <p lang="en">Born in Kutná Hora. His father's crew went down the Osel shaft the night the bell stopped. Pick-axe, black powder and the miners' war cry.</p>
+          <p lang="cs">Rodák z Hory. Otcova parta sjela do Osla tu noc, kdy zvon utichl. Krumpáč, střelný prach a havířský pokřik.</p>
+        </div>
+      </article>
+      <article class="class">
+        <img src="img/class_zbojnice.png" alt="Zbojnice, the brigand" loading="lazy">
+        <div>
+          <h3><span lang="en">Zbojnice · Brigand</span><span lang="cs">Zbojnice</span></h3>
+          <div class="trees">Valaška · Kuše · Lesní zákon</div>
+          <p lang="en">An outlaw from Valašsko with a shepherd's axe, chasing Jánošík's buried silver. Fast blades, crossbow bolts, wolf traps and smoke.</p>
+          <p lang="cs">Psanka z Valašska s valaškou za pasem, jde po Jánošíkově zakopaném stříbře. Rychlé seky, šipky z kuše, pasti na vlky a kouř.</p>
+        </div>
+      </article>
+      <article class="class">
+        <img src="img/class_vedma.png" alt="Vědma, the wise woman" loading="lazy">
+        <div>
+          <h3><span lang="en">Vědma · Wise woman</span><span lang="cs">Vědma</span></h3>
+          <div class="trees">Perun · Svarožič · Morana</div>
+          <p lang="en">A herb-witch from Šumava who dreams of a drowning bell every night. Perun's lightning, Svarožič's fire, Morana's frost.</p>
+          <p lang="cs">Kořenářka ze Šumavy, které se každou noc zdá o tonoucím zvonu. Perunův blesk, Svarožičův oheň, Moranin mráz.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="acts">
+  <div class="wrap">
+    <h2><span lang="en">Four acts, ever deeper</span><span lang="cs">Čtyři dějství, stále hlouběji</span></h2>
+    <p class="lead"><span lang="en">Every mine is generated anew: galleries, flooded caves, boss lairs. Real places on top, folklore below.</span><span lang="cs">Každý důl se generuje znovu: štoly, zatopené jeskyně, doupata bossů. Nahoře skutečná místa, dole pověsti.</span></p>
+    <div class="acts">
+      <article class="act">
+        <img src="img/slide_intro_1.jpg" alt="Kutná Hora at dusk" loading="lazy">
+        <div>
+          <div class="num">I</div>
+          <h3>Klekání</h3>
+          <div class="where">Kutná Hora · Důl Osel</div>
+          <p lang="en">The silent bell, the bone church of Sedlec and the flooded deep where someone keeps the drowned under teacups.</p>
+          <p lang="cs">Mlčící zvon, sedlecká kostnice a zatopená hlubina, kde někdo drží utopené pod hrníčky.</p>
+          <div class="foes">Klekánice · Kostník ze Sedlce · Vodník</div>
+        </div>
+      </article>
+      <article class="act">
+        <img src="img/slide_act2_end.jpg" alt="Fabián in the Brdy fog" loading="lazy">
+        <div>
+          <div class="num">II</div>
+          <h3>Brdská noc</h3>
+          <div class="where">Březové Hory · Vojtěšská šachta</div>
+          <p lang="en">Příbram, its permoník statues on every corner, and the Brdy forest breaking into the mine. Fabián, the spirit of the hills, has a warning.</p>
+          <p lang="cs">Příbram s permoníky na každém rohu a brdský les, který se prolamuje do dolu. Fabián, duch hor, má pro tebe varování.</p>
+          <div class="foes">Megera · Divoký Prokop z Valdeka · Bazilišek</div>
+        </div>
+      </article>
+      <article class="act">
+        <img src="screenshots/jachymov.jpg" alt="The mines under Jáchymov" loading="lazy">
+        <div>
+          <div class="num">III</div>
+          <h3>Jáchymovské peklo</h3>
+          <div class="where">Jáchymov · Důl Svornost</div>
+          <p lang="en">The town that minted the thaler. Green-glowing pitchblende, Czech devils with chains, and an oven that never goes cold.</p>
+          <p lang="cs">Město, kde se razil tolar. Zeleně svítící smolinec, čerti s řetězy a pec, která nikdy nevychladne.</p>
+          <div class="foes">Strzyga · Mincíř Ohnivec · Ježibaba</div>
+        </div>
+      </article>
+      <article class="act">
+        <img src="img/slide_act4_intro.jpg" alt="The river Smorodina in Nav" loading="lazy">
+        <div>
+          <div class="num">IV</div>
+          <h3>Nav</h3>
+          <div class="where"><span lang="en">The Slavic underworld</span><span lang="cs">Slovanské podsvětí</span></div>
+          <p lang="en">A camp of dead miners on the black river Smorodina. A dragon on the Kalinov bridge, a demon whose eyelids reach the ground, and a king whose death is a needle in an egg.</p>
+          <p lang="cs">Tábor mrtvých havířů na černé řece Smorodině. Saň na Kalinově mostě, démon s víčky až na zem a král, jehož smrt je jehla ve vejci.</p>
+          <div class="foes">Saň Tříhlavá · Vij · Kostěj Nesmrtelný · …</div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="rock" id="bestiary">
+  <div class="wrap">
+    <h2><span lang="en">Out of the old tales</span><span lang="cs">Ze starých pověstí</span></h2>
+    <p class="lead"><span lang="en">Twenty-four kinds of creature, every one from Czech and Slavic folklore, plus elite packs with names like Bonebreaker.</span><span lang="cs">Čtyřiadvacet druhů stvoření, všechna z českých a slovanských pověstí, a k tomu elitní smečky se jmény jako Lamač kostí.</span></p>
+    <div class="strip">
+      <div class="beast"><img src="img/m_sotek.png" alt=""><b>Šotek</b><span lang="en">steals your groschen</span><span lang="cs">krade groše</span></div>
+      <div class="beast"><img src="img/m_kostlivy_havir.png" alt=""><b>Kostlivý havíř</b><span lang="en">the miners who stayed</span><span lang="cs">havíři, co zůstali</span></div>
+      <div class="beast"><img src="img/m_bludicka.png" alt=""><b>Bludička</b><span lang="en">will-o'-the-wisp</span><span lang="cs">svede tě z cesty</span></div>
+      <div class="beast"><img src="img/m_utopenec.png" alt=""><b>Utopenec</b><span lang="en">the drowned</span><span lang="cs">ze zatopených štol</span></div>
+      <div class="beast"><img src="img/m_hejkal.png" alt=""><b>Hejkal</b><span lang="en">shouts, then charges</span><span lang="cs">zahouká a vyrazí</span></div>
+      <div class="beast"><img src="img/m_vlkodlak.png" alt=""><b>Vlkodlak</b><span lang="en">werewolf</span><span lang="cs">zuří, když krvácí</span></div>
+      <div class="beast"><img src="img/m_mura.png" alt=""><b>Můra</b><span lang="en">drinks your mana</span><span lang="cs">vysaje manu</span></div>
+      <div class="beast"><img src="img/m_cert.png" alt=""><b>Čert</b><span lang="en">chain hook</span><span lang="cs">přitáhne řetězem</span></div>
+      <div class="beast"><img src="img/m_ohnivy_muzik.png" alt=""><b>Ohnivý mužík</b><span lang="en">runs in and explodes</span><span lang="cs">přiběhne a vybuchne</span></div>
+      <div class="beast"><img src="img/m_svetlonos.png" alt=""><b>Světlonoš</b><span lang="en">eats your light</span><span lang="cs">sní ti světlo</span></div>
+      <div class="beast"><img src="img/m_upir.png" alt=""><b>Upír</b><span lang="en">life steal</span><span lang="cs">pije život</span></div>
+      <div class="beast"><img src="img/m_navka.png" alt=""><b>Navka</b><span lang="en">dead maiden of Nav</span><span lang="cs">mrtvá dívka z Navi</span></div>
+      <div class="beast"><img src="img/m_cerny_pes.png" alt=""><b>Černý pes</b><span lang="en">the crossroads dog</span><span lang="cs">pes z rozcestí</span></div>
+      <div class="beast"><img src="img/m_permonicek.png" alt=""><b>Permoníček</b><span lang="en">so cute. so many knives.</span><span lang="cs">roztomilý. a s nožem.</span></div>
+    </div>
+
+    <h2 style="margin-top:70px"><span lang="en">Guardians of the seals</span><span lang="cs">Strážci pečetí</span></h2>
+    <p class="lead"><span lang="en">Thirteen scripted boss fights, each with its own trick. And one more, at the very bottom.</span><span lang="cs">Třináct bossů, každý s vlastní fintou. A ještě jeden, úplně na dně.</span></p>
+    <div class="bosses">
+      <div class="boss"><img src="img/boss_klekanice.png" alt="" loading="lazy"><span class="act-tag">I</span><h3>Klekánice</h3><p lang="en">Can only be hurt inside your lamplight.</p><p lang="cs">Zranit ji můžeš jen ve světle kahanu.</p></div>
+      <div class="boss"><img src="img/boss_kostnik.png" alt="" loading="lazy"><span class="act-tag">I</span><h3>Kostník ze Sedlce</h3><p lang="en">Forty thousand bones. He puts himself back together.</p><p lang="cs">Čtyřicet tisíc kostí. Složí se znovu.</p></div>
+      <div class="boss"><img src="img/boss_vodnik.png" alt="" loading="lazy"><span class="act-tag">I</span><h3>Vodník</h3><p lang="en">Smash the teacups, free the souls, stop his healing.</p><p lang="cs">Rozbij hrníčky, osvoboď dušičky, zastav jeho léčení.</p></div>
+      <div class="boss"><img src="img/boss_megera.png" alt="" loading="lazy"><span class="act-tag">II</span><h3>Megera</h3><p lang="en">The witch of Brdy, hopping between cauldrons.</p><p lang="cs">Brdská čarodějnice, skáče mezi kotli.</p></div>
+      <div class="boss"><img src="img/boss_prokop.png" alt="" loading="lazy"><span class="act-tag">II</span><h3>Divoký Prokop</h3><p lang="en">Charges on a skeleton horse. Make him hit the wall.</p><p lang="cs">Řítí se na kostlivém koni. Ať narazí do zdi.</p></div>
+      <div class="boss"><img src="img/boss_bazilisek.png" alt="" loading="lazy"><span class="act-tag">II</span><h3>Bazilišek</h3><p lang="en">His gaze turns you to stone. Hide, or use a mirror.</p><p lang="cs">Jeho pohled zkamení. Schovej se, nebo vezmi zrcadlo.</p></div>
+      <div class="boss"><img src="img/boss_strzyga.png" alt="" loading="lazy"><span class="act-tag">III</span><h3>Strzyga</h3><p lang="en">Two hearts, two souls, two deaths.</p><p lang="cs">Dvě srdce, dvě duše, dvě smrti.</p></div>
+      <div class="boss"><img src="img/boss_ohnivec.png" alt="" loading="lazy"><span class="act-tag">III</span><h3>Mincíř Ohnivec</h3><p lang="en">Throws burning thalers. Some gold piles bite.</p><p lang="cs">Hází hořící tolary. Některé hromádky zlata koušou.</p></div>
+      <div class="boss"><img src="img/boss_jezibaba.png" alt="" loading="lazy"><span class="act-tag">III</span><h3>Ježibaba</h3><p lang="en">Her hut walks and kicks. Keep the oven cold.</p><p lang="cs">Chaloupka chodí a kope. Nedej peci rozpálit se.</p></div>
+      <div class="boss"><img src="img/boss_san.png" alt="" loading="lazy"><span class="act-tag">IV</span><h3>Saň Tříhlavá</h3><p lang="en">Cut off a head, then burn the stump.</p><p lang="cs">Usekni hlavu a vypal pahýl.</p></div>
+      <div class="boss"><img src="img/boss_vij.png" alt="" loading="lazy"><span class="act-tag">IV</span><h3>Vij</h3><p lang="en">“Lift my eyelids!” Don't let them.</p><p lang="cs">„Zvedněte mi víčka!“ Nedovol jim to.</p></div>
+      <div class="boss"><img src="img/boss_kostej.png" alt="" loading="lazy"><span class="act-tag">IV</span><h3>Kostěj Nesmrtelný</h3><p lang="en">The needle, in the egg, in the duck, in the hare…</p><p lang="cs">Jehla ve vejci, vejce v kachně, kachna v zajíci…</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="loot">
+  <div class="wrap split">
+    <div>
+      <h2><span lang="en">Loot, the old way</span><span lang="cs">Kořist postaru</span></h2>
+      <p class="lead" lang="en">Grid inventory, unidentified magic items, durability and the smith's bill. Prefixes from the old gods,
+        so you might find Perun's axe of the Wolf. Your lamp is gear too: it decides how far you see.</p>
+      <p class="lead" lang="cs">Mřížkový inventář, neidentifikované kouzelné věci, opotřebení a účet u kováře. Předpony po starých bozích,
+        takže najdeš třeba Perunovu sekeru vlka. I kahan je výbava: rozhoduje, jak daleko uvidíš.</p>
+      <div class="rarity"><span class="n"><span lang="en">normal</span><span lang="cs">obyčejné</span></span><span class="m"><span lang="en">magic</span><span lang="cs">kouzelné</span></span><span class="u"><span lang="en">unique</span><span lang="cs">jedinečné</span></span></div>
+      <div class="loot">
+        <img src="img/item_krumpac.png" alt="pick-axe"><img src="img/item_valaska.png" alt="valaška"><img src="img/item_kuse.png" alt="crossbow"><img src="img/item_hul.png" alt="staff">
+        <img src="img/item_havirsky_kahan.png" alt="miner's lamp"><img src="img/item_permonikuv_kahan.png" alt="Permoník's lamp"><img src="img/item_lunice.png" alt="lunula amulet"><img src="img/item_kaptorga.png" alt="kaptorga amulet">
+        <img src="img/item_ziva_voda.png" alt="water of life"><img src="img/item_svatojanska_rosa.png" alt="St John's dew"><img src="img/item_kapradi_kvet.png" alt="fern flower"><img src="img/item_grose_hromadka.png" alt="Prague groschen">
+      </div>
+    </div>
+    <img class="shot" src="screenshots/inventory.jpg" alt="Character sheet and inventory" loading="lazy">
+  </div>
+  <div class="wrap facts">
+    <div class="fact"><b>4</b><span lang="en">acts</span><span lang="cs">dějství</span></div>
+    <div class="fact"><b>17</b><span lang="en">mine levels</span><span lang="cs">pater dolů</span></div>
+    <div class="fact"><b>13</b><span lang="en">boss fights</span><span lang="cs">bossů</span></div>
+    <div class="fact"><b>36</b><span lang="en">skills</span><span lang="cs">dovedností</span></div>
+    <div class="fact"><b>100</b><span lang="en">levels</span><span lang="cs">úrovní</span></div>
+    <div class="fact"><b>3</b><span lang="en">difficulties</span><span lang="cs">obtížnosti</span></div>
+  </div>
+</section>
+
+<section class="rock" id="gallery">
+  <div class="wrap">
+    <h2><span lang="en">From the mines</span><span lang="cs">Z dolů</span></h2>
+    <div class="gallery">
+      <figure><img class="shot" src="screenshots/town.jpg" alt="Kutná Hora at dusk" loading="lazy"><figcaption>Kutná Hora</figcaption></figure>
+      <figure><img class="shot" src="screenshots/mine.jpg" alt="Důl Osel by lamplight" loading="lazy"><figcaption><span lang="en">Only as far as your lamp</span><span lang="cs">Jen kam dosvítí kahan</span></figcaption></figure>
+      <figure><img class="shot" src="screenshots/vodnik.jpg" alt="Fighting Vodník" loading="lazy"><figcaption>Vodník</figcaption></figure>
+      <figure><img class="shot" src="screenshots/jezibaba.jpg" alt="Ježibaba's lair" loading="lazy"><figcaption>Ježibaba</figcaption></figure>
+      <figure><img class="shot" src="screenshots/san.jpg" alt="The three-headed dragon" loading="lazy"><figcaption>Saň Tříhlavá</figcaption></figure>
+      <figure><img class="shot" src="screenshots/skills.jpg" alt="Skill trees" loading="lazy"><figcaption><span lang="en">Skill trees</span><span lang="cs">Stromy dovedností</span></figcaption></figure>
+      <figure><img class="shot" src="screenshots/nav.jpg" alt="The camp of the dead in Nav" loading="lazy"><figcaption><span lang="en">The camp in Nav</span><span lang="cs">Tábor v Navi</span></figcaption></figure>
+      <figure><img class="shot" src="img/slide_intro_2.jpg" alt="Miners going down the Osel shaft" loading="lazy"><figcaption><span lang="en">Story slides between acts</span><span lang="cs">Obrazy mezi dějstvími</span></figcaption></figure>
+      <figure><img class="shot" src="screenshots/menu.jpg" alt="Main menu" loading="lazy"><figcaption><span lang="en">Main menu</span><span lang="cs">Hlavní nabídka</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="crafted">
+  <div class="wrap split">
+    <img class="shot" src="img/slide_act1_end.jpg" alt="Souls rising from broken teacups" loading="lazy">
+    <div>
+      <h2><span lang="en">Drawn at home</span><span lang="cs">Kresleno doma</span></h2>
+      <p class="lead" lang="en">Every picture in the game is drawn by code, in the same pencil-and-crayon style as our family's comic books.
+        The wobble of the line and the faces come from Dad's own pencil sheets; the colouring comes from crayon scans
+        made by his daughters. Just darker this time.</p>
+      <p class="lead" lang="cs">Každý obrázek ve hře nakreslil kód, stejnou tužkou a pastelkami jako naše rodinné komiksy. Chvění čáry a obličeje
+        pocházejí z tátových tužkových listů, vybarvení z naskenovaných pastelek jeho dcer. Jen tentokrát temněji.</p>
+      <p lang="en">The music is synthesised too: a cimbalom, bagpipe drones, a choir and the bell of Kutná Hora, all made from maths, no samples.</p>
+      <p lang="cs">Hudba je taky syntetizovaná: cimbál, dudy, sbor a zvon Kutné Hory, všechno z matematiky, bez nahrávek.</p>
+      <div class="swatches"><img src="img/kosmas.png" alt="Kosmas the chronicler"><img src="img/fabian.png" alt="Fabián, the spirit of Brdy"><img src="img/modla_perun.png" alt="Idol of Perun"></div>
+    </div>
+  </div>
+</section>
+
+<section class="play" id="play">
+  <div class="wrap">
+    <h2><span lang="en">Descend</span><span lang="cs">Sestup</span></h2>
+    <p class="lead" style="margin-inline:auto"><span lang="en">Free, with open-source code. Downloads for Linux and Windows are coming; until then, run it from source with Godot.</span><span lang="cs">Zdarma, kód je otevřený. Ke stažení pro Linux a Windows brzy; zatím si ji spusť ze zdrojáku v Godotu.</span></p>
+    <div class="ctas">
+      <a class="btn" href="https://github.com/redrick/permonik"><span lang="en">Source code</span><span lang="cs">Zdrojový kód</span> ▸</a>
+      <a class="btn alt" aria-disabled="true" href="#"><span lang="en">itch.io</span><span lang="cs">itch.io</span> <small><span lang="en">soon</span><span lang="cs">brzy</span></small></a>
+    </div>
+    <pre># <span lang="en">run it from source</span><span lang="cs">spusť ze zdrojáku</span> (Godot 4.6.3)
+git clone https://github.com/redrick/permonik
+godot --path permonik/game</pre>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap cols">
+    <div>
+      <ul>
+        <li><span lang="en">Story, design and drawing: Andrej Antas and family</span><span lang="cs">Příběh, návrh a kresba: Andrej Antas a rodina</span></li>
+        <li><span lang="en">Folklore: Czech and Slavic legends (public domain), the royal mining law of Kutná Hora (1300), Brdy tales</span><span lang="cs">Pověsti: české a slovanské báje (volné dílo), Horní právo krále Václava II. (1300), brdské pověsti</span></li>
+        <li><span lang="en">Fonts</span><span lang="cs">Písma</span>: Bangers, Patrick Hand (OFL) · <span lang="en">Built with</span><span lang="cs">Postaveno v</span> <a href="https://godotengine.org">Godot Engine</a></li>
+      </ul>
+    </div>
+    <div>
+      <p><span lang="en">Code and game data: MIT. Art and audio: </span><span lang="cs">Kód a herní data: MIT. Grafika a zvuk: </span><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>.</p>
+      <p><a href="https://github.com/redrick/permonik">github.com/redrick/permonik</a></p>
+    </div>
+  </div>
+</footer>
+
+<dialog id="lightbox"><img alt=""></dialog>
+
+<script>
+  const root = document.documentElement;
+  function setLang(l) {
+    root.dataset.lang = l;
+    root.lang = l;
+    document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', b.dataset.set === l));
+    try { localStorage.setItem('lang', l); } catch (e) {}
+  }
+  let saved = null;
+  try { saved = localStorage.getItem('lang'); } catch (e) {}
+  document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.set)));
+  setLang(saved || ((navigator.language || '').startsWith('cs') ? 'cs' : 'en'));
+
+  // the cursor is your lamp
+  const hero = document.querySelector('.hero');
+  hero.addEventListener('pointermove', e => {
+    const r = hero.getBoundingClientRect();
+    hero.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+    hero.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  });
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce) {
+    let t = 0;
+    (function flicker() { t += 1; hero.style.setProperty('--r', (250 + Math.sin(t * .21) * 8 + Math.random() * 10) + 'px'); setTimeout(flicker, 90); })();
+    for (let k = 0; k < 14; k++) {
+      const em = document.createElement('i');
+      em.className = 'ember';
+      em.style.left = Math.random() * 100 + '%';
+      em.style.animationDuration = 8 + Math.random() * 10 + 's';
+      em.style.animationDelay = -Math.random() * 18 + 's';
+      em.style.setProperty('--dx', (Math.random() * 80 - 40) + 'px');
+      hero.appendChild(em);
+    }
+  }
+
+  const box = document.getElementById('lightbox');
+  document.querySelectorAll('img.shot').forEach(img => img.addEventListener('click', () => {
+    box.querySelector('img').src = img.src;
+    box.querySelector('img').alt = img.alt;
+    box.showModal();
+  }));
+  box.addEventListener('click', () => box.close());
+</script>
+</body>
+</html>

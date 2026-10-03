@@ -1,0 +1,36 @@
+{
+  "intro": [
+    {"image": "intro_1", "text": {"cs": "Léta Páně, kdy stříbro rostlo z Hory jako tráva, zmlkl jednoho večera zvon na věži. Nikdo nezazvonil klekání. Nikdo nešel domů.", "en": "In the years when silver grew out of the Mountain like grass, one evening the bell in the tower fell silent. No one rang the evening Angelus. No one went home."}},
+    {"image": "intro_2", "text": {"cs": "Toho dne sjelo do Dolu Osel padesát havířů. Padesát kahanů se houpalo dolů do tmy, dvě stě padesát sáhů pod Kutnou Horou. Ani jeden se nevrátil.", "en": "That day fifty miners went down into the Osel Mine. Fifty lamps swayed down into the dark, two hundred and fifty fathoms beneath Kutná Hora. Not one came back."}},
+    {"image": "intro_3", "text": {"cs": "U šachty čekal malý vousatý havíř s kahanem, který svítil studeně a modře. „Zdař… zdař hlubina,“ řekl a podal ti světlo. Nikdo si nevšiml, že pod ním na zemi nic neleží.", "en": "At the shaft head waited a small bearded miner with a lamp that burned cold and blue. “Good luck… good luck to the deep,” he said, and handed you the light. No one noticed that nothing lay on the ground beneath him."}}
+  ],
+  "act1_end": [
+    {"image": "act1_end", "text": {"cs": "Hrníčky se rozbily a z vody stoupaly dušičky jako bublinky, pomalu, jedna po druhé. Ve tvém kahanu přibyl plamínek, studený jako dno řeky.", "en": "The teacups broke, and from the water the little souls rose like bubbles, slowly, one after another. In your lamp a new flame kindled, cold as the bottom of a river."}},
+    {"image": "act1_end", "text": {"cs": "Malá utopená holčička se ve dveřích ohlédla. „Mužíček nás prosil, ať otevřeme hrníčky,“ zašeptala. „Proč tolik chtěl, ať jsme venku?“", "en": "A small drowned girl looked back from the doorway. “The little man begged us to open the cups,” she whispered. “Why did he want us out so badly?”"}}
+  ],
+  "act2_end": [
+    {"image": "act2_end", "text": {"cs": "Na kraji Brd stál v mlze Fabián a díval se, jak odcházíš. Kouř z jeho dýmky se celou dobu stáčel ke tvému kahanu.", "en": "At the edge of Brdy, Fabián stood in the fog and watched you leave. The smoke from his pipe curled towards your lamp the whole time."}},
+    {"image": "act2_end", "text": {"cs": "Hluboká cesta vedla na sever, pod Krušné hory. V kahanu teď svítily dva plamínky a mužíček si vedle tebe pobrukoval.", "en": "The deep road led north, beneath the Ore Mountains. Two flames burned in the lamp now, and the little man hummed to himself beside you."}}
+  ],
+  "act3_end": [
+    {"image": "act3_end", "text": {"cs": "Země se zavřela kámen po kameni a cesta nahoru zmizela, jako by nikdy nebyla. Zůstala jen tma, kahan se třemi plameny a malá ruka, která ti ukazovala dolů.", "en": "The earth closed, stone by stone, and the way up vanished as if it had never been. All that remained was darkness, a lamp with three flames, and a small hand pointing down."}},
+    {"image": "act3_end", "text": {"cs": "Na poslední chvíli skočil do škvíry starý Kosmas s knihou pod paží. „Kronikář, který nebyl u konce,“ funěl, „píše jen pověsti.“", "en": "At the last moment old Kosmas leapt through the closing gap, the book under his arm. “A chronicler who wasn't there at the end,” he panted, “writes only legends.”"}}
+  ],
+  "act4_intro": [
+    {"image": "act4_intro", "text": {"cs": "Pod kořeny světového stromu teče Smorodina, hořká a pomalá. Na jejím břehu sedí padesát havířů z Osla, každý se zhaslým kahanem v klíně.", "en": "Beneath the roots of the world tree flows the Smorodina, bitter and slow. On its bank sit the fifty miners of Osel, each with a dead lamp in his lap."}},
+    {"image": "act4_intro", "text": {"cs": "Říkají tomu Poslední šichta. Mužíček si přisedl k jejich ohni, který nehřeje, a od té chvíle už jen mlčí a usmívá se.", "en": "They call it the Last Shift. The little man sat down by their fire, which gives no warmth, and from that moment on he only smiles and says nothing."}}
+  ],
+  "final": [
+    {"image": "final_1", "text": {"cs": "V Srdci hory natáhl mužíček ruku a kahan, který nešel sundat, mu sám vklouzl do dlaně. Tma se sevřela kolem tebe. Uprostřed jeskyně visel tvůj kahan a hořely v něm čtyři pečeti.", "en": "In the Heart of the Mountain the little man held out his hand, and the lamp that would never come off slipped into his palm of its own accord. The darkness closed in around you. In the middle of the cave hung your lamp, burning with four seals."}},
+    {"image": "final_2", "text": {"cs": "Kahan praskl. Voda, kámen, oheň a smrt se rozlily do tmy a vrátily se tam, kam patřily. Permoník umíral smíchem: „Já byl jen vrátný, havíři. Desátek jsem nosil dál. Dolů.“", "en": "The lamp cracked. Water, stone, fire and death spilled into the dark and went back to where they belonged. Permoník died laughing: “I was only the doorkeeper, miner. I carried the tithe further. Down.”"}}
+  ],
+  "epilogue": [
+    {"image": "epilogue", "text": {"cs": "Toho večera zazvonil zvon na Hoře klekání. Lidé zavřeli okenice, děti doběhly domů a nikdo už nezůstal venku.", "en": "That evening the bell of the Mountain rang the evening Angelus. People closed their shutters, the children ran home, and no one was left outside."}},
+    {"image": "epilogue", "text": {"cs": "Hluboko pod nimi, v Navu, se jeden po druhém rozsvítilo padesát kahanů z Osla. Chvíli svítily jako na šichtě. Pak v pokoji zhasly.", "en": "Far beneath them, in Nav, the fifty lamps of Osel lit up one by one. For a while they shone as if on shift. Then, at peace, they went out."}},
+    {"image": "epilogue", "text": {"cs": "Kronikář Kosmas namočil pero a začal psát šestou knihu. Nebyl v ní žádný král a žádná smlouva. Jen jméno.", "en": "Kosmas the chronicler dipped his quill and began to write the sixth book. There was no king in it and no covenant. Only a name."}}
+  ],
+  "dlc_tease": [
+    {"image": "dlc_tease", "text": {"cs": "A pod Navem, kam nevede žádný most a kam nevozí žádný převozník, se ve tmě pohnulo obrovské zavřené oko. Desátek přestal chodit.", "en": "And beneath Nav, where no bridge leads and no ferryman goes, a vast closed eye stirred in the dark. The tithe had stopped coming."}},
+    {"image": "dlc_tease", "text": {"cs": "Černobog se probouzí.", "en": "Černobog is waking."}}
+  ]
+}

@@ -1,0 +1,371 @@
+{
+  "krysa": {
+    "name": {"cs": "Krysa z hlubin", "en": "Deep Rat"}, "gender": "f", "act": 1, "level": 1,
+    "ai": "swarm", "hp": 5, "dmg": [1, 3], "armor": 3, "speed": 110, "attack_range": 30, "attack_cd": 1.0,
+    "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 0, "poison": 25},
+    "xp_mult": 0.5, "size": 10, "pack": [5, 9], "projectile": null, "abilities": [], "light": null, "boss": false
+  },
+  "sotek": {
+    "name": {"cs": "Šotek", "en": "Mine Imp"}, "gender": "m", "act": 1, "level": 2,
+    "ai": "thief", "hp": 12, "dmg": [1, 4], "armor": 8, "speed": 125, "attack_range": 40, "attack_cd": 1.0,
+    "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 0, "poison": 0},
+    "xp_mult": 0.9, "size": 12, "pack": [2, 4], "projectile": null, "abilities": ["steal_gold"], "light": null, "boss": false
+  },
+  "kostlivy_havir": {
+    "name": {"cs": "Kostlivý havíř", "en": "Skeleton Miner"}, "gender": "m", "act": 1, "level": 2,
+    "ai": "melee", "hp": 18, "dmg": [2, 5], "armor": 10, "speed": 70, "attack_range": 50, "attack_cd": 1.4,
+    "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 25, "poison": 100},
+    "xp_mult": 1.0, "size": 18, "pack": [3, 6], "projectile": null, "abilities": [], "light": null, "boss": false
+  },
+  "kostlivy_kusinik": {
+    "name": {"cs": "Kostlivý kušiník", "en": "Skeleton Crossbowman"}, "gender": "m", "act": 1, "level": 3,
+    "ai": "ranged", "hp": 20, "dmg": [2, 6], "armor": 8, "speed": 70, "attack_range": 300, "attack_cd": 2.0,
+    "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 25, "poison": 100},
+    "xp_mult": 1.1, "size": 18, "pack": [2, 4], "projectile": "bolt", "abilities": [], "light": null, "boss": false
+  },
+  "netopyr": {
+    "name": {"cs": "Netopýr", "en": "Bat"}, "gender": "m", "act": 1, "level": 3,
+    "ai": "flyer", "hp": 12, "dmg": [1, 4], "armor": 12, "speed": 150, "attack_range": 30, "attack_cd": 0.9,
+    "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 0, "poison": 0},
+    "xp_mult": 0.6, "size": 10, "pack": [4, 8], "projectile": null, "abilities": [], "light": null, "boss": false
+  },
+  "bludicka": {
+    "name": {"cs": "Bludička", "en": "Will-o'-the-Wisp"}, "gender": "f", "act": 1, "level": 5,
+    "ai": "caster", "hp": 32, "dmg": [3, 9], "armor": 30, "speed": 90, "attack_range": 260, "attack_cd": 1.8,
+    "element": "lightning", "resist": {"fire": 25, "lightning": 75, "cold": 0, "poison": 100},
+    "xp_mult": 1.5, "size": 14, "pack": [1, 3], "projectile": "spark", "abilities": ["teleport", "lure"],
+    "light": {"color": "#c8f0d8", "radius": 2}, "boss": false
+  },
+  "utopenec": {
+    "name": {"cs": "Utopenec", "en": "Drowned One"}, "gender": "m", "act": 1, "level": 6,
+    "ai": "melee", "hp": 90, "dmg": [5, 12], "armor": 25, "speed": 55, "attack_range": 55, "attack_cd": 1.6,
+    "element": "cold", "resist": {"fire": 0, "lightning": 0, "cold": 50, "poison": 25},
+    "xp_mult": 1.6, "size": 22, "pack": [2, 5], "projectile": null, "abilities": [], "light": null, "boss": false
+  },
+
+  "hejkal": {
+    "name": {"cs": "Hejkal", "en": "Hejkal"}, "gender": "m", "act": 2, "level": 9,
+    "ai": "charger", "hp": 130, "dmg": [9, 20], "armor": 40, "speed": 85, "attack_range": 55, "attack_cd": 1.5,
+    "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 25, "poison": 0},
+    "xp_mult": 1.4, "size": 26, "pack": [1, 3], "projectile": null, "abilities": ["shout"], "light": null, "boss": false
+  },
+  "vlk": {
+    "name": {"cs": "Vlk", "en": "Wolf"}, "gender": "m", "act": 2, "level": 9,
+    "ai": "swarm", "hp": 75, "dmg": [6, 14], "armor": 35, "speed": 140, "attack_range": 45, "attack_cd": 1.1,
+    "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 25, "poison": 0},
+    "xp_mult": 0.9, "size": 18, "pack": [4, 7], "projectile": null, "abilities": [], "light": null, "boss": false
+  },
+  "diva_zena": {
+    "name": {"cs": "Divá žena", "en": "Wild Woman"}, "gender": "f", "act": 2, "level": 10,
+    "ai": "ranged", "hp": 100, "dmg": [7, 16], "armor": 35, "speed": 80, "attack_range": 260, "attack_cd": 2.0,
+    "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 0, "poison": 25},
+    "xp_mult": 1.3, "size": 18, "pack": [2, 4], "projectile": "rock", "abilities": ["heal_pack"], "light": null, "boss": false
+  },
+  "mura": {
+    "name": {"cs": "Můra", "en": "Mora"}, "gender": "f", "act": 2, "level": 11,
+    "ai": "flyer", "hp": 95, "dmg": [6, 15], "armor": 45, "speed": 110, "attack_range": 40, "attack_cd": 1.3,
+    "element": "physical", "resist": {"fire": 0, "lightning": 25, "cold": 25, "poison": 0},
+    "xp_mult": 1.4, "size": 18, "pack": [1, 3], "projectile": null, "abilities": ["drain_mana", "through_walls"], "light": null, "boss": false
+  },
+  "bubak": {
+    "name": {"cs": "Bubák", "en": "Bogeyman"}, "gender": "m", "act": 2, "level": 12,
+    "ai": "phaser", "hp": 140, "dmg": [10, 22], "armor": 50, "speed": 90, "attack_range": 50, "attack_cd": 1.5,
+    "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 50, "poison": 50},
+    "xp_mult": 1.6, "size": 22, "pack": [1, 2], "projectile": null, "abilities": ["teleport", "fear"], "light": null, "boss": false
+  },
+  "kamenny_had": {
+    "name": {"cs": "Kamenný had", "en": "Stone Serpent"}, "gender": "m", "act": 2, "level": 13,
+    "ai": "ranged", "hp": 230, "dmg": [12, 24], "armor": 120, "speed": 45, "attack_range": 220, "attack_cd": 2.2,
+    "element": "physical", "resist": {"fire": 25, "lightning": 50, "cold": 0, "poison": 100},
+    "xp_mult": 1.8, "size": 24, "pack": [1, 3], "projectile": "rock", "abilities": ["petrify_spit"], "light": null, "boss": false
+  },
+  "vlkodlak": {
+    "name": {"cs": "Vlkodlak", "en": "Werewolf"}, "gender": "m", "act": 2, "level": 14,
+    "ai": "melee", "hp": 280, "dmg": [16, 34], "armor": 70, "speed": 120, "attack_range": 60, "attack_cd": 1.3,
+    "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 25, "poison": 25},
+    "xp_mult": 2.2, "size": 30, "pack": [1, 2], "projectile": null, "abilities": ["frenzy", "howl"], "light": null, "boss": false
+  },
+
+  "cert": {
+    "name": {"cs": "Čert", "en": "Devil"}, "gender": "m", "act": 3, "level": 16,
+    "ai": "melee", "hp": 290, "dmg": [16, 34], "armor": 85, "speed": 80, "attack_range": 60, "attack_cd": 1.5,
+    "element": "physical", "resist": {"fire": 75, "lightning": 0, "cold": 0, "poison": 25},
+    "xp_mult": 1.8, "size": 22, "pack": [2, 4], "projectile": null, "abilities": ["chain_pull"], "light": null, "boss": false
+  },
+  "ohnivy_muzik": {
+    "name": {"cs": "Ohnivý mužík", "en": "Fire Sprite"}, "gender": "m", "act": 3, "level": 16,
+    "ai": "exploder", "hp": 120, "dmg": [20, 40], "armor": 40, "speed": 130, "attack_range": 40, "attack_cd": 1.0,
+    "element": "fire", "resist": {"fire": 100, "lightning": 0, "cold": 0, "poison": 50},
+    "xp_mult": 1.3, "size": 12, "pack": [3, 6], "projectile": null, "abilities": ["explode"],
+    "light": {"color": "#ff9a40", "radius": 2}, "boss": false
+  },
+  "svetlonos": {
+    "name": {"cs": "Světlonoš", "en": "Lantern Bearer"}, "gender": "m", "act": 3, "level": 18,
+    "ai": "caster", "hp": 240, "dmg": [14, 30], "armor": 70, "speed": 70, "attack_range": 280, "attack_cd": 2.0,
+    "element": "fire", "resist": {"fire": 50, "lightning": 25, "cold": 0, "poison": 100},
+    "xp_mult": 2.0, "size": 20, "pack": [1, 3], "projectile": "soul", "abilities": ["light_drain"],
+    "light": {"color": "#ffb347", "radius": 3}, "boss": false
+  },
+  "upir": {
+    "name": {"cs": "Upír", "en": "Vampire"}, "gender": "m", "act": 3, "level": 19,
+    "ai": "melee", "hp": 330, "dmg": [18, 38], "armor": 90, "speed": 95, "attack_range": 55, "attack_cd": 1.3,
+    "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 50, "poison": 100},
+    "xp_mult": 2.2, "size": 20, "pack": [1, 3], "projectile": null, "abilities": ["life_steal", "bat_form"], "light": null, "boss": false
+  },
+  "smolak": {
+    "name": {"cs": "Smolák", "en": "Pitch Golem"}, "gender": "m", "act": 3, "level": 21,
+    "ai": "melee", "hp": 520, "dmg": [22, 46], "armor": 140, "speed": 50, "attack_range": 60, "attack_cd": 1.8,
+    "element": "poison", "resist": {"fire": 0, "lightning": 25, "cold": 25, "poison": 100},
+    "xp_mult": 2.6, "size": 30, "pack": [1, 2], "projectile": null, "abilities": ["poison_pool"],
+    "light": {"color": "#7dff6a", "radius": 2}, "boss": false
+  },
+
+  "navka": {
+    "name": {"cs": "Navka", "en": "Navka"}, "gender": "f", "act": 4, "level": 24,
+    "ai": "phaser", "hp": 360, "dmg": [22, 44], "armor": 110, "speed": 90, "attack_range": 280, "attack_cd": 1.8,
+    "element": "cold", "resist": {"fire": 0, "lightning": 25, "cold": 75, "poison": 50},
+    "xp_mult": 2.2, "size": 18, "pack": [2, 4], "projectile": "ice_shard", "abilities": ["teleport"],
+    "light": {"color": "#a9c8e8", "radius": 2}, "boss": false
+  },
+  "cerny_pes": {
+    "name": {"cs": "Černý pes", "en": "Black Dog"}, "gender": "m", "act": 4, "level": 24,
+    "ai": "charger", "hp": 300, "dmg": [20, 40], "armor": 100, "speed": 160, "attack_range": 45, "attack_cd": 1.0,
+    "element": "physical", "resist": {"fire": 50, "lightning": 0, "cold": 25, "poison": 25},
+    "xp_mult": 1.6, "size": 18, "pack": [3, 6], "projectile": null, "abilities": ["howl"], "light": null, "boss": false
+  },
+  "permonicek": {
+    "name": {"cs": "Permoníček", "en": "Little Permoník"}, "gender": "m", "act": 4, "level": 25,
+    "ai": "swarm", "hp": 160, "dmg": [14, 30], "armor": 90, "speed": 130, "attack_range": 35, "attack_cd": 0.9,
+    "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 50, "poison": 25},
+    "xp_mult": 0.9, "size": 10, "pack": [6, 12], "projectile": null, "abilities": ["steal_gold"], "light": null, "boss": false
+  },
+  "bes": {
+    "name": {"cs": "Bes", "en": "Demon"}, "gender": "m", "act": 4, "level": 27,
+    "ai": "caster", "hp": 480, "dmg": [26, 52], "armor": 130, "speed": 75, "attack_range": 300, "attack_cd": 2.0,
+    "element": "fire", "resist": {"fire": 50, "lightning": 50, "cold": 0, "poison": 25},
+    "xp_mult": 2.8, "size": 26, "pack": [1, 3], "projectile": "firebolt", "abilities": ["curse"], "light": null, "boss": false
+  },
+  "kostejuv_nesmrtelny": {
+    "name": {"cs": "Kostějův nesmrtelný", "en": "Koschei's Deathless"}, "gender": "m", "act": 4, "level": 28,
+    "ai": "melee", "hp": 620, "dmg": [30, 60], "armor": 220, "speed": 70, "attack_range": 60, "attack_cd": 1.5,
+    "element": "physical", "resist": {"fire": 0, "lightning": 25, "cold": 50, "poison": 100},
+    "xp_mult": 3.0, "size": 24, "pack": [2, 4], "projectile": null, "abilities": ["revive"], "light": null, "boss": false
+  },
+
+  "klekanice": {
+    "name": {"cs": "Klekánice", "en": "Klekánice"}, "gender": "f", "act": 1, "level": 3,
+    "ai": "boss", "hp": 280, "dmg": [5, 12], "armor": 20, "speed": 80, "attack_range": 60, "attack_cd": 1.6,
+    "element": "cold", "resist": {"fire": 0, "lightning": 0, "cold": 50, "poison": 50},
+    "xp_mult": 12, "size": 30, "pack": [1, 1], "projectile": null, "abilities": ["fade", "light_only", "bell_summon"],
+    "light": null, "boss": true,
+    "title": {"cs": "Paní po klekání", "en": "Lady After the Evening Bell"},
+    "lines": {
+      "aggro": {"cs": "Zvon mlčí, dítě. Kdo je venku po klekání, ten je můj.", "en": "The bell is silent, child. Whoever is out after the evening bell is mine."},
+      "half": {"cs": "Tvoje světýlko je studené… Kdo ti ho dal?", "en": "Your little light is cold… Who gave it to you?"},
+      "death": {"cs": "Já brala jen ty, co nešli domů… Ten tvůj si vezme všechny.", "en": "I only took the ones who didn't go home… Yours will take them all."}
+    },
+    "drops": ["klekanicina_rouska"]
+  },
+  "kostnik": {
+    "name": {"cs": "Kostník ze Sedlce", "en": "Kostník of Sedlec"}, "gender": "m", "act": 1, "level": 5,
+    "ai": "boss", "hp": 650, "dmg": [8, 18], "armor": 45, "speed": 60, "attack_range": 70, "attack_cd": 1.8,
+    "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 50, "poison": 100},
+    "xp_mult": 18, "size": 40, "pack": [1, 1], "projectile": "bone", "abilities": ["raise_dead", "reassemble"],
+    "light": null, "boss": true,
+    "title": {"cs": "Pán čtyřiceti tisíc kostí", "en": "Lord of Forty Thousand Bones"},
+    "lines": {
+      "aggro": {"cs": "Čtyřicet tisíc kostí — a pro ty tvoje se ještě najde místo.", "en": "Forty thousand bones — and there is still room for yours."},
+      "half": {"cs": "Rozházej mě, jak chceš. Složím se. Vždycky se složím.", "en": "Scatter me all you like. I'll put myself together. I always do."},
+      "death": {"cs": "Ten… se světýlkem… ten nemá stín.", "en": "The one… with the little light… he has no shadow."}
+    },
+    "drops": ["kostnikova_koruna"]
+  },
+  "vodnik": {
+    "name": {"cs": "Vodník Hastrman", "en": "Hastrman the Water Goblin"}, "gender": "m", "act": 1, "level": 7,
+    "ai": "boss", "hp": 1150, "dmg": [10, 24], "armor": 60, "speed": 70, "attack_range": 65, "attack_cd": 1.6,
+    "element": "cold", "resist": {"fire": 25, "lightning": 0, "cold": 75, "poison": 50},
+    "xp_mult": 25, "size": 40, "pack": [1, 1], "projectile": null, "abilities": ["heal_in_water", "soul_cups"],
+    "light": null, "boss": true, "seal": "voda",
+    "title": {"cs": "Strážce Vodní pečeti", "en": "Warden of the Water Seal"},
+    "lines": {
+      "aggro": {"cs": "Každá dušička má svůj hrníček. Pro tebe mám ten s puntíky.", "en": "Every little soul gets a teacup. I've saved the spotted one for you."},
+      "half": {"cs": "Nerozbíjej mi je! Já je nedržím pro sebe — já je držím před ním!", "en": "Don't break them! I'm not keeping them for myself — I'm keeping them from him!"},
+      "death": {"cs": "Voda… drží jeho žíly… a tys ji právě vylil, hlupáku.", "en": "Water… holds his veins… and you've just spilled it, you fool."}
+    },
+    "drops": ["hastrmanuv_hrnek"]
+  },
+  "megera": {
+    "name": {"cs": "Megera", "en": "Megera"}, "gender": "f", "act": 2, "level": 11,
+    "ai": "boss", "hp": 1750, "dmg": [14, 30], "armor": 70, "speed": 75, "attack_range": 280, "attack_cd": 1.8,
+    "element": "poison", "resist": {"fire": 25, "lightning": 25, "cold": 25, "poison": 75},
+    "xp_mult": 30, "size": 30, "pack": [1, 1], "projectile": "soul", "abilities": ["curse", "wolf_minions", "teleport"],
+    "light": null, "boss": true,
+    "title": {"cs": "Brdská čarodějnice", "en": "The Witch of Brdy"},
+    "lines": {
+      "aggro": {"cs": "Posílá tě Medulína? Ta hodná? Hodné holky mají hodné hroby.", "en": "Did Medulína send you? The good one? Good girls get good graves."},
+      "half": {"cs": "Proklínám tě! A víš, co je horší? Ten, kdo tě sem poslal, mě předběhl.", "en": "I curse you! And you know what's worse? The one who sent you got there first."},
+      "death": {"cs": "Kletba aspoň přizná, co je zač… Jeho úsměv ne.", "en": "A curse at least admits what it is… His smile doesn't."}
+    },
+    "drops": ["megerina_berla"]
+  },
+  "prokop": {
+    "name": {"cs": "Divoký Prokop z Valdeka", "en": "Wild Prokop of Valdek"}, "gender": "m", "act": 2, "level": 13,
+    "ai": "boss", "hp": 2350, "dmg": [20, 42], "armor": 160, "speed": 150, "attack_range": 80, "attack_cd": 1.6,
+    "element": "physical", "resist": {"fire": 0, "lightning": 25, "cold": 25, "poison": 100},
+    "xp_mult": 40, "size": 50, "pack": [1, 1], "projectile": null, "abilities": ["charge"],
+    "light": null, "boss": true,
+    "title": {"cs": "Divoký jezdec", "en": "The Wild Rider"},
+    "lines": {
+      "aggro": {"cs": "Valdek padl, ale já jedu dál! Uhni z cesty, nebo půjdeš pod kopyta!", "en": "Valdek fell, but I ride on! Out of my way, or under the hooves!"},
+      "half": {"cs": "Tři sta let objíždím tyhle chodby. Hlídám. Víš vůbec, koho hlídám?", "en": "Three hundred years I've ridden these galleries. On watch. Do you even know who I'm watching?"},
+      "death": {"cs": "Kůň… stojí… Teď už ho nikdo nehlídá…", "en": "The horse… has stopped… Now no one is watching him…"}
+    },
+    "drops": ["prokopuv_palcat", "valdecky_krunyr"]
+  },
+  "bazilisek": {
+    "name": {"cs": "Bazilišek", "en": "Basilisk"}, "gender": "m", "act": 2, "level": 15,
+    "ai": "boss", "hp": 3050, "dmg": [22, 46], "armor": 200, "speed": 60, "attack_range": 90, "attack_cd": 1.8,
+    "element": "poison", "resist": {"fire": 25, "lightning": 25, "cold": 0, "poison": 100},
+    "xp_mult": 50, "size": 48, "pack": [1, 1], "projectile": null, "abilities": ["petrify_gaze"],
+    "light": null, "boss": true, "seal": "kamen",
+    "title": {"cs": "Strážce Kamenné pečeti", "en": "Warden of the Stone Seal"},
+    "lines": {
+      "aggro": {"cs": "Podívej se na mě. Jen jednou. Dlouho to bolet nebude.", "en": "Look at me. Just once. It won't hurt for long."},
+      "half": {"cs": "Kámen drží kosti hory. Lámeš mi kámen a ani nevíš proč.", "en": "Stone holds the mountain's bones. You're breaking my stone and you don't even know why."},
+      "death": {"cs": "Já ho držel kamenem. Kdo ho teď udrží?", "en": "I held him with stone. Who will hold him now?"}
+    },
+    "drops": ["baziliskovo_oko"]
+  },
+  "strzyga": {
+    "name": {"cs": "Strzyga", "en": "Strzyga"}, "gender": "f", "act": 3, "level": 18,
+    "ai": "boss", "hp": 3300, "dmg": [24, 50], "armor": 140, "speed": 100, "attack_range": 60, "attack_cd": 1.4,
+    "element": "cold", "resist": {"fire": 0, "lightning": 25, "cold": 50, "poison": 50},
+    "xp_mult": 55, "size": 34, "pack": [1, 1], "projectile": "ice_shard", "abilities": ["second_soul"],
+    "light": null, "boss": true,
+    "title": {"cs": "Ta se dvěma srdci", "en": "She of Two Hearts"},
+    "lines": {
+      "aggro": {"cs": "Dvě srdce, dvě duše. Jednu zabiješ — ta druhá si tě zapamatuje.", "en": "Two hearts, two souls. Kill one — the other will remember you."},
+      "half": {"cs": "To byla ta hodná. Teď poznáš tu druhou.", "en": "That was the kind one. Now meet the other."},
+      "death": {"cs": "I ty máš dvě tváře, poutníku. Jen tu druhou za tebe nosí on.", "en": "You have two faces too, wanderer. He just wears the other one for you."}
+    },
+    "drops": ["strzygina_dvojnice"]
+  },
+  "ohnivec": {
+    "name": {"cs": "Mincíř Ohnivec", "en": "Ohnivec the Minter"}, "gender": "m", "act": 3, "level": 20,
+    "ai": "boss", "hp": 4200, "dmg": [28, 56], "armor": 180, "speed": 65, "attack_range": 260, "attack_cd": 1.6,
+    "element": "fire", "resist": {"fire": 100, "lightning": 25, "cold": 0, "poison": 50},
+    "xp_mult": 60, "size": 40, "pack": [1, 1], "projectile": "coin", "abilities": ["fire_wave", "coin_mimic"],
+    "light": null, "boss": true,
+    "title": {"cs": "Pekelný mincmistr", "en": "Mintmaster of Hell"},
+    "lines": {
+      "aggro": {"cs": "Tolar sem, tolar tam! Chceš stříbro? Mám ho rozžhavené!", "en": "A thaler here, a thaler there! Want silver? I've got it red-hot!"},
+      "half": {"cs": "Tři sta let mu ražím desátek! Každá desátá mince — jeho!", "en": "Three hundred years I've minted his tithe! Every tenth coin — his!"},
+      "death": {"cs": "Desátek… vždycky jen desátek… a ty mu neseš všechno naráz.", "en": "The tithe… always just the tithe… and you're bringing him everything at once."}
+    },
+    "drops": ["ohnivcova_kovadlina"]
+  },
+  "jezibaba": {
+    "name": {"cs": "Ježibaba", "en": "Ježibaba"}, "gender": "f", "act": 3, "level": 22,
+    "ai": "boss", "hp": 4500, "dmg": [30, 62], "armor": 170, "speed": 75, "attack_range": 300, "attack_cd": 1.8,
+    "element": "fire", "resist": {"fire": 75, "lightning": 25, "cold": 0, "poison": 50},
+    "xp_mult": 70, "size": 34, "pack": [1, 1], "projectile": "firebolt", "abilities": ["oven", "summon_chaloupka"],
+    "light": null, "boss": true, "seal": "ohen",
+    "title": {"cs": "Strážkyně Ohnivé pečeti", "en": "Warden of the Fire Seal"},
+    "lines": {
+      "aggro": {"cs": "Pojď blíž, holoubku, ať si tě prohlédnu. Pec už je rozpálená.", "en": "Come closer, little dove, let me get a look at you. The oven's already hot."},
+      "half": {"cs": "Chaloupko, chaloupko, otoč se! Ať nás mladé masíčko pěkně zahřeje.", "en": "Little hut, little hut, turn around! Let the young meat warm us up nicely."},
+      "death": {"cs": "Já mu nesu oheň, holoubku. Ty mu neseš všechno.", "en": "I bring him fire, little dove. You're bringing him everything."}
+    },
+    "drops": ["jezibabina_lopata"]
+  },
+  "chaloupka": {
+    "name": {"cs": "Chaloupka na kuří nožce", "en": "Hut on a Chicken Leg"}, "gender": "f", "act": 3, "level": 22,
+    "ai": "melee", "hp": 2200, "dmg": [36, 70], "armor": 260, "speed": 60, "attack_range": 90, "attack_cd": 2.2,
+    "element": "physical", "resist": {"fire": 50, "lightning": 25, "cold": 25, "poison": 100},
+    "xp_mult": 20, "size": 56, "pack": [1, 1], "projectile": null, "abilities": ["kick"], "light": null, "boss": false
+  },
+  "san": {
+    "name": {"cs": "Saň Tříhlavá", "en": "The Three-Headed Saň"}, "gender": "f", "act": 4, "level": 26,
+    "ai": "boss", "hp": 6400, "dmg": [34, 70], "armor": 240, "speed": 50, "attack_range": 120, "attack_cd": 2.0,
+    "element": "fire", "resist": {"fire": 50, "lightning": 25, "cold": 50, "poison": 50},
+    "xp_mult": 90, "size": 64, "pack": [1, 1], "projectile": "firebolt", "abilities": ["three_heads", "regrow_heads"],
+    "light": null, "boss": true,
+    "title": {"cs": "Strážkyně Kalinova mostu", "en": "Warden of the Kalinov Bridge"},
+    "lines": {
+      "aggro": {"cs": "Přes Kalinův most nepřejde nic živého. Ani ty, ani to, co neseš.", "en": "Nothing living crosses the Kalinov bridge. Not you, and not what you carry."},
+      "half": {"cs": "Useknuté hlavy dorůstají. Ta tvoje nedoroste.", "en": "Severed heads grow back. Yours won't."},
+      "death": {"cs": "Tři hlavy… a ani jedna nepochopila, proč ten tvůj kahan tak studeně svítí…", "en": "Three heads… and not one of them understood why your lamp burns so cold…"}
+    },
+    "drops": ["sanin_kozich"]
+  },
+  "san_head": {
+    "name": {"cs": "Hlava Saně", "en": "Head of the Saň"}, "gender": "f", "act": 4, "level": 26,
+    "ai": "caster", "hp": 1200, "dmg": [24, 48], "armor": 200, "speed": 0, "attack_range": 260, "attack_cd": 2.5,
+    "element": "fire", "resist": {"fire": 50, "lightning": 25, "cold": 50, "poison": 50},
+    "xp_mult": 10, "size": 28, "pack": [1, 1], "projectile": "firebolt", "abilities": ["regrow"], "light": null, "boss": false
+  },
+  "vij": {
+    "name": {"cs": "Vij", "en": "Viy"}, "gender": "m", "act": 4, "level": 28,
+    "ai": "boss", "hp": 7600, "dmg": [40, 80], "armor": 300, "speed": 35, "attack_range": 100, "attack_cd": 2.4,
+    "element": "physical", "resist": {"fire": 25, "lightning": 25, "cold": 25, "poison": 75},
+    "xp_mult": 100, "size": 64, "pack": [1, 1], "projectile": null, "abilities": ["closed_eyes", "deadly_gaze", "eyelid_lifters"],
+    "light": null, "boss": true,
+    "title": {"cs": "Ten, jemuž víčka sahají k zemi", "en": "He Whose Eyelids Reach the Ground"},
+    "lines": {
+      "aggro": {"cs": "Zvedněte mi víčka! Nevidím ho!", "en": "Lift up my eyelids! I cannot see him!"},
+      "half": {"cs": "Vidím tě. A vidím, co ti visí u pasu. To není tvůj kahan.", "en": "I see you. And I see what hangs from your belt. That is not your lamp."},
+      "death": {"cs": "Viděl jsem toho, kdo stojí za tebou… Nemá stín… Zavřete mi oči…", "en": "I saw the one who stands behind you… He has no shadow… Close my eyes…"}
+    },
+    "drops": ["vijova_vicka"]
+  },
+  "kostej": {
+    "name": {"cs": "Kostěj Nesmrtelný", "en": "Koschei the Deathless"}, "gender": "m", "act": 4, "level": 30,
+    "ai": "boss", "hp": 9000, "dmg": [44, 88], "armor": 320, "speed": 70, "attack_range": 70, "attack_cd": 1.6,
+    "element": "cold", "resist": {"fire": 25, "lightning": 25, "cold": 75, "poison": 100},
+    "xp_mult": 120, "size": 40, "pack": [1, 1], "projectile": null, "abilities": ["invulnerable_needle"],
+    "light": null, "boss": true, "seal": "smrt",
+    "title": {"cs": "Strážce pečeti Smrti", "en": "Warden of the Death Seal"},
+    "lines": {
+      "aggro": {"cs": "Nemůžeš mě zabít. Nikdo nemůže. Proto mě sem dali.", "en": "You cannot kill me. No one can. That is why they put me here."},
+      "half": {"cs": "Hledáš dub? Truhlu? Zajíce, kachnu, vejce? Najdi je. Ale dobře si rozmysli, co uděláš.", "en": "Looking for the oak? The chest? The hare, the duck, the egg? Find them. But think hard about what you will do."},
+      "death": {"cs": "Já jsem byl jeho smrt. Zlom mě a bude nesmrtelný jako já.", "en": "I was his death. Break me and he will be as deathless as I was."}
+    },
+    "drops": ["kostejova_jehla_unique", "zbroj_nesmrtelnych"]
+  },
+  "permonik": {
+    "name": {"cs": "Permoník", "en": "Permoník"}, "gender": "m", "act": 4, "level": 32,
+    "ai": "boss", "hp": 3700, "dmg": [30, 60], "armor": 200, "speed": 140, "attack_range": 50, "attack_cd": 1.0,
+    "element": "cold", "resist": {"fire": 25, "lightning": 25, "cold": 75, "poison": 50},
+    "xp_mult": 60, "size": 14, "pack": [1, 1], "projectile": null, "abilities": ["split_copies", "no_shadow", "take_lamp"],
+    "light": {"color": "#cfe8ff", "radius": 3}, "boss": true,
+    "title": {"cs": "Mužíček", "en": "The Little Man"},
+    "lines": {
+      "aggro": {"cs": "Zdař… zdař hlubina, poutníku. Děkuju za kahan. Všechny čtyři pečeti v jednom světle — líp bych je sem nedonesl ani sám.", "en": "Zdař… zdař hlubina, wanderer. Thank you for the lamp. All four seals in one light — I couldn't have carried them here better myself."},
+      "half": {"cs": "Který jsem já? Hledej toho, kdo nemá stín. Hihi.", "en": "Which one is me? Look for the one with no shadow. Hee hee."},
+      "death": {"cs": "Mužíček ti nestačí? Dobrá. Tak velký.", "en": "The little man's not enough for you? Very well. Then big."}
+    },
+    "drops": []
+  },
+  "permonik_obr": {
+    "name": {"cs": "Permoník", "en": "Permoník"}, "gender": "m", "act": 4, "level": 32,
+    "ai": "boss", "hp": 12300, "dmg": [50, 100], "armor": 380, "speed": 55, "attack_range": 120, "attack_cd": 2.0,
+    "element": "cold", "resist": {"fire": 50, "lightning": 50, "cold": 75, "poison": 75},
+    "xp_mult": 250, "size": 72, "pack": [1, 1], "projectile": "rock", "abilities": ["flood", "petrify", "fire", "death", "tithe_light_drain"],
+    "light": {"color": "#cfe8ff", "radius": 4}, "boss": true,
+    "title": {"cs": "Pán žil", "en": "Lord of the Veins"},
+    "lines": {
+      "aggro": {"cs": "Voda. Kámen. Oheň. Smrt. Všechno mi to vrátilo tvoje světlo.", "en": "Water. Stone. Fire. Death. Your light gave it all back to me."},
+      "half": {"cs": "Desátek, havíři. Každá desátá rána je moje. Každý desátý kahan. Každé desáté srdce.", "en": "The tithe, miner. Every tenth blow is mine. Every tenth lamp. Every tenth heart."},
+      "death": {"cs": "Já byl jen vrátný, havíři. Desátek jsem nosil dál. Dolů. Tomu, kdo spí pod Navem.", "en": "I was only the gatekeeper, miner. I carried the tithe on. Down. To the one who sleeps beneath Nav."}
+    },
+    "drops": ["zdar_buh_kahan", "karbidka_svatobarborska"]
+  },
+
+  "zar_ptak": {
+    "name": {"cs": "Žár-pták", "en": "Firebird"}, "gender": "m", "act": 0, "level": 1,
+    "ai": "flyer", "hp": 40, "dmg": [3, 6], "armor": 20, "speed": 170, "attack_range": 160, "attack_cd": 1.2,
+    "element": "fire", "resist": {"fire": 100, "lightning": 0, "cold": 0, "poison": 100},
+    "xp_mult": 0, "size": 16, "pack": [1, 1], "projectile": null, "abilities": [],
+    "light": {"color": "#ffb04a", "radius": 3}, "boss": false, "summon": true
+  }
+}

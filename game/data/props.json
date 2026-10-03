@@ -1,0 +1,706 @@
+{
+ "podpera": {
+  "footprint": [
+   2,
+   1
+  ],
+  "blocks": false,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "vozik": {
+  "footprint": [
+   2,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "sud": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": true,
+  "interact": null
+ },
+ "sud_broken": {
+  "footprint": [
+   0,
+   0
+  ],
+  "blocks": false,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "truhla": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": "chest"
+ },
+ "truhla_open": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "kosti": {
+  "footprint": [
+   0,
+   0
+  ],
+  "blocks": false,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "ruda": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": true,
+  "interact": null
+ },
+ "kahan_nastenny": {
+  "footprint": [
+   0,
+   0
+  ],
+  "blocks": false,
+  "light": {
+   "color": "#ffb85c",
+   "radius": 3
+  },
+  "breakable": false,
+  "interact": null
+ },
+ "schody_dolu": {
+  "footprint": [
+   2,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": "stairs_down"
+ },
+ "schody_nahoru": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#dfe8ff",
+   "radius": 2
+  },
+  "breakable": false,
+  "interact": "stairs_up"
+ },
+ "klec": {
+  "footprint": [
+   2,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": "waypoint"
+ },
+ "kamen": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "lebky": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "urna": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": true,
+  "interact": null
+ },
+ "urna_broken": {
+  "footprint": [
+   0,
+   0
+  ],
+  "blocks": false,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "modla_perun": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#bfe0ff",
+   "radius": 2
+  },
+  "breakable": false,
+  "interact": "shrine"
+ },
+ "modla_veles": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#8fd07a",
+   "radius": 2
+  },
+  "breakable": false,
+  "interact": "shrine"
+ },
+ "modla_mokos": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#e06060",
+   "radius": 2
+  },
+  "breakable": false,
+  "interact": "shrine"
+ },
+ "modla_svarog": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#ffb85c",
+   "radius": 2
+  },
+  "breakable": false,
+  "interact": "shrine"
+ },
+ "modla_morana": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#cfe8ff",
+   "radius": 2
+  },
+  "breakable": false,
+  "interact": "shrine"
+ },
+ "modla_stribog": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#a8e8f0",
+   "radius": 2
+  },
+  "breakable": false,
+  "interact": "shrine"
+ },
+ "modla_triglav": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#b8a0ff",
+   "radius": 2
+  },
+  "breakable": false,
+  "interact": "shrine"
+ },
+ "modla_rod": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#ffd870",
+   "radius": 2
+  },
+  "breakable": false,
+  "interact": "shrine"
+ },
+ "modla_used": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "hrnek_dusicka": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": false,
+  "light": {
+   "color": "#bfe0ff",
+   "radius": 2
+  },
+  "breakable": true,
+  "interact": null
+ },
+ "zvon": {
+  "footprint": [
+   2,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": "quest"
+ },
+ "kotel": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#9cff6a",
+   "radius": 3
+  },
+  "breakable": false,
+  "interact": null
+ },
+ "zrcadlo": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "koren": {
+  "footprint": [
+   2,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "houby": {
+  "footprint": [
+   0,
+   0
+  ],
+  "blocks": false,
+  "light": {
+   "color": "#a0f0d0",
+   "radius": 1
+  },
+  "breakable": false,
+  "interact": null
+ },
+ "kovadlina": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "pec": {
+  "footprint": [
+   2,
+   1
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#ff9a40",
+   "radius": 4
+  },
+  "breakable": false,
+  "interact": null
+ },
+ "smolinec": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#8cf26a",
+   "radius": 2
+  },
+  "breakable": true,
+  "interact": null
+ },
+ "kbelik": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": false,
+  "light": null,
+  "breakable": false,
+  "interact": "quest"
+ },
+ "dub": {
+  "footprint": [
+   2,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": "quest"
+ },
+ "truhla_kostej": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": "chest"
+ },
+ "navi_svice": {
+  "footprint": [
+   0,
+   0
+  ],
+  "blocks": false,
+  "light": {
+   "color": "#ffb85c",
+   "radius": 2
+  },
+  "breakable": false,
+  "interact": null
+ },
+ "kalinov_most": {
+  "footprint": [
+   5,
+   2
+  ],
+  "blocks": false,
+  "light": {
+   "color": "#ff7a30",
+   "radius": 2
+  },
+  "breakable": false,
+  "interact": null
+ },
+ "oltar": {
+  "footprint": [
+   3,
+   1
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#bfd8ff",
+   "radius": 3
+  },
+  "breakable": false,
+  "interact": "quest"
+ },
+ "dum_a": {
+  "footprint": [
+   4,
+   2
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "dum_b": {
+  "footprint": [
+   5,
+   2
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "dum_c": {
+  "footprint": [
+   4,
+   2
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "kovarna": {
+  "footprint": [
+   5,
+   2
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#ff9a40",
+   "radius": 3
+  },
+  "breakable": false,
+  "interact": null
+ },
+ "hostinec": {
+  "footprint": [
+   6,
+   2
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#ffc864",
+   "radius": 3
+  },
+  "breakable": false,
+  "interact": null
+ },
+ "chalupa": {
+  "footprint": [
+   4,
+   2
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#ffc864",
+   "radius": 2
+  },
+  "breakable": false,
+  "interact": null
+ },
+ "sachta_hora": {
+  "footprint": [
+   3,
+   2
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#ffc864",
+   "radius": 2
+  },
+  "breakable": false,
+  "interact": "stairs_down"
+ },
+ "sachta_vojtech": {
+  "footprint": [
+   3,
+   2
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#ffc864",
+   "radius": 2
+  },
+  "breakable": false,
+  "interact": "stairs_down"
+ },
+ "sachta_svornost": {
+  "footprint": [
+   3,
+   2
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#8cf26a",
+   "radius": 2
+  },
+  "breakable": false,
+  "interact": "stairs_down"
+ },
+ "chram_barbory": {
+  "footprint": [
+   7,
+   3
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#ffc864",
+   "radius": 3
+  },
+  "breakable": false,
+  "interact": null
+ },
+ "zvonice": {
+  "footprint": [
+   2,
+   2
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": "quest"
+ },
+ "socha_permonika": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "mincovna": {
+  "footprint": [
+   6,
+   2
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#ff9a40",
+   "radius": 3
+  },
+  "breakable": false,
+  "interact": null
+ },
+ "stan": {
+  "footprint": [
+   2,
+   2
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "ohniste": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#ffb85c",
+   "radius": 4
+  },
+  "breakable": false,
+  "interact": null
+ },
+ "studna": {
+  "footprint": [
+   2,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "strom_a": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "strom_b": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "smrk": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "plot": {
+  "footprint": [
+   2,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "vuz": {
+  "footprint": [
+   3,
+   1
+  ],
+  "blocks": true,
+  "light": null,
+  "breakable": false,
+  "interact": null
+ },
+ "lucerna": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#ffb85c",
+   "radius": 3
+  },
+  "breakable": false,
+  "interact": null
+ }
+}

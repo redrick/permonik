@@ -1,0 +1,492 @@
+{
+  "utok": {
+    "class": "any", "tree": null, "tier": 1,
+    "name": {"cs": "Útok", "en": "Attack"},
+    "desc": {
+      "cs": "Obyčejná rána tím, co držíš v ruce. S lukem nebo kuší vystřelíš.",
+      "en": "A plain blow with whatever you hold. With a bow or crossbow, you shoot."
+    },
+    "type": "melee", "element": "physical",
+    "mana": [0, 0], "cooldown": 0,
+    "params": {"dmg_pct": [100, 0]},
+    "synergy": {},
+    "max_rank": 1
+  },
+
+  "uder_do_zily": {
+    "class": "havir", "tree": "krumpac", "tier": 1,
+    "name": {"cs": "Úder do žíly", "en": "Strike the Vein"},
+    "desc": {
+      "cs": "Havíř najde v nepříteli puklinu jako v rudné žíle a udeří přesně do ní. Způsobí {dmg_pct} % poškození zbraní a omráčí na {stun} s.",
+      "en": "The Miner finds the crack in a foe as he would in an ore vein, and strikes it true. Deals {dmg_pct}% weapon damage and stuns for {stun} s."
+    },
+    "type": "melee", "element": "physical",
+    "mana": [2, 0.1], "cooldown": 0,
+    "params": {"dmg_pct": [140, 14], "hits": [1, 0], "stun": [0.3, 0.02]},
+    "synergy": {"rozrazka": 3, "otres": 3},
+    "max_rank": 20
+  },
+  "rozrazka": {
+    "class": "havir", "tree": "krumpac", "tier": 2,
+    "name": {"cs": "Rozrážka", "en": "Breakthrough"},
+    "desc": {
+      "cs": "Široký švih krumpáčem, jakým se razí nová chodba. Zasáhne všechny v oblouku {arc}° za {dmg_pct} % poškození zbraní.",
+      "en": "A wide swing of the pick, the kind that drives a new gallery. Hits everything in a {arc}° arc for {dmg_pct}% weapon damage."
+    },
+    "type": "melee_arc", "element": "physical",
+    "mana": [4, 0.3], "cooldown": 0,
+    "params": {"dmg_pct": [120, 11], "arc": [100, 2]},
+    "synergy": {"uder_do_zily": 4, "zurivost_hory": 2},
+    "max_rank": 20
+  },
+  "otres": {
+    "class": "havir", "tree": "krumpac", "tier": 3,
+    "name": {"cs": "Otřes", "en": "Tremor"},
+    "desc": {
+      "cs": "Havíř udeří do počvy a hora odpoví. Všichni do vzdálenosti {radius} utrží {dmg_pct} % poškození zbraní a jsou na {stun} s omráčeni.",
+      "en": "The Miner strikes the floor and the mountain answers. Everyone within {radius} takes {dmg_pct}% weapon damage and is stunned for {stun} s."
+    },
+    "type": "stomp", "element": "physical",
+    "mana": [8, 0.5], "cooldown": 1.5,
+    "params": {"dmg_pct": [110, 10], "radius": [120, 3], "stun": [1.0, 0.08]},
+    "synergy": {"uder_do_zily": 3, "rozrazka": 3},
+    "max_rank": 20
+  },
+  "zurivost_hory": {
+    "class": "havir", "tree": "krumpac", "tier": 4,
+    "name": {"cs": "Zuřivost hory", "en": "Fury of the Mountain"},
+    "desc": {
+      "cs": "Havíř nechá horu, ať mu teče žilami. Na {duration} s získá +{dmg_pct} % k poškození a +{attack_speed} % k rychlosti útoku, ale jeho zbroj klesne o {armor_pct} %.",
+      "en": "The Miner lets the mountain run through his veins. For {duration} s he gains +{dmg_pct}% damage and +{attack_speed}% attack speed, but his armour drops by {armor_pct}%."
+    },
+    "type": "buff", "element": "physical",
+    "mana": [14, 0.8], "cooldown": 6,
+    "params": {"dmg_pct": [35, 7], "attack_speed": [10, 1], "armor_pct": [-30, 0], "duration": [12, 0.6]},
+    "synergy": {},
+    "max_rank": 20
+  },
+
+  "naloz": {
+    "class": "havir", "tree": "strelny_prach", "tier": 1,
+    "name": {"cs": "Nálož", "en": "Powder Charge"},
+    "desc": {
+      "cs": "Hodí zapálenou nálož černého prachu. Výbuch v okruhu {explode_radius} způsobí {dmg} poškození ohněm.",
+      "en": "Throws a lit charge of black powder. The blast deals {dmg} fire damage within {explode_radius}."
+    },
+    "type": "projectile", "element": "fire",
+    "mana": [4, 0.3], "cooldown": 0,
+    "params": {"dmg": [[4, 9], [3, 6]], "speed": [380, 0], "count": [1, 0], "explode_radius": [70, 2], "fx": "naloz"},
+    "synergy": {"doutnak": 8, "odstrel": 8, "retez_nalozi": 6},
+    "max_rank": 20
+  },
+  "doutnak": {
+    "class": "havir", "tree": "strelny_prach", "tier": 2,
+    "name": {"cs": "Doutnák", "en": "Slow Match"},
+    "desc": {
+      "cs": "Natáhne po zemi hořící doutnák dlouhý {length}. Kdo přes něj jde, hoří za {dmg} za sekundu. Doutná {duration} s.",
+      "en": "Lays a burning fuse {length} long across the ground. Anything crossing it burns for {dmg} per second. It smoulders for {duration} s."
+    },
+    "type": "wall", "element": "fire",
+    "mana": [7, 0.5], "cooldown": 0,
+    "params": {"dmg": [[6, 10], [4, 6]], "length": [180, 8], "duration": [3.0, 0.15], "fx": "flame"},
+    "synergy": {"naloz": 7, "retez_nalozi": 5},
+    "max_rank": 20
+  },
+  "odstrel": {
+    "class": "havir", "tree": "strelny_prach", "tier": 3,
+    "name": {"cs": "Odstřel", "en": "Blasting"},
+    "desc": {
+      "cs": "Velká nálož, jakou se trhá skála. Po {delay} s vybuchne na místě kurzoru: {dmg} poškození ohněm v okruhu {radius}.",
+      "en": "A heavy charge of the kind used to break rock. After {delay} s it goes off at the cursor: {dmg} fire damage within {radius}."
+    },
+    "type": "area", "element": "fire",
+    "mana": [13, 0.8], "cooldown": 1,
+    "params": {"dmg": [[18, 34], [10, 18]], "radius": [110, 3], "duration": [0, 0], "tick": [0, 0], "delay": [1.0, -0.02]},
+    "synergy": {"naloz": 8, "retez_nalozi": 6},
+    "max_rank": 20
+  },
+  "retez_nalozi": {
+    "class": "havir", "tree": "strelny_prach", "tier": 4,
+    "name": {"cs": "Řetěz náloží", "en": "Chain of Charges"},
+    "desc": {
+      "cs": "Rozmístí {count} náloží spojených jedním doutnákem. Když se k nim nepřítel přiblíží, vybuchnou jedna po druhé: {dmg} poškození ohněm v okruhu {radius}. Vydrží {duration} s.",
+      "en": "Plants {count} charges joined by a single fuse. When an enemy comes near, they go off one after another: {dmg} fire damage within {radius}. They last {duration} s."
+    },
+    "type": "trap", "element": "fire",
+    "mana": [20, 1.0], "cooldown": 2,
+    "params": {"dmg": [[24, 44], [13, 22]], "radius": [90, 2], "count": [3, 0.2], "duration": [20, 0]},
+    "synergy": {"naloz": 6, "odstrel": 6, "doutnak": 4},
+    "max_rank": 20
+  },
+
+  "zdar_buh": {
+    "class": "havir", "tree": "bratrstvo", "tier": 1,
+    "name": {"cs": "Zdař Bůh!", "en": "Zdař Bůh!"},
+    "desc": {
+      "cs": "Starý havířský pozdrav, zvolaný celým hrdlem. Havíř a jeho druzi získají na {duration} s +{to_hit} k přesnosti a +{dmg_pct} % k poškození. Kdo ho řekne celý, toho hora ochrání.",
+      "en": "The old miners' greeting, shouted from the chest. The Miner and his companions gain +{to_hit} attack rating and +{dmg_pct}% damage for {duration} s. Whoever says it whole, the mountain protects."
+    },
+    "type": "buff", "element": "physical",
+    "mana": [6, 0.4], "cooldown": 0,
+    "params": {"to_hit": [30, 8], "dmg_pct": [10, 3], "duration": [60, 6]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "tvrda_kuze": {
+    "class": "havir", "tree": "bratrstvo", "tier": 2,
+    "name": {"cs": "Tvrdá kůže", "en": "Hard Hide"},
+    "desc": {
+      "cs": "Léta pod zemí udělají z kůže skálu. Trvale +{armor_pct} % ke zbroji a každý zásah je o {dmg_reduce} % slabší.",
+      "en": "Years underground turn skin to stone. Permanently +{armor_pct}% armour, and every hit is reduced by {dmg_reduce}%."
+    },
+    "type": "passive", "element": "physical",
+    "mana": [0, 0], "cooldown": 0,
+    "params": {"armor_pct": [15, 6], "dmg_reduce": [2, 0.5]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "vecny_kahan": {
+    "class": "havir", "tree": "bratrstvo", "tier": 3,
+    "name": {"cs": "Věčný kahan", "en": "Undying Lamp"},
+    "desc": {
+      "cs": "Havíř, kterému nikdy nezhasl kahan, se tmy nebojí. Trvale +{light_radius} k dosvitu, +{mana_regen} many za sekundu a +{res_all} % ke všem odolnostem.",
+      "en": "A miner whose lamp never went out does not fear the dark. Permanently +{light_radius} light radius, +{mana_regen} mana per second and +{res_all}% to all resistances."
+    },
+    "type": "passive", "element": "physical",
+    "mana": [0, 0], "cooldown": 0,
+    "params": {"light_radius": [1, 0.1], "mana_regen": [1, 0.3], "res_all": [3, 1]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "druhy_dech": {
+    "class": "havir", "tree": "bratrstvo", "tier": 4,
+    "name": {"cs": "Druhý dech", "en": "Second Wind"},
+    "desc": {
+      "cs": "Když se zával zřítí, havíř se vyhrabe a jde dál. Trvale +{hp_pct} % k životu a +{hp_regen} života za sekundu.",
+      "en": "When the roof comes down, a miner digs himself out and keeps going. Permanently +{hp_pct}% life and +{hp_regen} life per second."
+    },
+    "type": "passive", "element": "physical",
+    "mana": [0, 0], "cooldown": 0,
+    "params": {"hp_pct": [10, 3], "hp_regen": [1, 0.5]},
+    "synergy": {},
+    "max_rank": 20
+  },
+
+  "sek_valaskou": {
+    "class": "zbojnice", "tree": "valaska", "tier": 1,
+    "name": {"cs": "Sek valaškou", "en": "Axe Cut"},
+    "desc": {
+      "cs": "Dva rychlé seky valaškou, jak se učí na salaši. Každý způsobí {dmg_pct} % poškození zbraní; seků je {hits}.",
+      "en": "Two quick cuts of the shepherd's axe, as taught up at the sheepfold. Each deals {dmg_pct}% weapon damage; {hits} cuts in all."
+    },
+    "type": "melee", "element": "physical",
+    "mana": [2, 0.1], "cooldown": 0,
+    "params": {"dmg_pct": [75, 7], "hits": [2, 0.06], "stun": [0, 0]},
+    "synergy": {"vir": 3, "hod_valaskou": 2},
+    "max_rank": 20
+  },
+  "hod_valaskou": {
+    "class": "zbojnice", "tree": "valaska", "tier": 2,
+    "name": {"cs": "Hod valaškou", "en": "Axe Throw"},
+    "desc": {
+      "cs": "Mrští valaškou, která proletí {pierce} nepřáteli a vrátí se jí do dlaně. Způsobí {dmg_pct} % poškození zbraní.",
+      "en": "Hurls the axe, which passes through {pierce} enemies and returns to her palm. Deals {dmg_pct}% weapon damage."
+    },
+    "type": "projectile", "element": "physical",
+    "mana": [5, 0.3], "cooldown": 0,
+    "params": {"dmg_pct": [110, 10], "speed": [520, 0], "count": [1, 0], "pierce": [1, 0.15], "returns": [1, 0], "fx": "valaska"},
+    "synergy": {"sek_valaskou": 4},
+    "max_rank": 20
+  },
+  "zbojnicky_skok": {
+    "class": "zbojnice", "tree": "valaska", "tier": 3,
+    "name": {"cs": "Zbojnický skok", "en": "Brigand's Leap"},
+    "desc": {
+      "cs": "Odzemek přes vatru, jen místo vatry jsou nepřátelé. Skočí k cíli a dopadne s valaškou napřed: {dmg_pct} % poškození zbraní v okruhu {radius}.",
+      "en": "The odzemek leap over the fire, only the fire is a crowd of enemies. She jumps to the target and lands axe-first: {dmg_pct}% weapon damage within {radius}."
+    },
+    "type": "leap", "element": "physical",
+    "mana": [9, 0.5], "cooldown": 1,
+    "params": {"dmg_pct": [140, 12], "radius": [80, 2]},
+    "synergy": {"sek_valaskou": 3, "vir": 3},
+    "max_rank": 20
+  },
+  "vir": {
+    "class": "zbojnice", "tree": "valaska", "tier": 4,
+    "name": {"cs": "Vír", "en": "Whirl"},
+    "desc": {
+      "cs": "Prolétne nepřáteli jako vichr Valašskem a seká kolem sebe na vzdálenost {length}. Každý zásah způsobí {dmg_pct} % poškození zbraní.",
+      "en": "She tears through her foes like a Wallachian gale, cutting all around her for a distance of {length}. Each hit deals {dmg_pct}% weapon damage."
+    },
+    "type": "spin", "element": "physical",
+    "mana": [16, 0.8], "cooldown": 0,
+    "params": {"dmg_pct": [95, 9], "length": [260, 10]},
+    "synergy": {"sek_valaskou": 4, "zbojnicky_skok": 3},
+    "max_rank": 20
+  },
+
+  "rychla_strela": {
+    "class": "zbojnice", "tree": "kuse", "tier": 1,
+    "name": {"cs": "Rychlá střela", "en": "Quick Shot"},
+    "desc": {
+      "cs": "Natáhnout, vystřelit, znovu. Vystřelí {count} střel, každá za {dmg_pct} % poškození zbraní. Vyžaduje luk nebo kuši.",
+      "en": "Draw, loose, again. Fires {count} shots, each dealing {dmg_pct}% weapon damage. Requires a bow or crossbow."
+    },
+    "type": "projectile", "element": "physical",
+    "mana": [2, 0.1], "cooldown": 0,
+    "params": {"dmg_pct": [90, 8], "speed": [700, 0], "count": [1, 0.1], "spread": [8, 0], "requires": "ranged", "fx": "bolt"},
+    "synergy": {"prustrel": 3, "dest_sipu": 2},
+    "max_rank": 20
+  },
+  "prustrel": {
+    "class": "zbojnice", "tree": "kuse", "tier": 2,
+    "name": {"cs": "Průstřel", "en": "Piercing Bolt"},
+    "desc": {
+      "cs": "Těžká šipka, která neví, kdy přestat. Proletí {pierce} nepřáteli a každému způsobí {dmg_pct} % poškození zbraní. Vyžaduje luk nebo kuši.",
+      "en": "A heavy bolt that does not know when to stop. It passes through {pierce} enemies, dealing {dmg_pct}% weapon damage to each. Requires a bow or crossbow."
+    },
+    "type": "projectile", "element": "physical",
+    "mana": [5, 0.3], "cooldown": 0,
+    "params": {"dmg_pct": [130, 12], "speed": [800, 0], "count": [1, 0], "pierce": [3, 0.25], "requires": "ranged", "fx": "bolt"},
+    "synergy": {"rychla_strela": 4},
+    "max_rank": 20
+  },
+  "ohnivy_sip": {
+    "class": "zbojnice", "tree": "kuse", "tier": 3,
+    "name": {"cs": "Ohnivý šíp", "en": "Fire Arrow"},
+    "desc": {
+      "cs": "Šipka obalená smolou a zapálená od kahanu. Způsobí {dmg_pct} % poškození zbraní a vybuchne za {dmg} poškození ohněm v okruhu {explode_radius}. Vyžaduje luk nebo kuši.",
+      "en": "A bolt wrapped in pitch and lit from the lamp. Deals {dmg_pct}% weapon damage and bursts for {dmg} fire damage within {explode_radius}. Requires a bow or crossbow."
+    },
+    "type": "projectile", "element": "fire",
+    "mana": [8, 0.5], "cooldown": 0,
+    "params": {"dmg_pct": [100, 4], "dmg": [[8, 14], [5, 9]], "speed": [650, 0], "count": [1, 0], "explode_radius": [60, 2], "requires": "ranged", "fx": "bolt"},
+    "synergy": {"rychla_strela": 3, "past_na_vlky": 2},
+    "max_rank": 20
+  },
+  "dest_sipu": {
+    "class": "zbojnice", "tree": "kuse", "tier": 4,
+    "name": {"cs": "Déšť šípů", "en": "Rain of Arrows"},
+    "desc": {
+      "cs": "Celá salva najednou, jako když se zbojníci rozestaví na hřebeni. Vystřelí {count} střel ve vějíři {spread}°, každá za {dmg_pct} % poškození zbraní. Vyžaduje luk nebo kuši.",
+      "en": "A whole volley at once, as when the brigands line the ridge. Fires {count} shots in a {spread}° fan, each dealing {dmg_pct}% weapon damage. Requires a bow or crossbow."
+    },
+    "type": "projectile", "element": "physical",
+    "mana": [14, 0.7], "cooldown": 0,
+    "params": {"dmg_pct": [60, 5], "speed": [650, 0], "count": [5, 0.25], "spread": [40, 1], "requires": "ranged", "fx": "bolt"},
+    "synergy": {"rychla_strela": 3, "prustrel": 3},
+    "max_rank": 20
+  },
+
+  "uskok": {
+    "class": "zbojnice", "tree": "lesni_zakon", "tier": 1,
+    "name": {"cs": "Úskok", "en": "Sidestep"},
+    "desc": {
+      "cs": "Kdo chce v lese přežít, nesmí stát na místě. Trvale +{armor_pct} % ke zbroji a +{move_speed} % k rychlosti pohybu.",
+      "en": "Whoever wants to survive in the woods must never stand still. Permanently +{armor_pct}% armour and +{move_speed}% movement speed."
+    },
+    "type": "passive", "element": "physical",
+    "mana": [0, 0], "cooldown": 0,
+    "params": {"armor_pct": [20, 6], "move_speed": [5, 1]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "past_na_vlky": {
+    "class": "zbojnice", "tree": "lesni_zakon", "tier": 2,
+    "name": {"cs": "Past na vlky", "en": "Wolf Trap"},
+    "desc": {
+      "cs": "Nastraží {count} železných čelistí. Co do nich šlápne, utrží {dmg} poškození a nějakou chvíli nikam nepůjde. Past vydrží {duration} s.",
+      "en": "Sets {count} iron jaws. Whatever steps in takes {dmg} damage and goes nowhere for a while. Traps last {duration} s."
+    },
+    "type": "trap", "element": "physical",
+    "mana": [6, 0.4], "cooldown": 0,
+    "params": {"dmg": [[10, 18], [6, 10]], "radius": [50, 0], "count": [1, 0.1], "duration": [30, 0], "stun": [1.5, 0.05]},
+    "synergy": {"kourova_clona": 3, "ohnivy_sip": 2},
+    "max_rank": 20
+  },
+  "janosikuv_opasek": {
+    "class": "zbojnice", "tree": "lesni_zakon", "tier": 3,
+    "name": {"cs": "Jánošíkův opasek", "en": "Jánošík's Belt"},
+    "desc": {
+      "cs": "Dokud Jánošík nosil svůj opasek, žádná kulka ho nevzala. Trvale +{life_steal} % krádeže života a +{dmg_pct} % k poškození.",
+      "en": "As long as Jánošík wore his belt, no bullet could take him. Permanently +{life_steal}% life steal and +{dmg_pct}% damage."
+    },
+    "type": "passive", "element": "physical",
+    "mana": [0, 0], "cooldown": 0,
+    "params": {"life_steal": [2, 0.3], "dmg_pct": [10, 4]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "kourova_clona": {
+    "class": "zbojnice", "tree": "lesni_zakon", "tier": 4,
+    "name": {"cs": "Kouřová clona", "en": "Smoke Screen"},
+    "desc": {
+      "cs": "Hodí pod nohy hrst vlhkého chvojí a prachu. Hustý kouř v okruhu {radius} oslepí nepřátele na {duration} s — netrefí se a ztratí ji z očí.",
+      "en": "Throws a fistful of damp brush and powder at her feet. Thick smoke within {radius} blinds enemies for {duration} s — they miss and lose sight of her."
+    },
+    "type": "cloud", "element": "physical",
+    "mana": [12, 0.5], "cooldown": 8,
+    "params": {"radius": [120, 4], "duration": [5, 0.3], "effect": "blind"},
+    "synergy": {},
+    "max_rank": 20
+  },
+
+  "jiskra": {
+    "class": "vedma", "tree": "perun", "tier": 1,
+    "name": {"cs": "Jiskra", "en": "Spark"},
+    "desc": {
+      "cs": "Mezi prsty jí přeskočí Perunova jiskra. Vypustí {count} bludných jisker, každá způsobí {dmg} poškození bleskem.",
+      "en": "Perun's spark leaps between her fingers. She releases {count} wandering sparks, each dealing {dmg} lightning damage."
+    },
+    "type": "projectile", "element": "lightning",
+    "mana": [3, 0.2], "cooldown": 0,
+    "params": {"dmg": [[1, 8], [1, 3]], "speed": [420, 0], "count": [3, 0.25], "spread": [30, 0], "fx": "spark"},
+    "synergy": {"hromova_koule": 5, "retezovy_blesk": 4},
+    "max_rank": 20
+  },
+  "hromova_koule": {
+    "class": "vedma", "tree": "perun", "tier": 2,
+    "name": {"cs": "Hromová koule", "en": "Thunder Ball"},
+    "desc": {
+      "cs": "Koule bouřkového světla, která se valí chodbou a při dopadu praskne za {dmg} poškození bleskem v okruhu {explode_radius}.",
+      "en": "A ball of storm-light that rolls down the gallery and bursts on impact for {dmg} lightning damage within {explode_radius}."
+    },
+    "type": "projectile", "element": "lightning",
+    "mana": [7, 0.5], "cooldown": 0,
+    "params": {"dmg": [[8, 18], [5, 10]], "speed": [300, 0], "count": [1, 0], "explode_radius": [70, 2], "fx": "spark"},
+    "synergy": {"jiskra": 5, "peruniv_hnev": 4},
+    "max_rank": 20
+  },
+  "retezovy_blesk": {
+    "class": "vedma", "tree": "perun", "tier": 3,
+    "name": {"cs": "Řetězový blesk", "en": "Chain Lightning"},
+    "desc": {
+      "cs": "Blesk skáče od jednoho nepřítele k druhému, {jumps}krát, až na vzdálenost {range}. Každý zásah způsobí {dmg} poškození bleskem.",
+      "en": "Lightning leaps from one enemy to the next, {jumps} times, up to {range} apart. Each strike deals {dmg} lightning damage."
+    },
+    "type": "chain", "element": "lightning",
+    "mana": [11, 0.6], "cooldown": 0,
+    "params": {"dmg": [[3, 26], [2, 11]], "jumps": [3, 0.25], "range": [180, 0]},
+    "synergy": {"jiskra": 4, "hromova_koule": 4},
+    "max_rank": 20
+  },
+  "peruniv_hnev": {
+    "class": "vedma", "tree": "perun", "tier": 4,
+    "name": {"cs": "Perunův hněv", "en": "Wrath of Perun"},
+    "desc": {
+      "cs": "Hromovládce se rozzlobí i pod zemí. Na místo kurzoru bije {duration} s blesky: každý úder způsobí {dmg} poškození bleskem v okruhu {radius}.",
+      "en": "The Thunderer rages even underground. Lightning pounds the cursor for {duration} s: each strike deals {dmg} lightning damage within {radius}."
+    },
+    "type": "area", "element": "lightning",
+    "mana": [22, 1.2], "cooldown": 3,
+    "params": {"dmg": [[16, 40], [8, 20]], "radius": [120, 3], "duration": [4, 0.1], "tick": [0.5, 0], "delay": [0.3, 0]},
+    "synergy": {"retezovy_blesk": 5, "hromova_koule": 4},
+    "max_rank": 20
+  },
+
+  "ohnivy_jazyk": {
+    "class": "vedma", "tree": "svarozic", "tier": 1,
+    "name": {"cs": "Ohnivý jazyk", "en": "Tongue of Flame"},
+    "desc": {
+      "cs": "Svarožičův plamen olízne nepřítele. Ohnivá střela způsobí {dmg} poškození ohněm.",
+      "en": "Svarozhich's flame licks at the foe. A fire bolt that deals {dmg} fire damage."
+    },
+    "type": "projectile", "element": "fire",
+    "mana": [3, 0.2], "cooldown": 0,
+    "params": {"dmg": [[3, 7], [2, 4]], "speed": [480, 0], "count": [1, 0], "fx": "firebolt"},
+    "synergy": {"kupalska_vatra": 5, "ohniva_stena": 3},
+    "max_rank": 20
+  },
+  "ohniva_stena": {
+    "class": "vedma", "tree": "svarozic", "tier": 2,
+    "name": {"cs": "Ohnivá stěna", "en": "Fire Wall"},
+    "desc": {
+      "cs": "Vztyčí přes chodbu stěnu plamenů dlouhou {length}. Kdo jí projde, hoří za {dmg} za sekundu. Hoří {duration} s.",
+      "en": "Raises a wall of flame {length} long across the gallery. Whoever walks through burns for {dmg} per second. It burns for {duration} s."
+    },
+    "type": "wall", "element": "fire",
+    "mana": [10, 0.7], "cooldown": 0,
+    "params": {"dmg": [[10, 16], [6, 9]], "length": [200, 8], "duration": [4, 0.2], "fx": "flame"},
+    "synergy": {"ohnivy_jazyk": 4, "kupalska_vatra": 3},
+    "max_rank": 20
+  },
+  "kupalska_vatra": {
+    "class": "vedma", "tree": "svarozic", "tier": 3,
+    "name": {"cs": "Kupalská vatra", "en": "Kupala Bonfire"},
+    "desc": {
+      "cs": "Zažehne svatojánskou vatru tam, kde ukáže. Hoří {duration} s a v okruhu {radius} pálí za {dmg} poškození ohněm každých {tick} s.",
+      "en": "Kindles a Midsummer bonfire wherever she points. It burns for {duration} s, scorching everything within {radius} for {dmg} fire damage every {tick} s."
+    },
+    "type": "area", "element": "fire",
+    "mana": [14, 0.8], "cooldown": 0,
+    "params": {"dmg": [[8, 16], [5, 9]], "radius": [90, 2], "duration": [5, 0.2], "tick": [0.5, 0], "delay": [0, 0], "fx": "flame"},
+    "synergy": {"ohnivy_jazyk": 5, "ohniva_stena": 4},
+    "max_rank": 20
+  },
+  "zar_ptak": {
+    "class": "vedma", "tree": "svarozic", "tier": 4,
+    "name": {"cs": "Žár-pták", "en": "Firebird"},
+    "desc": {
+      "cs": "Přivolá Žár-ptáka z pohádek, kterého nikdo nechytil. Krouží kolem ní {duration} s a nepřátele pálí za {dmg} poškození ohněm.",
+      "en": "Summons the Firebird of the old tales, the one no one ever caught. It circles her for {duration} s, scorching enemies for {dmg} fire damage."
+    },
+    "type": "summon", "element": "fire",
+    "mana": [24, 1.2], "cooldown": 4,
+    "params": {"id": "zar_ptak", "count": [1, 0.05], "duration": [20, 1], "dmg": [[10, 20], [6, 11]]},
+    "synergy": {"kupalska_vatra": 4, "ohnivy_jazyk": 3},
+    "max_rank": 20
+  },
+
+  "mrazivy_dech": {
+    "class": "vedma", "tree": "morana", "tier": 1,
+    "name": {"cs": "Mrazivý dech", "en": "Frost Breath"},
+    "desc": {
+      "cs": "Dýchne zimou, která patří Moraně. Kužel mrazu na vzdálenost {range} způsobí {dmg} poškození chladem a zpomalí nepřátele o {slow} %.",
+      "en": "She breathes out the winter that belongs to Morana. A cone of frost reaching {range} deals {dmg} cold damage and slows enemies by {slow}%."
+    },
+    "type": "cone", "element": "cold",
+    "mana": [4, 0.2], "cooldown": 0,
+    "params": {"dmg": [[3, 7], [2, 4]], "range": [140, 4], "arc": [50, 0], "slow": [30, 1]},
+    "synergy": {"moranina_naruc": 4, "vynaseni_morany": 3},
+    "max_rank": 20
+  },
+  "ledova_zbroj": {
+    "class": "vedma", "tree": "morana", "tier": 2,
+    "name": {"cs": "Ledová zbroj", "en": "Ice Armour"},
+    "desc": {
+      "cs": "Obalí se jinovatkou tvrdou jako kámen. Na {duration} s získá +{armor_pct} % ke zbroji a +{res_cold} % k odolnosti vůči chladu; kdo ji udeří, utrží {thorns} poškození.",
+      "en": "Wraps herself in rime hard as stone. For {duration} s she gains +{armor_pct}% armour and +{res_cold}% cold resistance; whoever strikes her takes {thorns} damage."
+    },
+    "type": "buff", "element": "cold",
+    "mana": [10, 0.5], "cooldown": 0,
+    "params": {"armor_pct": [45, 9], "res_cold": [10, 2], "thorns": [5, 3], "duration": [90, 9]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "moranina_naruc": {
+    "class": "vedma", "tree": "morana", "tier": 3,
+    "name": {"cs": "Moranina náruč", "en": "Morana's Embrace"},
+    "desc": {
+      "cs": "Paní zimy obejme všechny kolem. Mrazivá vlna v okruhu {radius} způsobí {dmg} poškození chladem a zmrazí nepřátele na {freeze} s.",
+      "en": "The Lady of Winter embraces everyone near. A wave of frost within {radius} deals {dmg} cold damage and freezes enemies for {freeze} s."
+    },
+    "type": "nova", "element": "cold",
+    "mana": [14, 0.8], "cooldown": 0,
+    "params": {"dmg": [[10, 20], [6, 11]], "radius": [150, 4], "freeze": [1.0, 0.06]},
+    "synergy": {"mrazivy_dech": 4, "vynaseni_morany": 4},
+    "max_rank": 20
+  },
+  "vynaseni_morany": {
+    "class": "vedma", "tree": "morana", "tier": 4,
+    "name": {"cs": "Vynášení Morany", "en": "Carrying Out Morana"},
+    "desc": {
+      "cs": "Smrtná neděle pod zemí: hodí slaměnou Moranu, která prolétne {pierce} nepřáteli a na konci cesty se rozpadne ve vánici za {dmg} poškození chladem v okruhu {explode_radius}. Smrt se vynáší ven — ale kam?",
+      "en": "Death Sunday underground: she hurls a straw Morana that passes through {pierce} enemies and at the end of its flight bursts into a blizzard for {dmg} cold damage within {explode_radius}. Death is carried out — but where to?"
+    },
+    "type": "projectile", "element": "cold",
+    "mana": [24, 1.2], "cooldown": 2,
+    "params": {"dmg": [[30, 56], [15, 28]], "speed": [260, 0], "count": [1, 0], "pierce": [99, 0], "explode_radius": [130, 3], "fx": "morana"},
+    "synergy": {"moranina_naruc": 5, "mrazivy_dech": 3},
+    "max_rank": 20
+  }
+}

@@ -1,0 +1,12 @@
+# Godot
+game/.godot/
+*.translation
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Stray render/test output
+game/assets/**/_*.pdf
+*.wav

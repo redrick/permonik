@@ -1,0 +1,65 @@
+{
+  "havir": {
+    "name": {"cs": "Havíř", "en": "Miner"},
+    "desc": {
+      "cs": "Narodil se v Hoře, pod zvonicí, která přestala zvonit. Otcova parta sfárala do dolu Osel a už nevyfárala. Havíř zná skálu po hmatu, bije krumpáčem tam, kde se láme, a když skála nepovolí, poradí si střelným prachem. Nejvíc ze všech snese a nejvíc rozdá.",
+      "en": "Born in Hora, beneath a bell tower that stopped ringing. His father's crew went down the Osel mine and never came back up. The Miner knows rock by touch, strikes his pick where the stone gives, and when it won't, he reaches for black powder. He takes the most punishment and hands out more."
+    },
+    "gender": "m",
+    "base": {"sila": 30, "obratnost": 20, "magie": 10, "vitalita": 25},
+    "base_hp": 45, "hp_per_vit": 2.5, "hp_per_level": 2.5,
+    "base_mana": 10, "mana_per_mag": 1.0, "mana_per_level": 1.0,
+    "start_items": ["krumpac", "kytel", "lojovy_kahan", "ziva_voda", "ziva_voda", "svitek_brana"],
+    "trees": [
+      {"id": "krumpac", "name": {"cs": "Krumpáč", "en": "Pickaxe"},
+       "skills": ["uder_do_zily", "rozrazka", "otres", "zurivost_hory"]},
+      {"id": "strelny_prach", "name": {"cs": "Střelný prach", "en": "Black Powder"},
+       "skills": ["naloz", "doutnak", "odstrel", "retez_nalozi"]},
+      {"id": "bratrstvo", "name": {"cs": "Bratrstvo", "en": "Brotherhood"},
+       "skills": ["zdar_buh", "tvrda_kuze", "vecny_kahan", "druhy_dech"]}
+    ],
+    "default_rmb": "uder_do_zily"
+  },
+  "zbojnice": {
+    "name": {"cs": "Zbojnice", "en": "Brigand"},
+    "desc": {
+      "cs": "Psanec z Valašska s valaškou za pasem a kuší na zádech. Přišla pro Jánošíkovo zakopané stříbro a zůstala, protože hory volají. Je rychlá, nečekaná a nikomu nevěří — v podzemí je to ctnost.",
+      "en": "An outlaw from Wallachia with a shepherd's axe in her belt and a crossbow on her back. She came for Jánošík's buried silver and stayed because the mountains called. She is fast, unpredictable and trusts no one — underground, that is a virtue."
+    },
+    "gender": "f",
+    "base": {"sila": 20, "obratnost": 30, "magie": 15, "vitalita": 20},
+    "base_hp": 40, "hp_per_vit": 2.0, "hp_per_level": 2.0,
+    "base_mana": 15, "mana_per_mag": 1.5, "mana_per_level": 1.5,
+    "start_items": ["valaska", "kozeny_kabatec", "lojovy_kahan", "ziva_voda", "ziva_voda", "svitek_brana"],
+    "trees": [
+      {"id": "valaska", "name": {"cs": "Valaška", "en": "Shepherd's Axe"},
+       "skills": ["sek_valaskou", "hod_valaskou", "zbojnicky_skok", "vir"]},
+      {"id": "kuse", "name": {"cs": "Kuše", "en": "Crossbow"},
+       "skills": ["rychla_strela", "prustrel", "ohnivy_sip", "dest_sipu"]},
+      {"id": "lesni_zakon", "name": {"cs": "Lesní zákon", "en": "Law of the Forest"},
+       "skills": ["uskok", "past_na_vlky", "janosikuv_opasek", "kourova_clona"]}
+    ],
+    "default_rmb": "sek_valaskou"
+  },
+  "vedma": {
+    "name": {"cs": "Vědma", "en": "Wise Woman"},
+    "desc": {
+      "cs": "Bylinkářka ze Šumavy s parožím na holi a červenými nitěmi na zápěstí. Každou noc se jí zdá o zvonu, který se topí. Hromy volá Perunovým jménem, oheň Svarožičovým a mráz Moraniným — a všichni tři zatím odpovídají.",
+      "en": "A herb-witch from the Šumava woods, with antlers on her staff and red threads round her wrists. Every night she dreams of a drowning bell. She calls thunder in Perun's name, fire in Svarozhich's and frost in Morana's — and so far all three still answer."
+    },
+    "gender": "f",
+    "base": {"sila": 15, "obratnost": 20, "magie": 35, "vitalita": 15},
+    "base_hp": 30, "hp_per_vit": 1.5, "hp_per_level": 1.5,
+    "base_mana": 30, "mana_per_mag": 2.0, "mana_per_level": 2.0,
+    "start_items": ["hul", "kytel", "lojovy_kahan", "ziva_voda", "svatojanska_rosa", "svitek_brana"],
+    "trees": [
+      {"id": "perun", "name": {"cs": "Perun", "en": "Perun"},
+       "skills": ["jiskra", "hromova_koule", "retezovy_blesk", "peruniv_hnev"]},
+      {"id": "svarozic", "name": {"cs": "Svarožič", "en": "Svarozhich"},
+       "skills": ["ohnivy_jazyk", "ohniva_stena", "kupalska_vatra", "zar_ptak"]},
+      {"id": "morana", "name": {"cs": "Morana", "en": "Morana"},
+       "skills": ["mrazivy_dech", "ledova_zbroj", "moranina_naruc", "vynaseni_morany"]}
+    ],
+    "default_rmb": "jiskra"
+  }
+}

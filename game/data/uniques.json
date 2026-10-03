@@ -1,0 +1,237 @@
+{
+  "klekanicina_rouska": {
+    "name": {"cs": "Klekaničina rouška", "en": "The Klekánice's Veil"}, "base": "kapuce", "qlvl": 6,
+    "mods": [{"stat": "magie", "min": 5, "max": 8}, {"stat": "mana", "min": 10, "max": 20}, {"stat": "res_cold", "min": 15, "max": 20}, {"stat": "light_radius", "min": -1, "max": -1}],
+    "flavor": {"cs": "Bílé plátno, které pamatuje každé dítě, co nešlo domů včas. Vidíš v něm méně, ale slyšíš i to, co šeptá tma.", "en": "White linen that remembers every child who didn't get home in time. You see less through it, but you hear what the dark whispers."}
+  },
+  "dusickovy_kahan": {
+    "name": {"cs": "Dušičkový kahan", "en": "All Souls' Lamp"}, "base": "lojovy_kahan", "qlvl": 4,
+    "mods": [{"stat": "light_radius", "min": 1, "max": 1}, {"stat": "hp_regen", "min": 1, "max": 2}, {"stat": "res_cold", "min": 10, "max": 15}, {"stat": "mana", "min": 8, "max": 12}],
+    "flavor": {"cs": "Takové se stavěly na hroby, aby mrtví trefili domů. Tenhle pořád svítí na cestu někomu, kdo nepřichází.", "en": "Lamps like this were set on graves so the dead could find their way home. This one still lights the road for someone who never comes."}
+  },
+  "kytel_padesati": {
+    "name": {"cs": "Kytel padesáti", "en": "Smock of the Fifty"}, "base": "kytel", "qlvl": 5,
+    "mods": [{"stat": "hp", "min": 15, "max": 20}, {"stat": "armor_pct", "min": 30, "max": 40}, {"stat": "res_all", "min": 5, "max": 5}],
+    "flavor": {"cs": "Na rubu je vyšito padesát jmen. Poslední steh zůstal nedokončený.", "en": "Fifty names are stitched on the inside. The last stitch was never finished."}
+  },
+  "obusek_z_pytle": {
+    "name": {"cs": "Obušek z pytle", "en": "Cudgel from the Sack"}, "base": "obusek", "qlvl": 7,
+    "mods": [{"stat": "dmg_pct", "min": 60, "max": 80}, {"stat": "attack_speed", "min": 20, "max": 20}, {"stat": "gold_find", "min": 25, "max": 35}],
+    "flavor": {"cs": "„Obušku, z pytle ven!“ A obušek šel, a šel, a nepřestal, dokud zloděj nevrátil všechno, co ukradl.", "en": "\"Cudgel, out of the sack!\" And out it went, and kept going, and didn't stop until the thief gave back everything he'd stolen."}
+  },
+  "posledni_krumpac": {
+    "name": {"cs": "Poslední krumpáč z Oslu", "en": "The Last Pick of the Osel"}, "base": "krumpac", "qlvl": 8,
+    "mods": [{"stat": "dmg_pct", "min": 50, "max": 70}, {"stat": "sila", "min": 5, "max": 8}, {"stat": "to_hit", "min": 25, "max": 40}, {"stat": "light_radius", "min": 1, "max": 1}],
+    "flavor": {"cs": "Našli ho zaražený do skály v nejhlubší chodbě. Kdo s ním kopal, kopal směrem dolů — a pořád dál.", "en": "It was found driven into the rock at the bottom of the deepest gallery. Whoever dug with it was digging downward — and kept on going."}
+  },
+  "barborina_prilba": {
+    "name": {"cs": "Přilba svaté Barbory", "en": "Saint Barbara's Helmet"}, "base": "havirska_prilba", "qlvl": 9,
+    "mods": [{"stat": "light_radius", "min": 1, "max": 1}, {"stat": "armor_pct", "min": 40, "max": 50}, {"stat": "res_fire", "min": 15, "max": 20}, {"stat": "hp", "min": 10, "max": 15}],
+    "flavor": {"cs": "Svatá Barbora chrání havíře před náhlou smrtí. Hora ji o to nikdy nežádala.", "en": "Saint Barbara guards miners against sudden death. The mountain never asked her to."}
+  },
+  "hastrmanuv_hrnek": {
+    "name": {"cs": "Hastrmanův hrnek", "en": "Hastrman's Teacup"}, "base": "kaptorga", "qlvl": 10,
+    "mods": [{"stat": "mana", "min": 20, "max": 30}, {"stat": "res_cold", "min": 25, "max": 30}, {"stat": "mana_steal", "min": 3, "max": 5}, {"stat": "hp_regen", "min": 2, "max": 3}],
+    "flavor": {"cs": "Vodník v něm choval dušičku, dokud mu ji nevzali. Na dně je pořád trochu vlhko a někdy z něj kape, i když nic neneseš.", "en": "The Vodník kept a soul in it until it was taken from him. The bottom is always a little damp, and sometimes it drips, though you carry nothing."}
+  },
+  "srdce_zvonu_cep": {
+    "name": {"cs": "Srdce zvonu", "en": "Heart of the Bell"}, "base": "cep", "qlvl": 10,
+    "mods": [{"stat": "dmg_pct", "min": 60, "max": 80}, {"stat": "to_hit", "min": 30, "max": 50}, {"stat": "res_all", "min": 10, "max": 10}, {"stat": "light_radius", "min": 1, "max": 1}],
+    "flavor": {"cs": "Ukovali ho ze srdce zvonu, který už jednou zmlkl. Kam udeří, tam je slyšet klekání — a všechno, co se bojí soumraku, couvne.", "en": "Forged from the clapper of a bell that once fell silent. Where it strikes, the evening bell is heard — and everything that fears the dusk steps back."}
+  },
+  "jurasuv_kabatec": {
+    "name": {"cs": "Jurášův kabátec", "en": "Juráš's Jerkin"}, "base": "kozeny_kabatec", "qlvl": 11,
+    "mods": [{"stat": "armor_pct", "min": 50, "max": 60}, {"stat": "obratnost", "min": 6, "max": 10}, {"stat": "life_steal", "min": 2, "max": 3}],
+    "flavor": {"cs": "Juráš zabil Ondráše pro peníze. Kabátec si nechal a od té doby v něm nikdy nebyl v teple.", "en": "Juráš killed Ondráš for money. He kept the jerkin, and was never warm in it again."}
+  },
+  "kostnikova_koruna": {
+    "name": {"cs": "Kostníkova koruna", "en": "Kostník's Crown"}, "base": "velka_prilba", "qlvl": 12,
+    "mods": [{"stat": "hp", "min": 20, "max": 30}, {"stat": "armor_pct", "min": 40, "max": 60}, {"stat": "res_poison", "min": 20, "max": 25}, {"stat": "life_steal", "min": 3, "max": 3}],
+    "flavor": {"cs": "Koruna z lebek sedleckých mrtvých. Každá si pamatuje své jméno a kdo ji nosí, slyší je všechna najednou.", "en": "A crown of skulls from the dead of Sedlec. Each remembers its own name, and whoever wears it hears them all at once."}
+  },
+  "semikova_podkova": {
+    "name": {"cs": "Šemíkova podkova", "en": "Šemík's Horseshoe"}, "base": "prsten", "qlvl": 12,
+    "mods": [{"stat": "move_speed", "min": 10, "max": 15}, {"stat": "obratnost", "min": 5, "max": 8}, {"stat": "attack_speed", "min": 10, "max": 10}],
+    "flavor": {"cs": "Když Šemík skákal z vyšehradské skály, ztratil podkovu. Kdo ji nosí, ten doskočí — ale za cenu, kterou zaplatil kůň.", "en": "When Šemík leapt from the Vyšehrad rock, he lost a shoe. Whoever wears it lands the leap — at the price the horse paid."}
+  },
+  "bivojuv_stit": {
+    "name": {"cs": "Bivojův štít", "en": "Bivoj's Shield"}, "base": "stit", "qlvl": 13,
+    "mods": [{"stat": "block", "min": 10, "max": 15}, {"stat": "armor_pct", "min": 60, "max": 80}, {"stat": "sila", "min": 8, "max": 12}, {"stat": "hp", "min": 15, "max": 20}],
+    "flavor": {"cs": "Bivoj přinesl kance živého na ramenou až na Vyšehrad. Štít z jeho kůže pořád funí, když se na tebe něco žene.", "en": "Bivoj carried the boar alive on his shoulders all the way to Vyšehrad. The shield made from its hide still snorts when something charges you."}
+  },
+  "tremsinsky_prsten": {
+    "name": {"cs": "Třemšínský prsten", "en": "The Ring of Třemšín"}, "base": "prsten_b", "qlvl": 14,
+    "mods": [{"stat": "gold_find", "min": 50, "max": 60}, {"stat": "magic_find", "min": 20, "max": 25}, {"stat": "vitalita", "min": 8, "max": 10}],
+    "flavor": {"cs": "Mužíček z Třemšína ho dá jen tomu, kdo mu vrátí, co mu patří. A nikdy, nikdy nic navíc.", "en": "The little man of Třemšín gives it only to whoever returns what is his. And never, ever anything more."}
+  },
+  "ondrasova_beranice": {
+    "name": {"cs": "Ondrášova beranice", "en": "Ondráš's Sheepskin Cap"}, "base": "beranice", "qlvl": 14,
+    "mods": [{"stat": "obratnost", "min": 8, "max": 12}, {"stat": "attack_speed", "min": 10, "max": 10}, {"stat": "crit", "min": 3, "max": 5}],
+    "flavor": {"cs": "Ondráš z Janovic ji nosil, když bohatým bral. Chudým nedával nic — to si lidi domysleli až po jeho smrti.", "en": "Ondráš of Janovice wore it when he robbed the rich. He gave the poor nothing — folk only made that up after he died."}
+  },
+  "fabianova_siska": {
+    "name": {"cs": "Fabiánova šiška", "en": "Fabián's Cone"}, "base": "lunice", "qlvl": 15,
+    "mods": [{"stat": "hp_regen", "min": 4, "max": 6}, {"stat": "res_poison", "min": 25, "max": 30}, {"stat": "vse_staty", "min": 3, "max": 5}],
+    "flavor": {"cs": "Šiška z Fabiánova kabátu. Voní pryskyřicí a mechem — a vrhá stín, i když na ni nic nesvítí.", "en": "A cone from Fabián's coat. It smells of resin and moss — and it casts a shadow even when nothing shines on it."}
+  },
+  "megerina_berla": {
+    "name": {"cs": "Megeřina berla", "en": "Megera's Sceptre"}, "base": "berla", "qlvl": 16,
+    "mods": [{"stat": "cast_speed", "min": 20, "max": 20}, {"stat": "mana", "min": 25, "max": 35}, {"stat": "poison_dmg", "min": 10, "max": 20}, {"stat": "magie", "min": 8, "max": 12}],
+    "flavor": {"cs": "Vařečka z kotle, kde se vařily kletby. Když ji pevně sevřeš, ucítíš, jak tě někdo zdálky proklíná zpátky.", "en": "A ladle from the cauldron where curses were brewed. Grip it hard and you'll feel someone, far away, cursing you back."}
+  },
+  "valdecky_krunyr": {
+    "name": {"cs": "Valdecký krunýř", "en": "The Valdek Cuirass"}, "base": "krunyr", "qlvl": 16,
+    "mods": [{"stat": "armor_pct", "min": 90, "max": 110}, {"stat": "sila", "min": 10, "max": 10}, {"stat": "thorns", "min": 8, "max": 12}, {"stat": "hp", "min": 20, "max": 30}],
+    "flavor": {"cs": "Rez na něm se nedá vydrhnout. Prokop ho nesundal tři sta let, a teď to vypadá, že ho nesundáš ani ty.", "en": "The rust won't scrub off. Prokop didn't take it off for three hundred years, and now it seems you won't either."}
+  },
+  "zbojnicka_jistota": {
+    "name": {"cs": "Zbojnická jistota", "en": "The Brigand's Certainty"}, "base": "kuse", "qlvl": 16,
+    "mods": [{"stat": "dmg_pct", "min": 70, "max": 90}, {"stat": "attack_speed", "min": 15, "max": 15}, {"stat": "obratnost", "min": 6, "max": 10}, {"stat": "fire_dmg", "min": 8, "max": 12}],
+    "flavor": {"cs": "Na pažbě jsou vyřezané zářezy. Nikdo nespočítal kolik, protože kdo je začal počítat, už nedopočítal.", "en": "Notches are carved into the stock. No one has counted them, because whoever started counting never finished."}
+  },
+  "prokopuv_palcat": {
+    "name": {"cs": "Prokopův palcát", "en": "Prokop's Mace"}, "base": "palcat", "qlvl": 18,
+    "mods": [{"stat": "dmg_pct", "min": 80, "max": 110}, {"stat": "attack_speed", "min": 15, "max": 15}, {"stat": "sila", "min": 8, "max": 12}, {"stat": "to_hit", "min": 50, "max": 80}],
+    "flavor": {"cs": "Divoký Prokop jím tloukl na brány klášterů. Teď tluče jen na víko rakve, která je pořád prázdná.", "en": "Wild Prokop beat on monastery gates with it. Now it only knocks on the lid of a coffin that is still empty."}
+  },
+  "janosikuv_opasek": {
+    "name": {"cs": "Jánošíkův opasek", "en": "Jánošík's Belt"}, "base": "siroky_opasek", "qlvl": 18,
+    "mods": [{"stat": "sila", "min": 15, "max": 20}, {"stat": "life_steal", "min": 5, "max": 7}, {"stat": "hp", "min": 20, "max": 30}],
+    "flavor": {"cs": "Dokud ho Jánošík nosil, žádná kulka ho nevzala. Sundali mu ho lstí — a pak už to šlo snadno. Hák si najde každého.", "en": "As long as Jánošík wore it, no bullet could take him. They got it off him by trickery — and after that it was easy. The hook finds everyone."}
+  },
+  "krkavci_kosile": {
+    "name": {"cs": "Krkavčí košile", "en": "The Raven Shirt"}, "base": "krouzkova_kosile", "qlvl": 20,
+    "mods": [{"stat": "armor_pct", "min": 70, "max": 90}, {"stat": "move_speed", "min": 10, "max": 10}, {"stat": "obratnost", "min": 8, "max": 12}, {"stat": "res_lightning", "min": 20, "max": 25}],
+    "flavor": {"cs": "Spletli ji z kopřiv pro bratry zakleté v krkavce. Na jednom rukávu chybí kroužky — ten nestihli.", "en": "Woven from nettles for brothers cursed into ravens. One sleeve is missing its rings — there wasn't time."}
+  },
+  "baziliskovo_oko": {
+    "name": {"cs": "Baziliškovo oko", "en": "The Basilisk's Eye"}, "base": "prsten", "qlvl": 20,
+    "mods": [{"stat": "crit", "min": 6, "max": 8}, {"stat": "to_hit", "min": 60, "max": 90}, {"stat": "dmg_reduce", "min": 3, "max": 4}, {"stat": "res_poison", "min": 25, "max": 30}],
+    "flavor": {"cs": "Oko, které zabíjelo pohledem, je teď zavřené. Většinou.", "en": "The eye that killed with a look is closed now. Mostly."}
+  },
+  "kosmova_kronika": {
+    "name": {"cs": "Kosmova kronika", "en": "Kosmas's Chronicle"}, "base": "kniha", "qlvl": 20,
+    "mods": [{"stat": "skills", "min": 1, "max": 1}, {"stat": "mana", "min": 30, "max": 40}, {"stat": "magie", "min": 10, "max": 15}, {"stat": "xp_pct", "min": 5, "max": 5}],
+    "flavor": {"cs": "Kosmas psal o všem, co viděl, a o něčem, co vidět neměl. Na posledních stranách se písmo třese.", "en": "Kosmas wrote about everything he saw, and about something he was never meant to see. On the last pages, the hand shakes."}
+  },
+  "strzygina_dvojnice": {
+    "name": {"cs": "Strzygina dvojnice", "en": "The Strzyga's Twin"}, "base": "savle", "qlvl": 22,
+    "mods": [{"stat": "dmg_pct", "min": 100, "max": 130}, {"stat": "cold_dmg", "min": 10, "max": 20}, {"stat": "life_steal", "min": 4, "max": 6}, {"stat": "attack_speed", "min": 20, "max": 20}],
+    "flavor": {"cs": "Dvě srdce, dvě duše, jedna čepel. Druhá je někde ve tmě a čeká, až ji někdo zvedne.", "en": "Two hearts, two souls, one blade. The other is somewhere in the dark, waiting for someone to pick it up."}
+  },
+  "ohnivcova_kovadlina": {
+    "name": {"cs": "Ohnivcova kovadlina", "en": "Ohnivec's Anvil"}, "base": "paveza", "qlvl": 24,
+    "mods": [{"stat": "armor_pct", "min": 80, "max": 110}, {"stat": "block", "min": 10, "max": 10}, {"stat": "res_fire", "min": 40, "max": 50}, {"stat": "thorns", "min": 12, "max": 18}],
+    "flavor": {"cs": "Na téhle kovadlině se razily tolary pro peklo. Každý desátý zvonil jinak.", "en": "On this anvil thalers were struck for Hell. Every tenth one rang differently."}
+  },
+  "jezibabina_lopata": {
+    "name": {"cs": "Ježibabina lopata", "en": "Ježibaba's Shovel"}, "base": "hul", "qlvl": 26,
+    "mods": [{"stat": "skills", "min": 1, "max": 1}, {"stat": "fire_dmg", "min": 15, "max": 25}, {"stat": "res_fire", "min": 20, "max": 25}, {"stat": "mana", "min": 30, "max": 50}],
+    "flavor": {"cs": "Na téhle lopatě se sázel do pece chleba. A nejen chleba. Pořád je teplá.", "en": "Bread was slid into the oven on this shovel. Not only bread. It is still warm."}
+  },
+  "matejuv_kahan": {
+    "name": {"cs": "Matějův kahan", "en": "Matěj's Lamp"}, "base": "havirsky_kahan", "qlvl": 26,
+    "mods": [{"stat": "light_radius", "min": 1, "max": 1}, {"stat": "vitalita", "min": 8, "max": 12}, {"stat": "res_all", "min": 8, "max": 12}, {"stat": "hp", "min": 20, "max": 30}],
+    "flavor": {"cs": "Předák Matěj ho držel v ruce, když zhasl. Znovu ho zapálit šlo — jemu už ne.", "en": "Foreman Matěj was holding it when it went out. The lamp could be lit again — he could not."}
+  },
+  "remen_mesicku": {
+    "name": {"cs": "Řemen dvanácti měsíčků", "en": "Belt of the Twelve Months"}, "base": "opasek_kovany", "qlvl": 28,
+    "mods": [{"stat": "vse_staty", "min": 4, "max": 6}, {"stat": "res_all", "min": 8, "max": 10}, {"stat": "hp", "min": 25, "max": 35}, {"stat": "cast_speed", "min": 10, "max": 10}],
+    "flavor": {"cs": "Dvanáct přezek, dvanáct měsíčků u ohně. Zapni ho v lednu a uvidíš fialky.", "en": "Twelve buckles, twelve months round a fire. Fasten it in January and you'll see violets."}
+  },
+  "sanin_kozich": {
+    "name": {"cs": "Sanin kožich", "en": "The Saň's Hide"}, "base": "kozich", "qlvl": 29,
+    "mods": [{"stat": "armor_pct", "min": 100, "max": 130}, {"stat": "res_fire", "min": 20, "max": 20}, {"stat": "res_cold", "min": 20, "max": 20}, {"stat": "res_poison", "min": 20, "max": 20}, {"stat": "hp", "min": 30, "max": 40}],
+    "flavor": {"cs": "Šupiny ze tří krků, sešité dohromady. Občas se pod nimi něco pohne, jako by chtělo dorůst.", "en": "Scales from three necks, sewn together. Sometimes something stirs beneath them, as if trying to grow back."}
+  },
+  "vijova_vicka": {
+    "name": {"cs": "Vijova víčka", "en": "Viy's Eyelids"}, "base": "kapuce", "qlvl": 30,
+    "mods": [{"stat": "magic_find", "min": 30, "max": 40}, {"stat": "res_all", "min": 10, "max": 15}, {"stat": "to_hit", "min": 80, "max": 120}, {"stat": "light_radius", "min": -1, "max": -1}],
+    "flavor": {"cs": "Víčka tak těžká, že je museli zvedat vidlemi. Kdo si je nasadí, uvidí, co vidět nechce.", "en": "Eyelids so heavy they had to be lifted with pitchforks. Whoever puts them on will see what they do not want to see."}
+  },
+  "medulinina_hul": {
+    "name": {"cs": "Medulínina hůl", "en": "Medulína's Staff"}, "base": "hul_kovany", "qlvl": 30,
+    "mods": [{"stat": "skills", "min": 1, "max": 1}, {"stat": "magie", "min": 12, "max": 18}, {"stat": "hp_regen", "min": 5, "max": 8}, {"stat": "res_poison", "min": 25, "max": 30}, {"stat": "mana", "min": 35, "max": 45}],
+    "flavor": {"cs": "Hodná sestra z brdské trojice ji obtočila kvetoucím chmelem. Kvete i v nejhlubší štole.", "en": "The kind sister of the Brdy three wound it with flowering hops. It blooms even in the deepest adit."}
+  },
+  "janosikova_valaska": {
+    "name": {"cs": "Jánošíkova valaška", "en": "Jánošík's Axe"}, "base": "valaska_kovany", "qlvl": 30,
+    "mods": [{"stat": "dmg_pct", "min": 120, "max": 150}, {"stat": "attack_speed", "min": 20, "max": 20}, {"stat": "obratnost", "min": 15, "max": 20}, {"stat": "life_steal", "min": 4, "max": 5}],
+    "flavor": {"cs": "Poznáš ji podle toho, že sama skáče do ruky. Kdo ji drží, nemá strach z pánů ani z hor.", "en": "You know it because it leaps into your hand by itself. Whoever holds it fears neither lords nor mountains."}
+  },
+  "kostejova_jehla_unique": {
+    "name": {"cs": "Kostějova jehla", "en": "Koschei's Needle"}, "base": "nuz", "qlvl": 32,
+    "mods": [{"stat": "crit", "min": 15, "max": 20}, {"stat": "cold_dmg", "min": 20, "max": 35}, {"stat": "life_steal", "min": 6, "max": 8}, {"stat": "obratnost", "min": 12, "max": 15}],
+    "flavor": {"cs": "Kostějova smrt, zlomená vedví. Hrot je pořád dost ostrý, aby našel cizí.", "en": "Koschei's death, snapped in two. The point is still sharp enough to find someone else's."}
+  },
+  "zbroj_nesmrtelnych": {
+    "name": {"cs": "Zbroj nesmrtelných", "en": "Armour of the Deathless"}, "base": "platova_zbroj", "qlvl": 33,
+    "mods": [{"stat": "armor_pct", "min": 120, "max": 150}, {"stat": "res_cold", "min": 25, "max": 30}, {"stat": "res_poison", "min": 25, "max": 30}, {"stat": "hp_pct", "min": 8, "max": 10}, {"stat": "dmg_reduce", "min": 4, "max": 5}],
+    "flavor": {"cs": "Kostějovi strážci v ní stáli tak dlouho, až zapomněli umřít. Uvnitř je cítit hlína.", "en": "Koschei's guards stood in it so long they forgot how to die. It smells of earth inside."}
+  },
+  "bystrozrakeho_luk": {
+    "name": {"cs": "Luk Bystrozrakého", "en": "Sharp-Eye's Bow"}, "base": "luk_kovany", "qlvl": 34,
+    "mods": [{"stat": "dmg_pct", "min": 100, "max": 130}, {"stat": "to_hit", "min": 100, "max": 150}, {"stat": "crit", "min": 8, "max": 10}, {"stat": "light_radius", "min": 1, "max": 1}],
+    "flavor": {"cs": "Bystrozraký musel nosit pásku přes oči, jinak by jeho pohled rozpálil skálu. S tímhle lukem si ji sundávat nemusíš.", "en": "Sharp-Eye had to wear a blindfold, or his gaze would set stone ablaze. With this bow, you never need to take yours off."}
+  },
+  "mikulcicka_kaptorga": {
+    "name": {"cs": "Mikulčická kaptorga", "en": "The Mikulčice Kaptorga"}, "base": "kaptorga", "qlvl": 35,
+    "mods": [{"stat": "skills", "min": 1, "max": 1}, {"stat": "hp", "min": 30, "max": 40}, {"stat": "res_all", "min": 8, "max": 10}, {"stat": "light_radius", "min": 1, "max": 1}],
+    "flavor": {"cs": "Velkomoravská schránka na ostatek. Co v ní bylo, se ztratilo; co v ní je teď, se ztratit nechce.", "en": "A Great Moravian reliquary. What it once held is lost; what it holds now does not wish to be."}
+  },
+  "blanicka_prilba": {
+    "name": {"cs": "Blanická přilba", "en": "Helm of Blaník"}, "base": "prilba_kovany", "qlvl": 38,
+    "mods": [{"stat": "armor_pct", "min": 80, "max": 100}, {"stat": "vitalita", "min": 10, "max": 15}, {"stat": "res_all", "min": 10, "max": 15}, {"stat": "dmg_reduce", "min": 3, "max": 4}],
+    "flavor": {"cs": "Rytíři v Blaníku spí, dokud nebude nejhůř. Jeden z nich se probudil dřív a přilbu tu nechal.", "en": "The knights inside Blaník sleep until the worst comes. One of them woke early and left his helm behind."}
+  },
+  "horymiruv_bic": {
+    "name": {"cs": "Horymírův bič", "en": "Horymír's Whip"}, "base": "cep_kovany", "qlvl": 40,
+    "mods": [{"stat": "dmg_pct", "min": 120, "max": 150}, {"stat": "move_speed", "min": 15, "max": 15}, {"stat": "attack_speed", "min": 15, "max": 15}, {"stat": "obratnost", "min": 10, "max": 15}],
+    "flavor": {"cs": "„Šemíku, hop!“ Horymír ho práskl jen jednou a kůň přeskočil hradby. S horníky z Bříství se nepohodl — a hora mu to nezapomněla.", "en": "\"Šemík, jump!\" Horymír cracked it only once and the horse cleared the walls. He fell out with the miners of Bříství — and the mountain never forgot."}
+  },
+  "zdar_buh_kahan": {
+    "name": {"cs": "Zdař Bůh", "en": "Zdař Bůh"}, "base": "mosazny_kahan", "qlvl": 40,
+    "mods": [{"stat": "light_radius", "min": 2, "max": 2}, {"stat": "res_all", "min": 15, "max": 20}, {"stat": "hp", "min": 30, "max": 50}, {"stat": "xp_pct", "min": 5, "max": 5}, {"stat": "magic_find", "min": 15, "max": 20}],
+    "flavor": {"cs": "Na mosazném plášti je vyryto ZDAŘ BŮH — celé, bez jediného zaváhání. Jeho plamen je teplý.", "en": "Engraved on the brass: ZDAŘ BŮH — whole, without a single falter. Its flame is warm."}
+  },
+  "bruncvikuv_mec": {
+    "name": {"cs": "Bruncvíkův meč", "en": "Bruncvík's Sword"}, "base": "obourucni_mec_kovany", "qlvl": 45,
+    "mods": [{"stat": "dmg_pct", "min": 140, "max": 180}, {"stat": "crit", "min": 8, "max": 10}, {"stat": "sila", "min": 12, "max": 15}, {"stat": "to_hit", "min": 100, "max": 100}],
+    "flavor": {"cs": "„Hlavy dolů!“ — a meč sekal sám. Prý je zazděný v Karlově mostě. Tenhle tam zjevně není.", "en": "\"Heads off!\" — and the sword cut on its own. They say it is walled into Charles Bridge. This one, evidently, is not."}
+  },
+  "moranina_naruc_amulet": {
+    "name": {"cs": "Moranina náruč", "en": "Morana's Embrace"}, "base": "lunice", "qlvl": 45,
+    "mods": [{"stat": "skills", "min": 1, "max": 1}, {"stat": "res_cold", "min": 35, "max": 40}, {"stat": "mana", "min": 40, "max": 60}, {"stat": "cold_dmg", "min": 15, "max": 25}],
+    "flavor": {"cs": "Každé jaro ji topí v řece a každý podzim se vrací. Tahle lunice je studená i u srdce.", "en": "Every spring they drown her in the river, and every autumn she comes back. This lunula is cold even against the heart."}
+  },
+  "stribrna_zila": {
+    "name": {"cs": "Stříbrná žíla", "en": "The Silver Vein"}, "base": "prsten_b", "qlvl": 50,
+    "mods": [{"stat": "vse_staty", "min": 5, "max": 7}, {"stat": "gold_find", "min": 50, "max": 70}, {"stat": "magic_find", "min": 20, "max": 25}],
+    "flavor": {"cs": "Hora dá stříbro tomu, kdo ví, kde kopat. A vezme si desátek od toho, kdo neví, kdy přestat.", "en": "The mountain gives silver to whoever knows where to dig. And takes its tithe from whoever doesn't know when to stop."}
+  },
+  "karbidka_svatobarborska": {
+    "name": {"cs": "Svatobarborská karbidka", "en": "Saint Barbara's Carbide Lamp"}, "base": "karbidka", "qlvl": 60,
+    "mods": [{"stat": "light_radius", "min": 2, "max": 2}, {"stat": "skills", "min": 1, "max": 1}, {"stat": "magic_find", "min": 30, "max": 40}, {"stat": "dmg_reduce", "min": 4, "max": 5}, {"stat": "res_all", "min": 12, "max": 15}],
+    "flavor": {"cs": "Svítí bíle jako ta jeho, ale hřeje. Na víčku je vyrytá věž a pod ní: „Ať vyfárají všichni.“", "en": "It shines white like his, but it is warm. A tower is engraved on the lid, and beneath it: \"May they all come back up.\""}
+  },
+  "mydlaruv_kord": {
+    "name": {"cs": "Mydlářův kord", "en": "Mydlář's Rapier"}, "base": "kord_hlubinny", "qlvl": 60,
+    "mods": [{"stat": "dmg_pct", "min": 180, "max": 230}, {"stat": "crit", "min": 12, "max": 15}, {"stat": "life_steal", "min": 5, "max": 6}, {"stat": "obratnost", "min": 18, "max": 22}],
+    "flavor": {"cs": "Kat Mydlář jím jednoho červnového rána popravil sedmadvacet mužů. Čepel si to pamatuje lépe než on.", "en": "With it, the executioner Mydlář put twenty-seven men to death one June morning. The blade remembers it better than he did."}
+  },
+  "faustova_kniha": {
+    "name": {"cs": "Faustova kniha", "en": "Faust's Book"}, "base": "kniha_hlubinny", "qlvl": 65,
+    "mods": [{"stat": "skills", "min": 2, "max": 2}, {"stat": "magie", "min": 20, "max": 25}, {"stat": "mana_steal", "min": 4, "max": 5}, {"stat": "hp_pct", "min": -10, "max": -10}],
+    "flavor": {"cs": "Z Faustova domu na Dobytčím trhu odnesl čert doktora stropem. Knihu nechal. Proč asi?", "en": "From Faust's house on the Cattle Market the devil carried the doctor off through the ceiling. He left the book. Why would that be?"}
+  },
+  "perunova_sekera": {
+    "name": {"cs": "Perunova sekera", "en": "Perun's Axe"}, "base": "sekera_hlubinny", "qlvl": 70,
+    "mods": [{"stat": "lightning_dmg", "min": 60, "max": 100}, {"stat": "dmg_pct", "min": 150, "max": 200}, {"stat": "attack_speed", "min": 20, "max": 20}, {"stat": "res_lightning", "min": 25, "max": 30}],
+    "flavor": {"cs": "Hromovládce ji hodil po hadovi, který se schoval pod kořeny světa. Netrefil a sekera padala sedm dní a sedm nocí.", "en": "The Thunderer hurled it at the serpent hiding beneath the roots of the world. He missed, and the axe fell for seven days and seven nights."}
+  },
+  "zila_oslu": {
+    "name": {"cs": "Žíla Oslu", "en": "Vein of the Osel"}, "base": "krumpac_hlubinny", "qlvl": 75,
+    "mods": [{"stat": "dmg_pct", "min": 200, "max": 250}, {"stat": "sila", "min": 20, "max": 25}, {"stat": "crit", "min": 10, "max": 12}, {"stat": "hp_pct", "min": 10, "max": 10}, {"stat": "light_radius", "min": 1, "max": 1}],
+    "flavor": {"cs": "Ukovaný ze stříbra, které se z Oslu nikdy nevytěžilo. Kope jen dolů a nikdy se neotupí.", "en": "Forged from silver that was never brought up out of the Osel. It digs only downward, and it never dulls."}
+  }
+}

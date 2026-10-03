@@ -1,0 +1,206 @@
+{
+  "kronika_1": {
+    "kind": "kronika", "unlock": "flag:kronika_1",
+    "title": {"cs": "Havířská smlouva, list první", "en": "The Miners' Covenant, First Leaf"},
+    "text": {"cs": "Léta Páně třináctistého, když král Václav dal Hoře právo horní ve čtyřech knihách, sešlo se bratrstvo havířské v noci pod Kaňkem a psalo knihu pátou, kterou žádný písař královský nespatřil. Neboť ten, jenž v žilách stříbra přebývá, bral si desátek: jeden kahan z deseti. A když hora dávala víc, bral víc, až bral celé šichty a celé vsi. I zavázali se čtyři, staří a zlí, kteří byli v zemi dřív nežli my, že ho udrží v hlubině, každý jednu jeho moc v sobě zavřenou… a čtyři zavázáni jsou. Voda drží jeho žíly. [Zbytek listu smyla voda.]", "en": "In the Year of Our Lord thirteen hundred, when King Wenceslas gave the Mountain its mining law in four books, the brotherhood of miners met by night beneath Kaněk and wrote a fifth book, which no royal scribe ever saw. For he who dwells in the veins of silver took a tithe: one lamp in ten. And when the mountain gave more, he took more, until he took whole shifts and whole villages. And four bound themselves by oath, old and wicked, who were in this land before us, to hold him in the deep, each with one of his powers shut up inside itself… and four are bound by oath. Water holds his veins. [The rest of the leaf has been washed away.]"}
+  },
+  "kronika_2": {
+    "kind": "kronika", "unlock": "flag:kronika_2",
+    "title": {"cs": "Havířská smlouva, list druhý", "en": "The Miners' Covenant, Second Leaf"},
+    "text": {"cs": "… a kámen drží jeho kosti, aby nevstal. Kdo z vás potká hada s kohoutí hlavou, ať ho nechá žít, neboť jeho oči jsou zámek. A nežádejte po strážcích dobroty. Kdo v sobě drží moc boží, ten hnije, jako hnije dub, který drží skálu. Platíme jim tím, že je necháváme být. Ať nikdo z našich synů nesestoupí dolů se zbraní proti nim, ať by mu to radil kdokoli…", "en": "… and stone holds his bones, that he may not rise. Whoever among you meets a serpent with a rooster's head, let him leave it living, for its eyes are a lock. And ask no kindness of the guardians. Whoever holds a god's power within himself rots, as rots the oak that holds up the rock. We pay them by leaving them be. Let none of our sons go down with a weapon against them, whoever may counsel him to it…"}
+  },
+  "kronika_3": {
+    "kind": "kronika", "unlock": "flag:kronika_3",
+    "title": {"cs": "Havířská smlouva, list třetí", "en": "The Miners' Covenant, Third Leaf"},
+    "text": {"cs": "… oheň drží jeho dech, aby nemohl volat nahoru. A smrt drží jeho jméno… [ohořelé] … Však věz, kdo toto čteš: on nahoru nemůže, ale šeptat může. A pošle nahoru kus sebe, malého a laskavého, s kahanem v ruce, a ten bude prosit o pomoc a bude se usmívat. Nevěřte mužíčkovi, který nemá… [Zbytek listu shořel.]", "en": "… fire holds his breath, that he may not call upward. And death holds his name… [scorched] … But know this, you who read: he cannot come up, yet he can whisper. And he will send up a piece of himself, small and kindly, with a lamp in his hand, and it will beg for help, and it will smile. Do not trust the little man who has no… [The rest of the leaf is burnt away.]"}
+  },
+  "kronika_4": {
+    "kind": "kronika", "unlock": "flag:kronika_4",
+    "title": {"cs": "Havířská smlouva, list čtvrtý", "en": "The Miners' Covenant, Fourth Leaf"},
+    "text": {"cs": "… a smrt drží jeho jméno, aby nikdy nebyl celý. Tak jsou čtyři zámky: voda, kámen, oheň a smrt. Pečeť svou dali a pečeť svou drží, dokud bude stát Hora. [Pod tím jinou rukou, spěšně:] Kdo ponese všechny čtyři pečeti v jednom světle, ponese jeho. Nedávejte mu kahan. Nikdy mu nedávejte kahan.", "en": "… and death holds his name, that he may never be whole. So there are four locks: water, stone, fire and death. They gave their seal and they keep their seal for as long as the Mountain stands. [Below, in another hand, hurried:] Whoever carries all four seals in a single light carries him. Do not give him a lamp. Never give him a lamp."}
+  },
+  "kronika_5": {
+    "kind": "kronika", "unlock": "flag:kronika_5",
+    "title": {"cs": "Kniha šestá, list první", "en": "The Sixth Book, First Leaf"},
+    "text": {"cs": "Permoník nebyl pánem hlubiny. Byl jen vrátný. Desátek, který bral z kahanů, nesl dál, dolů, pod Nav, k tomu, kdo spí a jehož jméno se nepíše. Čtyři strážci nedrželi boha. Drželi dveře. Teď jsou dveře bez zámků i bez vrátného, a za nimi se ve tmě něco obrací ze spaní. Zapsal Kosmas, kronikář Hory, na břehu Smorodiny, v den, kdy zvon na Hoře znovu zazvonil klekání a padesát kahanů z Osla došlo pokoje.", "en": "Permoník was not the lord of the deep. He was only the doorkeeper. The tithe he took from the lamps he carried further, down, beneath Nav, to the one who sleeps and whose name is not written. The four guardians did not hold a god. They held a door. Now the door has neither locks nor keeper, and beyond it, in the dark, something turns over in its sleep. Written by Kosmas, chronicler of the Mountain, on the bank of the Smorodina, on the day the bell of the Mountain rang the evening Angelus once more and the fifty lamps of Osel found their rest."}
+  },
+
+  "boss_klekanice": {
+    "kind": "boss", "monster": "klekanice",
+    "title": {"cs": "Klekánice", "en": "The Klekánice"},
+    "text": {"cs": "„Zvon… kdo zastavil zvon? Já ne. Já jen chodila, když mlčel.“ Bílá paní z klekání brala ty, kdo nebyli po zvonění doma. Nikdo se jí nezeptal, kdo zastavil zvon.", "en": "“The bell… who stopped the bell? Not I. I only walked while it was silent.” The White Lady of the evening bell took those who were not home when it rang. No one ever asked her who had stopped the bell."}
+  },
+  "boss_kostnik": {
+    "kind": "boss", "monster": "kostnik",
+    "title": {"cs": "Kostník ze Sedlce", "en": "The Bone Lord of Sedlec"},
+    "text": {"cs": "„Ten… se světýlkem… ten nemá stín.“ Čtyřicet tisíc kostí z hřbitova posvěceného hlínou z Golgoty si zvolilo krále. Rozsypal se dvakrát. Podruhé už se nesložil.", "en": "“The one… with the little light… he has no shadow.” Forty thousand bones from a graveyard hallowed with the earth of Golgotha chose themselves a king. He fell apart twice. The second time he did not rebuild."}
+  },
+  "boss_vodnik": {
+    "kind": "boss", "monster": "vodnik",
+    "title": {"cs": "Vodník Hastrman, strážce Vodní pečeti", "en": "Vodník Hastrman, Warden of the Water Seal"},
+    "text": {"cs": "„Hrníčky… měl jsem je nechat zavřené. On chce vodu. Celou dobu chtěl jen vodu.“ Šest set let držel v žilách hory studenou vodu a pod hrníčky dušičky, které ji držely s ním. Když se poslední hrníček rozbil, povolila první pečeť.", "en": "“The teacups… I should have kept them shut. He wants the water. All along he only wanted the water.” For six hundred years he held cold water in the mountain's veins, and under his teacups the little souls that held it with him. When the last cup broke, the first seal gave way."}
+  },
+  "boss_megera": {
+    "kind": "boss", "monster": "megera",
+    "title": {"cs": "Megera", "en": "Megera"},
+    "text": {"cs": "„Držela jsem kořeny pro něj. Ne… proti němu. Už nevím.“ Třetí z brdských pověstí. Slíbili jí, že les nikdy neshoří. Les neshořel. Zčernal.", "en": "“I held the roots for him. No… against him. I no longer know.” The third of the Brdy legends. They promised her the forest would never burn. It never burned. It blackened."}
+  },
+  "boss_prokop": {
+    "kind": "boss", "monster": "prokop",
+    "title": {"cs": "Divoký Prokop z Valdeka", "en": "Wild Prokop of Valdek"},
+    "text": {"cs": "„Slíbil mi cestu. Jezdím tři sta let a pořád je tma.“ Loupeživý rytíř z Valdeka jezdil štolami tak dlouho, až mu kůň uschl na kost. Kdo mu tu cestu slíbil, neřekl.", "en": "“He promised me a road. I have ridden three hundred years and it is still dark.” The robber knight of Valdek rode the galleries until his horse dried to the bone. Who promised him that road, he never said."}
+  },
+  "boss_bazilisek": {
+    "kind": "boss", "monster": "bazilisek",
+    "title": {"cs": "Bazilišek, strážce Kamenné pečeti", "en": "The Basilisk, Warden of the Stone Seal"},
+    "text": {"cs": "„Já ho držel kamenem. Kdo ho teď udrží?“ Vylíhl se z vejce, které snesl kohout, a usadil se ve stříbře. Jeho pohled držel kosti hory ztuhlé. Zkameněl vlastníma očima a druhá pečeť pukla s ním.", "en": "“I held him with stone. Who will hold him now?” It hatched from an egg laid by a rooster and made its nest in the silver. Its gaze kept the mountain's bones rigid. It turned to stone by its own eyes, and the second seal cracked along with it."}
+  },
+  "boss_strzyga": {
+    "kind": "boss", "monster": "strzyga",
+    "title": {"cs": "Strzyga", "en": "The Strzyga"},
+    "text": {"cs": "„Jedno srdce mi bilo pro něj, druhé proti němu. Teď nebije žádné.“ Narodila se se dvěma srdci a dvěma dušemi. Jednu pohřbili s kamenem v ústech. Druhá si ho vyplivla.", "en": "“One heart beat for him, the other against him. Now neither beats.” She was born with two hearts and two souls. They buried one with a stone in its mouth. The other spat the stone out."}
+  },
+  "boss_ohnivec": {
+    "kind": "boss", "monster": "ohnivec",
+    "title": {"cs": "Mincíř Ohnivec", "en": "Ohnivec the Minter"},
+    "text": {"cs": "„Razil jsem jeho tvář. Na každý tolar. Podívej se, až budeš mít čas.“ Čert, který šidil na váze, dostal v Pekle vlastní mincovnu. Na rubu jeho tolarů je malý vousatý havíř s kahanem.", "en": "“I struck his face. On every thaler. Take a look, when you have the time.” A devil who cheated on the scales was given his own mint in Hell. On the reverse of his thalers is a little bearded miner with a lamp."}
+  },
+  "boss_jezibaba": {
+    "kind": "boss", "monster": "jezibaba",
+    "title": {"cs": "Ježibaba, strážkyně Ohnivé pečeti", "en": "Ježibaba, Warden of the Fire Seal"},
+    "text": {"cs": "„Já mu nesu oheň, holoubku. Ty mu neseš všechno.“ Smála se ve vlastní peci, dokud pec nevyhasla. S ní vyhasl oheň, který držel jeho dech, a třetí pečeť vplula do kahanu jako jiskra do troudu.", "en": "“I carry his fire, my little dove. You carry him everything.” She laughed in her own oven until the oven went out. With it went out the fire that held his breath, and the third seal drifted into the lamp like a spark into tinder."}
+  },
+  "boss_san": {
+    "kind": "boss", "monster": "san",
+    "title": {"cs": "Saň Tříhlavá", "en": "The Three-Headed Saň"},
+    "text": {"cs": "„Hlídala jsem most, aby nikdo nešel dolů s tím světlem. Nikdo. Ani ty.“ Tři hlavy, tři živly, jeden most přes Smorodinu. Pahýly hoří ještě teď.", "en": "“I guarded the bridge so that no one would go down carrying that light. No one. Not even you.” Three heads, three elements, one bridge across the Smorodina. The stumps are burning still."}
+  },
+  "boss_vij": {
+    "kind": "boss", "monster": "vij",
+    "title": {"cs": "Vij", "en": "Vij"},
+    "text": {"cs": "„Zvedněte mi víčka… ať ho vidím… Ach. Ty ho neseš v ruce.“ Démon, jehož víčka sahají až k zemi. Když je konečně otevřel, díval se jen na kahan.", "en": "“Lift my eyelids… let me see him… Ah. You carry him in your hand.” The demon whose eyelids reach the ground. When at last he opened them, he looked only at the lamp."}
+  },
+  "boss_kostej": {
+    "kind": "boss", "monster": "kostej",
+    "title": {"cs": "Kostěj Nesmrtelný, strážce Pečeti smrti", "en": "Koschei the Deathless, Warden of the Seal of Death"},
+    "text": {"cs": "„Já jsem byl jeho smrt. Zlom mě a bude nesmrtelný jako já.“ Jehla ve vejci, vejce v kachně, kachna v zajíci, zajíc v truhle, truhla pod dubem. Jehla praskla a čtvrtá pečeť s ní. Navu se nevrací nikdo nahoru.", "en": "“I was his death. Break me and he will be as deathless as I.” A needle in an egg, the egg in a duck, the duck in a hare, the hare in a chest, the chest beneath an oak. The needle snapped, and the fourth seal with it. From Nav no one returns above."}
+  },
+  "boss_permonik_obr": {
+    "kind": "boss", "monster": "permonik_obr",
+    "title": {"cs": "Permoník, pán žil", "en": "Permoník, Lord of the Veins"},
+    "text": {"cs": "„Já byl jen vrátný, havíři. Desátek jsem nosil dál. Dolů. Tomu, kdo spí pod Navem.“ Umřel smíchem. Nevrhal stín ani tehdy.", "en": "“I was only the doorkeeper, miner. I carried the tithe further. Down. To the one who sleeps beneath Nav.” He died laughing. Even then he cast no shadow."}
+  },
+
+  "bestiar_krysa": {"kind": "bestiar", "monster": "krysa",
+    "title": {"cs": "Krysa z hlubin", "en": "Deep Rat"},
+    "text": {"cs": "Krysy utekly z Hory týden před tím, než zmlkl zvon. Tyhle neutekly. Ty šly dolů.", "en": "The rats fled the Mountain a week before the bell fell silent. Not these. These went down."}},
+  "bestiar_sotek": {"kind": "bestiar", "monster": "sotek",
+    "title": {"cs": "Šotek", "en": "Šotek"},
+    "text": {"cs": "Domácí skřítek, který se odstěhoval do dolu. Ukradne groš a uteče. Kdo ho chytí, dostane svůj groš zpátky a ještě kamínek navíc.", "en": "A house imp that moved down the mine. It steals a groš and runs. Catch it, and you get your groš back with a pebble thrown in."}},
+  "bestiar_kostlivy_havir": {"kind": "bestiar", "monster": "kostlivy_havir",
+    "title": {"cs": "Kostlivý havíř", "en": "Skeleton Miner"},
+    "text": {"cs": "Šichta mu skončila před sto lety. Nikdo mu to neřekl, tak kope dál. Do čehokoli.", "en": "His shift ended a hundred years ago. No one told him, so he keeps on digging. Into anything."}},
+  "bestiar_kostlivy_kusinik": {"kind": "bestiar", "monster": "kostlivy_kusinik",
+    "title": {"cs": "Kostlivý kušiník", "en": "Skeleton Crossbowman"},
+    "text": {"cs": "Za válek hlídal šachty na Kaňku. Hlídá je pořád. Šipky si nosí ve vlastních žebrech.", "en": "In the wars he guarded the shafts on Kaněk. He guards them still. He keeps his bolts in his own ribs."}},
+  "bestiar_bludicka": {"kind": "bestiar", "monster": "bludicka",
+    "title": {"cs": "Bludička", "en": "Will-o'-the-Wisp"},
+    "text": {"cs": "Bledé světýlko v podobě ženy. Vodí poutníky do bažin, a kde bažina není, tam do zatopených komor. Za světýlkem se nechodí.", "en": "A pale little light in the shape of a woman. She leads travellers into marshes, and where there are no marshes, into flooded chambers. One does not follow little lights."}},
+  "bestiar_utopenec": {"kind": "bestiar", "monster": "utopenec",
+    "title": {"cs": "Utopenec", "en": "The Drowned"},
+    "text": {"cs": "Havíř, kterého zastihla voda. Těžký, studený, s řasou ve vlasech. Pod hrníček se nevešel.", "en": "A miner the water caught. Heavy, cold, with weed in his hair. He did not fit under a teacup."}},
+  "bestiar_netopyr": {"kind": "bestiar", "monster": "netopyr",
+    "title": {"cs": "Netopýr", "en": "Bat"},
+    "text": {"cs": "Létá, jak se mu zachce, a nikdy tam, kam míříš.", "en": "It flies wherever it pleases, and never where you are aiming."}},
+  "bestiar_hejkal": {"kind": "bestiar", "monster": "hejkal",
+    "title": {"cs": "Hejkal", "en": "Hejkal"},
+    "text": {"cs": "Chlupatý divý muž z brdských lesů. Křikne „hej!“ a vyrazí. Kdo mu odpoví, toho si osedlá.", "en": "A hairy wild man of the Brdy woods. He shouts “hey!” and charges. Whoever answers him, he saddles."}},
+  "bestiar_vlk": {"kind": "bestiar", "monster": "vlk",
+    "title": {"cs": "Vlk", "en": "Wolf"},
+    "text": {"cs": "Brdští vlci chodí ve smečkách. Do dolu je zahnal les, a les už je nepustí zpátky.", "en": "The Brdy wolves run in packs. The forest drove them into the mine, and the forest will not let them back out."}},
+  "bestiar_vlkodlak": {"kind": "bestiar", "monster": "vlkodlak",
+    "title": {"cs": "Vlkodlak", "en": "Werewolf"},
+    "text": {"cs": "Člověk, který usnul v lese za úplňku. Čím víc krvácí, tím méně je v něm člověka.", "en": "A man who fell asleep in the forest under a full moon. The more he bleeds, the less of the man is left."}},
+  "bestiar_diva_zena": {"kind": "bestiar", "monster": "diva_zena",
+    "title": {"cs": "Divá žena", "en": "Wild Woman"},
+    "text": {"cs": "Lesní žena s kůrou místo kůže. Hází kamením a hojí své sestry. Kdysi jí lidé nechávali chleba na mezích.", "en": "A woman of the woods with bark for skin. She throws stones and heals her sisters. Once, people left her bread at the field's edge."}},
+  "bestiar_mura": {"kind": "bestiar", "monster": "mura",
+    "title": {"cs": "Můra", "en": "Můra"},
+    "text": {"cs": "Sedá spícím na prsa a pije jim sny. Zdi pro ni nejsou překážkou. Mana pro ni je jen sen, který ještě nespal.", "en": "She sits on sleepers' chests and drinks their dreams. Walls are no obstacle to her. Mana, to her, is just a dream that hasn't slept yet."}},
+  "bestiar_bubak": {"kind": "bestiar", "monster": "bubak",
+    "title": {"cs": "Bubák", "en": "Bogeyman"},
+    "text": {"cs": "Pytel stínů s očima. Je vždycky za tebou. Proto se nikdy neotáčej pomalu.", "en": "A sack of shadows with eyes. It is always behind you. That is why you never turn around slowly."}},
+  "bestiar_kamenny_had": {"kind": "bestiar", "monster": "kamenny_had",
+    "title": {"cs": "Kamenný had", "en": "Stone Serpent"},
+    "text": {"cs": "Had, kterého pohled baziliška zkameněl jen napůl. Plive kamennou slinu a je pomalý jako všechno, co jednou zkamenělo.", "en": "A serpent the basilisk's gaze only half turned to stone. It spits stony venom, and it is slow, like everything that has once been petrified."}},
+  "bestiar_cert": {"kind": "bestiar", "monster": "cert",
+    "title": {"cs": "Čert", "en": "Čert"},
+    "text": {"cs": "Český čert s rohy, ocasem, kopytem a řetězem. Řetězem si tě přitáhne. Smlouvu ti nabídne až potom.", "en": "A Czech devil with horns, tail, hoof and chain. He hooks you in with the chain. He offers the contract only afterwards."}},
+  "bestiar_ohnivy_muzik": {"kind": "bestiar", "monster": "ohnivy_muzik",
+    "title": {"cs": "Ohnivý mužík", "en": "Fire Sprite"},
+    "text": {"cs": "Žhavý skřítek z jáchymovských pecí. Rozběhne se proti tobě s radostí, kterou chápe jen on, a vybuchne.", "en": "A glowing imp from the furnaces of Jáchymov. It runs at you with a joy only it understands, and explodes."}},
+  "bestiar_svetlonos": {"kind": "bestiar", "monster": "svetlonos",
+    "title": {"cs": "Světlonoš", "en": "Lantern-Bearer"},
+    "text": {"cs": "Duch s lucernou místo hlavy. Kde projde, tam tvůj kahan zeslábne. Bere světlo, ale nikdy ho nedonese domů.", "en": "A ghost with a lantern for a head. Wherever it passes, your lamp weakens. It takes light but never carries it home."}},
+  "bestiar_upir": {"kind": "bestiar", "monster": "upir",
+    "title": {"cs": "Upír", "en": "Vampire"},
+    "text": {"cs": "Mrtvý v pohřebním rubáši. Nepije krev, pije teplo. Když prohrává, rozletí se na netopýry.", "en": "A dead man in his burial shroud. He drinks not blood but warmth. When he is losing, he scatters into bats."}},
+  "bestiar_smolak": {"kind": "bestiar", "monster": "smolak",
+    "title": {"cs": "Smolák", "en": "Pitch Golem"},
+    "text": {"cs": "Golem ze smolince, který se v Pekle sám slepil dohromady. Svítí zeleně a kde stojí, tam nic neroste. Ani za tři sta let.", "en": "A golem of pitchblende that glued itself together down in Hell. It glows green, and where it stands nothing grows. Not even in three hundred years."}},
+  "bestiar_navka": {"kind": "bestiar", "monster": "navka",
+    "title": {"cs": "Navka", "en": "Navka"},
+    "text": {"cs": "Duše dívky, kterou nikdo nepochoval. Studené ruce, dlouhé vlasy a v hrsti cizí jméno.", "en": "The soul of a girl no one buried. Cold hands, long hair, and someone else's name clutched in her fist."}},
+  "bestiar_cerny_pes": {"kind": "bestiar", "monster": "cerny_pes",
+    "title": {"cs": "Černý pes", "en": "Black Dog"},
+    "text": {"cs": "Hlídá rozcestí. Kdo z rozcestí něco vezme, toho si pamatuje. Když zavyje, smečka zrychlí.", "en": "It guards the crossroads. Whoever takes anything from a crossroads, it remembers. When it howls, the pack runs faster."}},
+  "bestiar_bes": {"kind": "bestiar", "monster": "bes",
+    "title": {"cs": "Bes", "en": "Bes"},
+    "text": {"cs": "Vyzáblý démon s rohy. Proklíná pomalu a pečlivě, jako písař, který má celou věčnost.", "en": "A gaunt, horned demon. It curses slowly and carefully, like a scribe with all eternity before him."}},
+  "bestiar_permonicek": {"kind": "bestiar", "monster": "permonicek",
+    "title": {"cs": "Permoníček", "en": "Permoníček"},
+    "text": {"cs": "V Příbrami z nich dělají sošky. Tady dole mají nožíky. Smějí se pořád stejně.", "en": "In Příbram they make statues of them. Down here they carry knives. Their laughter is just the same."}},
+  "bestiar_kostejuv_nesmrtelny": {"kind": "bestiar", "monster": "kostejuv_nesmrtelny",
+    "title": {"cs": "Kostějův nesmrtelný", "en": "Koschei's Deathless"},
+    "text": {"cs": "Kostlivý rytíř v rezavé zbroji. Vstane znovu, dokud ho nespálíš. Jeho pán ho naučil, že smrt se dá schovat.", "en": "A skeleton knight in rusted armour. It rises again unless you burn it. Its master taught it that death can be hidden away."}},
+
+  "bestiar_klekanice": {"kind": "bestiar", "monster": "klekanice",
+    "title": {"cs": "Klekánice", "en": "The Klekánice"},
+    "text": {"cs": "Bába v bílém prostěradle se zvonkem v ruce. Zraníš ji jen ve svém světle.", "en": "A hag in a white sheet with a handbell. You can only wound her within your light."}},
+  "bestiar_kostnik": {"kind": "bestiar", "monster": "kostnik",
+    "title": {"cs": "Kostník ze Sedlce", "en": "The Bone Lord of Sedlec"},
+    "text": {"cs": "Pán z čtyřiceti tisíc kostí s korunou z lebek. Jednou se složí znovu.", "en": "A lord of forty thousand bones with a crown of skulls. He will put himself back together once."}},
+  "bestiar_vodnik": {"kind": "bestiar", "monster": "vodnik",
+    "title": {"cs": "Vodník Hastrman", "en": "Vodník Hastrman"},
+    "text": {"cs": "Zelený kabát, z šosů kape, červený klobouk, dýmka. Dokud stojí hrníčky, tůně ho hojí.", "en": "A green coat with dripping tails, a red hat, a pipe. While the teacups stand, his pools heal him."}},
+  "bestiar_megera": {"kind": "bestiar", "monster": "megera",
+    "title": {"cs": "Megera", "en": "Megera"},
+    "text": {"cs": "Brdská čarodějnice s naběračkou. Skáče mezi kotli a ze svých sluhů dělá vlky.", "en": "The witch of Brdy, ladle in hand. She leaps between her cauldrons and turns her servants into wolves."}},
+  "bestiar_prokop": {"kind": "bestiar", "monster": "prokop",
+    "title": {"cs": "Divoký Prokop z Valdeka", "en": "Wild Prokop of Valdek"},
+    "text": {"cs": "Rytíř na kostlivém koni. Útočí v přímce a nikdy nezatáčí.", "en": "A knight on a skeletal horse. He charges in straight lines and never turns."}},
+  "bestiar_bazilisek": {"kind": "bestiar", "monster": "bazilisek",
+    "title": {"cs": "Bazilišek", "en": "The Basilisk"},
+    "text": {"cs": "Had s kohoutí hlavou. Kdo stojí v jeho pohledu, kamení. Zrcadla mu vracejí jeho vlastní oči.", "en": "A serpent with a rooster's head. Whoever stands in its gaze turns to stone. Mirrors return its own eyes to it."}},
+  "bestiar_strzyga": {"kind": "bestiar", "monster": "strzyga",
+    "title": {"cs": "Strzyga", "en": "The Strzyga"},
+    "text": {"cs": "Dvě tváře, dvě srdce, dvě duše. Když padne první, vstane druhá.", "en": "Two faces, two hearts, two souls. When the first falls, the second rises."}},
+  "bestiar_ohnivec": {"kind": "bestiar", "monster": "ohnivec",
+    "title": {"cs": "Mincíř Ohnivec", "en": "Ohnivec the Minter"},
+    "text": {"cs": "Tlustý čert s kladivem. Hází hořící tolary a jeho zlato kouše.", "en": "A fat devil with a hammer. He hurls burning thalers, and his gold bites."}},
+  "bestiar_jezibaba": {"kind": "bestiar", "monster": "jezibaba",
+    "title": {"cs": "Ježibaba", "en": "Ježibaba"},
+    "text": {"cs": "Stará čarodějnice s lopatou a chaloupkou na kuří noze. Pec uhasíš jen mrtvou vodou.", "en": "An old witch with a shovel and a hut on a chicken's leg. Only dead water can put out her oven."}},
+  "bestiar_san": {"kind": "bestiar", "monster": "san",
+    "title": {"cs": "Saň Tříhlavá", "en": "The Three-Headed Saň"},
+    "text": {"cs": "Drak z Kalinového mostu. Oheň, mráz a jed. Uťatá hlava doroste, pokud pahýl nespálíš.", "en": "The dragon of the Kalinov Bridge. Fire, frost and poison. A severed head grows back unless you burn the stump."}},
+  "bestiar_vij": {"kind": "bestiar", "monster": "vij",
+    "title": {"cs": "Vij", "en": "Vij"},
+    "text": {"cs": "Hliněný démon s víčky až k zemi. Nevidí, dokud mu je sluhové nezvednou.", "en": "An earthen demon with eyelids down to the ground. He is blind until his servants lift them."}},
+  "bestiar_kostej": {"kind": "bestiar", "monster": "kostej",
+    "title": {"cs": "Kostěj Nesmrtelný", "en": "Koschei the Deathless"},
+    "text": {"cs": "Vyzáblý král s korunou. Svou smrt neschovává v sobě. Najdi dub.", "en": "A gaunt, crowned king. He does not keep his death inside him. Find the oak."}},
+  "bestiar_permonik_obr": {"kind": "bestiar", "monster": "permonik_obr",
+    "title": {"cs": "Permoník", "en": "Permoník"},
+    "text": {"cs": "Obr ze skály, stříbrné rudy a kořenů se studeným kahanem v hrudi. Nemá stín.", "en": "A giant of rock, silver ore and roots with a cold lamp in his chest. He has no shadow."}}
+}

@@ -1,0 +1,142 @@
+[
+  {
+    "id": 1,
+    "name": {"cs": "Klekání", "en": "The Evening Bell"},
+    "subtitle": {"cs": "Hora mlčí. Kdo zůstane venku po klekání, toho si vezme bílá paní.", "en": "The Mountain is silent. Whoever stays out after the evening bell, the White Lady takes."},
+    "town": {
+      "id": "hora",
+      "name": {"cs": "Kutná Hora", "en": "Kutná Hora"},
+      "tileset": "town_hora",
+      "music": "town_hora",
+      "npcs": ["permonik", "kosmas", "kovar_hnevek", "korenarka_dorota", "senkyrka_bara"]
+    },
+    "dungeon": {"name": {"cs": "Důl Osel", "en": "The Osel Mine"}, "tileset": "hora", "music": "mine_1"},
+    "floors": [
+      {"n": 1, "level": 1, "name": {"cs": "Horní štoly", "en": "The Upper Adits"},
+       "style": "gallery", "size": [56, 56], "water": 0.0,
+       "monsters": ["krysa", "sotek", "kostlivy_havir", "netopyr"], "density": 1.0,
+       "boss": null, "quest_props": []},
+      {"n": 2, "level": 3, "name": {"cs": "Klekánčina chodba", "en": "The Bell-Hag's Passage"},
+       "style": "gallery", "size": [56, 56], "water": 0.0,
+       "monsters": ["krysa", "sotek", "kostlivy_havir", "bludicka", "netopyr"], "density": 1.05,
+       "boss": "klekanice", "quest_props": ["zvon"]},
+      {"n": 3, "level": 5, "name": {"cs": "Kostnice pod Sedlcem", "en": "The Ossuary under Sedlec"},
+       "style": "mixed", "size": [60, 60], "water": 0.05,
+       "monsters": ["kostlivy_havir", "kostlivy_kusinik", "bludicka", "netopyr", "sotek"], "density": 1.1,
+       "boss": "kostnik", "quest_props": ["srdce_zvonu"]},
+      {"n": 4, "level": 7, "name": {"cs": "Zatopené patro", "en": "The Flooded Level"},
+       "style": "lair", "size": [48, 48], "water": 0.45,
+       "monsters": ["utopenec", "kostlivy_havir", "bludicka", "kostlivy_kusinik"], "density": 1.0,
+       "boss": "vodnik", "quest_props": ["hrnek_dusicka", "strana_kroniky"]}
+    ],
+    "quests": ["klekani", "kostnice", "dusicky", "srdce_zvonu"],
+    "intro": "intro",
+    "outro": "act1_end"
+  },
+  {
+    "id": 2,
+    "name": {"cs": "Brdská noc", "en": "The Brdy Night"},
+    "subtitle": {"cs": "Les prorůstá do dolu a sošky na rozích se usmívají.", "en": "The forest grows down into the mine, and the little statues on every corner smile."},
+    "town": {
+      "id": "pribram",
+      "name": {"cs": "Březové Hory", "en": "Březové Hory"},
+      "tileset": "town_pribram",
+      "music": "town_pribram",
+      "npcs": ["permonik", "kosmas", "kovar_vojtech", "korenarka_medulina", "hostinsky_kuba", "fabian", "tremsinsky_muzicek"]
+    },
+    "dungeon": {"name": {"cs": "Vojtěšská šachta", "en": "The Vojtěch Shaft"}, "tileset": "brdy", "music": "mine_2"},
+    "floors": [
+      {"n": 1, "level": 9, "name": {"cs": "Prorostlé štoly", "en": "The Overgrown Adits"},
+       "style": "gallery", "size": [60, 60], "water": 0.0,
+       "monsters": ["hejkal", "vlk", "diva_zena", "netopyr", "krysa"], "density": 1.0,
+       "boss": null, "quest_props": ["zlaty_sin"]},
+      {"n": 2, "level": 11, "name": {"cs": "Megeřiny kotle", "en": "Megera's Cauldrons"},
+       "style": "mixed", "size": [60, 60], "water": 0.0,
+       "monsters": ["vlk", "diva_zena", "hejkal", "mura", "bubak"], "density": 1.05,
+       "boss": "megera", "quest_props": ["zlaty_sin", "kotel"]},
+      {"n": 3, "level": 13, "name": {"cs": "Valdecká jízda", "en": "The Valdek Ride"},
+       "style": "gallery", "size": [64, 64], "water": 0.0,
+       "monsters": ["vlkodlak", "bubak", "mura", "hejkal", "kostlivy_kusinik"], "density": 1.1,
+       "boss": "prokop", "quest_props": ["zlaty_sin"]},
+      {"n": 4, "level": 15, "name": {"cs": "Ševčinská žíla", "en": "The Ševčín Vein"},
+       "style": "lair", "size": [48, 48], "water": 0.0,
+       "monsters": ["kamenny_had", "bubak", "vlkodlak", "mura"], "density": 1.0,
+       "boss": "bazilisek", "quest_props": ["zrcadlo", "strana_kroniky"]}
+    ],
+    "quests": ["medulinin_odkaz", "valdecky_jezdec", "zrcadla_v_sevcine", "tremsinske_siny"],
+    "intro": null,
+    "outro": "act2_end"
+  },
+  {
+    "id": 3,
+    "name": {"cs": "Jáchymovské peklo", "en": "The Hell of Jáchymov"},
+    "subtitle": {"cs": "Pod mincovnou září smolinec a v nejhlubší štole cinkají řetězy.", "en": "Beneath the mint the pitchblende glows, and in the deepest gallery the chains are rattling."},
+    "town": {
+      "id": "jachymov",
+      "name": {"cs": "Jáchymov", "en": "Jáchymov"},
+      "tileset": "town_jachymov",
+      "music": "town_jachymov",
+      "npcs": ["permonik", "kosmas", "kovar_krystof", "lekarnik_agricola", "senkyrka_rozina"]
+    },
+    "dungeon": {"name": {"cs": "Důl Svornost", "en": "The Svornost Mine"}, "tileset": "jachymov", "music": "mine_3"},
+    "floors": [
+      {"n": 1, "level": 16, "name": {"cs": "Smolincové sloje", "en": "The Pitchblende Seams"},
+       "style": "gallery", "size": [60, 60], "water": 0.0,
+       "monsters": ["cert", "ohnivy_muzik", "svetlonos", "kamenny_had"], "density": 1.0,
+       "boss": null, "quest_props": []},
+      {"n": 2, "level": 18, "name": {"cs": "Dvojí hrob", "en": "The Double Grave"},
+       "style": "cave", "size": [60, 60], "water": 0.0,
+       "monsters": ["cert", "upir", "svetlonos", "smolak"], "density": 1.05,
+       "boss": "strzyga", "quest_props": []},
+      {"n": 3, "level": 20, "name": {"cs": "Stará mincovna", "en": "The Old Mint"},
+       "style": "mixed", "size": [60, 60], "water": 0.0,
+       "monsters": ["cert", "ohnivy_muzik", "smolak", "upir", "bubak"], "density": 1.1,
+       "boss": "ohnivec", "quest_props": ["kovadlina"]},
+      {"n": 4, "level": 22, "name": {"cs": "Peklo", "en": "Hell"},
+       "style": "lair", "size": [48, 48], "water": 0.0,
+       "monsters": ["smolak", "cert", "ohnivy_muzik", "upir", "svetlonos"], "density": 1.0,
+       "boss": "jezibaba", "quest_props": ["pec", "kbelik", "mrtva_voda", "strana_kroniky"]}
+    ],
+    "quests": ["dve_srdce", "proklete_tolary", "pec", "ziva_a_mrtva_voda"],
+    "intro": null,
+    "outro": "act3_end"
+  },
+  {
+    "id": 4,
+    "name": {"cs": "Nav", "en": "Nav"},
+    "subtitle": {"cs": "Pod kořeny světa teče Smorodina. Odsud se nahoru nechodí.", "en": "Beneath the roots of the world flows the Smorodina. No one goes back up from here."},
+    "town": {
+      "id": "posledni_sichta",
+      "name": {"cs": "Poslední šichta", "en": "The Last Shift"},
+      "tileset": "town_nav",
+      "music": "town_nav",
+      "npcs": ["permonik", "kosmas", "predak_matej", "anicka", "prevoznik"]
+    },
+    "dungeon": {"name": {"cs": "Nav", "en": "Nav"}, "tileset": "nav", "music": "mine_4"},
+    "floors": [
+      {"n": 1, "level": 24, "name": {"cs": "Břeh Smorodiny", "en": "The Banks of the Smorodina"},
+       "style": "cave", "size": [64, 64], "water": 0.15,
+       "monsters": ["navka", "cerny_pes", "permonicek", "utopenec"], "density": 1.0,
+       "boss": null, "quest_props": []},
+      {"n": 2, "level": 26, "name": {"cs": "Kalinový most", "en": "The Kalinov Bridge"},
+       "style": "lair", "size": [52, 52], "water": 0.3,
+       "monsters": ["navka", "cerny_pes", "bes", "permonicek"], "density": 1.0,
+       "boss": "san", "quest_props": ["kalinov_most"]},
+      {"n": 3, "level": 28, "name": {"cs": "Vijova jeskyně", "en": "Vij's Hollow"},
+       "style": "cave", "size": [60, 60], "water": 0.0,
+       "monsters": ["bes", "navka", "permonicek", "cerny_pes", "upir"], "density": 1.1,
+       "boss": "vij", "quest_props": []},
+      {"n": 4, "level": 30, "name": {"cs": "Pod dubem", "en": "Beneath the Oak"},
+       "style": "mixed", "size": [64, 64], "water": 0.0,
+       "monsters": ["kostejuv_nesmrtelny", "bes", "cerny_pes", "navka"], "density": 1.1,
+       "boss": "kostej", "quest_props": ["dub", "truhla_kostej", "strana_kroniky"]},
+      {"n": 5, "level": 32, "name": {"cs": "Srdce hory", "en": "The Heart of the Mountain"},
+       "style": "lair", "size": [48, 48], "water": 0.0,
+       "monsters": ["permonicek", "kostejuv_nesmrtelny", "bes", "navka"], "density": 0.9,
+       "boss": "permonik_obr", "quest_props": ["oltar"]}
+    ],
+    "quests": ["kalinov_most", "vijova_vicka", "kostejova_smrt", "posledni_sichta", "permonik_final"],
+    "intro": "act4_intro",
+    "outro": "final"
+  }
+]

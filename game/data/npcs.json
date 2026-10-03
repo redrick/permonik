@@ -1,0 +1,18 @@
+{
+  "permonik": {"name": {"cs": "Permoník", "en": "Permoník"}, "role": "guide", "portrait": "permonik", "act": 0},
+  "kosmas": {"name": {"cs": "Kronikář Kosmas", "en": "Kosmas the Chronicler"}, "role": "chronicler", "portrait": "kosmas", "act": 0},
+  "kovar_hnevek": {"name": {"cs": "Kovář Hněvek", "en": "Hněvek the Smith"}, "role": "smith", "portrait": "kovar_hnevek", "act": 1},
+  "korenarka_dorota": {"name": {"cs": "Kořenářka Dorota", "en": "Dorota the Herb Woman"}, "role": "healer", "portrait": "korenarka_dorota", "act": 1},
+  "senkyrka_bara": {"name": {"cs": "Šenkýřka Bára", "en": "Bára the Innkeeper"}, "role": "inn", "portrait": "senkyrka_bara", "act": 1},
+  "kovar_vojtech": {"name": {"cs": "Kovář Vojtěch", "en": "Vojtěch the Smith"}, "role": "smith", "portrait": "kovar_vojtech", "act": 2},
+  "korenarka_medulina": {"name": {"cs": "Medulína", "en": "Medulína"}, "role": "healer", "portrait": "korenarka_medulina", "act": 2},
+  "hostinsky_kuba": {"name": {"cs": "Hostinský Kuba", "en": "Kuba the Innkeeper"}, "role": "inn", "portrait": "hostinsky_kuba", "act": 2},
+  "fabian": {"name": {"cs": "Fabián", "en": "Fabián"}, "role": "other", "portrait": "fabian", "act": 2},
+  "tremsinsky_muzicek": {"name": {"cs": "Třemšínský mužíček", "en": "The Little Man of Třemšín"}, "role": "other", "portrait": "tremsinsky_muzicek", "act": 2},
+  "kovar_krystof": {"name": {"cs": "Mincíř Kryštof", "en": "Kryštof the Mint-smith"}, "role": "smith", "portrait": "kovar_krystof", "act": 3},
+  "lekarnik_agricola": {"name": {"cs": "Doktor Agricola", "en": "Doctor Agricola"}, "role": "healer", "portrait": "lekarnik_agricola", "act": 3},
+  "senkyrka_rozina": {"name": {"cs": "Šenkýřka Rozina", "en": "Rozina the Barmaid"}, "role": "inn", "portrait": "senkyrka_rozina", "act": 3},
+  "predak_matej": {"name": {"cs": "Předák Matěj", "en": "Foreman Matěj"}, "role": "smith", "portrait": "predak_matej", "act": 4},
+  "anicka": {"name": {"cs": "Anička", "en": "Anička"}, "role": "healer", "portrait": "anicka", "act": 4},
+  "prevoznik": {"name": {"cs": "Převozník", "en": "The Ferryman"}, "role": "inn", "portrait": "prevoznik", "act": 4}
+}
