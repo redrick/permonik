@@ -75,6 +75,8 @@ func set_hover(on: bool) -> void:
 
 
 func label() -> String:
+	if data.has("book"):
+		return L.t(DB.books.get(data.book, {}).get("title", data.book))
 	var n = def.get("name", null)
 	if n:
 		return L.t(n)

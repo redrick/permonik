@@ -14,6 +14,8 @@ var floor_n := 0
 var quests := {}
 var flags := {}
 var waypoints := {}
+var known := {}
+var _codex_news := []
 var unlocked_difficulty := 0
 var save_slot := ""
 var main: Node = null
@@ -23,16 +25,29 @@ var portal := {}
 var paused_ui := false
 var play_time := 0.0
 var session_seed := randi()
+var _autosave_t := 30.0
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_setup_input()
+	quests_changed.connect(save)
 
 
 func _process(delta: float) -> void:
 	if level and not get_tree().paused:
 		play_time += delta
+		_autosave_t -= delta
+		if _autosave_t <= 0.0:
+			_autosave_t = 30.0
+			save()
+
+
+# Heroes save themselves (D2 style): every 30 s, on quest changes, on leaving and on closing the window.
+# Loading always starts in the town of the hero's current act.
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST and level:
+		save()
 
 
 func _setup_input() -> void:
@@ -42,7 +57,7 @@ func _setup_input() -> void:
 		"belt_1": [KEY_1], "belt_2": [KEY_2], "belt_3": [KEY_3], "belt_4": [KEY_4],
 		"belt_5": [KEY_5], "belt_6": [KEY_6], "belt_7": [KEY_7], "belt_8": [KEY_8],
 		"skill_q": [KEY_Q], "skill_w": [KEY_W], "skill_e": [KEY_E], "skill_r": [KEY_R],
-		"town_portal": [KEY_P], "zoom_map": [KEY_M],
+		"town_portal": [KEY_P], "zoom_map": [KEY_M], "kronika": [KEY_K],
 	}
 	for a in keys:
 		if not InputMap.has_action(a):
@@ -55,6 +70,38 @@ func _setup_input() -> void:
 
 func msg(text: String, color := Color("e8e2d4")) -> void:
 	message.emit(text, color)
+
+
+# Codex knowledge survives difficulty resets; keys are "<kind>:<id>" and "read:<entry>".
+func learn(kind: String, id: String) -> void:
+	var k := kind + ":" + id
+	if id == "" or known.has(k):
+		return
+	known[k] = true
+	for eid in DB.codex_by_ref.get(k, []):
+		if not known.has("seen:" + eid):
+			known["seen:" + eid] = true
+			if _codex_news.is_empty():
+				_flush_codex_news.call_deferred()
+			_codex_news.append(eid)
+
+
+func _flush_codex_news() -> void:
+	if _codex_news.size() == 1:
+		msg("%s: %s  (K)" % [L.t("codex_new"), L.t(DB.codex[_codex_news[0]].get("title", ""))], Color("c8b88a"))
+	elif _codex_news.size() > 1:
+		msg(L.t("codex_new_n", {"v": _codex_news.size()}), Color("c8b88a"))
+	_codex_news.clear()
+
+
+func codex_visible(eid: String) -> bool:
+	var refs: Array = DB.codex_refs.get(eid, [])
+	if refs.is_empty():
+		return true
+	for k in refs:
+		if known.has(k):
+			return true
+	return false
 
 
 func seal_count() -> int:
@@ -84,6 +131,7 @@ func quest_start(qid: String) -> void:
 		return
 	var steps: Array = q.get("steps", [])
 	quests[qid] = {"state": "active", "step": steps[0].id if steps.size() > 0 else ""}
+	learn("quest", qid)
 	msg("%s: %s" % [L.t("quest_new"), L.t(q.get("name", qid))], Color("e9c46a"))
 	Sfx.play("quest_done", 0.5)
 	quests_changed.emit()
@@ -272,6 +320,9 @@ func goto(a: int, f: int, arrive := "start") -> void:
 	if f > 0:
 		waypoints[waypoint_key(a, f)] = true
 		on_event("reach", "act%d_floor%d" % [a, f])
+		learn("floor", "act%d_floor%d" % [a, f])
+	else:
+		learn("town", str(DB.act(a).get("town", {}).get("id", "")))
 	if main:
 		main.load_location(a, f, arrive)
 	location_changed.emit()
@@ -309,7 +360,7 @@ func start_next_difficulty() -> void:
 
 
 # ---------------------------------------------------------------- save / load
-func new_game(cid: String, nm: String) -> void:
+func new_game(cid: String, nm: String, persist := true) -> void:
 	ch = CharData.new()
 	ch.start_new(cid, nm)
 	difficulty = 0
@@ -321,7 +372,9 @@ func new_game(cid: String, nm: String) -> void:
 	waypoints = {}
 	portal = {}
 	play_time = 0.0
-	save_slot = "%s_%d" % [cid, Time.get_unix_time_from_system()]
+	known = {}
+	save_slot = "%s_%d" % [cid, Time.get_unix_time_from_system()] if persist else ""
+	learn("class", cid)
 	save()
 
 
@@ -330,7 +383,7 @@ func save() -> void:
 		return
 	DirAccess.make_dir_recursive_absolute("user://saves")
 	var data := {"v": 1, "char": ch.to_dict(), "difficulty": difficulty, "act": act, "quests": quests,
-		"flags": flags, "waypoints": waypoints, "unlocked": unlocked_difficulty, "time": play_time,
+		"flags": flags, "waypoints": waypoints, "known": known, "unlocked": unlocked_difficulty, "time": play_time,
 		"saved_at": Time.get_datetime_string_from_system()}
 	var f := FileAccess.open("user://saves/%s.json" % save_slot, FileAccess.WRITE)
 	if f:
@@ -351,9 +404,11 @@ func load_game(slot: String) -> bool:
 	quests = data.get("quests", {})
 	flags = data.get("flags", {})
 	waypoints = data.get("waypoints", {})
+	known = data.get("known", {})
 	unlocked_difficulty = int(data.get("unlocked", 0))
 	play_time = float(data.get("time", 0.0))
 	ch.from_dict(data.get("char", {}))
+	learn("class", ch.class_id)
 	floor_n = 0
 	portal = {}
 	return true

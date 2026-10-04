@@ -49,7 +49,7 @@
   "medulinin_odkaz": {
     "act": 2, "giver": "permonik", "main": true,
     "name": {"cs": "Medulínin odkaz", "en": "Medulína's Bequest"},
-    "desc": {"cs": "Brdy mají tři pověsti: rytíře Fabiána, dobrou Medulínu a zlou Megeru. Megera si pod Vojtěšskou šachtou rozdělala kotle.", "en": "The Brdy hills have three legends: the knight Fabián, good Medulína and wicked Megera. Megera has lit her cauldrons beneath the Vojtěch shaft."},
+    "desc": {"cs": "Brdská pověst má tři postavy: rytíře Fabiána, dobrou Medulínu a zlou Megeru. Megera si pod Vojtěšskou šachtou rozdělala kotle.", "en": "The Brdy legend has three figures: the knight Fabián, good Medulína and wicked Megera. Megera has lit her cauldrons beneath the Vojtěch shaft."},
     "steps": [
       {"id": "medulina", "text": {"cs": "Promluv s kořenářkou Medulínou. Zná Megeru líp než kdo jiný.", "en": "Speak with Medulína the herb woman. She knows Megera better than anyone."}, "goal": {"talk": "korenarka_medulina"}},
       {"id": "kill", "text": {"cs": "Najdi Megeru ve druhém patře. Přenáší se mezi kotli.", "en": "Find Megera on the second level. She leaps from cauldron to cauldron."}, "goal": {"kill": "megera"}},
@@ -70,10 +70,10 @@
   },
   "zrcadla_v_sevcine": {
     "act": 2, "giver": "permonik", "main": true,
-    "name": {"cs": "Zrcadla v Ševčině", "en": "The Mirrors of Ševčín"},
-    "desc": {"cs": "V ševčinské žíle se ze slepičího vejce vylíhl bazilišek. Kdo se mu podívá do očí, zkamení.", "en": "In the Ševčín vein a basilisk has hatched from a rooster's egg. Whoever meets its eyes turns to stone."},
+    "name": {"cs": "Zrcadla na Ševčinské žíle", "en": "The Mirrors of the Ševčiny Vein"},
+    "desc": {"cs": "Na Ševčinské žíle se z kohoutího vejce vylíhl bazilišek. Kdo se mu podívá do očí, zkamení.", "en": "In the Ševčiny vein a basilisk has hatched from a rooster's egg. Whoever meets its eyes turns to stone."},
     "steps": [
-      {"id": "kovar", "text": {"cs": "Zeptej se kováře Vojtěcha na stará zrcadla v Ševčině.", "en": "Ask Vojtěch the smith about the old mirrors of Ševčín."}, "goal": {"talk": "kovar_vojtech"}},
+      {"id": "kovar", "text": {"cs": "Zeptej se kováře Vojtěcha na stará zrcadla na Ševčinské žíle.", "en": "Ask Vojtěch the smith about the old mirrors on the Ševčiny vein."}, "goal": {"talk": "kovar_vojtech"}},
       {"id": "kill", "text": {"cs": "Zabij baziliška. Schovávej se za pilíře a nech zrcadla, ať mu vrátí jeho vlastní pohled.", "en": "Kill the basilisk. Hide behind pillars and let the mirrors turn its own gaze back on it."}, "goal": {"kill": "bazilisek"}},
       {"id": "strana", "text": {"cs": "Mezi střepy kamenného těla leží list pergamenu. Seber ho.", "en": "A leaf of parchment lies among the shards of its stone body. Pick it up."}, "goal": {"pick": "strana_kroniky"}},
       {"id": "kronika", "text": {"cs": "Odnes list Kosmovi.", "en": "Bring the leaf to Kosmas."}, "goal": {"talk": "kosmas"}},
@@ -140,10 +140,10 @@
 
   "kalinov_most": {
     "act": 4, "giver": "permonik", "main": true,
-    "name": {"cs": "Kalinový most", "en": "The Kalinov Bridge"},
+    "name": {"cs": "Kalinův most", "en": "The Kalinov Bridge"},
     "desc": {"cs": "Přes Smorodinu vede jen jeden most a na něm sedí Saň Tříhlavá.", "en": "Only one bridge crosses the Smorodina, and the Three-Headed Saň sits upon it."},
     "steps": [
-      {"id": "descend", "text": {"cs": "Dojdi ke Kalinovému mostu.", "en": "Go down to the Kalinov Bridge."}, "goal": {"reach": "act4_floor2"}},
+      {"id": "descend", "text": {"cs": "Dojdi ke Kalinovu mostu.", "en": "Go down to the Kalinov Bridge."}, "goal": {"reach": "act4_floor2"}},
       {"id": "kill", "text": {"cs": "Zabij Saň. Uťatá hlava doroste, pokud pahýl nespálíš.", "en": "Kill the Saň. A severed head grows back unless you burn the stump."}, "goal": {"kill": "san"}},
       {"id": "report", "text": {"cs": "Vrať se do tábora k Permoníkovi.", "en": "Return to Permoník in the camp."}, "goal": {"talk": "permonik"}}
     ],

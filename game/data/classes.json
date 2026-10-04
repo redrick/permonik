@@ -24,7 +24,7 @@
     "name": {"cs": "Zbojnice", "en": "Brigand"},
     "desc": {
       "cs": "Psanec z Valašska s valaškou za pasem a kuší na zádech. Přišla pro Jánošíkovo zakopané stříbro a zůstala, protože hory volají. Je rychlá, nečekaná a nikomu nevěří — v podzemí je to ctnost.",
-      "en": "An outlaw from Wallachia with a shepherd's axe in her belt and a crossbow on her back. She came for Jánošík's buried silver and stayed because the mountains called. She is fast, unpredictable and trusts no one — underground, that is a virtue."
+      "en": "An outlaw from Moravian Wallachia, with a shepherd's axe in her belt and a crossbow on her back. She came for Jánošík's buried silver and stayed because the mountains called. She is fast, unpredictable and trusts no one — underground, that is a virtue."
     },
     "gender": "f",
     "base": {"sila": 20, "obratnost": 30, "magie": 15, "vitalita": 20},

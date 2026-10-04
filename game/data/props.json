@@ -440,6 +440,19 @@
   "breakable": false,
   "interact": null
  },
+ "kniha": {
+  "footprint": [
+   1,
+   1
+  ],
+  "blocks": true,
+  "light": {
+   "color": "#ffc864",
+   "radius": 2
+  },
+  "breakable": false,
+  "interact": "book"
+ },
  "oltar": {
   "footprint": [
    3,

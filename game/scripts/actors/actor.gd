@@ -115,8 +115,9 @@ func center_pos() -> Vector2:
 
 func hit_rect() -> Rect2:
 	var t := sprite.texture if sprite else null
-	var wv := (t.get_width() * 0.55) if t else 48.0
-	return Rect2(global_position + Vector2(-wv / 2.0, -sprite_h + 12 - float_h), Vector2(wv, sprite_h - 8))
+	var wv := maxf(52.0, (t.get_width() * 0.55) if t else 48.0)
+	var hv := maxf(56.0, sprite_h - 8)
+	return Rect2(global_position + Vector2(-wv / 2.0, 4 - hv - float_h), Vector2(wv, hv))
 
 
 func can_act() -> bool:

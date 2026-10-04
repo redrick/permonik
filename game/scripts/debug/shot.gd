@@ -13,6 +13,8 @@ func _ready() -> void:
 	await get_tree().create_timer(float(_arg("--wait", "3"))).timeout
 	for p in _arg("--panel", "").split(",", false):
 		Game.main.ui.toggle_panel(p)
+	if args.has("--book"):
+		Game.main.ui.open_book(_arg("--book", ""))
 	if args.has("--hide-hud") and Game.main.hud:
 		Game.main.hud.visible = false
 	await get_tree().create_timer(0.6).timeout

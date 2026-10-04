@@ -46,6 +46,8 @@ func _draw() -> void:
 				col = Color("c8a0ff") if not pr.used else Color(0, 0, 0, 0)
 			"quest":
 				col = Color("ff9a3a")
+			"book":
+				col = Color("fff0b8") if not Game.known.has("book:" + str(pr.data.get("book", ""))) else Color(0, 0, 0, 0)
 		var c := Vector2i(pr.position / Level.CELL)
 		if col.a > 0 and lv.explored[clampi(c.y, 0, lv.h - 1) * lv.w + clampi(c.x, 0, lv.w - 1)] == 1:
 			draw_circle(center + (pr.position / Level.CELL - pc) * scale_px, 5, col)

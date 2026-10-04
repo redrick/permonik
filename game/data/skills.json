@@ -216,7 +216,7 @@
     "name": {"cs": "Vír", "en": "Whirl"},
     "desc": {
       "cs": "Prolétne nepřáteli jako vichr Valašskem a seká kolem sebe na vzdálenost {length}. Každý zásah způsobí {dmg_pct} % poškození zbraní.",
-      "en": "She tears through her foes like a Wallachian gale, cutting all around her for a distance of {length}. Each hit deals {dmg_pct}% weapon damage."
+      "en": "She tears through her foes like a gale across Moravian Wallachia, cutting all around her for a distance of {length}. Each hit deals {dmg_pct}% weapon damage."
     },
     "type": "spin", "element": "physical",
     "mana": [16, 0.8], "cooldown": 0,

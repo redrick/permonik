@@ -56,10 +56,12 @@ func show_label(on: bool) -> void:
 	lbl.visible = on or hover
 
 
+# The label only counts while Alt shows every label; a hover label must not grow over the monsters standing on the loot.
 func hit_rect() -> Rect2:
-	if lbl.visible:
-		return Rect2(global_position + lbl.position, lbl.size)
-	return Rect2(global_position + Vector2(-24, -36), Vector2(48, 44))
+	var r := Rect2(global_position + Vector2(-26, -38), Vector2(52, 48))
+	if lbl.visible and Input.is_action_pressed("show_items"):
+		r = r.merge(Rect2(global_position + lbl.position, lbl.size))
+	return r
 
 
 func set_hover(on: bool) -> void:

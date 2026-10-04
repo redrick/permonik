@@ -33,12 +33,13 @@ func _ready() -> void:
 	if args.has("--shot"):
 		add_child(load("res://scripts/debug/shot.gd").new())
 	if args.has("--quick"):
-		Game.new_game(_arg(args, "--class", "havir"), "Hrdina")
-		Game.save_slot = ""
+		Game.new_game(_arg(args, "--class", "havir"), "Hrdina", false)
 		Game.flags["intro_seen"] = true
 		var a := int(_arg(args, "--act", "1"))
 		Game.act = a
 		start_game(int(_arg(args, "--floor", "0")))
+		if args.has("--probe"):
+			add_child(load("res://scripts/debug/probe.gd").new())
 		if args.has("--autoplay"):
 			add_child(load("res://scripts/debug/autoplay.gd").new())
 		return

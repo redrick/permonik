@@ -43,7 +43,7 @@
   "boss_megera": {
     "kind": "boss", "monster": "megera",
     "title": {"cs": "Megera", "en": "Megera"},
-    "text": {"cs": "„Držela jsem kořeny pro něj. Ne… proti němu. Už nevím.“ Třetí z brdských pověstí. Slíbili jí, že les nikdy neshoří. Les neshořel. Zčernal.", "en": "“I held the roots for him. No… against him. I no longer know.” The third of the Brdy legends. They promised her the forest would never burn. It never burned. It blackened."}
+    "text": {"cs": "„Držela jsem kořeny pro něj. Ne… proti němu. Už nevím.“ Třetí z brdské trojice. Slíbili jí, že les nikdy neshoří. Les neshořel. Zčernal.", "en": "“I held the roots for him. No… against him. I no longer know.” The third of the Brdy three. They promised her the forest would never burn. It never burned. It blackened."}
   },
   "boss_prokop": {
     "kind": "boss", "monster": "prokop",
@@ -155,13 +155,13 @@
     "title": {"cs": "Černý pes", "en": "Black Dog"},
     "text": {"cs": "Hlídá rozcestí. Kdo z rozcestí něco vezme, toho si pamatuje. Když zavyje, smečka zrychlí.", "en": "It guards the crossroads. Whoever takes anything from a crossroads, it remembers. When it howls, the pack runs faster."}},
   "bestiar_bes": {"kind": "bestiar", "monster": "bes",
-    "title": {"cs": "Bes", "en": "Bes"},
+    "title": {"cs": "Běs", "en": "Běs"},
     "text": {"cs": "Vyzáblý démon s rohy. Proklíná pomalu a pečlivě, jako písař, který má celou věčnost.", "en": "A gaunt, horned demon. It curses slowly and carefully, like a scribe with all eternity before him."}},
   "bestiar_permonicek": {"kind": "bestiar", "monster": "permonicek",
     "title": {"cs": "Permoníček", "en": "Permoníček"},
     "text": {"cs": "V Příbrami z nich dělají sošky. Tady dole mají nožíky. Smějí se pořád stejně.", "en": "In Příbram they make statues of them. Down here they carry knives. Their laughter is just the same."}},
   "bestiar_kostejuv_nesmrtelny": {"kind": "bestiar", "monster": "kostejuv_nesmrtelny",
-    "title": {"cs": "Kostějův nesmrtelný", "en": "Koschei's Deathless"},
+    "title": {"cs": "Kostějův nesmrtelný", "en": "Koschei's Deathless Guard"},
     "text": {"cs": "Kostlivý rytíř v rezavé zbroji. Vstane znovu, dokud ho nespálíš. Jeho pán ho naučil, že smrt se dá schovat.", "en": "A skeleton knight in rusted armour. It rises again unless you burn it. Its master taught it that death can be hidden away."}},
 
   "bestiar_klekanice": {"kind": "bestiar", "monster": "klekanice",
@@ -193,7 +193,7 @@
     "text": {"cs": "Stará čarodějnice s lopatou a chaloupkou na kuří noze. Pec uhasíš jen mrtvou vodou.", "en": "An old witch with a shovel and a hut on a chicken's leg. Only dead water can put out her oven."}},
   "bestiar_san": {"kind": "bestiar", "monster": "san",
     "title": {"cs": "Saň Tříhlavá", "en": "The Three-Headed Saň"},
-    "text": {"cs": "Drak z Kalinového mostu. Oheň, mráz a jed. Uťatá hlava doroste, pokud pahýl nespálíš.", "en": "The dragon of the Kalinov Bridge. Fire, frost and poison. A severed head grows back unless you burn the stump."}},
+    "text": {"cs": "Drak z Kalinova mostu. Oheň, mráz a jed. Uťatá hlava doroste, pokud pahýl nespálíš.", "en": "The dragon of the Kalinov Bridge. Fire, frost and poison. A severed head grows back unless you burn the stump."}},
   "bestiar_vij": {"kind": "bestiar", "monster": "vij",
     "title": {"cs": "Vij", "en": "Vij"},
     "text": {"cs": "Hliněný démon s víčky až k zemi. Nevidí, dokud mu je sluhové nezvednou.", "en": "An earthen demon with eyelids down to the ground. He is blind until his servants lift them."}},

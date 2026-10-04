@@ -34,6 +34,23 @@ var no_drops := false
 var minion_of: Monster = null
 
 
+# Tuned with debug/probe.gd so a pack of same-level monsters is a fight, not a wipe. Keyed by monster level:
+# the dip over 9-27 covers the gap between tier-1 weapons (qlvl <= 12) and forged ones (qlvl 25+).
+const HP_CURVE := [[1, 0.6], [8, 0.6], [14, 0.45], [24, 0.42], [28, 0.6]]
+const DMG_CURVE := [[1, 0.65], [8, 0.6], [14, 0.45], [99, 0.45]]
+const BOSS_HP := 0.85
+const DIFF_DMG := [1.0, 1.15, 1.3]
+
+
+static func curve(pts: Array, x: float) -> float:
+	if x <= pts[0][0]:
+		return pts[0][1]
+	for i in range(1, pts.size()):
+		if x <= pts[i][0]:
+			return lerpf(pts[i - 1][1], pts[i][1], (x - pts[i - 1][0]) / float(pts[i][0] - pts[i - 1][0]))
+	return pts.back()[1]
+
+
 static func f_hp(l: float) -> float:
 	return pow(l, 1.6) + 4.0 * l
 
@@ -50,10 +67,12 @@ func setup(mid: String, level_n: int, lv: Node, champion := false) -> void:
 	kind = "boss" if data.get("boss", false) else ("champion" if champion else "normal")
 	var base_l := float(maxi(1, int(data.get("level", 1))))
 	mlvl = clampi(level_n + (3 if kind == "boss" else (2 if champion else 0)), 1, 99)
-	var hpm : float = f_hp(mlvl) / f_hp(base_l) * [1.0, 1.6, 2.4][clampi(Game.difficulty, 0, 2)]
+	var di := clampi(Game.difficulty, 0, 2)
+	var lv_n := float(mlvl - [0, 30, 60][di])
+	var hpm : float = f_hp(mlvl) / f_hp(base_l) * [1.0, 1.6, 2.4][di] * (BOSS_HP if kind == "boss" else curve(HP_CURVE, lv_n))
 	hp_max = float(data.get("hp", 10)) * hpm * (3.0 if champion else 1.0)
 	hp = hp_max
-	var dm := f_dmg(mlvl) / f_dmg(base_l)
+	var dm: float = f_dmg(mlvl) / f_dmg(base_l) * curve(DMG_CURVE, lv_n) * DIFF_DMG[di]
 	var dd = data.get("dmg", [1, 3])
 	dmg = Vector2(float(dd[0]), float(dd[1])) * dm * (1.4 if champion else 1.0)
 	armor = int(float(data.get("armor", 5)) * float(mlvl) / base_l)
@@ -186,6 +205,8 @@ func _ai(delta: float) -> void:
 		else:
 			_wander(delta)
 			return
+	if not Game.known.has("monster:" + id):
+		Game.learn("monster", id)
 	if windup > 0.0:
 		windup -= delta
 		velocity = Vector2.ZERO

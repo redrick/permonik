@@ -1,0 +1,3667 @@
+{
+ "e_permonik": {
+  "cat": "creature",
+  "title": {
+   "cs": "Permoník",
+   "en": "Permoník"
+  },
+  "text": {
+   "cs": "Permoník je duch dolů z české a slovenské hornické víry, malý vousatý mužíček v havířském kroji, s kahanem a kladívkem. Jméno pochází z německého Bergmännchen, „horský mužíček“; v revírech mu říkali také permon, perkmon, pergmon nebo perkmandl. Klepáním ukazoval havířům bohaté žíly a varoval je před závalem, pilným pomáhal a pyšné, lakomé či klející trestal. Havíři mu nechávali drobky od svačiny a v dole se nepískalo, aby se neurazil.",
+   "en": "The permoník (PER-mo-neek) is the mine spirit of Czech and Slovak mining lore: a small bearded man in miner's dress, with a lamp and a little hammer. The name comes from German Bergmännchen, 'little mountain man'; mining districts also called him permon, perkmon, pergmon or perkmandl. He knocked to show miners rich veins and to warn of cave-ins, helped the diligent and punished the proud, the greedy and the foul-mouthed. Miners left him crumbs from their meal, and nobody whistled underground for fear of offending him."
+  },
+  "game": {
+   "cs": "Ve hře: mužíček, který tě u šachty Dolu Osel požádá o pomoc a podá ti kahan.",
+   "en": "In the game: the little man who asks for your help at the head of the Osel shaft and hands you a lamp."
+  },
+  "refs": {
+   "npc": [
+    "permonik"
+   ],
+   "monster": [
+    "permonik"
+   ],
+   "item": [
+    "permonikuv_kahan"
+   ],
+   "book": [
+    "kniha_agricola_demoni"
+   ]
+  },
+  "see": [
+   "e_permonicek",
+   "e_havir",
+   "e_kahan",
+   "e_zdar_buh"
+  ]
+ },
+ "e_permonicek": {
+  "cat": "creature",
+  "title": {
+   "cs": "Permoníček",
+   "en": "Permoníček"
+  },
+  "text": {
+   "cs": "Zdrobnělina od permoníka. Příbram a Březové Hory si permoníky vzaly za své: jejich sošky a figurky stojí po celém městě a permoník je neoficiálním symbolem příbramského hornictví. Ve vánočních hornických betlémech a jesličkách z Krušných hor je najdeš taky, často jako drobné havíře se svíčkou.",
+   "en": "The diminutive of permoník. Příbram and Březové Hory have adopted the mine spirits as their own: little permoník statues and figurines stand all over town, and the permoník is the unofficial emblem of Příbram mining. They also turn up in the miners' Christmas cribs of the Ore Mountains, often as tiny miners holding candles."
+  },
+  "game": {
+   "cs": "Ve hře: v Příbrami se jejich sošky usmívají z každého rohu.",
+   "en": "In the game: their statues smile from every street corner in Příbram."
+  },
+  "refs": {
+   "monster": [
+    "permonicek"
+   ],
+   "town": [
+    "pribram"
+   ]
+  },
+  "see": [
+   "e_permonik",
+   "e_brezove_hory"
+  ]
+ },
+ "e_krysa": {
+  "cat": "creature",
+  "title": {
+   "cs": "Krysa z hlubin",
+   "en": "Deep Rat"
+  },
+  "text": {
+   "cs": "Krysy a myši žily v každém starém dole, kde se živily drobky ze svačin. Havíři věřili, že když krysy hromadně utíkají ze štoly, hrozí zával nebo průval vody, a utíkali za nimi. Krysu proto v dole nikdo nezabíjel.",
+   "en": "Rats and mice lived in every old mine, feeding on the crumbs of the miners' meals. Miners believed that rats fleeing a gallery in numbers meant a cave-in or a burst of water was coming, and ran after them. For that reason nobody killed a rat underground."
+  },
+  "game": {
+   "cs": "Ve hře: krysy z Hory neutekly. Šly dolů.",
+   "en": "In the game: these rats did not flee the Mountain. They went down."
+  },
+  "refs": {
+   "monster": [
+    "krysa"
+   ]
+  },
+  "see": [
+   "e_dul_osel"
+  ]
+ },
+ "e_sotek": {
+  "cat": "creature",
+  "title": {
+   "cs": "Šotek",
+   "en": "Šotek"
+  },
+  "text": {
+   "cs": "Šotek je v české lidové víře drobný domácí skřítek, zlomyslný a rychlý. Schovává věci, zamotává nitě, převrhne mléko a vysmívá se, když ho hledáš. Odtud i „tiskařský šotek“, který dělá chyby v novinách.",
+   "en": "In Czech folk belief the šotek (SHO-tek) is a tiny household imp, quick and mischievous. He hides things, tangles thread, tips over the milk and laughs while you look for him. That is why Czechs blame typos on the 'printer's šotek'."
+  },
+  "game": {
+   "cs": "Ve hře: šotek se přestěhoval do dolu a krade groše.",
+   "en": "In the game: the šotek has moved down the mine and steals coins."
+  },
+  "refs": {
+   "monster": [
+    "sotek"
+   ]
+  },
+  "see": [
+   "e_permonik",
+   "e_prazsky_gros"
+  ]
+ },
+ "e_kostlivy_havir": {
+  "cat": "creature",
+  "title": {
+   "cs": "Kostlivý havíř",
+   "en": "Skeleton Miner"
+  },
+  "text": {
+   "cs": "Mrtví havíři patří ke stálým postavám hornických pověstí: duchové zavalených, kteří dál fárají, klepou ve štolách a ukazují cestu nebo ji zavírají. V Kutné Hoře k tomu přispěly i skutečné hrůzy: za husitských válek tu do šachet házeli živé lidi.",
+   "en": "Dead miners are a fixture of mining legend: the ghosts of men buried by cave-ins who keep working their shift, knocking in the galleries, showing the way or barring it. In Kutná Hora real horrors fed the tales: during the Hussite wars living people were thrown down its shafts."
+  },
+  "game": {
+   "cs": "Ve hře: šichta jim skončila před sto lety a nikdo jim to neřekl.",
+   "en": "In the game: their shift ended a hundred years ago and no one told them."
+  },
+  "refs": {
+   "monster": [
+    "kostlivy_havir"
+   ]
+  },
+  "see": [
+   "e_kank",
+   "e_havir",
+   "e_sichta"
+  ]
+ },
+ "e_kusinik": {
+  "cat": "creature",
+  "title": {
+   "cs": "Kušiník",
+   "en": "Crossbowman (kušiník)"
+  },
+  "text": {
+   "cs": "Kušiník je dobové označení střelce z kuše, které se dříve říkalo také samostříl. Za husitských válek byla kuše nejrozšířenější ruční střelnou zbraní obou stran; k jednomu válečnému vozu patřilo několik kušiníků vedle pavézníků a cepníků. Kuše se napínala opaskovým hákem nebo navijákem a prorazila kroužkovou košili.",
+   "en": "Kušiník (KOO-shi-neek) is the period Czech word for a crossbowman. In the Hussite wars the crossbow (also called samostříl, 'self-shooter') was the commonest hand-held missile weapon on both sides, and each war wagon carried several crossbowmen alongside pavise-bearers and flailmen. It was spanned with a belt hook or a windlass and could pierce mail."
+  },
+  "refs": {
+   "monster": [
+    "kostlivy_kusinik"
+   ],
+   "item": [
+    "kuse",
+    "kuse_kovany",
+    "kuse_hlubinny"
+   ],
+   "class": [
+    "zbojnice"
+   ]
+  },
+  "see": [
+   "e_paveza_cep",
+   "e_kank"
+  ]
+ },
+ "e_bludicka": {
+  "cat": "creature",
+  "title": {
+   "cs": "Bludička",
+   "en": "Bludička (Will-o'-the-Wisp)"
+  },
+  "text": {
+   "cs": "Bludičky jsou bledá světýlka nad bažinami a rašeliništi, která v noci svádějí poutníky z cesty do močálu. Lidová víra v nich viděla duše nepokřtěných dětí, nešťastných nevěst nebo hříšníků; v Čechách se jim říkalo i světýlka. Kdo za světýlkem šel, už se nevrátil, a kdo se ho chtěl zbavit, měl si obrátit kabát naruby.",
+   "en": "Bludičky (BLOO-ditch-ki) are pale lights over bogs and marshes that lead night travellers off the path and into the mire. Folk belief saw in them the souls of unbaptised children, unhappy brides or sinners; in Bohemia they were also called 'little lights'. Whoever followed one did not come back, and the cure was to turn your clothes inside out."
+  },
+  "refs": {
+   "monster": [
+    "bludicka"
+   ]
+  },
+  "see": [
+   "e_svetlonos",
+   "e_ohnivy_muzik"
+  ]
+ },
+ "e_utopenec": {
+  "cat": "creature",
+  "title": {
+   "cs": "Utopenec",
+   "en": "Utopenec (the Drowned)"
+  },
+  "text": {
+   "cs": "Utopenec je mrtvý, kterého si vzala voda. Lidová víra věřila, že utopení nenacházejí klid, zvlášť když jejich duši drží vodník, a v noci vycházejí z tůní. Slovem utopenec se někdy říkalo i samotnému vodníkovi. A v každé české hospodě je utopenec také buřt naložený v octě s cibulí.",
+   "en": "An utopenec (OO-to-peh-nets) is someone the water has taken. Folk belief held that the drowned find no rest, especially if a vodník keeps their soul, and that they climb out of the pools at night. The word was sometimes used for the vodník himself. In every Czech pub, an utopenec is also a sausage pickled in vinegar and onion."
+  },
+  "refs": {
+   "monster": [
+    "utopenec"
+   ],
+   "floor": [
+    "act1_floor4"
+   ]
+  },
+  "see": [
+   "e_vodnik",
+   "e_dusicky_hrnicky"
+  ]
+ },
+ "e_hejkal": {
+  "cat": "creature",
+  "title": {
+   "cs": "Hejkal",
+   "en": "Hejkal"
+  },
+  "text": {
+   "cs": "Hejkal je chlupatý lesní divý muž české a moravské lidové víry. V lese pokřikuje „hej, hej!“ a kdo mu odpoví, tomu skočí na záda a nechá se nést, dokud dotyčný neklesne. Podobá se východoslovanskému lešijovi; jinde mu říkali hejmon, ženskými protějšky jsou hejkalky a divoženky.",
+   "en": "The hejkal (HAY-kal) is the hairy wild man of the woods in Czech and Moravian folk belief. He calls 'hey, hey!' through the forest, and whoever answers finds him on their back, riding them until they drop. He resembles the East Slavic leshy; elsewhere he was called hejmon, and his female kin are the hejkalky and divoženky."
+  },
+  "refs": {
+   "monster": [
+    "hejkal"
+   ],
+   "floor": [
+    "act2_floor1"
+   ]
+  },
+  "see": [
+   "e_diva_zena",
+   "e_brdy"
+  ]
+ },
+ "e_diva_zena": {
+  "cat": "creature",
+  "title": {
+   "cs": "Divá žena",
+   "en": "Divá žena (Wild Woman)"
+  },
+  "text": {
+   "cs": "Divé ženy neboli divoženky žily podle pověstí v lesích a skalách, byly chlupaté, rozcuchané a silné. Uměly léčit bylinami, ale také unášet děti a podstrkovat místo nich své podvržence. Lidé jim nechávali na mezích chléb, aby byly vlídné; která se urazila, dokázala zkazit úrodu.",
+   "en": "Divé ženy (DI-veh ZHEH-ni), or divoženky, lived in the forests and rocks, shaggy, wild-haired and strong. They healed with herbs, but they also stole children and left changelings in their place. People left bread on the field borders to keep them kind; an offended one could spoil a harvest."
+  },
+  "refs": {
+   "monster": [
+    "diva_zena"
+   ]
+  },
+  "see": [
+   "e_hejkal"
+  ]
+ },
+ "e_mura": {
+  "cat": "creature",
+  "title": {
+   "cs": "Můra",
+   "en": "Můra (Mora)"
+  },
+  "text": {
+   "cs": "Můra je bytost, která v noci usedá spícím na prsa, dusí je a pije jim sílu, někdy i krev. Proleze klíčovou dírkou a podle víry jí mohla být i živá žena, jejíž duše v noci opouští tělo. Proti ní pomáhalo zacpat dírky, položit na prsa nůž nebo ji pozvat, ať si ráno přijde pro sůl, a tak ji poznat. Z jejího jména pochází i slovo „noční můra“.",
+   "en": "The můra (MOO-ra), the Slavic mora, sits on sleepers' chests at night, choking them and drinking their strength, sometimes their blood. She slips in through a keyhole and could be a living woman whose soul leaves her body at night. Stopping up the keyholes, laying a knife on your chest or inviting her back for salt in the morning kept her away. Czech 'noční můra' still means a nightmare."
+  },
+  "refs": {
+   "monster": [
+    "mura"
+   ]
+  },
+  "see": [
+   "e_bubak"
+  ]
+ },
+ "e_bubak": {
+  "cat": "creature",
+  "title": {
+   "cs": "Bubák",
+   "en": "Bubák (Bogeyman)"
+  },
+  "text": {
+   "cs": "Bubák je české strašidlo bez pevné podoby, kterým se odedávna strašily neposlušné děti. Číhá v tmavých koutech, za kamny, na půdě nebo pod mostem, a kdo ho chce vidět, uvidí jen stín. Patří ke stejné rodině „výchovných strašidel“ jako klekánice nebo polednice.",
+   "en": "The bubák (BOO-bahk) is a Czech bogey with no fixed shape, used for ages to frighten disobedient children. He lurks in dark corners, behind the stove, in the attic or under a bridge, and whoever looks for him sees only a shadow. He belongs to the same family of 'teaching bogeys' as the klekánice and the polednice."
+  },
+  "refs": {
+   "monster": [
+    "bubak"
+   ]
+  },
+  "see": [
+   "e_klekanice",
+   "e_polednice"
+  ]
+ },
+ "e_vlkodlak": {
+  "cat": "creature",
+  "title": {
+   "cs": "Vlkodlak",
+   "en": "Vlkodlak (Werewolf)"
+  },
+  "text": {
+   "cs": "Vlkodlak je slovanský člověk-vlk. Vlkodlakem se člověk rodil, nebo se jím stal kletbou či čarami, a za úplňku pobíhal krajinou ve vlčí kůži. Slovo je velmi staré a u jižních Slovanů splývalo s upírem.",
+   "en": "The vlkodlak (VILK-o-dlak) is the Slavic werewolf. One was born a vlkodlak or became one by curse or witchcraft, and under the full moon ran the countryside in a wolf's skin. The word is very old; among the South Slavs it merged with the vampire."
+  },
+  "refs": {
+   "monster": [
+    "vlkodlak",
+    "vlk"
+   ]
+  },
+  "see": [
+   "e_upir",
+   "e_megera"
+  ]
+ },
+ "e_kamenny_had": {
+  "cat": "creature",
+  "title": {
+   "cs": "Kamenný had",
+   "en": "Stone Serpent"
+  },
+  "text": {
+   "cs": "Kamenný had je výtvor hry, ale vychází ze skutečné víry: kdo pohlédl do očí baziliškovi, zkameněl. Havíři navíc nacházeli v hlušině zkamenělé „hady“, které dnes známe jako zkameněliny a amonity, a pokládali je za zakleté tvory.",
+   "en": "The stone serpent is the game's own creature, but it grows from real belief: whoever met a basilisk's gaze turned to stone. Miners also found stone 'snakes' in the waste rock, which we now know as fossils and ammonites, and took them for creatures under a curse."
+  },
+  "game": {
+   "cs": "Ve hře: had, kterého baziliškův pohled zkameněl jen napůl.",
+   "en": "In the game: a snake the basilisk's gaze turned only half to stone."
+  },
+  "refs": {
+   "monster": [
+    "kamenny_had"
+   ]
+  },
+  "see": [
+   "e_bazilisek"
+  ]
+ },
+ "e_cert": {
+  "cat": "creature",
+  "title": {
+   "cs": "Čert",
+   "en": "Čert (Czech Devil)"
+  },
+  "text": {
+   "cs": "Čert je český ďábel, ale v lidovém podání spíš chlupatý, rohatý a s kopytem, často hloupý a dá se přelstít. Nosí řetěz, kterým si odvádí hříšníky do pekla, a rád nabízí smlouvy podepsané krví. Čerti chodí s Mikulášem 5. prosince, objevují se v desítkách pověstí o čertových mlýnech, brázdách a kamenech a v pohádkách bývají spíš k smíchu než k strachu.",
+   "en": "The čert (chert) is the Czech devil, though folk tradition makes him shaggy, horned and hoofed, and often stupid enough to be outwitted. He carries a chain to lead sinners off to Hell and likes to offer contracts signed in blood. Čerti walk with St Nicholas on 5 December, haunt dozens of legends about devil's mills, furrows and stones, and in fairy tales are more often comic than terrifying."
+  },
+  "refs": {
+   "monster": [
+    "cert"
+   ],
+   "floor": [
+    "act3_floor1"
+   ]
+  },
+  "see": [
+   "e_peklo",
+   "e_ohnivec",
+   "e_faust"
+  ]
+ },
+ "e_ohnivy_muzik": {
+  "cat": "creature",
+  "title": {
+   "cs": "Ohnivý mužík",
+   "en": "Ohnivý mužík (Fire Sprite)"
+  },
+  "text": {
+   "cs": "Ohnivý mužík nebo ohnivý muž je hořící duše hříšníka, nejčastěji toho, kdo za života přesouval mezníky nebo zaoral cizí mez. Zjevuje se v noci na polích jako plamenný mužík, sloup ohně, sud nebo pes a skočí na záda tomu, kdo se mu vysměje. Často splývá s bludičkou; jinde to byl domácí skřítek v podobě ohnivého kuřete, který nosil bohatství.",
+   "en": "The ohnivý mužík (OH-nyi-vee MOO-zheek), 'little fiery man', is the burning soul of a sinner, most often someone who moved boundary stones or ploughed up a neighbour's field border. He appears in the fields at night as a flaming manikin, a pillar of fire, a barrel or a dog, and jumps on the back of anyone who mocks him. He often merges with the will-o'-wisp; elsewhere he is a household sprite shaped like a fiery chicken that brings wealth."
+  },
+  "refs": {
+   "monster": [
+    "ohnivy_muzik"
+   ]
+  },
+  "see": [
+   "e_bludicka",
+   "e_svetlonos"
+  ]
+ },
+ "e_svetlonos": {
+  "cat": "creature",
+  "title": {
+   "cs": "Světlonoš",
+   "en": "Světlonoš (Lantern Bearer)"
+  },
+  "text": {
+   "cs": "Světlonoš, na Rožnovsku také světlonoh, je bytost z valašských a moravských pověstí, příbuzná ohnivému mužíkovi a bludičkám. Podle místní víry pocházejí světlonoši z andělů, kteří při pádu nespadli do pekla, ale na zem. Nosí světlo nocí a mohou poutníka dovést domů, nebo ho zavést do neštěstí.",
+   "en": "The světlonoš (SVYET-lo-nosh), 'light-bearer', called světlonoh around Rožnov, comes from the legends of Moravian Wallachia and is kin to the fiery man and the will-o'-wisps. Local belief said the light-bearers were angels who, at the great Fall, landed on earth instead of in Hell. They carry light through the night and may lead a traveller home, or to ruin."
+  },
+  "refs": {
+   "monster": [
+    "svetlonos"
+   ]
+  },
+  "see": [
+   "e_ohnivy_muzik",
+   "e_bludicka",
+   "e_valassko"
+  ]
+ },
+ "e_upir": {
+  "cat": "creature",
+  "title": {
+   "cs": "Upír",
+   "en": "Upír (Vampire)"
+  },
+  "text": {
+   "cs": "Upír je mrtvý, který vstává z hrobu a saje sílu či krev živých. Slovanské „upír“ dalo světu slovo vampír. V Čechách a na Moravě se našly hroby, kde mrtvým dali do úst kámen, přibodli je k zemi nebo jim usekli hlavu, aby nevstali, a ještě v 18. století se tu vedla úřední vyšetřování upírů.",
+   "en": "The upír (OO-peer) is a dead man who rises from the grave to drain the strength or blood of the living; the Slavic word gave the world 'vampire'. Bohemia and Moravia have graves where the dead were given a stone in the mouth, staked to the ground or beheaded so they would not rise, and official 'vampire' inquiries were still held here in the 18th century."
+  },
+  "refs": {
+   "monster": [
+    "upir"
+   ],
+   "book": [
+    "kniha_svatebni_kosile",
+    "kniha_upir"
+   ]
+  },
+  "see": [
+   "e_strzyga",
+   "e_vlkodlak"
+  ]
+ },
+ "e_smolak": {
+  "cat": "creature",
+  "title": {
+   "cs": "Smolák",
+   "en": "Smolák (Pitch Golem)"
+  },
+  "text": {
+   "cs": "Smolák je bytost vymyšlená pro hru, pojmenovaná po smolinci, černé lesklé rudě uranu z Jáchymova. Golem sám pochází z židovských pověstí, nejslavnější je pražský golem rabiho Löwa. Smolinec je skutečně jedovatý a radioaktivní, což jáchymovští havíři poznali na vlastních plicích dávno předtím, než někdo věděl proč.",
+   "en": "The smolák (SMO-lahk) is invented for the game and named after smolinec, the black, glossy uranium ore of Jáchymov. The golem itself comes from Jewish legend, most famously Rabbi Loew's golem of Prague. Pitchblende really is poisonous and radioactive, as Jáchymov's miners learned in their lungs long before anyone knew why."
+  },
+  "game": {
+   "cs": "Ve hře: golem ze smolince, který se v Pekle slepil sám.",
+   "en": "In the game: a golem of pitchblende that stuck itself together down in Hell."
+  },
+  "refs": {
+   "monster": [
+    "smolak"
+   ]
+  },
+  "see": [
+   "e_smolinec",
+   "e_jachymov"
+  ]
+ },
+ "e_navka": {
+  "cat": "creature",
+  "title": {
+   "cs": "Navka",
+   "en": "Navka"
+  },
+  "text": {
+   "cs": "Navky (ukrajinsky též mavky) jsou z východoslovanské, hlavně ukrajinské víry: duše dívek, které zemřely mladé, nepokřtěné nebo utonuly před svatbou. Mají dlouhé rozpuštěné vlasy, v lese a u vody lákají mladíky a mohou je ulechtat k smrti. Jejich jméno souvisí s Navem, slovanskou říší mrtvých.",
+   "en": "Navky (NAV-ki; Ukrainian also mavky) come from East Slavic, mainly Ukrainian, belief: the souls of girls who died young, unbaptised, or drowned before their wedding. They have long loose hair, lure young men in the woods and by the water, and can tickle them to death. Their name shares a root with Nav, the Slavic realm of the dead."
+  },
+  "refs": {
+   "monster": [
+    "navka"
+   ],
+   "floor": [
+    "act4_floor1"
+   ],
+   "quest": [
+    "posledni_sichta"
+   ]
+  },
+  "see": [
+   "e_nav",
+   "e_bludicka"
+  ]
+ },
+ "e_cerny_pes": {
+  "cat": "creature",
+  "title": {
+   "cs": "Černý pes",
+   "en": "Černý pes (Black Dog)"
+  },
+  "text": {
+   "cs": "Přízračný černý pes s ohnivýma očima patří k nejrozšířenějším strašidlům v Čechách i v celé Evropě. Hlídá rozcestí, poklady, hřbitovy a mosty, bývá zakletou duší a kdo ho potká, toho čeká neštěstí nebo smrt v rodině. Pražské pověsti znají černé psy u Karlova mostu i na Starém Městě.",
+   "en": "The ghostly black dog with eyes of fire is one of the most widespread apparitions in Bohemia and across Europe. It guards crossroads, treasures, graveyards and bridges, is often a cursed soul, and whoever meets it can expect misfortune or a death in the family. Prague legends place black dogs by Charles Bridge and in the Old Town."
+  },
+  "refs": {
+   "monster": [
+    "cerny_pes"
+   ]
+  },
+  "see": [
+   "e_nav"
+  ]
+ },
+ "e_bes": {
+  "cat": "creature",
+  "title": {
+   "cs": "Běs",
+   "en": "Běs (Demon)"
+  },
+  "text": {
+   "cs": "Běs je staré slovanské slovo pro zlého ducha. Ve staroslověnštině jím misionáři překládali řecké daimón, a tak se z pohanských bytostí stali křesťanští ďáblové. V češtině po něm zůstala slova běsnit a běsnění, rusky se mu říká bes, polsky bies.",
+   "en": "Běs (byes) is the old Slavic word for an evil spirit. In Old Church Slavonic missionaries used it to translate the Greek daimon, and so the pagan spirits became Christian devils. Czech keeps it in the verb běsnit, 'to rage'; Russian says bes, Polish bies."
+  },
+  "refs": {
+   "monster": [
+    "bes"
+   ]
+  },
+  "see": [
+   "e_cert",
+   "e_cernobog"
+  ]
+ },
+ "e_kostejuv_nesmrtelny": {
+  "cat": "creature",
+  "title": {
+   "cs": "Kostějův nesmrtelný",
+   "en": "Koschei's Deathless Guard"
+  },
+  "text": {
+   "cs": "Kostějovi strážci jsou vymyšleni pro hru. Vycházejí ze skutečné pohádkové zásady: Kostěj Nesmrtelný nemá smrt v sobě, ale schovanou jinde, a proto ho nelze zabít obyčejnou ranou. Oheň jako zbraň proti nemrtvým zná slovanská víra odedávna, mrtvé podezřelé z upírství pálili.",
+   "en": "Koschei's guards are the game's invention. They follow a real fairy-tale rule: Koschei the Deathless keeps his death hidden outside his body, so no ordinary blow can kill him. Fire as the weapon against the undead is old Slavic belief; the dead suspected of vampirism were burned."
+  },
+  "game": {
+   "cs": "Ve hře: vstávají znovu, dokud je nespálíš.",
+   "en": "In the game: they rise again until you burn them."
+  },
+  "refs": {
+   "monster": [
+    "kostejuv_nesmrtelny"
+   ],
+   "unique": [
+    "zbroj_nesmrtelnych"
+   ]
+  },
+  "see": [
+   "e_kostej"
+  ]
+ },
+ "e_zar_ptak": {
+  "cat": "creature",
+  "title": {
+   "cs": "Žár-pták",
+   "en": "Firebird"
+  },
+  "text": {
+   "cs": "Žár-pták (rusky Žar-ptica) je ohnivý pták ruských pohádek, jehož peří září jako slunce a jedno pírko osvětlí celou síň. Česká lidová pohádka zná stejného ptáka jako Ptáka Ohniváka, kterého pro krále hledá nejmladší syn s pomocí lišky Ryšky (Erben). Proslavil ho i Stravinského balet Pták Ohnivák z roku 1910.",
+   "en": "The Firebird (Russian zhar-ptitsa) is the burning bird of Russian tales, whose feathers shine like the sun so that a single plume lights a whole hall. Czech folk tales know the same bird as Pták Ohnivák, sought for the king by the youngest son with the help of Ryška the fox (Erben). Stravinsky's 1910 ballet made it world-famous."
+  },
+  "refs": {
+   "monster": [
+    "zar_ptak"
+   ],
+   "book": [
+    "kniha_ptak_ohnivak"
+   ]
+  },
+  "see": [
+   "e_svarozic",
+   "e_nav"
+  ]
+ },
+ "e_klekanice": {
+  "cat": "creature",
+  "title": {
+   "cs": "Klekánice",
+   "en": "Klekánice"
+  },
+  "text": {
+   "cs": "Klekánice je strašidlo, které chodí po vsi a po polích po večerním zvonění, klekání, a odnáší děti, které ještě nejsou doma. Popisovali ji jako škaredou stařenu s rozcuchanými vlasy, někdy zahalenou v bílém, jindy s kopytem. Psychiatr Vladimír Vondráček ji řadil k „pedagogickým strašidlům“ spolu s polednicí a bubákem: měla děti naučit vracet se domů včas.",
+   "en": "The Klekánice (KLEH-kah-nyi-tseh) walks the village and the fields after the evening bell, the klekání, and carries off children who are not yet home. She was described as an ugly old woman with wild hair, sometimes wrapped in white, sometimes with a hoof. The psychiatrist Vladimír Vondráček counted her among the 'pedagogical bogeys' with the noon witch and the bogeyman: her job was to teach children to be home on time."
+  },
+  "game": {
+   "cs": "Ve hře: zvon v Hoře zmlkl a Klekánice chodí po štolách Dolu Osel.",
+   "en": "In the game: the bell of Hora has fallen silent and the Klekánice walks the galleries of the Osel mine."
+  },
+  "refs": {
+   "monster": [
+    "klekanice"
+   ],
+   "floor": [
+    "act1_floor2"
+   ],
+   "quest": [
+    "klekani"
+   ],
+   "unique": [
+    "klekanicina_rouska"
+   ],
+   "book": [
+    "kniha_polednice"
+   ]
+  },
+  "see": [
+   "e_klekani",
+   "e_polednice",
+   "e_bubak"
+  ]
+ },
+ "e_polednice": {
+  "cat": "creature",
+  "title": {
+   "cs": "Polednice",
+   "en": "Polednice (Noon Witch)"
+  },
+  "text": {
+   "cs": "Polednice obchází v poledne pole a trestá ty, kdo v tu svatou hodinu odpočinku pracují; umí zamotat hlavu, uštvat hádankami k smrti nebo odnést dítě. Poledne bylo v lidové víře hodinou duchů stejně jako půlnoc. Nejznámější je Erbenova balada Polednice ze sbírky Kytice, podle níž Antonín Dvořák složil symfonickou báseň.",
+   "en": "The polednice (PO-led-nyi-tseh) walks the fields at noon and punishes anyone working in that sacred hour of rest; she can addle a mind, torment a victim to death with riddles, or carry off a child. Noon, like midnight, was an hour of spirits. Best known is Erben's ballad 'The Noon Witch' from Kytice, which Antonín Dvořák set as a symphonic poem."
+  },
+  "refs": {
+   "book": [
+    "kniha_polednice"
+   ]
+  },
+  "see": [
+   "e_klekanice",
+   "e_erben"
+  ]
+ },
+ "e_zubata": {
+  "cat": "term",
+  "title": {
+   "cs": "Zubatá a Kmotr Smrť",
+   "en": "Zubatá and Godfather Death"
+  },
+  "text": {
+   "cs": "Zubatá je české lidové jméno pro smrt, kostlivou ženu s kosou a vyceněnými zuby. Smrt v českých pohádkách není vždy jen děsivá: v pohádce o kmotru Smrťákovi se stane kmotrou chudého člověka, z něhož udělá slavného lékaře. Smrt je tu spravedlivá a neúplatná, bere chudého i krále.",
+   "en": "Zubatá, 'the toothy one', is the Czech folk name for Death, a skeletal woman with a scythe and bared teeth. Death in Czech tales is not always simply terrible: in the tale of Godfather Death she stands godmother to a poor man's child and makes him a famous doctor. She is fair and unbribable, and takes the pauper and the king alike."
+  },
+  "refs": {},
+  "see": [
+   "e_morana"
+  ]
+ },
+ "e_carostrelec": {
+  "cat": "term",
+  "title": {
+   "cs": "Čarostřelec",
+   "en": "Čarostřelec (the Freeshooter)"
+  },
+  "text": {
+   "cs": "Čarostřelec je myslivec, který upsal duši ďáblu za kouzelné kulky, jež vždy zasáhnou cíl; poslední kulku ale řídí ďábel. Pověst se vyprávěla v německých i českých zemích a Carl Maria von Weber podle ní napsal operu Der Freischütz (1821), jejíž děj se odehrává v Čechách. Česky se uvádí právě jako Čarostřelec.",
+   "en": "The čarostřelec (CHAH-ro-strzheh-lets), the freeshooter, is a huntsman who sells his soul to the Devil for magic bullets that never miss, except that the Devil steers the last one. The legend was told in German and Czech lands alike, and Carl Maria von Weber built his opera Der Freischütz (1821), set in Bohemia, on it."
+  },
+  "refs": {},
+  "see": [
+   "e_cert"
+  ]
+ },
+ "e_kostnik": {
+  "cat": "creature",
+  "title": {
+   "cs": "Kostník ze Sedlce",
+   "en": "Kostník of Sedlec"
+  },
+  "text": {
+   "cs": "Kostník je postava vymyšlená pro hru: pán složený z kostí sedlecké kostnice. Samotná kostnice je skutečná: v podzemní kapli Všech svatých v Sedlci u Kutné Hory leží ostatky asi 40 až 70 tisíc lidí a od roku 1870 z nich řezbář František Rint skládá lustr, erby a girlandy. Kosti se tu hromadily, protože hřbitov byl posvěcen hlínou z Golgoty a ležet v něm chtěli lidé z celé střední Evropy.",
+   "en": "The Kostník (KOST-neek) is invented for the game: a lord assembled from the bones of the Sedlec ossuary. The ossuary itself is real: the underground All Saints' Chapel at Sedlec near Kutná Hora holds the remains of some 40,000 to 70,000 people, and in 1870 the woodcarver František Rint arranged them into a chandelier, a coat of arms and garlands. The bones piled up because the graveyard had been sprinkled with soil from Golgotha, and people from all over Central Europe wanted to lie there."
+  },
+  "game": {
+   "cs": "Ve hře: pán čtyřiceti tisíc kostí, který se jednou složí znovu.",
+   "en": "In the game: the lord of forty thousand bones, who puts himself back together once."
+  },
+  "refs": {
+   "monster": [
+    "kostnik"
+   ],
+   "quest": [
+    "kostnice"
+   ],
+   "unique": [
+    "kostnikova_koruna"
+   ]
+  },
+  "see": [
+   "e_kostnice_sedlec",
+   "e_kutna_hora"
+  ]
+ },
+ "e_vodnik": {
+  "cat": "creature",
+  "title": {
+   "cs": "Vodník (Hastrman)",
+   "en": "Vodník (Hastrman)"
+  },
+  "text": {
+   "cs": "Vodník je nejčeštější ze všech vodních bytostí: mužík v zeleném kabátku, z jehož šosů pořád kape, s dýmkou a kloboučkem. Bydlí v rybnících a tůních, láká lidi pestrými stužkami a duše utopených schovává pod hrnečky dnem vzhůru. Slovo hastrman pochází z německého Wassermann. Nejtemnější podobu mu dal K. J. Erben v baladě Vodník.",
+   "en": "The vodník (VOD-neek) is the most Czech of all water spirits: a little man in a green coat whose tails are always dripping, with a pipe and a small hat. He lives in ponds and pools, lures people with bright ribbons and keeps the souls of the drowned under upturned teacups. His other name, hastrman, comes from German Wassermann. K. J. Erben gave him his darkest form in the ballad 'The Water Goblin'."
+  },
+  "game": {
+   "cs": "Ve hře: Vodník Hastrman zatopil spodní patro Dolu Osel.",
+   "en": "In the game: Hastrman has flooded the lowest level of the Osel mine."
+  },
+  "refs": {
+   "monster": [
+    "vodnik"
+   ],
+   "floor": [
+    "act1_floor4"
+   ],
+   "quest": [
+    "dusicky"
+   ],
+   "unique": [
+    "hastrmanuv_hrnek"
+   ],
+   "book": [
+    "kniha_vodnik"
+   ]
+  },
+  "see": [
+   "e_dusicky_hrnicky",
+   "e_utopenec",
+   "e_erben"
+  ]
+ },
+ "e_dusicky_hrnicky": {
+  "cat": "item",
+  "title": {
+   "cs": "Dušičky v hrníčcích",
+   "en": "Souls under Teacups"
+  },
+  "text": {
+   "cs": "Podle české víry vodník schovává duše utopených pod porcelánové hrnečky obrácené dnem vzhůru a má je doma v řadách jako sbírku. Duše tam trpí a pláče; když hrneček někdo převrhne, dušička vyletí jako bublinka a je volná. Proto se v pohádkách hrdinové snaží do vodníkova domu dostat a hrníčky převrhnout.",
+   "en": "In Czech belief the vodník keeps the souls of the drowned under porcelain teacups turned upside down, lined up at home like a collection. The souls suffer and weep there; when someone tips a cup over, the little soul rises like a bubble and goes free. That is why heroes in the tales try to get into the vodník's house and upset his cups."
+  },
+  "refs": {
+   "item": [
+    "hrnek"
+   ],
+   "quest": [
+    "dusicky"
+   ],
+   "npc": [
+    "anicka"
+   ]
+  },
+  "see": [
+   "e_vodnik",
+   "e_dusicky"
+  ]
+ },
+ "e_megera": {
+  "cat": "creature",
+  "title": {
+   "cs": "Megera",
+   "en": "Megera"
+  },
+  "text": {
+   "cs": "Megera je čarodějnice z brdské pověsti o Fabiánovi. Byla milenkou rytíře Babího Jana, a když si vzal mladou Medulínu, spolčila se se zlými duchy, přivolala bouři, která jeho hrad rozmetala, Fabiána proklela v ducha lesů a Medulínu proměnila v bylinu zeměžluč. Jméno má po řecké Erínyi Megairě; v češtině znamená megera dodnes zlou, hašteřivou ženu.",
+   "en": "Megera (MEH-geh-ra) is the witch of the Brdy legend of Fabián. She was the lover of the knight Babí Jan, and when he married young Medulína she made a pact with evil spirits, called down a storm that tore his castle apart, cursed Fabián into the spirit of the forest and turned Medulína into the herb centaury. She is named after the Greek Fury Megaera; in Czech 'megera' still means a shrew."
+  },
+  "game": {
+   "cs": "Ve hře: Megera si rozdělala kotle v kořenech pod Vojtěšskou šachtou.",
+   "en": "In the game: Megera has lit her cauldrons among the roots beneath the Vojtěch shaft."
+  },
+  "refs": {
+   "monster": [
+    "megera"
+   ],
+   "floor": [
+    "act2_floor2"
+   ],
+   "quest": [
+    "medulinin_odkaz"
+   ],
+   "unique": [
+    "megerina_berla"
+   ]
+  },
+  "see": [
+   "e_fabian",
+   "e_medulina",
+   "e_brdy"
+  ]
+ },
+ "e_prokop": {
+  "cat": "person",
+  "title": {
+   "cs": "Divoký Prokop z Valdeka",
+   "en": "Wild Prokop of Valdek"
+  },
+  "text": {
+   "cs": "Podle brdské pověsti získal zlý rytíř Divoký Prokop hrad Valdek vraždou jeho pána, zakázal pouti k zázračné Valdecké Madoně a sužoval celé okolí. Nakonec se vzbouřili hutníci z Komárova, hrad přepadli a Prokopa zabili. Pověst zpracoval V. K. Klicpera v rané hře Valdek; v Podbrdsku se Prokopem strašily děti ještě dlouho potom.",
+   "en": "According to a Brdy legend, the wicked knight Wild Prokop took Valdek castle by murdering its lord, banned the pilgrimages to the miraculous Madonna of Valdek and terrorised the whole countryside. At last the ironworkers of Komárov rose up, stormed the castle and killed him. V. K. Klicpera turned the tale into an early play, Valdek, and Brdy children were threatened with Prokop for a long time afterwards."
+  },
+  "game": {
+   "cs": "Ve hře: jezdí štolami Vojtěšské šachty na kostlivém koni a nikdy nezatáčí.",
+   "en": "In the game: he rides the galleries of the Vojtěch shaft on a skeletal horse and never turns."
+  },
+  "refs": {
+   "monster": [
+    "prokop"
+   ],
+   "floor": [
+    "act2_floor3"
+   ],
+   "quest": [
+    "valdecky_jezdec"
+   ],
+   "unique": [
+    "prokopuv_palcat",
+    "valdecky_krunyr"
+   ]
+  },
+  "see": [
+   "e_valdek",
+   "e_brdy"
+  ]
+ },
+ "e_bazilisek": {
+  "cat": "creature",
+  "title": {
+   "cs": "Bazilišek",
+   "en": "Bazilišek (Basilisk)"
+  },
+  "text": {
+   "cs": "Bazilišek se podle středověké víry líhne z vejce, které snesl kohout a vysedí ropucha. Má kohoutí hlavu, hadí tělo a pohled, který zabíjí nebo mění v kámen. Pražská pověst vypráví o baziliškovi ve sklepě domu v Templové ulici, kterého zahubil odsouzenec ověšený zrcadly: bazilišek spatřil sám sebe a puknul.",
+   "en": "Medieval belief held that the basilisk (bah-ZI-li-shek) hatches from an egg laid by a rooster and warmed by a toad. It has a cock's head, a serpent's body and a gaze that kills or turns to stone. A Prague legend tells of a basilisk in a cellar in Templová Street, killed by a condemned man hung all over with mirrors: the basilisk saw itself and burst."
+  },
+  "game": {
+   "cs": "Ve hře: usadil se na Ševčinské žíle, kde po něm havíři kdysi pověsili zrcadla.",
+   "en": "In the game: it has settled on the Ševčiny vein, where miners once hung mirrors against it."
+  },
+  "refs": {
+   "monster": [
+    "bazilisek"
+   ],
+   "floor": [
+    "act2_floor4"
+   ],
+   "quest": [
+    "zrcadla_v_sevcine"
+   ],
+   "unique": [
+    "baziliskovo_oko"
+   ],
+   "item": [
+    "zrcadlo_strep"
+   ],
+   "book": [
+    "kniha_bruncvik"
+   ]
+  },
+  "see": [
+   "e_sevciny",
+   "e_kamenny_had"
+  ]
+ },
+ "e_strzyga": {
+  "cat": "creature",
+  "title": {
+   "cs": "Strzyga",
+   "en": "Strzyga"
+  },
+  "text": {
+   "cs": "Strzyga (čti „stšyga“) je bytost z polské a slezské víry: člověk narozený se dvěma srdci, dvěma dušemi a někdy dvěma řadami zubů. Po smrti odejde jedna duše na onen svět, ale druhá oživí tělo a strzyga v noci vychází, často v podobě sovy, pít krev. Proto ji pohřbívali tváří dolů, s kamenem v ústech nebo s uťatou hlavou. U nás a na Slovensku se příbuzné bytosti říká striga.",
+   "en": "The strzyga (STSHI-ga) comes from Polish and Silesian belief: someone born with two hearts, two souls and sometimes two rows of teeth. At death one soul departs to the other world, but the second revives the body, and the strzyga walks at night, often as an owl, to drink blood. So she was buried face down, with a stone in her mouth or her head cut off. Czechs and Slovaks call the related creature striga."
+  },
+  "game": {
+   "cs": "Ve hře: vylezla z hrobu ve druhém patře Dolu Svornost.",
+   "en": "In the game: she has climbed out of her grave on the second level of the Svornost mine."
+  },
+  "refs": {
+   "monster": [
+    "strzyga"
+   ],
+   "floor": [
+    "act3_floor2"
+   ],
+   "quest": [
+    "dve_srdce"
+   ],
+   "unique": [
+    "strzygina_dvojnice"
+   ]
+  },
+  "see": [
+   "e_upir"
+  ]
+ },
+ "e_ohnivec": {
+  "cat": "creature",
+  "title": {
+   "cs": "Mincíř Ohnivec",
+   "en": "Ohnivec the Minter"
+  },
+  "text": {
+   "cs": "Ohnivec je čert vymyšlený pro hru, ale stojí na skutečném základu: Jáchymov razil od roku 1520 stříbrné tolary a mincíři, kteří šidili na ryzosti či váze, patřili v pověstech k oblíbeným obětem čertů. Penězokazce stíhaly i skutečné tresty, třeba smrt ve vroucím oleji.",
+   "en": "Ohnivec (OH-nyi-vets), 'the fiery one', is a devil invented for the game, but he rests on a real footing: from 1520 Jáchymov struck silver thalers, and minters who cheated on the weight or the silver were favourite prey for devils in legend. Real counterfeiters faced real punishments too, such as death in boiling oil."
+  },
+  "game": {
+   "cs": "Ve hře: v Pekle dostal vlastní mincovnu a razí tolary, které koušou.",
+   "en": "In the game: Hell gave him his own mint, and he strikes thalers that bite."
+  },
+  "refs": {
+   "monster": [
+    "ohnivec"
+   ],
+   "floor": [
+    "act3_floor3"
+   ],
+   "quest": [
+    "proklete_tolary"
+   ],
+   "unique": [
+    "ohnivcova_kovadlina"
+   ]
+  },
+  "see": [
+   "e_tolar",
+   "e_mincovna_jachymov",
+   "e_cert"
+  ]
+ },
+ "e_jezibaba": {
+  "cat": "creature",
+  "title": {
+   "cs": "Ježibaba",
+   "en": "Ježibaba"
+  },
+  "text": {
+   "cs": "Ježibaba je česká podoba ruské Baby Jagy. Je to stará čarodějnice s hákovým nosem a kostěnou nohou, která bydlí v chaloupce na kuří nožce hluboko v lese. V českých pohádkách splývá s čarodějnicí z Perníkové chaloupky, která chce Jeníčka upéct v peci, ale bývá i rádkyní, která hrdinovi poradí cestu. Pec a lopata na chleba jsou její znamení.",
+   "en": "Ježibaba (YEH-zhi-ba-ba) is the Czech form of the Russian Baba Yaga: an old witch with a hooked nose and a bone leg, living in a hut on a chicken's leg deep in the forest. In Czech tales she merges with the gingerbread-house witch who wants to bake Jeníček (Hansel) in her oven, but she can also be the old woman who shows the hero the way. The oven and the bread shovel are her signs."
+  },
+  "game": {
+   "cs": "Ve hře: rozdělala si pec na dně Svornosti, v Pekle.",
+   "en": "In the game: she has fired up her oven at the bottom of Svornost, in Hell."
+  },
+  "refs": {
+   "monster": [
+    "jezibaba",
+    "chaloupka"
+   ],
+   "floor": [
+    "act3_floor4"
+   ],
+   "quest": [
+    "pec"
+   ],
+   "unique": [
+    "jezibabina_lopata"
+   ],
+   "book": [
+    "kniha_baba_jaga",
+    "kniha_kostej"
+   ]
+  },
+  "see": [
+   "e_ziva_mrtva_voda",
+   "e_peklo"
+  ]
+ },
+ "e_san": {
+  "cat": "creature",
+  "title": {
+   "cs": "Saň Tříhlavá",
+   "en": "The Three-Headed Saň"
+  },
+  "text": {
+   "cs": "Saň je staré české slovo pro draka, v pohádkách ženského rodu. Vícehlavý drak, kterému uťatá hlava doroste, patří k nejrozšířenějším pohádkovým nepřátelům. V ruských bylinách číhá hadí drak (Zmej) u Kalinova mostu přes ohnivou řeku Smorodinu a hrdina s ním svádí boj na hranici světa živých a mrtvých.",
+   "en": "Saň (sahn') is an old Czech word for a dragon, feminine in the fairy tales. The many-headed dragon whose severed heads grow back is one of folklore's commonest foes. In the Russian byliny the serpent-dragon (Zmey) lurks at the Kalinov Bridge over the fiery river Smorodina, and the hero fights it at the border between the world of the living and the dead."
+  },
+  "game": {
+   "cs": "Ve hře: tři hlavy, tři živly, a pahýl se musí spálit.",
+   "en": "In the game: three heads, three elements, and the stump must be burned."
+  },
+  "refs": {
+   "monster": [
+    "san",
+    "san_head"
+   ],
+   "floor": [
+    "act4_floor2"
+   ],
+   "quest": [
+    "kalinov_most"
+   ],
+   "unique": [
+    "sanin_kozich"
+   ],
+   "book": [
+    "kniha_kalinov_most"
+   ]
+  },
+  "see": [
+   "e_kalinuv_most",
+   "e_smorodina"
+  ]
+ },
+ "e_vij": {
+  "cat": "creature",
+  "title": {
+   "cs": "Vij",
+   "en": "Viy"
+  },
+  "text": {
+   "cs": "Vij (ukrajinsky Вій) je náčelník podzemních démonů z novely Nikolaje Gogola Vij (1835), který tvrdil, že ji převzal z lidového vyprávění. Je celý od černé hlíny, má železnou tvář a víčka tak těžká, že mu sahají až k zemi a musí mu je zvedat jeho sluhové. Když prohlédne, nikdo se před ním neskryje: „Zvedněte mi víčka!“",
+   "en": "Viy (vee) is the chief of the underground demons in Nikolai Gogol's novella Viy (1835), which Gogol claimed to have taken from Ukrainian folk tales. He is caked in black earth, has an iron face and eyelids so heavy they reach the ground, and his servants must lift them for him. Once he sees, nothing can hide from him: 'Lift up my eyelids!'"
+  },
+  "game": {
+   "cs": "Ve hře: zabij ty, kdo mu zvedají víčka, a oslepne.",
+   "en": "In the game: kill those who lift his eyelids and he goes blind."
+  },
+  "refs": {
+   "monster": [
+    "vij"
+   ],
+   "floor": [
+    "act4_floor3"
+   ],
+   "quest": [
+    "vijova_vicka"
+   ],
+   "unique": [
+    "vijova_vicka"
+   ],
+   "book": [
+    "kniha_vij"
+   ]
+  },
+  "see": [
+   "e_nav"
+  ]
+ },
+ "e_kostej": {
+  "cat": "creature",
+  "title": {
+   "cs": "Kostěj Nesmrtelný",
+   "en": "Koschei the Deathless"
+  },
+  "text": {
+   "cs": "Kostěj Nesmrtelný (rusky Koščej Bessmertnyj) je vyzáblý zlý král a čaroděj ruských pohádek, který unáší princezny. Nemůže zemřít, protože svou smrt nenosí v sobě: je to jehla, jehla je ve vejci, vejce v kachně, kachna v zajíci, zajíc v truhle a truhla zakopaná pod starým dubem. Kdo jehlu najde a zlomí, Kostěje zabije.",
+   "en": "Koschei the Deathless (KOSH-chay; Czech Kostěj, KOS-tyay) is the gaunt evil king and sorcerer of Russian tales who carries off princesses. He cannot die because he keeps his death outside himself: it is a needle, the needle in an egg, the egg in a duck, the duck in a hare, the hare in a chest, and the chest buried under an old oak. Whoever finds the needle and snaps it kills Koschei."
+  },
+  "game": {
+   "cs": "Ve hře: najdi dub a jehlu zlom uprostřed boje.",
+   "en": "In the game: find the oak, and break the needle mid-fight."
+  },
+  "refs": {
+   "monster": [
+    "kostej"
+   ],
+   "floor": [
+    "act4_floor4"
+   ],
+   "quest": [
+    "kostejova_smrt"
+   ],
+   "item": [
+    "kostejova_jehla",
+    "vejce"
+   ],
+   "unique": [
+    "kostejova_jehla_unique"
+   ],
+   "book": [
+    "kniha_kostej"
+   ]
+  },
+  "see": [
+   "e_kostejuv_nesmrtelny",
+   "e_nav"
+  ]
+ },
+ "e_perun": {
+  "cat": "god",
+  "title": {
+   "cs": "Perun",
+   "en": "Perun"
+  },
+  "text": {
+   "cs": "Perun je slovanský bůh hromu, blesku a války, nejvyšší bůh kyjevského panteonu knížete Vladimíra. Jeho zbraní je sekera nebo kamenný klín, který po zásahu bleskem zůstane v zemi jako „hromová střela“. Badatelé Ivanov a Toporov rekonstruovali jeho hlavní mýtus: hromovládce z vrcholku světového stromu pronásleduje hadího protivníka Velese, který se mu skrývá u kořenů.",
+   "en": "Perun (PEH-roon) is the Slavic god of thunder, lightning and war, head of Prince Vladimir's pantheon at Kiev. His weapon is an axe or a stone wedge that, once lightning strikes, stays in the earth as a 'thunderstone'. Scholars Ivanov and Toporov reconstructed his central myth: the Thunderer at the top of the world tree hunts his serpent rival Veles, who hides among its roots."
+  },
+  "game": {
+   "cs": "Ve hře: Perunova modla posílí blesk; Vědma volá hromy jeho jménem.",
+   "en": "In the game: Perun's idol strengthens lightning, and the Wise Woman calls thunder in his name."
+  },
+  "refs": {
+   "shrine": [
+    "perun"
+   ],
+   "class": [
+    "vedma"
+   ],
+   "unique": [
+    "perunova_sekera"
+   ],
+   "book": [
+    "kniha_stari_bohove"
+   ]
+  },
+  "see": [
+   "e_veles",
+   "e_svarog",
+   "e_modla"
+  ]
+ },
+ "e_veles": {
+  "cat": "god",
+  "title": {
+   "cs": "Veles",
+   "en": "Veles"
+  },
+  "text": {
+   "cs": "Veles (ve staré Rusi též Volos) je slovanský bůh dobytka, bohatství, kouzel a podsvětí, Perunův věčný protivník. Ve staré Rusi se při něm přísahalo spolu s Perunem. Podle rekonstrukce vládne Návu, podsvětní louce, kde se pasou duše lidí i dobytka. Ve staré češtině přežil jako zlý duch („ký čert aneb ký Veles“, píše Tkadleček) a rčení „za moře k Velesu“ znamenalo odejít na onen svět.",
+   "en": "Veles (VEH-les) is the Slavic god of cattle, wealth, magic and the underworld, Perun's eternal opponent; in old Rus' oaths were sworn by Veles alongside Perun. In the scholarly reconstruction he rules Nav, the underworld meadow where the souls of people and cattle graze. In Old Czech he lived on as an evil spirit ('what devil or what Veles', asks the 15th-century Tkadleček), and 'beyond the sea to Veles' meant to the other world."
+  },
+  "game": {
+   "cs": "Ve hře: Velesova modla ukáže, kde se lesknou poklady.",
+   "en": "In the game: Veles's idol shows you where treasure glints."
+  },
+  "refs": {
+   "shrine": [
+    "veles"
+   ],
+   "npc": [
+    "prevoznik"
+   ],
+   "book": [
+    "kniha_stari_bohove"
+   ]
+  },
+  "see": [
+   "e_perun",
+   "e_nav"
+  ]
+ },
+ "e_mokos": {
+  "cat": "god",
+  "title": {
+   "cs": "Mokoš",
+   "en": "Mokosh"
+  },
+  "text": {
+   "cs": "Mokoš je jediná bohyně v Nestorově seznamu kyjevských bohů. Byla ochránkyní žen, předení, porodu a vláhy; její jméno souvisí se slovem mokrý. Splývá s představou Matky vlhké země, kterou rolníci zdravili a jíž přinášeli dary. Na Vladimírově pahorku nad Kyjevem měla vlastní modlu.",
+   "en": "Mokosh (MO-kosh; Czech Mokoš) is the only goddess in the chronicle's list of the gods of Kiev. She watched over women, spinning, childbirth and moisture; her name is related to the word for 'wet'. She blends with Mother Moist Earth, whom peasants greeted and brought gifts. She had her own idol on Vladimir's hill above Kiev."
+  },
+  "game": {
+   "cs": "Ve hře: Mokošina modla zacelí rány.",
+   "en": "In the game: Mokosh's idol closes your wounds."
+  },
+  "refs": {
+   "shrine": [
+    "mokos"
+   ]
+  },
+  "see": [
+   "e_rod",
+   "e_perun"
+  ]
+ },
+ "e_svarog": {
+  "cat": "god",
+  "title": {
+   "cs": "Svarog",
+   "en": "Svarog"
+  },
+  "text": {
+   "cs": "Svarog je slovanský nebeský bůh-kovář. Jediná zpráva o něm je glosa v Hypatijském letopise, která ho ztotožňuje s řeckým Héfaistem: za jeho vlády prý z nebe spadly kovářské kleště a lidé se naučili kovat zbraně. Jeho synem byl Svarožič, bůh ohně.",
+   "en": "Svarog (SVAH-rog) is the Slavic sky god and smith. The only record of him is a gloss in the Hypatian Chronicle that equates him with the Greek Hephaestus: in his reign smith's tongs fell from the sky and people learned to forge weapons. His son was Svarozhich, the god of fire."
+  },
+  "game": {
+   "cs": "Ve hře: Svarogova modla rozžhaví zbraň do běla.",
+   "en": "In the game: Svarog's idol heats your weapon white."
+  },
+  "refs": {
+   "shrine": [
+    "svarog"
+   ]
+  },
+  "see": [
+   "e_svarozic",
+   "e_perun"
+  ]
+ },
+ "e_svarozic": {
+  "cat": "god",
+  "title": {
+   "cs": "Svarožič",
+   "en": "Svarozhich"
+  },
+  "text": {
+   "cs": "Svarožič neboli Svarožic je slovanský bůh ohně, Svarogův syn. Biskup Dětmar z Merseburku ho kolem roku 1015 zaznamenal jako hlavního boha Ratarů ve svatyni Riedegost; u východních Slovanů se tak nazýval oheň, kterému se lidé modlili v ovinech, sušárnách obilí. Někteří badatelé ho ztotožňují s Radegastem.",
+   "en": "Svarozhich (SVAH-ro-zhich; Czech Svarožič) is the Slavic god of fire, son of Svarog. Bishop Thietmar of Merseburg recorded him around 1015 as the chief god of the Redarii at the shrine of Riedegost; among the East Slavs the name was given to the fire in the grain-drying barns, to which people prayed. Some scholars equate him with Radegast."
+  },
+  "game": {
+   "cs": "Ve hře: jeden ze tří Vědminých stromů dovedností, oheň.",
+   "en": "In the game: one of the Wise Woman's three skill trees, fire."
+  },
+  "refs": {
+   "class": [
+    "vedma"
+   ]
+  },
+  "see": [
+   "e_svarog",
+   "e_kupala",
+   "e_zar_ptak"
+  ]
+ },
+ "e_morana": {
+  "cat": "god",
+  "title": {
+   "cs": "Morana",
+   "en": "Morana"
+  },
+  "text": {
+   "cs": "Morana (také Mořena, Marena, Smrtka) je slovanská bohyně zimy a smrti. Na Smrtnou neděli, dva týdny před Velikonocemi, nesou děti dodnes ze vsi slaměnou figuru Morany, zapálí ji nebo ji hodí do potoka a přinášejí zpátky zelené létečko. Morana tak každé jaro umírá a každý podzim se vrací.",
+   "en": "Morana (MO-ra-na; also Mařena, Marena, Smrtka) is the Slavic goddess of winter and death. On Death Sunday, two weeks before Easter, Czech children still carry a straw Morana out of the village, burn her or throw her into the stream, and bring back a green 'little summer' branch. So Morana dies every spring and comes back every autumn."
+  },
+  "game": {
+   "cs": "Ve hře: Moranina modla dá mráz, ale něco si vezme; Vědma volá mráz jejím jménem.",
+   "en": "In the game: Morana's idol grants frost but takes something in return; the Wise Woman calls frost in her name."
+  },
+  "refs": {
+   "shrine": [
+    "morana"
+   ],
+   "class": [
+    "vedma"
+   ],
+   "unique": [
+    "moranina_naruc_amulet"
+   ],
+   "book": [
+    "kniha_morana"
+   ]
+  },
+  "see": [
+   "e_vynaseni_morany",
+   "e_zubata"
+  ]
+ },
+ "e_vynaseni_morany": {
+  "cat": "term",
+  "title": {
+   "cs": "Vynášení Morany",
+   "en": "Carrying Out Morana"
+  },
+  "text": {
+   "cs": "Vynášení Morany je jarní obyčej, který se v Česku drží dodnes. O Smrtné neděli vyrobí děvčata a děti figuru ze slámy a hadrů, nesou ji se zpěvem („Smrt nesem ze vsi, nové léto do vsi“) k vodě, zapálí ji nebo hodí do proudu a nesmějí se ohlédnout. Zpátky nesou ozdobený zelený stromek, létečko.",
+   "en": "Carrying Out Morana is a spring custom still alive in Czechia. On Death Sunday girls and children make a figure of straw and rags, carry it singing ('We carry Death out of the village, new summer into the village') to the water, burn it or throw it in the stream, and must not look back. They return with a decorated green sapling, the 'little summer'."
+  },
+  "refs": {
+   "class": [
+    "vedma"
+   ]
+  },
+  "see": [
+   "e_morana"
+  ]
+ },
+ "e_stribog": {
+  "cat": "god",
+  "title": {
+   "cs": "Stribog",
+   "en": "Stribog"
+  },
+  "text": {
+   "cs": "Stribog je bůh z kyjevského panteonu knížete Vladimíra, spojovaný s větry. Slovo o pluku Igorově nazývá větry „Stribogovými vnuky“, které vanou od moře. Víc toho o něm prameny neprozrazují.",
+   "en": "Stribog (STRI-bog) is a god of Prince Vladimir's pantheon at Kiev, linked with the winds. The Tale of Igor's Campaign calls the winds 'Stribog's grandsons', blowing in from the sea. The sources tell us little more."
+  },
+  "game": {
+   "cs": "Ve hře: Stribogova modla tě ponese větrem.",
+   "en": "In the game: Stribog's idol carries you on the wind."
+  },
+  "refs": {
+   "shrine": [
+    "stribog"
+   ]
+  },
+  "see": [
+   "e_perun"
+  ]
+ },
+ "e_triglav": {
+  "cat": "god",
+  "title": {
+   "cs": "Triglav",
+   "en": "Triglav"
+  },
+  "text": {
+   "cs": "Triglav, „trojhlavý“, byl hlavním bohem pomořanských Slovanů ve Štětíně a Volinu. Podle životopisců biskupa Oty Bamberského měl tři hlavy, protože vládl nebi, zemi i podsvětí, a oči a ústa zakryté zlatou páskou, aby neviděl hříchy lidí. Jeho černý kůň věštil z kopí položených na zem.",
+   "en": "Triglav (TREE-glav), 'three-headed', was the chief god of the Pomeranian Slavs at Szczecin and Wolin. According to the biographers of Bishop Otto of Bamberg he had three heads because he ruled heaven, earth and the underworld, and a golden band over his eyes and mouth so as not to see people's sins. His black horse foretold the future by stepping over spears laid on the ground."
+  },
+  "game": {
+   "cs": "Ve hře: Triglavova modla je sázka: požehná, nebo prokleje.",
+   "en": "In the game: Triglav's idol is a gamble: it blesses or it curses."
+  },
+  "refs": {
+   "shrine": [
+    "triglav"
+   ]
+  },
+  "see": [
+   "e_modla"
+  ]
+ },
+ "e_rod": {
+  "cat": "god",
+  "title": {
+   "cs": "Rod a rožanice",
+   "en": "Rod and the Rozhanitsy"
+  },
+  "text": {
+   "cs": "Rod je slovanské božstvo rodu, předků a osudu, kterému staroruští kazatelé vyčítali, že mu lidé kladou chléb, sýr a med. Bývá zmiňován spolu s rožanicemi, ženskými bytostmi, které u kolébky novorozeněte určují jeho osud. V české pohádce jsou to tři sudičky, které předou a sudí dítěti život.",
+   "en": "Rod is the Slavic deity of kin, ancestors and fate; old Russian preachers scolded people for setting bread, cheese and honey before him. He is named together with the rozhanitsy, female spirits who decide a newborn's fate at the cradle. In Czech fairy tales they are the three sudičky, who spin and pronounce a child's life."
+  },
+  "game": {
+   "cs": "Ve hře: Rodova modla přidá zkušenosti.",
+   "en": "In the game: Rod's idol grants experience."
+  },
+  "refs": {
+   "shrine": [
+    "rod"
+   ]
+  },
+  "see": [
+   "e_mokos"
+  ]
+ },
+ "e_cernobog": {
+  "cat": "god",
+  "title": {
+   "cs": "Černobog",
+   "en": "Chernobog"
+  },
+  "text": {
+   "cs": "Černobog (česky též Černobůh), „černý bůh“, je zmíněn v Helmoldově Kronice Slovanů z 12. století: Polabští Slované prý při hostinách posílali kolem číši a vzývali boha neštěstí, jemuž říkali Zcerneboch. Novodobé představy z něj udělaly protiklad Bělboha, pána tmy a podsvětí; v pramenech je ale jen tahle jediná zmínka.",
+   "en": "Chernobog (CHER-no-bog; Czech Černobog or Černobůh), 'the black god', appears in Helmold's 12th-century Chronicle of the Slavs: at feasts the Polabian Slavs passed round a bowl and invoked a god of misfortune they called Zcerneboch. Later writers made him the opposite of a 'white god', lord of darkness and the underworld, but the sources hold only this single mention."
+  },
+  "refs": {
+   "quest": [
+    "permonik_final"
+   ]
+  },
+  "see": [
+   "e_nav",
+   "e_bes"
+  ]
+ },
+ "e_kupala": {
+  "cat": "term",
+  "title": {
+   "cs": "Kupala a svatojánská noc",
+   "en": "Kupala and St John's Night"
+  },
+  "text": {
+   "cs": "Kupala je východoslovanský svátek letního slunovratu, který církev spojila se svátkem sv. Jana Křtitele (24. června). Svatojánská noc byla nocí kouzel: zapalovaly se ohně a skákalo se přes ně, sbíraly se léčivé byliny a rosa, kvetlo kapradí a otevíraly se poklady. V českých zemích se pálily svatojánské ohně a vatry ještě ve 20. století.",
+   "en": "Kupala is the East Slavic midsummer festival, which the Church joined to the feast of St John the Baptist (24 June). St John's Night was a night of magic: bonfires were lit and leapt over, healing herbs and dew were gathered, the fern flowered and hidden treasures opened. In the Czech lands St John's bonfires (vatry) were still lit well into the 20th century."
+  },
+  "refs": {
+   "class": [
+    "vedma"
+   ],
+   "item": [
+    "svatojanska_rosa",
+    "kapradi_kvet"
+   ]
+  },
+  "see": [
+   "e_svatojanska_rosa",
+   "e_kapradi_kvet",
+   "e_svarozic"
+  ]
+ },
+ "e_modla": {
+  "cat": "term",
+  "title": {
+   "cs": "Modly a boží muka",
+   "en": "Idols and Wayside Shrines"
+  },
+  "text": {
+   "cs": "Modla je socha nebo sloup pohanského boha, ke kterému se přinášely oběti. Slované stavěli dřevěné modly na posvátných návrších a v hájích; nejslavnější je kamenný Zbručský idol se čtyřmi tvářemi. Boží muka jsou křesťanské kamenné nebo dřevěné sloupky s obrázkem či křížem u cest, kde se poutník pomodlil, a v krajině jich stojí tisíce.",
+   "en": "A modla is the statue or pillar of a pagan god, to which offerings were brought. The Slavs raised wooden idols on sacred hills and in groves; the most famous survivor is the four-faced stone Zbruch idol. Boží muka are their Christian successors: stone or wooden wayside pillars with a picture or a cross, where travellers stopped to pray, and thousands still stand in the Czech countryside."
+  },
+  "refs": {
+   "shrine": [
+    "perun",
+    "veles",
+    "mokos",
+    "svarog",
+    "morana",
+    "stribog",
+    "triglav",
+    "rod"
+   ]
+  },
+  "see": [
+   "e_perun",
+   "e_zrec"
+  ]
+ },
+ "e_zrec": {
+  "cat": "term",
+  "title": {
+   "cs": "Žrec",
+   "en": "Žrec (Pagan Priest)"
+  },
+  "text": {
+   "cs": "Žrec je slovanský pohanský kněz, který přinášel oběti a věštil. Slovo souvisí se starým „žrát“, obětovat. Nejlépe doložení jsou žreci Polabských Slovanů na Rujáně, kde v Arkoně sloužili Svantovítovi a věštili z jeho bílého koně.",
+   "en": "A žrec (zhrets) is a Slavic pagan priest who made sacrifices and read omens; the word comes from an old verb meaning 'to offer'. The best recorded are the priests of the Polabian Slavs on Rügen, who served Svantevit at Arkona and read the future from his white horse."
+  },
+  "refs": {},
+  "see": [
+   "e_modla",
+   "e_triglav"
+  ]
+ },
+ "e_mrazik": {
+  "cat": "term",
+  "title": {
+   "cs": "Mrazík",
+   "en": "Mrazík (Jack Frost)"
+  },
+  "text": {
+   "cs": "Mrazík je česky dabovaný sovětský pohádkový film Morozko (1964) Alexandra Rowa, který se v Česku stal neodmyslitelnou součástí Vánoc. Děd Mráz neboli Morozko je ruská personifikace zimy a mrazu, přísná, ale spravedlivá. Kdo se k němu chová skromně a laskavě, toho obdaruje; kdo je pyšný, tomu zmrznou rty.",
+   "en": "Mrazík is the Czech title of the Soviet fairy-tale film Morozko (1964) by Aleksandr Rou, an essential part of Christmas television in Czechia. Morozko, or Grandfather Frost, is the Russian personification of winter, stern but just: the humble and kind are rewarded, the proud get frozen lips."
+  },
+  "refs": {},
+  "see": [
+   "e_morana"
+  ]
+ },
+ "e_kutna_hora": {
+  "cat": "place",
+  "title": {
+   "cs": "Kutná Hora",
+   "en": "Kutná Hora"
+  },
+  "text": {
+   "cs": "Kutná Hora, kterou její obyvatelé říkali prostě Hora, byla od konce 13. století stříbrnou pokladnicí českého království a po Praze jeho nejbohatším městem. Pověst vypráví, že sedlecký mnich usnul na stráni, a když se probudil, rostly kolem něj stříbrné výhonky; hodil na to místo kutnu, aby ho znovu našel. Ze stříbra se tu razily pražské groše, stavěl chrám sv. Barbory a město je dnes spolu se Sedlcem na seznamu UNESCO.",
+   "en": "Kutná Hora (KOOT-nah HO-ra), simply 'Hora' (the Mountain) to its people, was from the late 13th century the silver treasury of the Bohemian kingdom and its richest town after Prague. Legend says a monk from Sedlec fell asleep on the hillside and woke to find silver sprouting around him; he threw his cowl (kutna) on the spot to find it again. Its silver became the Prague groschen and paid for St Barbara's church, and the town with Sedlec is now a UNESCO World Heritage site."
+  },
+  "refs": {
+   "town": [
+    "hora"
+   ],
+   "class": [
+    "havir"
+   ],
+   "book": [
+    "kniha_kutnohorsti_haviri"
+   ]
+  },
+  "see": [
+   "e_dul_osel",
+   "e_kostnice_sedlec",
+   "e_vlassky_dvur",
+   "e_chram_sv_barbory",
+   "e_kank"
+  ]
+ },
+ "e_dul_osel": {
+  "cat": "place",
+  "title": {
+   "cs": "Důl Osel",
+   "en": "The Osel Mine"
+  },
+  "text": {
+   "cs": "Osel byl spolu s Čapčochem nejvydatnějším a zároveň nejhlubším dolem Kutné Hory. Podle archivů ho založili roku 1363 a těžil se do roku 1541, kdy ho zatopila voda, kterou už nebylo možné vyčerpat. Dosahoval asi 616 až 662 metrů po úklonu žíly, a byl tak na přelomu 15. a 16. století nejhlubším dolem světa. Kde přesně ležel, se dodnes neví.",
+   "en": "Osel (OH-sel, 'the Donkey'), together with Čapčoch, was the richest and also the deepest mine of Kutná Hora. Records date it to 1363, and it was worked until 1541, when it flooded and the water could no longer be pumped out. Measured along the dipping vein it reached some 616 to 662 metres, making it the deepest mine in the world around 1500. Its exact site is still unknown."
+  },
+  "game": {
+   "cs": "Ve hře: padesát havířů do něj sfáralo a ani jeden nevyfáral.",
+   "en": "In the game: fifty miners went down it, and not one came back up."
+  },
+  "refs": {
+   "floor": [
+    "act1_floor1"
+   ],
+   "town": [
+    "hora"
+   ],
+   "unique": [
+    "posledni_krumpac",
+    "zila_oslu",
+    "kytel_padesati"
+   ]
+  },
+  "see": [
+   "e_kutna_hora",
+   "e_sah",
+   "e_havir"
+  ]
+ },
+ "e_kostnice_sedlec": {
+  "cat": "place",
+  "title": {
+   "cs": "Sedlec a kostnice",
+   "en": "Sedlec and its Ossuary"
+  },
+  "text": {
+   "cs": "Sedlec u Kutné Hory byl sídlem nejstaršího cisterciáckého kláštera v Čechách. Roku 1278 přivezl opat Jindřich ze Svaté země hrst hlíny z Golgoty a rozsypal ji na klášterním hřbitově, takže v něm chtěli být pohřbeni lidé z celé střední Evropy. Jen za hladomoru a moru roku 1318 tu prý pohřbili třicet tisíc lidí, další přibyli za černé smrti a husitských válek. Kosti exhumovaných hrobů se skládaly v kapli Všech svatých, dnešní kostnici.",
+   "en": "Sedlec, by Kutná Hora, was home to the oldest Cistercian abbey in Bohemia. In 1278 Abbot Jindřich (Henry) brought a handful of earth from Golgotha and scattered it over the abbey graveyard, so that people from all over Central Europe wished to be buried there. In the famine and plague of 1318 alone some thirty thousand were laid to rest, and more came with the Black Death and the Hussite wars. The bones from cleared graves were stacked in All Saints' Chapel, today's ossuary."
+  },
+  "refs": {
+   "floor": [
+    "act1_floor3"
+   ],
+   "quest": [
+    "kostnice"
+   ],
+   "npc": [
+    "kosmas"
+   ]
+  },
+  "see": [
+   "e_kostnik",
+   "e_kutna_hora"
+  ]
+ },
+ "e_kank": {
+  "cat": "place",
+  "title": {
+   "cs": "Kaňk",
+   "en": "Kaňk"
+  },
+  "text": {
+   "cs": "Kaňk je vrch severně od Kutné Hory, poďolovaný stovkami starých šachet a štol. Za husitských válek v letech 1419 až 1421 tu katoličtí kutnohorští Němci házeli zajaté husity živé do šachet, podle kronik až kolem 1 600 lidí; na kněze vypsali vyšší odměnu než na laiky. Na tu hrůzu upomíná pomník na Kaňku. V roce 1496 se tu shromáždily tisíce vzbouřených havířů.",
+   "en": "Kaňk (kahn'k) is a hill north of Kutná Hora, riddled with hundreds of old shafts and adits. In 1419–1421, during the Hussite wars, the Catholic German burghers of Kutná Hora threw captured Hussites alive down its shafts, by the chroniclers' count as many as 1,600 people, with a higher bounty paid for priests than for laymen. A memorial on Kaňk recalls it. In 1496 thousands of rebellious miners gathered here."
+  },
+  "refs": {
+   "monster": [
+    "kostlivy_kusinik"
+   ],
+   "npc": [
+    "kovar_hnevek"
+   ]
+  },
+  "see": [
+   "e_kutna_hora",
+   "e_kostlivy_havir"
+  ]
+ },
+ "e_vlassky_dvur": {
+  "cat": "place",
+  "title": {
+   "cs": "Vlašský dvůr",
+   "en": "The Italian Court"
+  },
+  "text": {
+   "cs": "Vlašský dvůr v Kutné Hoře byl od roku 1300 ústřední královskou mincovnou českého státu. Václav II. sem při mincovní reformě povolal odborníky z Florencie, „Vlachy“, odtud jméno. Razil se tu pražský groš, jedna z nejpevnějších mincí středověké Evropy, a ve dvoře sídlil i král, když pobýval na Hoře.",
+   "en": "The Vlašský dvůr (VLASH-skee dvoor), the 'Italian Court' in Kutná Hora, was the central royal mint of the Bohemian state from 1300. For his coinage reform Wenceslas II brought in experts from Florence, 'Vlaši' (Italians) in old Czech, hence the name. The Prague groschen, one of the steadiest coins of medieval Europe, was struck here, and the king himself lodged at the court when he visited Hora."
+  },
+  "refs": {
+   "npc": [
+    "kovar_hnevek"
+   ],
+   "item": [
+    "grose_malo"
+   ]
+  },
+  "see": [
+   "e_prazsky_gros",
+   "e_vaclav_ii",
+   "e_kutna_hora"
+  ]
+ },
+ "e_chram_sv_barbory": {
+  "cat": "place",
+  "title": {
+   "cs": "Chrám svaté Barbory",
+   "en": "St Barbara's Church"
+  },
+  "text": {
+   "cs": "Chrám svaté Barbory je katedrála kutnohorských havířů, zasvěcená jejich patronce. Začal se stavět roku 1388 a pro války, nedostatek peněz a úpadek dolů se stavba táhla přes pět set let; dokončena byla až roku 1905. Stavěli na něm Petr Parléř a jeho dílna, Matěj Rejsek i Benedikt Ried a uvnitř jsou fresky havířů, mincířů a jejich práce.",
+   "en": "St Barbara's is the cathedral of the Kutná Hora miners, dedicated to their patron saint. Building began in 1388, and wars, lack of money and the decline of the mines dragged it out for over five hundred years; it was finished only in 1905. The Parler workshop, Matěj Rejsek and Benedikt Ried all worked on it, and inside are frescoes of miners and minters at work."
+  },
+  "refs": {
+   "npc": [
+    "kovar_hnevek"
+   ]
+  },
+  "see": [
+   "e_svata_barbora",
+   "e_kutna_hora"
+  ]
+ },
+ "e_brezove_hory": {
+  "cat": "place",
+  "title": {
+   "cs": "Březové Hory a Příbram",
+   "en": "Březové Hory and Příbram"
+  },
+  "text": {
+   "cs": "Březové Hory jsou staré hornické město těsně u Příbrami, s níž dnes tvoří jedno město. Březohorský revír dával od středověku stříbro a olovo a v 19. století byl nejvýznamnějším stříbrným revírem rakouské monarchie. Dnes tu sídlí Hornické muzeum Příbram, největší hornické muzeum v Česku, a město je plné soch a figurek permoníků.",
+   "en": "Březové Hory (BRZHEH-zo-veh HO-ri, 'Birch Hills') is an old mining town right beside Příbram, with which it is now one town. The Březové Hory district gave silver and lead from the Middle Ages, and in the 19th century it was the most important silver field of the Austrian monarchy. Today it is home to the Příbram Mining Museum, the largest in Czechia, and the town is full of permoník statues and figurines."
+  },
+  "refs": {
+   "town": [
+    "pribram"
+   ]
+  },
+  "see": [
+   "e_vojtesska_sachta",
+   "e_sevciny",
+   "e_svata_hora",
+   "e_brdy",
+   "e_permonicek"
+  ]
+ },
+ "e_vojtesska_sachta": {
+  "cat": "place",
+  "title": {
+   "cs": "Vojtěšská šachta",
+   "en": "The Vojtěch Shaft"
+  },
+  "text": {
+   "cs": "Vojtěšskou šachtu na Březových Horách založil roku 1779 Jan Antonín Alis jako první svislou jámu revíru, která měla ověřit ložisko ve velké hloubce. Dne 8. května 1875 se stala prvním dolem na světě, který dosáhl svislé hloubky 1 000 metrů, a to s jediným těžním lanem. Oslavy rekordu trvaly v Příbrami čtyři dny.",
+   "en": "The Vojtěch Shaft (VOY-tyekh) at Březové Hory was sunk in 1779 by Jan Antonín Alis as the district's first vertical shaft, to prove the deposit at great depth. On 8 May 1875 it became the first mine in the world to reach a vertical depth of 1,000 metres, hoisting on a single rope. Příbram celebrated the record for four days."
+  },
+  "refs": {
+   "floor": [
+    "act2_floor1"
+   ],
+   "town": [
+    "pribram"
+   ],
+   "npc": [
+    "kovar_vojtech"
+   ]
+  },
+  "see": [
+   "e_brezove_hory",
+   "e_sevciny"
+  ]
+ },
+ "e_sevciny": {
+  "cat": "place",
+  "title": {
+   "cs": "Ševčinská žíla a důl Ševčiny",
+   "en": "The Ševčiny Vein and Mine"
+  },
+  "text": {
+   "cs": "Ševčinská žíla patřila k nejbohatším žilám březohorského revíru. Podle ní dostal jméno Ševčinský důl (důl Ševčiny), původně šachta Císaře Františka, lidově Francšachta, který dosáhl roku 1914 hloubky 1 108 metrů. Dnes je národní kulturní památkou a částí Hornického muzea Příbram; v roce 2007 se objevil i na zlaté minci ČNB.",
+   "en": "The Ševčiny vein (SHEF-chi-ni) was one of the richest in the Březové Hory district. The Ševčiny mine was named after it; originally the Emperor Francis shaft, 'Francšachta' to the locals, it reached a depth of 1,108 metres in 1914. Today it is a national cultural monument and part of the Příbram Mining Museum, and in 2007 it appeared on a Czech National Bank gold coin."
+  },
+  "refs": {
+   "floor": [
+    "act2_floor4"
+   ],
+   "quest": [
+    "zrcadla_v_sevcine"
+   ],
+   "item": [
+    "zrcadlo_strep"
+   ]
+  },
+  "see": [
+   "e_bazilisek",
+   "e_vojtesska_sachta",
+   "e_zila"
+  ]
+ },
+ "e_svata_hora": {
+  "cat": "place",
+  "title": {
+   "cs": "Svatá Hora",
+   "en": "Svatá Hora"
+  },
+  "text": {
+   "cs": "Svatá Hora je barokní mariánské poutní místo na kopci nad Příbramí, jedno z nejvýznamnějších v Čechách. Ke kostelu s milostnou soškou Panny Marie vedou z města kryté schody a kolem ambitů chodí poutníci po staletí. Příbramští havíři k ní měli zvláštní vztah a konávali sem hornické poutě.",
+   "en": "Svatá Hora (SVAH-tah HO-ra, 'Holy Mountain') is a Baroque Marian pilgrimage site on a hill above Příbram, one of the most important in Bohemia. A covered stairway climbs from the town to the church with its miraculous statue of the Virgin, and pilgrims have walked its cloisters for centuries. Příbram's miners held it especially dear and made miners' pilgrimages here."
+  },
+  "refs": {
+   "town": [
+    "pribram"
+   ],
+   "npc": [
+    "hostinsky_kuba",
+    "kovar_vojtech"
+   ]
+  },
+  "see": [
+   "e_brezove_hory"
+  ]
+ },
+ "e_brdy": {
+  "cat": "place",
+  "title": {
+   "cs": "Brdy",
+   "en": "Brdy"
+  },
+  "text": {
+   "cs": "Brdy jsou lesnatá vrchovina jihozápadně od Prahy, s nejvyšším vrcholem Tok (865 m). Po většinu 20. století byla jejich střední část uzavřeným vojenským prostorem, a proto si zachovala divoké lesy, rašeliniště a prázdné cesty; chráněnou krajinnou oblastí jsou od roku 2016. Brdy mají bohaté pověsti: o duchu Fabiánovi, o Třemšínském skřítkovi, o Valdeku i o permonících z příbramských dolů na jejich úpatí.",
+   "en": "Brdy (BUR-di) is a forested upland south-west of Prague, its highest point Tok (865 m). For most of the 20th century its heart was a closed military area, which kept its wild forests, peat bogs and empty roads; it has been a protected landscape area since 2016. Brdy is rich in legend: Fabián the forest spirit, the sprite of Třemšín, the knight of Valdek, and the permoníci of the Příbram mines at its foot."
+  },
+  "refs": {
+   "town": [
+    "pribram"
+   ],
+   "floor": [
+    "act2_floor1"
+   ],
+   "npc": [
+    "fabian",
+    "korenarka_medulina"
+   ]
+  },
+  "see": [
+   "e_fabian",
+   "e_tremsin",
+   "e_valdek",
+   "e_tok_padrt"
+  ]
+ },
+ "e_tremsin": {
+  "cat": "place",
+  "title": {
+   "cs": "Třemšín",
+   "en": "Třemšín"
+  },
+  "text": {
+   "cs": "Třemšín (827 m) je výrazný vrch v jihozápadních Brdech nad Rožmitálem, s rozhlednou a zbytky hradiště a hradu. Jméno má nejspíš po střemše, ale pověst ho odvozuje od tří zlatých šínů, tedy prutů, ukrytých v hradní studni. Poklad se ukáže jen na Velký pátek tomu, kdo ho odnese mlčky; sousedé z Roželova promluvili a poklad zmizel. Hlídá ho Třemšínský skřítek s tváří jako kůra, který se umí proměnit v ohnivého hada.",
+   "en": "Třemšín (TRZHEM-sheen, 827 m) is a prominent hill in south-western Brdy above Rožmitál, with a lookout tower and the remains of a hillfort and castle. The name most likely comes from the bird cherry (střemcha), but legend derives it from three golden 'šíny', rods, hidden in the castle well. The treasure appears only on Good Friday, to whoever can carry it home in silence; neighbours from Roželov spoke, and it vanished. It is guarded by the Třemšín sprite, with a face like bark, who can turn into a fiery serpent."
+  },
+  "refs": {
+   "npc": [
+    "tremsinsky_muzicek"
+   ],
+   "quest": [
+    "tremsinske_siny"
+   ],
+   "item": [
+    "zlaty_sin"
+   ],
+   "unique": [
+    "tremsinsky_prsten"
+   ]
+  },
+  "see": [
+   "e_brdy",
+   "e_sin"
+  ]
+ },
+ "e_tok_padrt": {
+  "cat": "place",
+  "title": {
+   "cs": "Tok a Padrť",
+   "en": "Tok and Padrť"
+  },
+  "text": {
+   "cs": "Tok je nejvyšší vrchol Brd (865 m), s kamennými moři a zbytky vojenských staveb. Padrť je pustá krajina v srdci Brd s Padrťskými rybníky, Hořejším a Dolejším, obklopenými rašeliništi; vesnice Padrť zanikla po vzniku vojenského prostoru. Obě místa byla desítky let veřejnosti nepřístupná.",
+   "en": "Tok is the highest summit of Brdy (865 m), with boulder fields and the remains of military buildings. Padrť (PAH-durt') is a lonely stretch in the heart of Brdy with the Upper and Lower Padrť ponds amid peat bogs; the village of Padrť vanished when the military area was created. For decades both were closed to the public."
+  },
+  "refs": {
+   "npc": [
+    "korenarka_medulina",
+    "hostinsky_kuba"
+   ]
+  },
+  "see": [
+   "e_brdy"
+  ]
+ },
+ "e_valdek": {
+  "cat": "place",
+  "title": {
+   "cs": "Valdek",
+   "en": "Valdek"
+  },
+  "text": {
+   "cs": "Valdek je zřícenina gotického hradu v hořovických lesích Brd, na skalnatém hřebeni nad Červeným potokem. Postavil ho ve 13. století rod Zajíců z Valdeka. K hradu se vážou pověsti o zázračné Valdecké Madoně, o bílé paní a o zlém rytíři Divokém Prokopovi.",
+   "en": "Valdek (VAL-dek) is the ruin of a Gothic castle in the Hořovice forests of Brdy, on a rocky ridge above the Červený brook. It was built in the 13th century by the Zajíc family, lords of Valdek. Legends cling to it: the miraculous Madonna of Valdek, a White Lady, and the wicked knight Wild Prokop."
+  },
+  "refs": {
+   "floor": [
+    "act2_floor3"
+   ],
+   "quest": [
+    "valdecky_jezdec"
+   ],
+   "unique": [
+    "valdecky_krunyr"
+   ]
+  },
+  "see": [
+   "e_prokop",
+   "e_brdy"
+  ]
+ },
+ "e_jachymov": {
+  "cat": "place",
+  "title": {
+   "cs": "Jáchymov",
+   "en": "Jáchymov"
+  },
+  "text": {
+   "cs": "Jáchymov (německy Sankt Joachimsthal) v Krušných horách založili Šlikové roku 1516 na nově objevených stříbrných žilách a během několika let byl druhým největším městem Čech. Razily se tu tolary, po nichž má jméno dolar. Ze zdejšího smolince získala Marie Curie-Skłodowská radium a v roce 1906 tu vznikly první radonové lázně na světě. V 50. letech 20. století tu v pracovních táborech těžili uran političtí vězni.",
+   "en": "Jáchymov (YAH-khi-mof; German Sankt Joachimsthal) in the Ore Mountains was founded by the Schlick family in 1516 on newly found silver veins, and within a few years it was the second-largest town in Bohemia. It struck the thalers from which the dollar takes its name. Marie Curie extracted radium from its pitchblende, and in 1906 the world's first radon spa opened here. In the 1950s political prisoners mined uranium in labour camps around the town."
+  },
+  "refs": {
+   "town": [
+    "jachymov"
+   ],
+   "book": [
+    "kniha_agricola_demoni"
+   ]
+  },
+  "see": [
+   "e_dul_svornost",
+   "e_tolar",
+   "e_smolinec",
+   "e_agricola",
+   "e_slikove",
+   "e_krusne_hory"
+  ]
+ },
+ "e_dul_svornost": {
+  "cat": "place",
+  "title": {
+   "cs": "Důl Svornost",
+   "en": "The Svornost Mine"
+  },
+  "text": {
+   "cs": "Důl Svornost v Jáchymově se začal razit roku 1518 pod jménem Konstantin a jméno Svornost (Einigkeit) dostal roku 1530 na památku smíru mezi znesvářenými těžaři. Je nejstarším dosud činným dolem v Evropě a prvním dolem na světě, kde se těžila radiová ruda. Dnes z něj přitéká radonová voda pro jáchymovské lázně.",
+   "en": "The Svornost mine (SVOR-nost, 'Concord') in Jáchymov was opened in 1518 as 'Konstantin' and renamed Svornost (German Einigkeit) in 1530 to mark the end of a quarrel among its shareholders. It is the oldest working mine in Europe and the first mine in the world to produce radium ore. Today it supplies radon water to the Jáchymov spa."
+  },
+  "refs": {
+   "floor": [
+    "act3_floor1"
+   ],
+   "town": [
+    "jachymov"
+   ],
+   "quest": [
+    "dve_srdce"
+   ]
+  },
+  "see": [
+   "e_jachymov",
+   "e_smolinec",
+   "e_peklo"
+  ]
+ },
+ "e_mincovna_jachymov": {
+  "cat": "place",
+  "title": {
+   "cs": "Královská mincovna v Jáchymově",
+   "en": "The Royal Mint of Jáchymov"
+  },
+  "text": {
+   "cs": "Tolary se v Jáchymově začaly razit roku 1520 ve šlikovské mincovně. Když Ferdinand I. Šlikům mincovní právo odebral, postavili tu v letech 1534 až 1536 královskou mincovnu, jejíž gotická budova stojí dodnes a slouží jako muzeum. Mincíř tu ručně razil mince kladivem a razidlem na kovadlině.",
+   "en": "Thalers were first struck at Jáchymov in 1520 in the Schlicks' mint. When Ferdinand I took the minting right from the Schlicks, the Royal Mint was built in 1534–1536; its Gothic building still stands and is now a museum. Minters struck the coins by hand, with hammer, die and anvil."
+  },
+  "refs": {
+   "floor": [
+    "act3_floor3"
+   ],
+   "npc": [
+    "kovar_krystof"
+   ],
+   "quest": [
+    "proklete_tolary"
+   ]
+  },
+  "see": [
+   "e_tolar",
+   "e_ohnivec",
+   "e_slikove"
+  ]
+ },
+ "e_peklo": {
+  "cat": "place",
+  "title": {
+   "cs": "Peklo",
+   "en": "Hell"
+  },
+  "text": {
+   "cs": "Peklo české lidové víry je podzemní říše čertů pod vládou Lucifera, plná kotlů, smůly a ohně, kam si čerti odvádějí hříšníky. Na rozdíl od Navu je to křesťanská představa, ale lidové podání ji zabydlelo domácími čerty, kteří hrají karty, topí pod kotli a dají se přelstít. Havíři odedávna říkali peklo nejhlubším, nejteplejším a nejnebezpečnějším místům dolu.",
+   "en": "Peklo (PEK-lo), the Hell of Czech folk belief, is the devils' underground realm under Lucifer, full of cauldrons, pitch and fire, where čerti carry off sinners. Unlike Nav it is a Christian idea, but folk tradition filled it with homely devils who play cards, stoke the cauldrons and can be outwitted. Miners have long called the deepest, hottest and most dangerous places of a mine 'hell'."
+  },
+  "game": {
+   "cs": "Ve hře: tak staří havíři říkali nejhlubšímu patru Svornosti. Jde o vymyšlené jméno.",
+   "en": "In the game: the old miners' name for the deepest level of Svornost. The name is the game's own invention."
+  },
+  "refs": {
+   "floor": [
+    "act3_floor4"
+   ],
+   "quest": [
+    "pec"
+   ]
+  },
+  "see": [
+   "e_cert",
+   "e_jezibaba",
+   "e_nav"
+  ]
+ },
+ "e_krusne_hory": {
+  "cat": "place",
+  "title": {
+   "cs": "Krušné hory",
+   "en": "The Ore Mountains"
+  },
+  "text": {
+   "cs": "Krušné hory (německy Erzgebirge, „Rudné hory“) tvoří hranici mezi Čechami a Saskem. Od středověku tu po obou stranách vznikala hornická města, která dobývala stříbro, cín, kobalt a později uran; hornický region je od roku 2019 na seznamu UNESCO. Jsou domovem permoníků, hornických betlémů a dřevěných figurek havířů se svíčkami.",
+   "en": "The Ore Mountains (Czech Krušné hory, German Erzgebirge) form the border between Bohemia and Saxony. From the Middle Ages mining towns grew up on both sides, digging silver, tin, cobalt and later uranium; the mining region has been a UNESCO World Heritage site since 2019. They are the home of mine spirits, miners' Christmas cribs and wooden miner figures holding candles."
+  },
+  "refs": {
+   "town": [
+    "jachymov"
+   ]
+  },
+  "see": [
+   "e_jachymov",
+   "e_permonik"
+  ]
+ },
+ "e_sumava": {
+  "cat": "place",
+  "title": {
+   "cs": "Šumava",
+   "en": "Šumava (Bohemian Forest)"
+  },
+  "text": {
+   "cs": "Šumava je rozsáhlé pohoří na hranici Čech, Bavorska a Rakouska, z velké části porostlé hlubokým lesem a rašeliništi. Její pověsti jsou plné hejkalů, divých žen, bludiček a kořenářek, které znaly moc bylin. Od roku 1991 je tu národní park.",
+   "en": "Šumava (SHOO-ma-va), the Bohemian Forest, is a long range on the border of Bohemia, Bavaria and Austria, much of it deep forest and peat bog. Its legends teem with hejkals, wild women, will-o'-wisps and herb women who knew the power of plants. It has been a national park since 1991."
+  },
+  "refs": {
+   "class": [
+    "vedma"
+   ]
+  },
+  "see": [
+   "e_vedma",
+   "e_hejkal"
+  ]
+ },
+ "e_valassko": {
+  "cat": "place",
+  "title": {
+   "cs": "Valašsko",
+   "en": "Moravian Wallachia"
+  },
+  "text": {
+   "cs": "Valašsko je hornatý kraj na východní Moravě v Beskydech, pojmenovaný po valaších, pastevcích, kteří sem od 15. století přicházeli s ovcemi po karpatských hřebenech. Valaši byli svobodomyslní a v 17. století se tu bouřili proti vrchnosti; z jejich řad vycházeli i zbojníci. Jejich znakem je valaška, pastýřská sekerka na dlouhém topůrku.",
+   "en": "Valašsko (VAH-lash-sko), Moravian Wallachia, is the hill country of eastern Moravia in the Beskydy, named after the Vlachs, shepherds who came along the Carpathian ridges with their flocks from the 15th century. The Vlachs were fiercely independent, rebelled against their lords in the 17th century, and gave rise to many outlaws. Their emblem is the valaška, a shepherd's axe on a long haft. It has nothing to do with Romanian Wallachia beyond the name."
+  },
+  "refs": {
+   "class": [
+    "zbojnice"
+   ]
+  },
+  "see": [
+   "e_valaska",
+   "e_zbojnik",
+   "e_janosik",
+   "e_ondras"
+  ]
+ },
+ "e_nav": {
+  "cat": "place",
+  "title": {
+   "cs": "Nav",
+   "en": "Nav"
+  },
+  "text": {
+   "cs": "Nav (staročesky Náv či náva) je slovanské podsvětí. Slovo je doloženo v Dalimilově kronice a staročeské Alexandreidě z přelomu 13. a 14. století. Badatelé si ho představují jako louku pod kořeny světového stromu, kde se pod vládou Velesa pasou duše lidí i dobytka, a v pohádkách se do něj chodí přes ohnivou řeku, hvozd nebo hluboko pod zem. Od stejného kořene je i jméno navek.",
+   "en": "Nav (nahv; Old Czech Náv or náva) is the Slavic underworld. The word is recorded in the Dalimil Chronicle and the Old Czech Alexandreis from around 1300. Scholars picture it as a meadow beneath the roots of the world tree where, under Veles, the souls of people and cattle graze, and in fairy tales one reaches it across a fiery river, through an endless forest or deep underground. The navky take their name from the same root."
+  },
+  "game": {
+   "cs": "Ve hře: čtvrté jednání a zároveň nejtěžší obtížnost.",
+   "en": "In the game: the fourth act, and the hardest difficulty."
+  },
+  "refs": {
+   "town": [
+    "posledni_sichta"
+   ],
+   "floor": [
+    "act4_floor1"
+   ]
+  },
+  "see": [
+   "e_veles",
+   "e_smorodina",
+   "e_kalinuv_most",
+   "e_navka"
+  ]
+ },
+ "e_smorodina": {
+  "cat": "place",
+  "title": {
+   "cs": "Smorodina",
+   "en": "The Smorodina"
+  },
+  "text": {
+   "cs": "Smorodina je řeka ruských bylin a pohádek, která odděluje svět živých od světa mrtvých. Bývá ohnivá nebo smolná, a její jméno nesouvisí s rybízem (rusky smorodina), ale se starým slovem pro zápach či kouř, „smrad“. Přes ni vede jediný most, Kalinův, na kterém hrdina bojuje s drakem.",
+   "en": "The Smorodina (smo-RO-di-na) is the river of the Russian byliny and fairy tales that divides the world of the living from that of the dead. It is often a river of fire or pitch, and its name has nothing to do with the currant (Russian smorodina) but comes from an old word for stench or smoke. A single bridge crosses it, the Kalinov Bridge, where the hero fights the dragon."
+  },
+  "refs": {
+   "floor": [
+    "act4_floor1"
+   ],
+   "town": [
+    "posledni_sichta"
+   ],
+   "npc": [
+    "prevoznik"
+   ]
+  },
+  "see": [
+   "e_kalinuv_most",
+   "e_nav",
+   "e_prevoznik"
+  ]
+ },
+ "e_kalinuv_most": {
+  "cat": "place",
+  "title": {
+   "cs": "Kalinův most",
+   "en": "The Kalinov Bridge"
+  },
+  "text": {
+   "cs": "Kalinův most (rusky Kalinov most) vede přes řeku Smorodinu na hranici mezi světy. V pohádce Boj na Kalinově mostě na něm tři bratři o půlnoci zastavují draky, kteří tudy vjíždějí do lidského světa. Jméno nemá nic společného s kalinou: souvisí se slovem kalit, rozžhavit, protože most bývá z rozžhaveného železa.",
+   "en": "The Kalinov Bridge (KAH-li-nof) crosses the river Smorodina at the border between the worlds. In the tale 'The Battle on the Kalinov Bridge' three brothers stand on it at midnight to stop the dragons riding through into the human world. The name has nothing to do with the guelder-rose (kalina): it comes from a verb meaning 'to heat red-hot', for the bridge is often made of glowing iron."
+  },
+  "refs": {
+   "floor": [
+    "act4_floor2"
+   ],
+   "quest": [
+    "kalinov_most"
+   ],
+   "monster": [
+    "san"
+   ],
+   "book": [
+    "kniha_kalinov_most"
+   ]
+  },
+  "see": [
+   "e_san",
+   "e_smorodina"
+  ]
+ },
+ "e_posledni_sichta": {
+  "cat": "place",
+  "title": {
+   "cs": "Poslední šichta",
+   "en": "The Last Shift"
+  },
+  "text": {
+   "cs": "„Poslední šichta“ je v hornické řeči smrt havíře, zvlášť v dole. Hornické pohřby měly vlastní obřad: havíři v parádních uniformách, s kahany, smuteční pochod a nad hrobem poslední „Zdař Bůh“. Šichta (z němčiny Schicht) je pracovní směna.",
+   "en": "'The last shift' is miners' slang for a miner's death, especially underground. Miners' funerals had their own ritual: comrades in dress uniform carrying lamps, a funeral march and a last 'Zdař Bůh' over the grave. Šichta (from German Schicht) is a working shift."
+  },
+  "game": {
+   "cs": "Ve hře: tábor mrtvých havířů z Dolu Osel na břehu Smorodiny.",
+   "en": "In the game: the camp of the dead Osel miners on the bank of the Smorodina."
+  },
+  "refs": {
+   "town": [
+    "posledni_sichta"
+   ],
+   "quest": [
+    "posledni_sichta"
+   ],
+   "npc": [
+    "predak_matej"
+   ]
+  },
+  "see": [
+   "e_sichta",
+   "e_nav"
+  ]
+ },
+ "e_vysehrad": {
+  "cat": "place",
+  "title": {
+   "cs": "Vyšehrad",
+   "en": "Vyšehrad"
+  },
+  "text": {
+   "cs": "Vyšehrad je skalní hradiště nad Vltavou v Praze, podle Starých pověstí českých sídlo kněžny Libuše a prvních Přemyslovců. Váže se k němu skok Horymírova koně Šemíka z hradeb do řeky, siláka Bivoje, který sem přinesl živého kance, i Libušino proroctví o slávě Prahy. Na vyšehradském hřbitově leží mnoho velkých Čechů.",
+   "en": "Vyšehrad (VI-sheh-hrad) is the rock fortress above the Vltava in Prague, in the Old Czech Legends the seat of Princess Libuše and the first Přemyslids. Its tales include the leap of Horymír's horse Šemík from the walls into the river, the strongman Bivoj carrying in a live boar, and Libuše's prophecy of Prague's glory. Many great Czechs lie in its cemetery."
+  },
+  "refs": {
+   "unique": [
+    "semikova_podkova",
+    "bivojuv_stit",
+    "horymiruv_bic"
+   ]
+  },
+  "see": [
+   "e_horymir",
+   "e_bivoj"
+  ]
+ },
+ "e_blanik": {
+  "cat": "place",
+  "title": {
+   "cs": "Blaník",
+   "en": "Blaník"
+  },
+  "text": {
+   "cs": "Blaník je hora u Vlašimi, v jejímž nitru podle pověsti spí rytíři svatého Václava. Až bude české zemi nejhůř, vyjedou a svatý Václav je povede do boje. Pověst je jedním z velkých národních symbolů a hodně se k ní obracela doba národního obrození.",
+   "en": "Blaník (BLAH-neek) is a hill near Vlašim inside which, legend says, the knights of St Wenceslas lie sleeping. When the Czech land is in its direst need they will ride out, with St Wenceslas at their head. The legend is one of the great national symbols, and the National Revival turned to it again and again."
+  },
+  "refs": {
+   "unique": [
+    "blanicka_prilba"
+   ],
+   "book": [
+    "kniha_blanik"
+   ]
+  },
+  "see": [
+   "e_vaclav_ii"
+  ]
+ },
+ "e_karluv_most": {
+  "cat": "place",
+  "title": {
+   "cs": "Karlův most",
+   "en": "Charles Bridge"
+  },
+  "text": {
+   "cs": "Karlův most v Praze založil roku 1357 Karel IV. Podle pověsti je v jeho pilíři zazděn kouzelný meč rytíře Bruncvíka a na mostě dnes stojí socha Bruncvíka se lvem. Až bude zemi nejhůř, meč se má vynořit a pomoci blanickým rytířům.",
+   "en": "Charles Bridge in Prague was founded by Charles IV in 1357. Legend says the magic sword of the knight Bruncvík is walled into one of its piers, and a statue of Bruncvík with his lion stands by the bridge. When the land is in its darkest hour, the sword will come out to help the knights of Blaník."
+  },
+  "refs": {
+   "unique": [
+    "bruncvikuv_mec"
+   ]
+  },
+  "see": [
+   "e_bruncvik",
+   "e_blanik"
+  ]
+ },
+ "e_faustuv_dum": {
+  "cat": "place",
+  "title": {
+   "cs": "Faustův dům",
+   "en": "Faust's House"
+  },
+  "text": {
+   "cs": "Faustův dům na Karlově náměstí v Praze, kterému se dřív říkalo Dobytčí trh, je spojen s pověstí o doktoru Faustovi. Ten tu prý žil, upsal se ďáblu, a když vypršela lhůta, odnesl ho čert dírou ve stropě, kterou nikdo nedokázal zazdít. Dům skutečně patřil alchymistům a přírodovědcům, mimo jiné Edwardu Kelleymu.",
+   "en": "Faust's House on Charles Square in Prague, once the Cattle Market, is tied to the legend of Doctor Faust. He supposedly lived here, signed himself over to the Devil, and when his time was up the Devil carried him off through a hole in the ceiling that nobody could ever wall up. The house really did belong to alchemists and natural philosophers, among them Edward Kelley."
+  },
+  "refs": {
+   "unique": [
+    "faustova_kniha"
+   ]
+  },
+  "see": [
+   "e_faust",
+   "e_cert"
+  ]
+ },
+ "e_mikulcice": {
+  "cat": "place",
+  "title": {
+   "cs": "Mikulčice",
+   "en": "Mikulčice"
+  },
+  "text": {
+   "cs": "Mikulčice na jižní Moravě skrývají pozůstatky jednoho z hlavních center Velké Moravy z 9. století: hradiště s nejméně dvanácti kostely, palácem a tisíci hrobů. Z hrobů pochází i bohatý šperk: gombíky, náušnice, lunice a kaptorgy. Mikulčice jsou národní kulturní památkou.",
+   "en": "Mikulčice (MI-kool-chi-tseh) in South Moravia hides the remains of one of the main centres of 9th-century Great Moravia: a stronghold with at least twelve churches, a palace and thousands of graves. The graves yielded rich jewellery: buttons, earrings, lunulae and kaptorgas. Mikulčice is a national cultural monument."
+  },
+  "refs": {
+   "unique": [
+    "mikulcicka_kaptorga"
+   ]
+  },
+  "see": [
+   "e_kaptorga",
+   "e_lunice"
+  ]
+ },
+ "e_vaclav_ii": {
+  "cat": "person",
+  "title": {
+   "cs": "Václav II.",
+   "en": "Wenceslas II"
+  },
+  "text": {
+   "cs": "Václav II. (1271–1305) byl český a polský král z rodu Přemyslovců, za něhož kutnohorské stříbro udělalo z Čech jednu z nejbohatších zemí Evropy. Kolem roku 1300 vydal horní zákoník Ius regale montanorum a provedl mincovní reformu, z níž vzešel pražský groš. Byl vzdělaný a zbožný, ale sám prý neuměl číst.",
+   "en": "Wenceslas II (1271–1305; Czech Václav, VAHTS-lahf) was a Přemyslid king of Bohemia and Poland, under whom the silver of Kutná Hora made Bohemia one of the richest countries in Europe. Around 1300 he issued the mining code Ius regale montanorum and carried out the coinage reform that created the Prague groschen. He was cultured and devout, though said to be unable to read."
+  },
+  "refs": {
+   "npc": [
+    "kosmas"
+   ]
+  },
+  "see": [
+   "e_ius_regale",
+   "e_prazsky_gros",
+   "e_vlassky_dvur"
+  ]
+ },
+ "e_kosmas": {
+  "cat": "person",
+  "title": {
+   "cs": "Kosmas",
+   "en": "Cosmas of Prague"
+  },
+  "text": {
+   "cs": "Kosmas (asi 1045–1125) byl děkan pražské kapituly a autor latinské Kroniky Čechů (Chronica Boemorum), nejstarší české kroniky. Zapsal v ní pověsti o praotci Čechovi, Krokovi, Libuši a Přemyslovi, o nichž dnes víme hlavně díky němu, a nešetřil kousavými poznámkami o svých současnících. Psal ve stáří a sám přiznával, že u starých časů se řídí „vyprávěním starců“.",
+   "en": "Cosmas of Prague (c. 1045–1125; Czech Kosmas, KOS-mahs) was dean of the Prague chapter and author of the Latin Chronicle of the Czechs (Chronica Boemorum), the oldest Czech chronicle. He recorded the legends of Forefather Čech, Krok, Libuše and Přemysl, which we largely know thanks to him, and was sharp-tongued about his contemporaries. He wrote in old age and admitted that for the ancient times he relied on 'the tales of old men'."
+  },
+  "game": {
+   "cs": "Ve hře: kronikář Hory, který se jmenuje po starém pražském děkanovi.",
+   "en": "In the game: the chronicler of Hora, named after the old dean of Prague."
+  },
+  "refs": {
+   "npc": [
+    "kosmas"
+   ],
+   "unique": [
+    "kosmova_kronika"
+   ],
+   "item": [
+    "strana_kroniky"
+   ]
+  },
+  "see": [
+   "e_stare_povesti",
+   "e_vaclav_ii"
+  ]
+ },
+ "e_agricola": {
+  "cat": "person",
+  "title": {
+   "cs": "Georgius Agricola",
+   "en": "Georgius Agricola"
+  },
+  "text": {
+   "cs": "Georgius Agricola (1494–1555), vlastním jménem Georg Bauer, byl saský lékař a učenec, který v letech 1527 až 1531 působil jako městský lékař a lékárník v Jáchymově. Tady napsal dialog Bermannus (1530) o hornictví a nerostech a sbíral podklady k dílu De re metallica (1556), které se svými stovkami dřevorytů strojů, čerpadel a důlních prací zůstalo dvě stě let hlavní učebnicí hornictví. Říká se mu otec mineralogie.",
+   "en": "Georgius Agricola (1494–1555), born Georg Bauer ('farmer', Latinised as agricola), was a Saxon physician and scholar who served as town doctor and apothecary in Jáchymov from 1527 to 1531. Here he wrote the dialogue Bermannus (1530) on mining and minerals and gathered material for De re metallica (1556), whose hundreds of woodcuts of machines, pumps and mine work made it the standard mining textbook for two centuries. He is called the father of mineralogy."
+  },
+  "refs": {
+   "npc": [
+    "lekarnik_agricola"
+   ],
+   "quest": [
+    "ziva_a_mrtva_voda"
+   ],
+   "book": [
+    "kniha_agricola_demoni"
+   ]
+  },
+  "see": [
+   "e_jachymov",
+   "e_mathesius"
+  ]
+ },
+ "e_mathesius": {
+  "cat": "person",
+  "title": {
+   "cs": "Johannes Mathesius",
+   "en": "Johannes Mathesius"
+  },
+  "text": {
+   "cs": "Johannes Mathesius (1504–1565) byl luteránský kazatel a rektor latinské školy v Jáchymově, žák a životopisec Martina Luthera. Proslavila ho sbírka kázání Sarepta (1562), v níž vykládal Bibli hornickými obrazy: Bůh je v nich první havíř a země jeho dílnou. Jáchymov byl za jeho působení jedním z center luterství v Čechách.",
+   "en": "Johannes Mathesius (1504–1565) was a Lutheran preacher and Latin-school rector in Jáchymov, a pupil and biographer of Martin Luther. He is remembered for Sarepta (1562), a book of sermons explaining the Bible through mining imagery, with God as the first miner and the earth as his workshop. In his day Jáchymov was a centre of Lutheranism in Bohemia."
+  },
+  "refs": {
+   "npc": [
+    "lekarnik_agricola",
+    "senkyrka_rozina"
+   ]
+  },
+  "see": [
+   "e_agricola",
+   "e_jachymov"
+  ]
+ },
+ "e_slikove": {
+  "cat": "person",
+  "title": {
+   "cs": "Šlikové",
+   "en": "The Schlick Family"
+  },
+  "text": {
+   "cs": "Šlikové (Schlickové) byli šlechtický rod, kterému patřilo Jáchymovské údolí. Štěpán Šlik tu roku 1516 založil hornické město a od roku 1520 razili Šlikové z místního stříbra velké stříbrné mince, jáchymovské tolary. Roku 1528 jim král Ferdinand I. mincovní právo odebral a mincovna přešla na korunu.",
+   "en": "The Schlicks (Czech Šlikové, SHLI-ko-veh) were the noble family who owned the Jáchymov valley. Count Stephan Schlick founded the mining town in 1516, and from 1520 the family struck large silver coins from the local silver, the Joachimsthaler. In 1528 King Ferdinand I took away their right of coinage and the mint passed to the Crown."
+  },
+  "refs": {
+   "npc": [
+    "kovar_krystof"
+   ],
+   "town": [
+    "jachymov"
+   ]
+  },
+  "see": [
+   "e_tolar",
+   "e_mincovna_jachymov"
+  ]
+ },
+ "e_curie": {
+  "cat": "person",
+  "title": {
+   "cs": "Marie Curie-Skłodowská",
+   "en": "Marie Curie"
+  },
+  "text": {
+   "cs": "Marie Curie-Skłodowská (1867–1934), polská fyzička a chemička působící v Paříži, objevila se svým mužem Pierrem roku 1898 polonium a radium. Jako surovinu použili tuny odpadu ze zpracování jáchymovského smolince, který jim poslala rakouská vláda. Za svou práci dostala dvě Nobelovy ceny, za fyziku i za chemii.",
+   "en": "Marie Curie (1867–1934), the Polish-born physicist and chemist working in Paris, discovered polonium and radium with her husband Pierre in 1898. Their raw material was tonnes of waste from processing Jáchymov pitchblende, sent to them by the Austrian government. She won two Nobel Prizes, in physics and in chemistry."
+  },
+  "refs": {
+   "npc": [
+    "lekarnik_agricola"
+   ]
+  },
+  "see": [
+   "e_smolinec",
+   "e_jachymov"
+  ]
+ },
+ "e_svata_barbora": {
+  "cat": "person",
+  "title": {
+   "cs": "Svatá Barbora",
+   "en": "Saint Barbara"
+  },
+  "text": {
+   "cs": "Svatá Barbora je raně křesťanská mučednice, kterou podle legendy dal zavřít do věže a nakonec sám popravil její pohanský otec, kterého hned nato zabil blesk. Proto je patronkou havířů, dělostřelců a všech, kdo pracují s ohněm a výbuchy, a ochránkyní před náhlou smrtí. Její svátek 4. prosince slaví horníci dodnes; jejím znamením je věž.",
+   "en": "Saint Barbara is an early Christian martyr who, the legend says, was locked in a tower and finally beheaded by her own pagan father, who was struck by lightning moments later. So she is the patron of miners, gunners and all who work with fire and explosives, and the protector against sudden death. Miners still keep her feast on 4 December; her emblem is a tower."
+  },
+  "refs": {
+   "unique": [
+    "barborina_prilba",
+    "karbidka_svatobarborska"
+   ]
+  },
+  "see": [
+   "e_chram_sv_barbory",
+   "e_havir"
+  ]
+ },
+ "e_janosik": {
+  "cat": "person",
+  "title": {
+   "cs": "Juraj Jánošík",
+   "en": "Juraj Jánošík"
+  },
+  "text": {
+   "cs": "Juraj Jánošík (1688–1713) byl slovenský zbojník z Terchové, který s družinou přepadal kupce a šlechtice v horách severního Slovenska. Roku 1713 byl v Liptovském Mikuláši popraven pověšením na hák za žebro. Lidová tradice z něj udělala hrdinu, který bral bohatým a dával chudým; podle pověsti ho chránil kouzelný opasek, valaška a bylinka od čarodějnic, a chytili ho, až když uklouzl na hrachu, který mu stará žena hodila pod nohy.",
+   "en": "Juraj Jánošík (YAH-no-sheek, 1688–1713) was a Slovak outlaw from Terchová whose band robbed merchants and nobles in the mountains of northern Slovakia. In 1713 he was executed at Liptovský Mikuláš by being hung from a hook through his ribs. Folk tradition made him a hero who robbed the rich to give to the poor; legend says a magic belt, his valaška and a witch's herb protected him, and he was caught only when he slipped on peas an old woman threw under his feet."
+  },
+  "refs": {
+   "class": [
+    "zbojnice"
+   ],
+   "unique": [
+    "janosikuv_opasek",
+    "janosikova_valaska"
+   ],
+   "book": [
+    "kniha_janosik"
+   ]
+  },
+  "see": [
+   "e_zbojnik",
+   "e_ondras",
+   "e_valaska"
+  ]
+ },
+ "e_ondras": {
+  "cat": "person",
+  "title": {
+   "cs": "Ondráš a Juráš",
+   "en": "Ondráš and Juráš"
+  },
+  "text": {
+   "cs": "Ondráš z Janovic (vlastním jménem Ondřej Šebesta, 1680–1715) byl nejslavnějším zbojníkem slezských a moravských Beskyd. Byl zabit roku 1715 svým druhem Jurášem, který ho podle tradice zasáhl valaškou kvůli odměně vypsané na jeho hlavu. Pověst o něm jako o ochránci chudých vznikla až po jeho smrti.",
+   "en": "Ondráš of Janovice (ON-drahsh; born Ondřej Šebesta, 1680–1715) was the most famous outlaw of the Silesian and Moravian Beskydy. In 1715 he was killed by his comrade Juráš (YOO-rahsh), who by tradition struck him down with a valaška for the reward on his head. The legend of Ondráš as the protector of the poor grew only after his death."
+  },
+  "refs": {
+   "unique": [
+    "ondrasova_beranice",
+    "jurasuv_kabatec"
+   ]
+  },
+  "see": [
+   "e_janosik",
+   "e_zbojnik",
+   "e_valassko"
+  ]
+ },
+ "e_bivoj": {
+  "cat": "person",
+  "title": {
+   "cs": "Bivoj",
+   "en": "Bivoj"
+  },
+  "text": {
+   "cs": "Bivoj je silák ze Starých pověstí českých. Když v okolí Vyšehradu řádil obrovský kanec, chytil ho holýma rukama za uši a živého ho na zádech přinesl kněžně Libuši a jejím sestrám. Za odměnu si vzal Libušinu sestru Kazi. Příběh poprvé zapsal Václav Hájek z Libočan v kronice z roku 1541.",
+   "en": "Bivoj (BI-voy) is the strongman of the Old Czech Legends. When a huge boar was ravaging the country round Vyšehrad, he caught it by the ears with his bare hands and carried it alive on his back to Princess Libuše and her sisters. His reward was the hand of Libuše's sister Kazi. The story was first written down by Václav Hájek of Libočany in his chronicle of 1541."
+  },
+  "refs": {
+   "unique": [
+    "bivojuv_stit"
+   ],
+   "book": [
+    "kniha_bivoj"
+   ]
+  },
+  "see": [
+   "e_vysehrad",
+   "e_stare_povesti"
+  ]
+ },
+ "e_horymir": {
+  "cat": "person",
+  "title": {
+   "cs": "Horymír a Šemík",
+   "en": "Horymír and Šemík"
+  },
+  "text": {
+   "cs": "Horymír byl podle pověsti vladyka z Neumětel, který si u knížete Křesomysla stěžoval, že lidé opouštějí pole kvůli dolování. Havíři z Březových Hor mu za to vypálili tvrz, on jim oplatil stejnou mincí a kníže ho odsoudil k smrti. Jako poslední přání se směl projet na svém koni Šemíkovi, a ten s ním přeskočil vyšehradské hradby do Vltavy. Šemík pak v Neumětelích padl a jeho hrob tam ukazují dodnes.",
+   "en": "Horymír (HO-ri-meer) was, legend says, a lord of Neumětely who complained to Prince Křesomysl that people were abandoning the fields for the mines. The miners of Březové Hory burned his manor for it, he paid them back in kind, and the prince condemned him to death. As a last wish he was allowed one ride on his horse Šemík (SHEH-meek), who leapt with him over the walls of Vyšehrad into the Vltava. Šemík died afterwards at Neumětely, where his grave is still shown."
+  },
+  "refs": {
+   "unique": [
+    "horymiruv_bic",
+    "semikova_podkova"
+   ],
+   "book": [
+    "kniha_horymir"
+   ]
+  },
+  "see": [
+   "e_vysehrad",
+   "e_brezove_hory",
+   "e_stare_povesti"
+  ]
+ },
+ "e_bruncvik": {
+  "cat": "person",
+  "title": {
+   "cs": "Bruncvík",
+   "en": "Bruncvík"
+  },
+  "text": {
+   "cs": "Bruncvík je pohádkový český kníže ze středověké Kroniky o Bruncvíkovi. Na dalekých cestách zachránil lva z boje s drakem a lev ho pak věrně provázel. Získal kouzelný meč, který na povel „Hlavy dolů!“ sám stínal nepřátele. Meč je prý zazděn v Karlově mostě, kde Bruncvíkova socha stojí se lvem dodnes.",
+   "en": "Bruncvík (BRUNTS-veek) is the fairy-tale Czech prince of the medieval Chronicle of Bruncvík. On his far travels he saved a lion from a dragon, and the lion followed him faithfully ever after. He won a magic sword that, at the command 'Heads off!', cut down his enemies by itself. The sword is said to be walled into Charles Bridge, where Bruncvík's statue still stands with his lion."
+  },
+  "refs": {
+   "unique": [
+    "bruncvikuv_mec"
+   ],
+   "book": [
+    "kniha_bruncvik"
+   ]
+  },
+  "see": [
+   "e_karluv_most"
+  ]
+ },
+ "e_mydlar": {
+  "cat": "person",
+  "title": {
+   "cs": "Jan Mydlář",
+   "en": "Jan Mydlář"
+  },
+  "text": {
+   "cs": "Jan Mydlář (asi 1572–1664) byl pražský kat, nejznámější ze všech českých katů. Dne 21. června 1621 vykonal na Staroměstském náměstí popravu 27 vůdců stavovského povstání: čtyřiadvacet sťal mečem a tři oběsil. Dvanáct hlav pak bylo vystaveno na Staroměstské mostecké věži.",
+   "en": "Jan Mydlář (MID-lahrzh, c. 1572–1664) was the executioner of Prague, the best known of all Czech headsmen. On 21 June 1621, in the Old Town Square, he executed 27 leaders of the Estates' Revolt: twenty-four by the sword and three by hanging. Twelve of the heads were then displayed on the Old Town Bridge Tower."
+  },
+  "refs": {
+   "unique": [
+    "mydlaruv_kord"
+   ]
+  },
+  "see": [
+   "e_kord_savle"
+  ]
+ },
+ "e_faust": {
+  "cat": "person",
+  "title": {
+   "cs": "Doktor Faust",
+   "en": "Doctor Faustus"
+  },
+  "text": {
+   "cs": "Johann Georg Faust (asi 1480–1541) byl německý potulný alchymista, astrolog a mág, o kterém se už za života vyprávělo, že se spolčil s ďáblem. Z pověstí o něm vznikla lidová kniha, Marlowova i Goethova hra a loutkové hry, které hrávali i čeští loutkáři. Praha si ho přisvojila pověstí o Faustově domě na Karlově náměstí.",
+   "en": "Johann Georg Faust (c. 1480–1541) was a wandering German alchemist, astrologer and magician said, even in his lifetime, to be in league with the Devil. The legends grew into a chapbook, plays by Marlowe and Goethe, and puppet plays performed by Czech puppeteers too. Prague claimed him with the legend of Faust's House on Charles Square."
+  },
+  "refs": {
+   "unique": [
+    "faustova_kniha"
+   ],
+   "book": [
+    "kniha_faust"
+   ]
+  },
+  "see": [
+   "e_faustuv_dum",
+   "e_cert"
+  ]
+ },
+ "e_fabian": {
+  "cat": "person",
+  "title": {
+   "cs": "Fabián",
+   "en": "Fabián"
+  },
+  "text": {
+   "cs": "Fabián, zvaný též Babí Jan, je duch Brd. Pověst, kterou poprvé zapsal Václav Krolmus roku 1845, vypráví, že byl rytířem, jehož hrad zničila čarodějnice Megera, když si vzal Medulínu, a jeho samotného proklela v lesního ducha. Kletba ale nezlomila jeho dobré srdce: lidem neškodí, a když má dobrou náladu, pomáhá jim jako Krakonoš. Jan Čáka ho vyobrazil s tělem ze smrkových šišek, mechovým vousem, kloboukem a fajfkou; jeho lože je na Velké Babě u Hostomic.",
+   "en": "Fabián (FAH-bi-ahn), also called Babí Jan, is the spirit of Brdy. The legend, first written down by Václav Krolmus in 1845, says he was a knight whose castle the witch Megera destroyed when he married Medulína, and who was cursed into a forest spirit. The curse could not break his good heart: he harms no one, and in a good mood he helps people the way Krakonoš does in the Giant Mountains. Jan Čáka drew him with a body of spruce cones, a mossy beard, a hat and a pipe; his 'bed' is a rock on Velká Baba near Hostomice."
+  },
+  "refs": {
+   "npc": [
+    "fabian"
+   ],
+   "unique": [
+    "fabianova_siska"
+   ]
+  },
+  "see": [
+   "e_megera",
+   "e_medulina",
+   "e_brdy"
+  ]
+ },
+ "e_medulina": {
+  "cat": "person",
+  "title": {
+   "cs": "Medulína",
+   "en": "Medulína"
+  },
+  "text": {
+   "cs": "Medulína je mladá šlechtična z brdské pověsti, kterou si rytíř Fabián přivedl na svůj hrad jako nevěstu. Žárlivá čarodějnice Megera ji proměnila v zeměžluč, drobnou růžově kvetoucí léčivou bylinu, která v Brdech roste dodnes. Spolu s Fabiánem a Megerou tvoří takzvanou brdskou trojici.",
+   "en": "Medulína (MEH-du-lee-na) is the young noblewoman of the Brdy legend whom the knight Fabián brought to his castle as his bride. The jealous witch Megera turned her into centaury (zeměžluč), a small pink-flowered healing herb that still grows in Brdy. With Fabián and Megera she makes up the so-called Brdy three."
+  },
+  "game": {
+   "cs": "Ve hře: Medulína žije dál jako kořenářka na kraji lesa.",
+   "en": "In the game: Medulína lives on as a herb woman at the edge of the forest."
+  },
+  "refs": {
+   "npc": [
+    "korenarka_medulina"
+   ],
+   "quest": [
+    "medulinin_odkaz"
+   ],
+   "unique": [
+    "medulinina_hul"
+   ]
+  },
+  "see": [
+   "e_fabian",
+   "e_megera"
+  ]
+ },
+ "e_tremsinsky_skritek": {
+  "cat": "creature",
+  "title": {
+   "cs": "Třemšínský skřítek",
+   "en": "The Sprite of Třemšín"
+  },
+  "text": {
+   "cs": "Třemšínský skřítek je malý lesní mužíček s vrásčitou tváří jako kůra stromu, strážce pokladu na Třemšíně. Hlídá tři zlaté šíny ve studni a vysmívá se každému, kdo o ně přijde; jindy se mění v ohnivého hada se zlatou kůží a chrání les před pytláky. Patří k nejznámějším postavám brdských pověstí.",
+   "en": "The sprite of Třemšín is a little forest man with a face wrinkled like tree bark, guardian of the treasure on Třemšín. He watches over the three gold rods in the well and laughs at everyone who loses them; at other times he becomes a fiery serpent with golden skin and protects the forest from poachers. He is one of the best-known figures of the Brdy legends."
+  },
+  "game": {
+   "cs": "Ve hře: Třemšínský mužíček, který počítá jen do tří.",
+   "en": "In the game: the Little Man of Třemšín, who counts only to three."
+  },
+  "refs": {
+   "npc": [
+    "tremsinsky_muzicek"
+   ],
+   "quest": [
+    "tremsinske_siny"
+   ]
+  },
+  "see": [
+   "e_tremsin",
+   "e_sin"
+  ]
+ },
+ "e_bystrozraky": {
+  "cat": "person",
+  "title": {
+   "cs": "Bystrozraký",
+   "en": "Sharp-Eye"
+  },
+  "text": {
+   "cs": "Bystrozraký je jeden ze tří pomocníků prince v Erbenově pohádce Dlouhý, Široký a Bystrozraký. Jeho zrak je tak silný, že musí nosit pásku přes oči: na co se podívá bez ní, to vzplane nebo se rozpadne, a vidí skrz zem i skálu. S Dlouhým, který se umí natáhnout, a Širokým, který se umí rozšířit, vysvobodí zakletou princeznu.",
+   "en": "Sharp-Eye (Bystrozraký, BIS-tro-zrah-kee) is one of the prince's three helpers in Erben's tale 'Long, Broad and Sharp-Eye'. His sight is so strong that he must wear a blindfold: whatever he looks at without it bursts into flame or crumbles, and he can see through earth and rock. With Long, who can stretch, and Broad, who can swell, he frees an enchanted princess."
+  },
+  "refs": {
+   "unique": [
+    "bystrozrakeho_luk"
+   ]
+  },
+  "see": [
+   "e_erben"
+  ]
+ },
+ "e_dvanact_mesicku": {
+  "cat": "person",
+  "title": {
+   "cs": "Dvanáct měsíčků",
+   "en": "The Twelve Months"
+  },
+  "text": {
+   "cs": "O dvanácti měsíčkách je pohádka, kterou zapsal K. J. Erben. Zlá macecha pošle hodnou Marušku uprostřed zimy pro fialky, jahody a jablka; Maruška na vrcholu hory najde dvanáct mužů u ohně, dvanáct měsíců roku, a každý jí na chvíli dá vládu nad svým časem. Když tam jdou pro dary macecha s dcerou Holenou, Leden je zaveje sněhem.",
+   "en": "'The Twelve Months' is a fairy tale recorded by K. J. Erben. A wicked stepmother sends kind Maruška out in midwinter for violets, strawberries and apples; on a mountaintop Maruška finds twelve men round a fire, the twelve months of the year, and each lets his season rule for a while. When the stepmother and her daughter Holena go up for gifts, January buries them in snow."
+  },
+  "refs": {
+   "unique": [
+    "remen_mesicku"
+   ]
+  },
+  "see": [
+   "e_erben"
+  ]
+ },
+ "e_sedmero_krkavcu": {
+  "cat": "person",
+  "title": {
+   "cs": "Sedmero krkavců",
+   "en": "The Seven Ravens"
+  },
+  "text": {
+   "cs": "Sedmero krkavců je pohádka Boženy Němcové. Matka v hněvu prokleje svých sedm synů a ti se promění v krkavce. Jejich sestra Bohdanka je může vysvobodit, jen když jim mlčky ušije sedm košil z kopřiv, které sama připraví, upřede a utká, a to i za cenu, že ji obviní z čarodějnictví a málem upálí.",
+   "en": "'The Seven Ravens' is a fairy tale by Božena Němcová. In a fit of anger a mother curses her seven sons, and they turn into ravens. Their sister Bohdanka can save them only by sewing them seven shirts of nettle cloth that she must prepare, spin and weave herself without saying a word, even when she is accused of witchcraft and nearly burned."
+  },
+  "refs": {
+   "unique": [
+    "krkavci_kosile"
+   ]
+  },
+  "see": [
+   "e_erben"
+  ]
+ },
+ "e_obusek": {
+  "cat": "item",
+  "title": {
+   "cs": "Obušku, z pytle ven!",
+   "en": "Cudgel, Out of the Sack!"
+  },
+  "text": {
+   "cs": "Pohádka o kouzelných darech: chudý dostane ubrousek, který prostře, a beránka nebo osla sypajícího zlato, ale lakomý hostinský mu je ukradne. Teprve třetí dar, obušek v pytli, který na povel „Obušku, z pytle ven!“ sám vyskočí a mlátí, mu všechno vrátí. Pohádku zpracoval K. J. Erben a proslavil ji film Obušku, z pytle ven! (1955).",
+   "en": "A tale of magic gifts: a poor man receives a cloth that lays itself with food and a beast that drops gold, but a greedy innkeeper steals them. Only the third gift, a cudgel in a sack that leaps out and thrashes at the words 'Cudgel, out of the sack!', wins everything back. K. J. Erben retold the tale, and the 1955 film 'Obušku, z pytle ven!' made it famous."
+  },
+  "refs": {
+   "unique": [
+    "obusek_z_pytle"
+   ]
+  },
+  "see": [
+   "e_erben"
+  ]
+ },
+ "e_erben": {
+  "cat": "person",
+  "title": {
+   "cs": "Karel Jaromír Erben",
+   "en": "Karel Jaromír Erben"
+  },
+  "text": {
+   "cs": "Karel Jaromír Erben (1811–1870) byl básník, historik a sběratel lidové slovesnosti. Jeho sbírka balad Kytice (1853) dala české literatuře Polednici, Vodníka i Svatební košile, a jeho sbírky pohádek a říkadel uchovaly Dlouhého, Širokého a Bystrozrakého, Dvanáct měsíčků a Ptáka Ohniváka. Bez něj by velká část české lidové fantazie zůstala nezapsána.",
+   "en": "Karel Jaromír Erben (1811–1870) was a poet, historian and collector of folk tradition. His ballad collection Kytice ('A Bouquet', 1853) gave Czech literature The Noon Witch, The Water Goblin and The Wedding Shirts, and his collections of tales and rhymes preserved Long, Broad and Sharp-Eye, The Twelve Months and the Firebird. Without him much of the Czech folk imagination would never have been written down."
+  },
+  "refs": {
+   "book": [
+    "kniha_poklad",
+    "kniha_polednice",
+    "kniha_svatebni_kosile",
+    "kniha_vodnik",
+    "kniha_zlaty_kolovrat",
+    "kniha_ptak_ohnivak",
+    "kniha_baba_jaga",
+    "kniha_kostej"
+   ]
+  },
+  "see": [
+   "e_vodnik",
+   "e_polednice",
+   "e_bystrozraky",
+   "e_dvanact_mesicku"
+  ]
+ },
+ "e_stare_povesti": {
+  "cat": "term",
+  "title": {
+   "cs": "Staré pověsti české",
+   "en": "The Old Czech Legends"
+  },
+  "text": {
+   "cs": "Staré pověsti české (1894) je kniha Aloise Jiráska, který v ní převyprávěl pověsti o začátcích českého národa: o praotci Čechovi, Libuši, Přemyslovi, Horymírovi, Bivojovi, Dívčí válce i blanických rytířích. Jirásek čerpal hlavně z Kosmovy kroniky a z Hájkovy kroniky (1541), která mnohé příběhy sama vymyslela. Kniha dodnes formuje, jak Češi o své dávné minulosti vyprávějí.",
+   "en": "The Old Czech Legends (1894) is Alois Jirásek's retelling of the legends of the nation's beginnings: Forefather Čech, Libuše, Přemysl, Horymír, Bivoj, the Maidens' War and the knights of Blaník. Jirásek drew mainly on Cosmas's chronicle and on Hájek's chronicle of 1541, which invented many of the stories itself. The book still shapes how Czechs tell their ancient past."
+  },
+  "refs": {
+   "book": [
+    "kniha_kutnohorsti_haviri",
+    "kniha_horymir",
+    "kniha_bivoj",
+    "kniha_janosik",
+    "kniha_blanik",
+    "kniha_faust",
+    "kniha_bruncvik"
+   ]
+  },
+  "see": [
+   "e_kosmas",
+   "e_horymir",
+   "e_bivoj",
+   "e_blanik"
+  ]
+ },
+ "e_prevoznik": {
+  "cat": "person",
+  "title": {
+   "cs": "Převozník",
+   "en": "The Ferryman"
+  },
+  "text": {
+   "cs": "Převozník, který za groš převáží duše mrtvých přes řeku na onen svět, je nejznámější z řeckého Charóna. U Slovanů plavba přes řeku do podsvětí není původní představou, i když i oni věřili, že duše putuje přes vodu, a mrtvým dávali do hrobu minci. Převozník se objevuje i v Erbenově pohádce O třech zlatých vlasech děda Vševěda, kde touží, aby mu konečně někdo vzal bidlo z ruky.",
+   "en": "The ferryman who carries the souls of the dead across a river to the other world for a coin is best known as the Greek Charon. The river crossing is not an originally Slavic image, though the Slavs too believed the soul travelled over water and placed coins in graves. A ferryman also appears in Czech fairy tales, as in Erben's 'The Three Golden Hairs of Grandfather Know-All', where he longs for someone to take the pole from him."
+  },
+  "game": {
+   "cs": "Ve hře: převozník na Smorodině, který bez jména nikoho nepřeveze.",
+   "en": "In the game: the ferryman of the Smorodina, who will carry no one without a name."
+  },
+  "refs": {
+   "npc": [
+    "prevoznik"
+   ]
+  },
+  "see": [
+   "e_smorodina",
+   "e_nav",
+   "e_veles"
+  ]
+ },
+ "e_krumpac": {
+  "cat": "item",
+  "title": {
+   "cs": "Krumpáč",
+   "en": "Krumpáč (Pick)"
+  },
+  "text": {
+   "cs": "Krumpáč je těžký hornický a kopáčský nástroj se zahnutou ocelovou hlavicí na dlouhé násadě. Středověký havíř ale rubal hlavně želízkem a mlátkem: želízko, malý špičatý klín s topůrkem, přiložil ke skále a tloukl do něj mlátkem. Zkřížené želízko a mlátek jsou dodnes symbolem hornictví na mapách, znacích i uniformách.",
+   "en": "The krumpáč (KRUM-pahch) is the heavy pick of miners and diggers, a curved steel head on a long haft. A medieval miner, though, cut rock mainly with želízko and mlátek, 'iron and hammer': he set the small pointed iron wedge on a handle against the rock and struck it with the hammer. Crossed hammer and iron are still the symbol of mining on maps, coats of arms and uniforms."
+  },
+  "refs": {
+   "item": [
+    "krumpac",
+    "krumpac_kovany",
+    "krumpac_hlubinny"
+   ],
+   "class": [
+    "havir"
+   ],
+   "unique": [
+    "posledni_krumpac",
+    "zila_oslu"
+   ]
+  },
+  "see": [
+   "e_havir",
+   "e_kahan"
+  ]
+ },
+ "e_valaska": {
+  "cat": "item",
+  "title": {
+   "cs": "Valaška",
+   "en": "Valaška (Shepherd's Axe)"
+  },
+  "text": {
+   "cs": "Valaška je pastýřská sekerka s úzkým ostřím na dlouhém topůrku, která sloužila zároveň jako hůl, nástroj i zbraň. Nosili ji valašští a slovenští pastevci a stala se znamením zbojníků; s valaškou v ruce se tančí i zbojnické tance. Jánošíkova valaška patří k nejslavnějším zbraním slovenské lidové tradice.",
+   "en": "The valaška (VAH-lash-ka) is a shepherd's axe with a narrow blade on a long haft, at once walking stick, tool and weapon. Wallachian and Slovak herdsmen carried it, and it became the emblem of the outlaws; the outlaws' dances are still danced valaška in hand. Jánošík's valaška is among the most famous weapons of Slovak folk tradition."
+  },
+  "refs": {
+   "item": [
+    "valaska",
+    "valaska_kovany",
+    "valaska_hlubinny"
+   ],
+   "class": [
+    "zbojnice"
+   ],
+   "unique": [
+    "janosikova_valaska"
+   ]
+  },
+  "see": [
+   "e_valassko",
+   "e_janosik",
+   "e_zbojnik"
+  ]
+ },
+ "e_kahan": {
+  "cat": "item",
+  "title": {
+   "cs": "Kahan",
+   "en": "Kahan (Miner's Lamp)"
+  },
+  "text": {
+   "cs": "Kahan je havířská lampa. Nejstarší byly otevřené kahany z hlíny nebo železa, v nichž hořel lůj či olej s knotem; později přišly mosazné kahany a kolem roku 1900 karbidky. Kahan byl havířovým nejcennějším majetkem: kdo zůstal v dole bez světla, byl ztracen. Plamen také varoval: když se zmenšoval a modral, v chodbě docházel vzduch nebo se hromadily plyny.",
+   "en": "The kahan (KAH-han) is the miner's lamp. The oldest were open lamps of clay or iron burning tallow or oil on a wick; brass lamps came later, and carbide lamps around 1900. The lamp was a miner's most precious possession: lost underground without light, he was lost for good. The flame was also a warning: when it shrank and turned blue, the gallery was running out of air or filling with gas."
+  },
+  "refs": {
+   "item": [
+    "lojovy_kahan",
+    "havirsky_kahan",
+    "mosazny_kahan"
+   ],
+   "unique": [
+    "dusickovy_kahan",
+    "matejuv_kahan",
+    "zdar_buh_kahan"
+   ]
+  },
+  "see": [
+   "e_karbidka",
+   "e_havir",
+   "e_permonik"
+  ]
+ },
+ "e_karbidka": {
+  "cat": "item",
+  "title": {
+   "cs": "Karbidka",
+   "en": "Carbide Lamp"
+  },
+  "text": {
+   "cs": "Karbidka je acetylenová lampa, která se v dolech rozšířila na začátku 20. století. Ve spodní nádobce kape voda na karbid vápníku a vzniklý acetylen hoří jasným bílým plamenem, mnohem jasnějším než lůj nebo olej. Karbidky se v některých dolech používaly až do druhé poloviny století, než je nahradily elektrické svítilny.",
+   "en": "The karbidka is the acetylene lamp that spread through the mines in the early 20th century. Water drips onto calcium carbide in the lower chamber, and the acetylene burns with a bright white flame, far brighter than tallow or oil. Some mines used them into the second half of the century, until electric lamps replaced them."
+  },
+  "refs": {
+   "item": [
+    "karbidka"
+   ],
+   "unique": [
+    "karbidka_svatobarborska"
+   ]
+  },
+  "see": [
+   "e_kahan"
+  ]
+ },
+ "e_kytel": {
+  "cat": "item",
+  "title": {
+   "cs": "Havířský kytel a flek",
+   "en": "Miner's Smock and Seat-Leather"
+  },
+  "text": {
+   "cs": "Středověký havíř fáral v bílém plátěném kytlu s kapucí, v kterém byl ve tmě lépe vidět. Vzadu na opasku nosil kožený flek (německy Arschleder), aby si mohl sednout na mokrou skálu a sjíždět po žebřících a skluzech. Z pracovního oděvu se později stala slavnostní hornická uniforma, kterou havíři nosí o svátku svaté Barbory dodnes, i s flekem.",
+   "en": "The medieval miner went underground in a white linen smock with a hood, easier to see in the dark. On the back of his belt hung the flek (German Arschleder, 'arse-leather'), so he could sit on wet rock and slide down ladders and chutes. Work clothes later became the miners' dress uniform, still worn on St Barbara's Day, seat-leather and all."
+  },
+  "refs": {
+   "item": [
+    "kytel",
+    "kytel_kovany",
+    "kytel_hlubinny"
+   ],
+   "unique": [
+    "kytel_padesati"
+   ],
+   "npc": [
+    "kovar_hnevek"
+   ]
+  },
+  "see": [
+   "e_havir",
+   "e_svata_barbora"
+  ]
+ },
+ "e_beranice": {
+  "cat": "item",
+  "title": {
+   "cs": "Beranice",
+   "en": "Beranice (Sheepskin Cap)"
+  },
+  "text": {
+   "cs": "Beranice je vysoká čepice z beraní kožešiny, kterou nosili pastevci a horalé na Valašsku, Slovensku i v Karpatech. Patří ke klasické výbavě zbojníka spolu s valaškou, širokým opaskem a kabátcem.",
+   "en": "The beranice (BEH-ra-nyi-tseh) is a tall cap of ram's fleece worn by shepherds and highlanders in Moravian Wallachia, Slovakia and across the Carpathians. With the valaška, the broad belt and the jerkin it completes the classic outfit of the outlaw."
+  },
+  "refs": {
+   "item": [
+    "beranice",
+    "beranice_kovany",
+    "beranice_hlubinny"
+   ],
+   "unique": [
+    "ondrasova_beranice"
+   ]
+  },
+  "see": [
+   "e_zbojnik",
+   "e_valaska"
+  ]
+ },
+ "e_paveza_cep": {
+  "cat": "item",
+  "title": {
+   "cs": "Pavéza a cep",
+   "en": "Pavise and Flail"
+  },
+  "text": {
+   "cs": "Pavéza je velký obdélný štít, který se opíral o zem a za nímž se kryli střelci; husitští pavézníci jimi uzavírali mezery mezi vozy. Bojový cep vznikl z obyčejného cepu na mlácení obilí, jen se okoval železem a hroty. Obě zbraně jsou spojené s husitskými vojsky, která proti rytířům postavila sedláky a jejich náčiní.",
+   "en": "The pavise (Czech pavéza, PAH-veh-za) is a great oblong shield set on the ground for crossbowmen to shelter behind; Hussite pavise-bearers closed the gaps between the war wagons with them. The war flail grew out of the farmer's threshing flail, simply shod with iron and spikes. Both weapons belong to the Hussite armies, which set peasants and their tools against knights."
+  },
+  "refs": {
+   "item": [
+    "paveza",
+    "paveza_kovany",
+    "paveza_hlubinny",
+    "cep",
+    "cep_kovany",
+    "cep_hlubinny"
+   ],
+   "unique": [
+    "ohnivcova_kovadlina",
+    "srdce_zvonu_cep",
+    "horymiruv_bic"
+   ]
+  },
+  "see": [
+   "e_kusinik",
+   "e_kank"
+  ]
+ },
+ "e_kord_savle": {
+  "cat": "item",
+  "title": {
+   "cs": "Kord, šavle a palcát",
+   "en": "Rapier, Sabre and Mace"
+  },
+  "text": {
+   "cs": "Kord je dlouhý úzký meč na bodání i sekání, který se v Čechách rozšířil v 16. a 17. století. Šavle se zahnutou čepelí přišla z Uher a od Turků a oblíbili si ji jezdci. Palcát, kyj s kovovou hlavicí, byl zbraní i odznakem velitele; berla, kterou nosili biskupové a opati, byla jeho duchovní příbuznou.",
+   "en": "The kord is the long, narrow thrusting and cutting sword that spread through Bohemia in the 16th and 17th centuries. The curved šavle (sabre) came from Hungary and the Turks and was the horseman's favourite. The palcát, a club with a metal head, was both a weapon and a commander's badge; the berla, the crozier carried by bishops and abbots, was its spiritual cousin."
+  },
+  "refs": {
+   "item": [
+    "kord",
+    "kord_kovany",
+    "kord_hlubinny",
+    "savle",
+    "savle_kovany",
+    "savle_hlubinny",
+    "palcat",
+    "palcat_kovany",
+    "palcat_hlubinny",
+    "berla",
+    "berla_kovany",
+    "berla_hlubinny"
+   ]
+  },
+  "see": [
+   "e_mydlar",
+   "e_paveza_cep"
+  ]
+ },
+ "e_lunice": {
+  "cat": "item",
+  "title": {
+   "cs": "Lunice",
+   "en": "Lunula"
+  },
+  "text": {
+   "cs": "Lunice je přívěsek ve tvaru srpku měsíce, oblíbený šperk velkomoravských a raně středověkých žen. Nosila se jako ozdoba i jako amulet, který měl chránit před zlem a podporovat plodnost. Stříbrné a pozlacené lunice se našly v hrobech v Mikulčicích, Starém Městě i na dalších hradištích.",
+   "en": "The lunula (Czech lunice, LOO-nyi-tseh) is a crescent-moon pendant, a favourite piece of jewellery of Great Moravian and early medieval women. It was worn both as an ornament and as an amulet against evil and for fertility. Silver and gilded lunulae have been found in graves at Mikulčice, Staré Město and other strongholds."
+  },
+  "refs": {
+   "item": [
+    "lunice"
+   ],
+   "unique": [
+    "fabianova_siska",
+    "moranina_naruc_amulet"
+   ]
+  },
+  "see": [
+   "e_kaptorga",
+   "e_mikulcice"
+  ]
+ },
+ "e_kaptorga": {
+  "cat": "item",
+  "title": {
+   "cs": "Kaptorga",
+   "en": "Kaptorga"
+  },
+  "text": {
+   "cs": "Kaptorga je malá kovová schránka nošená na krku, typická pro Velkou Moravu a raný středověk 9. a 10. století. Uvnitř mohla být relikvie, bylinka nebo jiný ochranný předmět, takže byla zároveň šperkem a amuletem. Nejkrásnější kaptorgy, zdobené tepáním a pozlacením, pocházejí z Mikulčic.",
+   "en": "The kaptorga (KAP-tor-ga) is a small metal box worn round the neck, typical of Great Moravia and the 9th and 10th centuries. It might hold a relic, a herb or some other protective object, making it jewellery and amulet at once. The finest kaptorgas, chased and gilded, come from Mikulčice."
+  },
+  "refs": {
+   "item": [
+    "kaptorga"
+   ],
+   "unique": [
+    "mikulcicka_kaptorga",
+    "hastrmanuv_hrnek"
+   ]
+  },
+  "see": [
+   "e_lunice",
+   "e_mikulcice"
+  ]
+ },
+ "e_prazsky_gros": {
+  "cat": "item",
+  "title": {
+   "cs": "Pražský groš",
+   "en": "Prague Groschen"
+  },
+  "text": {
+   "cs": "Pražský groš je velká stříbrná mince, kterou dal Václav II. razit od roku 1300 v Kutné Hoře. Navzdory jménu se v Praze nikdy nerazil. Díky čistému kutnohorskému stříbru se stal jednou z nejrozšířenějších mincí střední Evropy a razil se s přestávkami až do roku 1547.",
+   "en": "The Prague groschen (Czech pražský groš, PRAHZH-skee grosh) is the large silver coin Wenceslas II began striking at Kutná Hora in 1300; despite the name, it was never minted in Prague. Thanks to the pure Kutná Hora silver it became one of the most widespread coins of Central Europe, struck with interruptions until 1547."
+  },
+  "refs": {
+   "item": [
+    "grose_malo",
+    "grose_hromadka",
+    "grose_hodne"
+   ],
+   "town": [
+    "hora"
+   ]
+  },
+  "see": [
+   "e_vlassky_dvur",
+   "e_vaclav_ii",
+   "e_tolar"
+  ]
+ },
+ "e_tolar": {
+  "cat": "item",
+  "title": {
+   "cs": "Tolar",
+   "en": "Thaler"
+  },
+  "text": {
+   "cs": "Tolar je velká stříbrná mince, kterou od roku 1520 razili v Jáchymově Šlikové. Německy se jmenovala Joachimsthaler, zkráceně thaler, a pod tímto jménem se rozšířila po celé Evropě; z nizozemského daalder vznikl anglický dollar a tak i americký dolar. Jáchymovské stříbro tak dalo jméno nejznámější měně světa.",
+   "en": "The thaler (Czech tolar) is the large silver coin the Schlicks struck at Jáchymov from 1520. In German it was the Joachimsthaler, shortened to thaler, and under that name it spread across Europe; the Dutch daalder became the English 'dollar', and so the American dollar. Jáchymov's silver gave its name to the best-known currency in the world."
+  },
+  "refs": {
+   "town": [
+    "jachymov"
+   ],
+   "npc": [
+    "kovar_krystof"
+   ],
+   "quest": [
+    "proklete_tolary"
+   ]
+  },
+  "see": [
+   "e_slikove",
+   "e_mincovna_jachymov",
+   "e_prazsky_gros"
+  ]
+ },
+ "e_sin": {
+  "cat": "item",
+  "title": {
+   "cs": "Zlatý šín",
+   "en": "Gold Bar (šín)"
+  },
+  "text": {
+   "cs": "Šín je staré slovo pro kovový prut nebo tyč, například železnou obruč na kole; odtud i koleje, „šíny“. Zlaté šíny z pověsti o Třemšíně jsou tedy zlaté pruty, poklad ukrytý v hradní studni. Podle lidového výkladu dostal po nich Třemšín své jméno.",
+   "en": "Šín (sheen) is an old word for a metal rod or bar, such as the iron tyre of a wheel; railway tracks are still 'šíny'. The golden šíny of the Třemšín legend are gold rods, a treasure hidden in the castle well, and folk etymology says the hill took its name from them."
+  },
+  "refs": {
+   "item": [
+    "zlaty_sin"
+   ],
+   "quest": [
+    "tremsinske_siny"
+   ]
+  },
+  "see": [
+   "e_tremsin",
+   "e_tremsinsky_skritek"
+  ]
+ },
+ "e_ziva_mrtva_voda": {
+  "cat": "item",
+  "title": {
+   "cs": "Živá a mrtvá voda",
+   "en": "Water of Life and Water of Death"
+  },
+  "text": {
+   "cs": "Živá a mrtvá voda jsou dvě kouzelné vody slovanských pohádek. Mrtvá voda zaceluje rány a srůstá rozsekané tělo, živá voda pak do něj vrací život; hrdina je proto potřebuje obě, a to ve správném pořadí. Pro živou vodu se chodí na konec světa a K. J. Erben o ní zapsal pohádku Živá voda.",
+   "en": "The water of life and the water of death are the two magic waters of Slavic fairy tales. The water of death closes wounds and knits a hewn body back together, and the water of life then returns life to it; the hero needs both, in the right order. One goes to the end of the world for the water of life, and K. J. Erben recorded a tale named after it."
+  },
+  "refs": {
+   "item": [
+    "ziva_voda",
+    "ziva_voda_velka",
+    "mrtva_voda"
+   ],
+   "quest": [
+    "ziva_a_mrtva_voda",
+    "pec"
+   ]
+  },
+  "see": [
+   "e_jezibaba",
+   "e_erben"
+  ]
+ },
+ "e_svatojanska_rosa": {
+  "cat": "item",
+  "title": {
+   "cs": "Svatojánská rosa",
+   "en": "St John's Dew"
+  },
+  "text": {
+   "cs": "Rosa sebraná za svatojánské noci, z 23. na 24. června, měla podle lidové víry zázračnou moc: léčila oči a kůži, krášlila dívky a chránila dobytek. Sbíralo se do plátna, které se táhlo po trávě před východem slunce, a pak se vyždímalo. Ve stejnou noc se trhaly i léčivé byliny.",
+   "en": "Dew gathered on St John's Night, 23–24 June, had miraculous power in folk belief: it healed eyes and skin, made girls beautiful and protected cattle. It was collected by dragging a linen cloth across the grass before sunrise and wringing it out. Healing herbs were picked the same night."
+  },
+  "refs": {
+   "item": [
+    "svatojanska_rosa",
+    "svatojanska_rosa_velka"
+   ],
+   "npc": [
+    "korenarka_dorota"
+   ]
+  },
+  "see": [
+   "e_kupala",
+   "e_kapradi_kvet"
+  ]
+ },
+ "e_kapradi_kvet": {
+  "cat": "item",
+  "title": {
+   "cs": "Kapradí květ",
+   "en": "Fern Flower"
+  },
+  "text": {
+   "cs": "Kapradí ve skutečnosti nekvete, protože se rozmnožuje výtrusy. Lidová víra ale tvrdila, že kvete jedinou noc v roce, o svatojánské noci, zářivým květem, který otevírá poklady, dává rozumět řeči zvířat a činí neviditelným. Kdo ho chtěl utrhnout, musel odolat čertům a strašidlům, kteří ho hlídali.",
+   "en": "Ferns do not really flower; they spread by spores. Folk belief held otherwise: on one night a year, St John's Night, the fern opens a shining blossom that reveals treasure, grants understanding of animal speech and makes one invisible. Whoever wanted to pick it had to withstand the devils and spectres guarding it."
+  },
+  "refs": {
+   "item": [
+    "kapradi_kvet"
+   ],
+   "quest": [
+    "ziva_a_mrtva_voda"
+   ]
+  },
+  "see": [
+   "e_kupala",
+   "e_svatojanska_rosa"
+  ]
+ },
+ "e_klekani": {
+  "cat": "term",
+  "title": {
+   "cs": "Klekání",
+   "en": "Klekání (the Evening Bell)"
+  },
+  "text": {
+   "cs": "Klekání je večerní zvonění, které svolávalo k modlitbě Anděl Páně; jméno má podle toho, že se k modlitbě klekalo. Zvon ohlašoval konec práce a čas jít domů, a kdo zůstal venku po klekání, toho si podle pověstí mohla vzít klekánice. Srdce zvonu je kovový jazyk uvnitř, který při houpání naráží do pláště a zvon rozezní.",
+   "en": "Klekání (KLEH-kah-nyee) is the evening bell that called people to the Angelus prayer; its name comes from kneeling (klekat) to pray. It marked the end of work and the time to go home, and in the old tales whoever stayed out after klekání might be taken by the klekánice. The 'heart of the bell' (srdce zvonu) is its clapper."
+  },
+  "refs": {
+   "quest": [
+    "klekani",
+    "srdce_zvonu"
+   ],
+   "item": [
+    "srdce_zvonu"
+   ],
+   "unique": [
+    "srdce_zvonu_cep"
+   ],
+   "town": [
+    "hora"
+   ],
+   "npc": [
+    "senkyrka_bara"
+   ]
+  },
+  "see": [
+   "e_klekanice"
+  ]
+ },
+ "e_zdar_buh": {
+  "cat": "term",
+  "title": {
+   "cs": "Zdař Bůh!",
+   "en": "Zdař Bůh!"
+  },
+  "text": {
+   "cs": "„Zdař Bůh!“ je tradiční pozdrav českých horníků, česká obdoba německého „Glück auf!“. Znamená přání, aby Bůh dal práci zdar a havíř se ve zdraví vrátil na povrch. Zdraví se jím dodnes a odpovídá se stejně.",
+   "en": "'Zdař Bůh!' (zdarzh boo'h, 'God grant success!') is the traditional greeting of Czech miners, the counterpart of the German 'Glück auf!'. It wishes that God bless the work and bring the miner safely back to the surface. Miners still greet each other with it, and the answer is the same words."
+  },
+  "refs": {
+   "unique": [
+    "zdar_buh_kahan"
+   ],
+   "class": [
+    "havir"
+   ],
+   "npc": [
+    "permonik"
+   ]
+  },
+  "see": [
+   "e_havir",
+   "e_svata_barbora"
+  ]
+ },
+ "e_havir": {
+  "cat": "term",
+  "title": {
+   "cs": "Havíř",
+   "en": "Havíř (Miner)"
+  },
+  "text": {
+   "cs": "Havíř je staré české slovo pro horníka, z německého Hauer, ten, kdo „seká“ rudu. Kutnohorští havíři byli sebevědomý stav: měli svá bratrstva a cechy, bouřili se kvůli mzdám a v době největšího rozkvětu jich na Hoře pracovaly tisíce. Práce byla nebezpečná, život krátký a víra v ducha hor hluboká.",
+   "en": "Havíř (HAH-veerzh) is the old Czech word for a miner, from German Hauer, the one who 'hews' the ore. The miners of Kutná Hora were a proud estate: they had their brotherhoods and guilds, struck over wages, and at the height of the boom thousands of them worked at Hora. The work was dangerous, life was short and belief in the spirits of the mountain ran deep."
+  },
+  "refs": {
+   "class": [
+    "havir"
+   ],
+   "monster": [
+    "kostlivy_havir"
+   ]
+  },
+  "see": [
+   "e_sichta",
+   "e_kahan",
+   "e_zdar_buh",
+   "e_krumpac"
+  ]
+ },
+ "e_sichta": {
+  "cat": "term",
+  "title": {
+   "cs": "Šichta, fárat, štola a šachta",
+   "en": "Mining Words"
+  },
+  "text": {
+   "cs": "Čeština převzala hornickou řeč z němčiny spolu s německými havíři. Šichta je pracovní směna (Schicht), fárat znamená sjíždět do dolu (fahren) a vyfárat vyjet ven. Štola (Stollen) je vodorovná chodba ražená do svahu, šachta (Schacht) svislá jáma, sloj vrstva uhlí či rudy a žíla puklina vyplněná rudou.",
+   "en": "Czech took its mining vocabulary from German along with German miners. Šichta (SHIKH-ta) is a shift (Schicht), fárat is to go down the mine (fahren) and vyfárat to come back up. A štola (Stollen) is a horizontal adit driven into a hillside, a šachta (Schacht) a vertical shaft, a sloj a seam of coal or ore, and a žíla a vein, a crack filled with ore."
+  },
+  "refs": {
+   "floor": [
+    "act1_floor1",
+    "act2_floor1",
+    "act3_floor1"
+   ],
+   "class": [
+    "havir"
+   ]
+  },
+  "see": [
+   "e_havir",
+   "e_zila",
+   "e_sah"
+  ]
+ },
+ "e_zila": {
+  "cat": "term",
+  "title": {
+   "cs": "Žíla",
+   "en": "Vein"
+  },
+  "text": {
+   "cs": "Rudní žíla je puklina ve skále vyplněná nerosty, které tam vykrystalizovaly z horkých roztoků. Kutnohorské i příbramské stříbro leželo v žilách, které se táhly kilometry daleko a do hloubky, a každá měla své jméno. Když žíla „vyhluchla“, tedy přestala nést rudu, důl často zanikl a s ním i obživa celé osady.",
+   "en": "An ore vein is a crack in the rock filled with minerals that crystallised there from hot solutions. The silver of Kutná Hora and Příbram lay in veins running for kilometres along and down, and each had its own name. When a vein 'went barren', ceasing to carry ore, the mine often died, and with it the living of the whole settlement."
+  },
+  "refs": {
+   "floor": [
+    "act2_floor4"
+   ],
+   "unique": [
+    "stribrna_zila",
+    "zila_oslu"
+   ]
+  },
+  "see": [
+   "e_sevciny",
+   "e_sichta"
+  ]
+ },
+ "e_sah": {
+  "cat": "term",
+  "title": {
+   "cs": "Sáh",
+   "en": "Sáh (Fathom)"
+  },
+  "text": {
+   "cs": "Sáh je stará délková míra, vzdálenost mezi konečky prstů rozpažených rukou. Český sáh měřil asi 1,78 metru; horníci měřili hloubku dolů vlastním horním sáhem (Lachter), který se lišil revír od revíru a měřil kolem 1,9 až 2 metrů. Dvě stě padesát sáhů je tedy zhruba půl kilometru.",
+   "en": "The sáh (sahkh) is an old measure of length, the span of a man's outstretched arms. The Bohemian sáh was about 1.78 metres; miners measured depth in their own mining fathom (German Lachter), which differed from district to district at about 1.9 to 2 metres. Two hundred and fifty sáhs is roughly half a kilometre."
+  },
+  "refs": {
+   "npc": [
+    "kovar_hnevek"
+   ]
+  },
+  "see": [
+   "e_dul_osel"
+  ]
+ },
+ "e_smolinec": {
+  "cat": "term",
+  "title": {
+   "cs": "Smolinec",
+   "en": "Pitchblende"
+  },
+  "text": {
+   "cs": "Smolinec (uraninit) je černá, smolně lesklá ruda uranu. Němečtí havíři mu říkali Pechblende, protože Pech znamená smůlu i neštěstí: kde začal smolinec, končilo stříbro. Teprve v 19. století se z něj vyráběly barvy na sklo a porcelán, roku 1898 z něj Curieovi získali radium a ve 20. století se kvůli němu v Jáchymově těžilo za cenu tisíců zničených životů.",
+   "en": "Smolinec (SMO-li-nets), pitchblende or uraninite, is a black uranium ore with a pitch-like gloss. German miners called it Pechblende, since Pech means both pitch and bad luck: where pitchblende began, the silver ended. Only in the 19th century was it used for glass and porcelain colours; in 1898 the Curies drew radium from it, and in the 20th century it was mined at Jáchymov at the cost of thousands of ruined lives."
+  },
+  "refs": {
+   "floor": [
+    "act3_floor1"
+   ],
+   "town": [
+    "jachymov"
+   ],
+   "npc": [
+    "kovar_krystof"
+   ]
+  },
+  "see": [
+   "e_jachymov",
+   "e_curie",
+   "e_smolak"
+  ]
+ },
+ "e_desatek": {
+  "cat": "term",
+  "title": {
+   "cs": "Desátek a urbura",
+   "en": "Tithe and Urbura"
+  },
+  "text": {
+   "cs": "Desátek je dávka desetiny úrody nebo výdělku, kterou poddaní odváděli církvi. V hornictví měl podobnou roli královský podíl, urbura: podle horního práva Václava II. patřila králi osmina vytěžené rudy. Havíři tak platili dvakrát, panovníkovi z rudy a hoře, jak říkali, svými životy.",
+   "en": "The tithe (desátek, DEH-sah-tek) is a tenth of the harvest or earnings paid by subjects to the Church. In mining the royal share, urbura, played a similar role: under Wenceslas II's mining law the king owned one eighth of all ore raised. So miners paid twice: to the ruler in ore, and, as they said, to the mountain in lives."
+  },
+  "game": {
+   "cs": "Ve hře: Desátek z hlubin je podtitul celé hry.",
+   "en": "In the game: The Tithe of the Deep is the game's subtitle."
+  },
+  "refs": {
+   "town": [
+    "hora"
+   ]
+  },
+  "see": [
+   "e_ius_regale",
+   "e_permonik"
+  ]
+ },
+ "e_ius_regale": {
+  "cat": "term",
+  "title": {
+   "cs": "Ius regale montanorum",
+   "en": "Ius regale montanorum"
+  },
+  "text": {
+   "cs": "Ius regale montanorum, „královské právo horníků“, je latinský horní zákoník, který vydal Václav II. kolem let 1300 až 1305 pro Kutnou Horu. Sepsal ho hlavně italský právník Gozzius z Orvieta a má čtyři knihy: o osobách, dvě o dolech a o soudním řízení. Brzy byl přeložen do češtiny i němčiny a platil v hornictví střední Evropy po staletí.",
+   "en": "Ius regale montanorum (yus reh-GAH-leh mon-ta-NO-rum), 'the royal law of miners', is the Latin mining code issued by Wenceslas II around 1300–1305 for Kutná Hora. It was drafted mainly by the Italian jurist Gozzius of Orvieto and has four books: one on persons, two on mines and one on legal procedure. It was soon translated into Czech and German and governed Central European mining for centuries."
+  },
+  "refs": {
+   "npc": [
+    "kosmas"
+   ],
+   "item": [
+    "strana_kroniky"
+   ]
+  },
+  "see": [
+   "e_vaclav_ii",
+   "e_desatek",
+   "e_kutna_hora"
+  ]
+ },
+ "e_hromnice": {
+  "cat": "term",
+  "title": {
+   "cs": "Hromnice",
+   "en": "Hromnice (Candlemas)"
+  },
+  "text": {
+   "cs": "Hromnice jsou svátek Uvedení Páně do chrámu, 2. února. Posvěcené hromničky, svíce, se zapalovaly za bouřky proti blesku a dávaly do ruky umírajícím. K Hromnicím se váže řada pranostik, například „Na Hromnice o den více“ nebo „Na Hromnice musí skřivan vrznout, i kdyby měl zmrznout“.",
+   "en": "Hromnice (HROM-nyi-tseh) is Candlemas, 2 February. The blessed candles, hromničky, were lit during thunderstorms against lightning (hrom means thunder) and placed in the hands of the dying. Many weather sayings belong to it, such as 'At Candlemas the day is longer'."
+  },
+  "refs": {
+   "npc": [
+    "senkyrka_rozina"
+   ]
+  },
+  "see": [
+   "e_perun"
+  ]
+ },
+ "e_dusicky": {
+  "cat": "term",
+  "title": {
+   "cs": "Dušičky",
+   "en": "Dušičky (All Souls' Day)"
+  },
+  "text": {
+   "cs": "Dušičky, Památka všech věrných zemřelých, připadají na 2. listopadu. Lidé zdobí hroby a zapalují na nich svíčky a lampičky, aby duše zemřelých našly cestu a nebyly ve tmě. Dušička je v češtině i něžné slovo pro duši, zvlášť duši zemřelého.",
+   "en": "Dušičky (DU-shitch-ki), All Souls' Day, falls on 2 November. People decorate graves and light candles and little lamps on them so that the souls of the dead can find their way and are not left in the dark. Dušička is also the tender Czech word for a soul, especially the soul of someone who has died."
+  },
+  "refs": {
+   "unique": [
+    "dusickovy_kahan"
+   ],
+   "quest": [
+    "dusicky"
+   ]
+  },
+  "see": [
+   "e_dusicky_hrnicky",
+   "e_kahan"
+  ]
+ },
+ "e_zbojnik": {
+  "cat": "term",
+  "title": {
+   "cs": "Zbojník",
+   "en": "Zbojník (Outlaw)"
+  },
+  "text": {
+   "cs": "Zbojník je horský lupič z Karpat a Beskyd, který v 17. a 18. století přepadal kupce a panské dvory a skrýval se v lesích. Lidová píseň a pověst z něj udělaly svobodného hrdinu, který bere bohatým a dává chudým, a jeho výbavou je valaška, široký opasek, beranice a kožený kabátec. Nejslavnější jsou Jánošík a Ondráš.",
+   "en": "The zbojník (ZBOY-neek) is the mountain outlaw of the Carpathians and Beskydy who in the 17th and 18th centuries robbed merchants and manors and hid in the forests. Folk song and legend made him a free hero who took from the rich and gave to the poor, armed with valaška, broad belt, sheepskin cap and leather jerkin. Jánošík and Ondráš are the most famous."
+  },
+  "refs": {
+   "class": [
+    "zbojnice"
+   ],
+   "unique": [
+    "zbojnicka_jistota"
+   ]
+  },
+  "see": [
+   "e_janosik",
+   "e_ondras",
+   "e_valaska",
+   "e_valassko"
+  ]
+ },
+ "e_vedma": {
+  "cat": "term",
+  "title": {
+   "cs": "Vědma a kořenářka",
+   "en": "Wise Woman and Herb Woman"
+  },
+  "text": {
+   "cs": "Vědma je stará česká vědoucí žena, věštkyně a léčitelka, jejíž jméno souvisí se slovem vědět. Kořenářky sbíraly byliny a kořínky, znaly jejich moc a léčily, ale také zaříkávaly a rozdělávaly kouzla; vesnice je potřebovala i se jich bála. Na Šumavě a v Pošumaví se kořenářská tradice udržela až do 20. století.",
+   "en": "A vědma (VYED-ma) is the old Czech 'woman who knows', a seer and healer whose name comes from vědět, 'to know'. Herb women, kořenářky, gathered herbs and roots, knew their power and healed, but also spoke charms and cast spells; the village needed them and feared them. In the Šumava the herb-woman tradition survived into the 20th century."
+  },
+  "refs": {
+   "class": [
+    "vedma"
+   ],
+   "npc": [
+    "korenarka_dorota",
+    "korenarka_medulina"
+   ]
+  },
+  "see": [
+   "e_sumava",
+   "e_svatojanska_rosa"
+  ]
+ },
+ "e_bratrstvo": {
+  "cat": "term",
+  "title": {
+   "cs": "Havířská bratrstva",
+   "en": "Miners' Brotherhoods"
+  },
+  "text": {
+   "cs": "Havíři se od středověku sdružovali v bratrstvech, která pečovala o nemocné a zraněné, o vdovy a sirotky po mrtvých a o pohřby. Bratrstva měla své oltáře, patrony, nejčastěji svatou Barboru, a slavnosti, a v Kutné Hoře byla i silou, která dokázala vyhlásit stávku. Hornické spolky a bratrstva svaté Barbory existují dodnes.",
+   "en": "From the Middle Ages miners joined brotherhoods that cared for the sick and injured, for the widows and orphans of the dead, and for funerals. The brotherhoods had their own altars, patron saints, most often St Barbara, and feasts, and in Kutná Hora they were a force able to call a strike. Miners' societies and St Barbara brotherhoods still exist."
+  },
+  "refs": {
+   "class": [
+    "havir"
+   ]
+  },
+  "see": [
+   "e_svata_barbora",
+   "e_havir"
+  ]
+ },
+ "e_strelny_prach": {
+  "cat": "term",
+  "title": {
+   "cs": "Střelný prach v dolech",
+   "en": "Black Powder in the Mines"
+  },
+  "text": {
+   "cs": "Po celý středověk havíři rozrušovali tvrdou skálu jen želízkem, mlátkem a ohněm: u čelby zapálili hranici, rozpálenou skálu polili vodou a ta popraskala. Střelný prach se k trhání skály poprvé doloženě použil roku 1627 v Banské Štiavnici a odtud se rychle šířil do českých revírů. Nálož se vkládala do vyvrtaného otvoru a zapalovala doutnákem.",
+   "en": "Throughout the Middle Ages miners broke hard rock with iron, hammer and fire alone: they lit a bonfire against the face, doused the hot rock with water and let it crack. Black powder was first recorded in use for blasting in 1627 at Banská Štiavnica, and spread quickly from there to the Czech mines. The charge went into a drilled hole and was lit with a slow match."
+  },
+  "refs": {
+   "class": [
+    "havir"
+   ]
+  },
+  "see": [
+   "e_krumpac",
+   "e_havir"
+  ]
+ },
+ "e_husite": {
+  "cat": "term",
+  "title": {
+   "cs": "Husité",
+   "en": "The Hussites"
+  },
+  "text": {
+   "cs": "Husité byli stoupenci reformního kazatele Jana Husa, upáleného roku 1415 v Kostnici. V letech 1419 až 1434 vedli válku proti králi Zikmundovi a křížovým výpravám a jejich vozová hradba, pavézy, cepy a kuše porážely rytířská vojska. Katolická Kutná Hora byla zpočátku jejich zapřisáhlým nepřítelem, roku 1421 však husitům připadla a za válek těžce utrpěla, mnoho dolů zatopila voda.",
+   "en": "The Hussites were followers of the reformist preacher Jan Hus, burned at Constance in 1415. From 1419 to 1434 they fought King Sigismund and the crusades sent against them, and their wagon forts, pavises, flails and crossbows defeated armies of knights. Catholic Kutná Hora was at first their bitter enemy; in 1421 it fell to the Hussites and suffered badly in the wars, with many mines lost to flooding."
+  },
+  "refs": {
+   "monster": [
+    "kostlivy_kusinik"
+   ]
+  },
+  "see": [
+   "e_kank",
+   "e_paveza_cep",
+   "e_kusinik"
+  ]
+ },
+ "e_bila_pani": {
+  "cat": "creature",
+  "title": {
+   "cs": "Bílá paní",
+   "en": "The White Lady"
+  },
+  "text": {
+   "cs": "Bílá paní je duch ženy v bílém, který se zjevuje na hradech a zámcích. Nejslavnější je Perchta z Rožmberka, která podle pověsti ohlašuje radost úsměvem a smrt v rodě černými rukavicemi. Bílou paní mají i Valdek a desítky dalších hradů; v lidovém vyprávění s ní občas splývají i jiné bílé postavy noci.",
+   "en": "The White Lady is the ghost of a woman in white who appears in castles and chateaux. The most famous is Perchta of Rožmberk, who, legend says, foretells joy with a smile and a death in the family with black gloves. Valdek and dozens of other castles have their own White Lady, and folk tales sometimes blend her with other white figures of the night."
+  },
+  "refs": {
+   "town": [
+    "hora"
+   ]
+  },
+  "see": [
+   "e_klekanice",
+   "e_valdek"
+  ]
+ },
+ "e_krakonos": {
+  "cat": "person",
+  "title": {
+   "cs": "Krakonoš",
+   "en": "Krakonoš"
+  },
+  "text": {
+   "cs": "Krakonoš je vládce a duch Krkonoš, vousatý obr s holí, který je dobrým lidem nápomocný a zlé trestá, nejraději počasím. Podobného ducha má i řada dalších českých hor, Brdy například Fabiána.Krakonoše proslavily pohádky a večerníček Krkonošské pohádky.",
+   "en": "Krakonoš (KRAH-ko-nosh) is the lord and spirit of the Giant Mountains (Krkonoše), a bearded giant with a staff who helps good people and punishes bad ones, preferably with the weather. Many other Czech hills have a spirit like him; Brdy, for one, has Fabián.Fairy tales and the bedtime TV series 'Tales of the Giant Mountains' made Krakonoš famous."
+  },
+  "refs": {
+   "npc": [
+    "fabian"
+   ]
+  },
+  "see": [
+   "e_fabian",
+   "e_permonik"
+  ]
+ },
+ "e_zemezluc": {
+  "cat": "term",
+  "title": {
+   "cs": "Zeměžluč",
+   "en": "Centaury (zeměžluč)"
+  },
+  "text": {
+   "cs": "Zeměžluč lékařská je drobná bylina s růžovými hvězdicovitými květy, která roste na loukách a pasekách. Je velmi hořká, odtud jméno, a lidové léčitelství ji používalo na trávení, žluč a horečky. Podle brdské pověsti je to zakletá Medulína.",
+   "en": "Centaury (zeměžluč, ZEH-myeh-zhlooch, 'earth-gall') is a small herb with pink star-shaped flowers that grows in meadows and clearings. It is extremely bitter, hence its name, and folk medicine used it for digestion, bile and fevers. In the Brdy legend it is the enchanted Medulína."
+  },
+  "refs": {
+   "npc": [
+    "korenarka_medulina"
+   ]
+  },
+  "see": [
+   "e_medulina",
+   "e_vedma"
+  ]
+ },
+ "e_uranove_tabory": {
+  "cat": "term",
+  "title": {
+   "cs": "Jáchymovské uranové tábory",
+   "en": "The Jáchymov Uranium Camps"
+  },
+  "text": {
+   "cs": "Po roce 1945 se jáchymovský uran těžil pro sovětský atomový program. V letech 1949 až 1961 kolem Jáchymova fungovaly pracovní tábory, v nichž tisíce politických vězňů těžily uran bez ochrany před zářením; nejobávanější byla „Věž smrti“ u Vykmanova, kde se ruda drtila a třídila. Mnoho vězňů zemřelo nebo si odneslo trvalé následky.",
+   "en": "After 1945 Jáchymov uranium was mined for the Soviet atomic programme. From 1949 to 1961 labour camps around Jáchymov held thousands of political prisoners who mined uranium with no protection from radiation; the most feared place was the 'Tower of Death', where ore was crushed. Many prisoners died or were marked for life."
+  },
+  "refs": {
+   "npc": [
+    "senkyrka_rozina"
+   ]
+  },
+  "see": [
+   "e_jachymov",
+   "e_smolinec"
+  ]
+ },
+ "e_hornicke_muzeum": {
+  "cat": "place",
+  "title": {
+   "cs": "Hornické muzeum Příbram",
+   "en": "The Příbram Mining Museum"
+  },
+  "text": {
+   "cs": "Hornické muzeum Příbram je největší hornické muzeum v Česku. Spravuje skanzen na Březových Horách s Ševčinským dolem, štolu Prokop, kde se jezdí důlním vláčkem, a další památky revíru, včetně Hornického domku s předlohou Fabiána od Jana Čáky. Jeho maskotem je, jak jinak, permoník.",
+   "en": "The Příbram Mining Museum is the largest mining museum in Czechia. It runs the open-air museum at Březové Hory with the Ševčiny mine, the Prokop adit with its underground train, and other monuments of the district, including the Miner's House with Jan Čáka's original Fabián. Its mascot is, of course, a permoník."
+  },
+  "refs": {
+   "town": [
+    "pribram"
+   ]
+  },
+  "see": [
+   "e_brezove_hory",
+   "e_sevciny",
+   "e_fabian"
+  ]
+ },
+ "e_libuse": {
+  "cat": "person",
+  "title": {
+   "cs": "Libuše",
+   "en": "Libuše"
+  },
+  "text": {
+   "cs": "Libuše je bájná kněžna a věštkyně, nejmladší ze tří dcer Kroka, která podle Kosmovy kroniky vládla z Vyšehradu, za muže si vzala oráče Přemysla a založila tak rod Přemyslovců. Přisuzuje se jí proroctví o Praze, městě, „jehož sláva hvězd se dotýká“. Jejími sestrami byly bylinkářka Kazi a věštkyně Teta.",
+   "en": "Libuše (LI-boo-sheh) is the legendary princess and prophetess, youngest of Krok's three daughters, who according to Cosmas ruled from Vyšehrad, married the ploughman Přemysl and so founded the Přemyslid dynasty. She is credited with the prophecy of Prague, the city 'whose glory will touch the stars'. Her sisters were Kazi the herb healer and Teta the priestess."
+  },
+  "refs": {},
+  "see": [
+   "e_vysehrad",
+   "e_kosmas",
+   "e_bivoj"
+  ]
+ },
+ "e_hajek": {
+  "cat": "person",
+  "title": {
+   "cs": "Václav Hájek z Libočan",
+   "en": "Václav Hájek of Libočany"
+  },
+  "text": {
+   "cs": "Václav Hájek z Libočan (zemřel 1553) byl kněz a autor Kroniky české (1541), nejčtenější české knihy na celá staletí. Byl to spíš vypravěč než historik: mnohé příběhy a data si vymyslel nebo přikrášlil, a právě od něj pocházejí Horymír se Šemíkem, Bivoj a řada dalších postav. Jirásek z něj později čerpal pro Staré pověsti české.",
+   "en": "Václav Hájek of Libočany (d. 1553) was a priest and author of the Czech Chronicle (1541), the most widely read Czech book for centuries. He was more storyteller than historian, inventing or embroidering many tales and dates, and Horymír and Šemík, Bivoj and many other figures come from him. Jirásek later drew on him for the Old Czech Legends."
+  },
+  "refs": {},
+  "see": [
+   "e_horymir",
+   "e_bivoj",
+   "e_stare_povesti"
+  ]
+ }
+}

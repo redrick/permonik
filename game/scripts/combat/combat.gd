@@ -2,9 +2,9 @@ class_name Combat
 extends RefCounted
 
 
-static func hit_chance(alvl: int, dlvl: int, ar: float, def: float) -> float:
+static func hit_chance(alvl: int, dlvl: int, ar: float, def: float, lo := 0.05, hi := 0.95) -> float:
 	var c := 2.0 * float(alvl) / float(alvl + dlvl) * ar / maxf(1.0, ar + def)
-	return clampf(c, 0.05, 0.95)
+	return clampf(c, lo, hi)
 
 
 static func player_weapon_damage(pct := 100.0) -> Dictionary:
@@ -21,7 +21,7 @@ static func player_strike(player: Actor, target: Actor, pct := 100.0, opts := {}
 	if target == null or target.dead:
 		return false
 	var d: Dictionary = Game.ch.d
-	var hc := hit_chance(Game.ch.level, target.mlvl, float(d.to_hit) + float(opts.get("to_hit", 0)), float(target.armor))
+	var hc := hit_chance(Game.ch.level, target.mlvl, float(d.to_hit) + float(opts.get("to_hit", 0)), float(target.armor), 0.2)
 	if not opts.get("always_hit", false) and randf() > hc:
 		player.level.float_text(target.top_pos(), L.t({"cs": "vedle", "en": "miss"}), Color("9a948a"))
 		Sfx.play_at("swing", player.global_position, 0.5)
@@ -88,8 +88,8 @@ static func monster_hit_player(m: Actor, p: Actor, dmg: Vector2, element := "phy
 	if p == null or p.dead:
 		return false
 	var ch := Game.ch
-	var ar := float(m.mlvl * 12 + int(opts.get("to_hit", 0)))
-	if not opts.get("always_hit", false) and randf() > hit_chance(m.mlvl, ch.level, ar, float(ch.d.armor)):
+	var ar := float(6 + m.mlvl * 6 + int(opts.get("to_hit", 0)))
+	if not opts.get("always_hit", false) and randf() > hit_chance(m.mlvl, ch.level, ar, float(ch.d.armor), 0.05, 0.85):
 		p.level.float_text(p.top_pos(), L.t({"cs": "uhnul", "en": "dodge"}), Color("9a948a"), true)
 		return false
 	if element == "physical" and randf() * 100.0 < float(ch.d.get("block", 0)) * (1.0 if not p.moving else 0.5):

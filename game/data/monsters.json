@@ -51,7 +51,7 @@
   },
   "vlk": {
     "name": {"cs": "Vlk", "en": "Wolf"}, "gender": "m", "act": 2, "level": 9,
-    "ai": "swarm", "hp": 75, "dmg": [6, 14], "armor": 35, "speed": 140, "attack_range": 45, "attack_cd": 1.1,
+    "ai": "swarm", "hp": 50, "dmg": [4, 9], "armor": 35, "speed": 140, "attack_range": 45, "attack_cd": 1.1,
     "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 25, "poison": 0},
     "xp_mult": 0.9, "size": 18, "pack": [4, 7], "projectile": null, "abilities": [], "light": null, "boss": false
   },
@@ -88,7 +88,7 @@
 
   "cert": {
     "name": {"cs": "Čert", "en": "Devil"}, "gender": "m", "act": 3, "level": 16,
-    "ai": "melee", "hp": 290, "dmg": [16, 34], "armor": 85, "speed": 80, "attack_range": 60, "attack_cd": 1.5,
+    "ai": "melee", "hp": 240, "dmg": [12, 26], "armor": 85, "speed": 80, "attack_range": 60, "attack_cd": 1.5,
     "element": "physical", "resist": {"fire": 75, "lightning": 0, "cold": 0, "poison": 25},
     "xp_mult": 1.8, "size": 22, "pack": [2, 4], "projectile": null, "abilities": ["chain_pull"], "light": null, "boss": false
   },
@@ -140,13 +140,13 @@
     "xp_mult": 0.9, "size": 10, "pack": [6, 12], "projectile": null, "abilities": ["steal_gold"], "light": null, "boss": false
   },
   "bes": {
-    "name": {"cs": "Bes", "en": "Demon"}, "gender": "m", "act": 4, "level": 27,
+    "name": {"cs": "Běs", "en": "Demon"}, "gender": "m", "act": 4, "level": 27,
     "ai": "caster", "hp": 480, "dmg": [26, 52], "armor": 130, "speed": 75, "attack_range": 300, "attack_cd": 2.0,
     "element": "fire", "resist": {"fire": 50, "lightning": 50, "cold": 0, "poison": 25},
     "xp_mult": 2.8, "size": 26, "pack": [1, 3], "projectile": "firebolt", "abilities": ["curse"], "light": null, "boss": false
   },
   "kostejuv_nesmrtelny": {
-    "name": {"cs": "Kostějův nesmrtelný", "en": "Koschei's Deathless"}, "gender": "m", "act": 4, "level": 28,
+    "name": {"cs": "Kostějův nesmrtelný", "en": "Koschei's Deathless Guard"}, "gender": "m", "act": 4, "level": 28,
     "ai": "melee", "hp": 620, "dmg": [30, 60], "armor": 220, "speed": 70, "attack_range": 60, "attack_cd": 1.5,
     "element": "physical", "resist": {"fire": 0, "lightning": 25, "cold": 50, "poison": 100},
     "xp_mult": 3.0, "size": 24, "pack": [2, 4], "projectile": null, "abilities": ["revive"], "light": null, "boss": false

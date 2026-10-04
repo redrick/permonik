@@ -25,7 +25,7 @@ func _process(delta: float) -> void:
 	if dbg > 1.0:
 		dbg = 0.0
 		var pl: Player = Game.player
-		print("T paused=%s ui=%s pos=%s action=%.2f intent=%s hp=%d" % [get_tree().paused, Game.paused_ui, pl.global_position if pl else Vector2.ZERO, pl.action_t if pl else 0.0, pl.intent.get("type", "") if pl else "", Game.ch.hp])
+		print("T fps=%d mons=%d paused=%s ui=%s pos=%s action=%.2f intent=%s hp=%d" % [Engine.get_frames_per_second(), Game.level.monsters.size() if Game.level else -1, get_tree().paused, Game.paused_ui, pl.global_position if pl else Vector2.ZERO, pl.action_t if pl else 0.0, pl.intent.get("type", "") if pl else "", Game.ch.hp])
 	var p: Player = Game.player
 	var lv: Level = Game.level
 	if p == null or lv == null or p.dead:

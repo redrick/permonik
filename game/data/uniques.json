@@ -1,6 +1,6 @@
 {
   "klekanicina_rouska": {
-    "name": {"cs": "Klekaničina rouška", "en": "The Klekánice's Veil"}, "base": "kapuce", "qlvl": 6,
+    "name": {"cs": "Klekáničina rouška", "en": "The Klekánice's Veil"}, "base": "kapuce", "qlvl": 6,
     "mods": [{"stat": "magie", "min": 5, "max": 8}, {"stat": "mana", "min": 10, "max": 20}, {"stat": "res_cold", "min": 15, "max": 20}, {"stat": "light_radius", "min": -1, "max": -1}],
     "flavor": {"cs": "Bílé plátno, které pamatuje každé dítě, co nešlo domů včas. Vidíš v něm méně, ale slyšíš i to, co šeptá tma.", "en": "White linen that remembers every child who didn't get home in time. You see less through it, but you hear what the dark whispers."}
   },
@@ -140,7 +140,7 @@
     "flavor": {"cs": "Dvanáct přezek, dvanáct měsíčků u ohně. Zapni ho v lednu a uvidíš fialky.", "en": "Twelve buckles, twelve months round a fire. Fasten it in January and you'll see violets."}
   },
   "sanin_kozich": {
-    "name": {"cs": "Sanin kožich", "en": "The Saň's Hide"}, "base": "kozich", "qlvl": 29,
+    "name": {"cs": "Saňin kožich", "en": "The Saň's Hide"}, "base": "kozich", "qlvl": 29,
     "mods": [{"stat": "armor_pct", "min": 100, "max": 130}, {"stat": "res_fire", "min": 20, "max": 20}, {"stat": "res_cold", "min": 20, "max": 20}, {"stat": "res_poison", "min": 20, "max": 20}, {"stat": "hp", "min": 30, "max": 40}],
     "flavor": {"cs": "Šupiny ze tří krků, sešité dohromady. Občas se pod nimi něco pohne, jako by chtělo dorůst.", "en": "Scales from three necks, sewn together. Sometimes something stirs beneath them, as if trying to grow back."}
   },
@@ -152,7 +152,7 @@
   "medulinina_hul": {
     "name": {"cs": "Medulínina hůl", "en": "Medulína's Staff"}, "base": "hul_kovany", "qlvl": 30,
     "mods": [{"stat": "skills", "min": 1, "max": 1}, {"stat": "magie", "min": 12, "max": 18}, {"stat": "hp_regen", "min": 5, "max": 8}, {"stat": "res_poison", "min": 25, "max": 30}, {"stat": "mana", "min": 35, "max": 45}],
-    "flavor": {"cs": "Hodná sestra z brdské trojice ji obtočila kvetoucím chmelem. Kvete i v nejhlubší štole.", "en": "The kind sister of the Brdy three wound it with flowering hops. It blooms even in the deepest adit."}
+    "flavor": {"cs": "Fabiánova nevěsta z brdské pověsti ji obtočila kvetoucím chmelem. Kvete i v nejhlubší štole.", "en": "Fabián's bride from the Brdy legend wound it with flowering hops. It blooms even in the deepest adit."}
   },
   "janosikova_valaska": {
     "name": {"cs": "Jánošíkova valaška", "en": "Jánošík's Axe"}, "base": "valaska_kovany", "qlvl": 30,
@@ -187,7 +187,7 @@
   "horymiruv_bic": {
     "name": {"cs": "Horymírův bič", "en": "Horymír's Whip"}, "base": "cep_kovany", "qlvl": 40,
     "mods": [{"stat": "dmg_pct", "min": 120, "max": 150}, {"stat": "move_speed", "min": 15, "max": 15}, {"stat": "attack_speed", "min": 15, "max": 15}, {"stat": "obratnost", "min": 10, "max": 15}],
-    "flavor": {"cs": "„Šemíku, hop!“ Horymír ho práskl jen jednou a kůň přeskočil hradby. S horníky z Bříství se nepohodl — a hora mu to nezapomněla.", "en": "\"Šemík, jump!\" Horymír cracked it only once and the horse cleared the walls. He fell out with the miners of Bříství — and the mountain never forgot."}
+    "flavor": {"cs": "„Šemíku, hop!“ Horymír ho práskl jen jednou a kůň přeskočil hradby. S havíři z Březových Hor se nepohodl — a hora mu to nezapomněla.", "en": "\"Šemík, jump!\" Horymír cracked it only once and the horse cleared the walls. He fell out with the miners of Březové Hory — and the mountain never forgot."}
   },
   "zdar_buh_kahan": {
     "name": {"cs": "Zdař Bůh", "en": "Zdař Bůh"}, "base": "mosazny_kahan", "qlvl": 40,
@@ -215,9 +215,9 @@
     "flavor": {"cs": "Svítí bíle jako ta jeho, ale hřeje. Na víčku je vyrytá věž a pod ní: „Ať vyfárají všichni.“", "en": "It shines white like his, but it is warm. A tower is engraved on the lid, and beneath it: \"May they all come back up.\""}
   },
   "mydlaruv_kord": {
-    "name": {"cs": "Mydlářův kord", "en": "Mydlář's Rapier"}, "base": "kord_hlubinny", "qlvl": 60,
+    "name": {"cs": "Mydlářův meč", "en": "Mydlář's Sword"}, "base": "kord_hlubinny", "qlvl": 60,
     "mods": [{"stat": "dmg_pct", "min": 180, "max": 230}, {"stat": "crit", "min": 12, "max": 15}, {"stat": "life_steal", "min": 5, "max": 6}, {"stat": "obratnost", "min": 18, "max": 22}],
-    "flavor": {"cs": "Kat Mydlář jím jednoho červnového rána popravil sedmadvacet mužů. Čepel si to pamatuje lépe než on.", "en": "With it, the executioner Mydlář put twenty-seven men to death one June morning. The blade remembers it better than he did."}
+    "flavor": {"cs": "Kat Mydlář jím jednoho červnového rána roku 1621 sťal čtyřiadvacet mužů. Čepel si to pamatuje lépe než on.", "en": "With it, one June morning in 1621, the executioner Mydlář beheaded twenty-four men. The blade remembers it better than he did."}
   },
   "faustova_kniha": {
     "name": {"cs": "Faustova kniha", "en": "Faust's Book"}, "base": "kniha_hlubinny", "qlvl": 65,

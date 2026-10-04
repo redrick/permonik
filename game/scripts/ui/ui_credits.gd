@@ -27,6 +27,7 @@ const LINES := [
 	["v", {"cs": "Alois Jirásek, Staré pověsti české", "en": "Alois Jirásek, Old Czech Legends"}],
 	["v", {"cs": "Božena Němcová, Národní báchorky a pověsti", "en": "Božena Němcová, Folk Tales and Legends"}],
 	["v", {"cs": "Havířské pověsti z Kutné Hory, Příbrami a Jáchymova", "en": "Miners' legends of Kutná Hora, Příbram and Jáchymov"}],
+	["v", {"cs": "Knihy v dolech: Erben, Jirásek, Němcová, Palacký, Jakub Malý, Georgius Agricola, A. N. Afanasjev, N. V. Gogol, W. R. S. Ralston, Claud Field. Volná díla; chybějící překlady pořídila hra.", "en": "Books in the mines: Erben, Jirásek, Němcová, Palacký, Jakub Malý, Georgius Agricola, A. N. Afanasyev, N. V. Gogol, W. R. S. Ralston, Claud Field. Public domain; missing translations made for the game."}],
 	["v", {"cs": "Ius regale montanorum, král Václav II., léta Páně 1300", "en": "Ius regale montanorum, King Wenceslas II, AD 1300"}],
 	["gap"],
 	["k", {"cs": "Postaveno v", "en": "Built with"}],

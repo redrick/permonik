@@ -176,6 +176,8 @@ func toggle_panel(what: String) -> void:
 			left = UiSkills.new()
 		"quests":
 			left = UiQuests.new()
+		"kronika":
+			left = UiKronika.new()
 		_:
 			left = null
 			return
@@ -223,6 +225,7 @@ func close_panel(p: Control) -> void:
 
 func open_npc(npc: Npc) -> void:
 	close_all()
+	Game.learn("npc", npc.npc_id)
 	var d := UiDialog.new()
 	d.npc = npc
 	modal = d
@@ -245,7 +248,19 @@ func open_vendor(npc: Npc) -> void:
 func open_kronika() -> void:
 	close_all()
 	left = UiKronika.new()
+	left.set_meta("kind", "kronika")
 	_place(left, "left")
+	_sync_pause()
+
+
+func open_book(bid: String) -> void:
+	if not DB.books.has(bid):
+		return
+	_free(modal)
+	var b := UiBook.new()
+	b.book_id = bid
+	modal = b
+	_place(modal, "center")
 	_sync_pause()
 
 

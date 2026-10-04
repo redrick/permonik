@@ -96,7 +96,7 @@
     {"if": ["act:2", "quest:valdecky_jezdec:step=report"],
      "lines": [
       {"who": "permonik", "text": {"cs": "Rytíř bez koně je jen chlap v plechu. Výborně, človíčku. Můj človíčku.", "en": "A knight without a horse is just a man in a tin can. Well done, little one. My little one."}},
-      {"who": "permonik", "text": {"cs": "A teď to důležité. Ve Ševčinské žíle sedí bazilišek. Kdo se mu podívá do očí, zkamení. Kamenem drží hlubinu… tedy, Hora je pod ním celá ztuhlá. (Rychle.) Kovář Vojtěch ví o zrcadlech, co tam dole visí. Zeptej se ho.", "en": "And now, what matters. A basilisk sits in the Ševčín vein. Whoever looks it in the eye turns to stone. With stone it holds the deep… that is, the whole Mountain has gone stiff beneath it. (Quickly.) Vojtěch the smith knows about the mirrors hanging down there. Ask him."}}
+      {"who": "permonik", "text": {"cs": "A teď to důležité. Na Ševčinské žíle sedí bazilišek. Kdo se mu podívá do očí, zkamení. Kamenem drží hlubinu… tedy, Hora je pod ním celá ztuhlá. (Rychle.) Kovář Vojtěch ví o zrcadlech, co tam dole visí. Zeptej se ho.", "en": "And now, what matters. A basilisk sits in the Ševčiny vein. Whoever looks it in the eye turns to stone. With stone it holds the deep… that is, the whole Mountain has gone stiff beneath it. (Quickly.) Vojtěch the smith knows about the mirrors hanging down there. Ask him."}}
      ],
      "do": ["quest_done:valdecky_jezdec", "quest_start:zrcadla_v_sevcine"]},
     {"if": ["act:2", "quest:medulinin_odkaz:step=report"],
@@ -195,7 +195,7 @@
        "text_havir": {"cs": "Dědo. Kde to jsme? Proč nic neříkáš?", "en": "Old man. Where are we? Why aren't you saying anything?"},
        "text_zbojnice": {"cs": "Žádné povídání, žádné „kahánku“? Tohle se mi líbí ještě míň.", "en": "No chatter, no “my little lamp”? I like this even less."},
        "text_vedma": {"cs": "Nav. Jsme pod kořeny světa. Odsud se nevracíme, že ne?", "en": "Nav. We are beneath the roots of the world. We don't come back from here, do we?"}},
-      {"who": "permonik", "text": {"cs": "(Ukáže prstem k řece, ke Kalinovému mostu. Usmívá se. Víc neřekne.)", "en": "(He points a finger at the river, at the Kalinov Bridge. He smiles. He says nothing more.)"}}
+      {"who": "permonik", "text": {"cs": "(Ukáže prstem k řece, ke Kalinovu mostu. Usmívá se. Víc neřekne.)", "en": "(He points a finger at the river, at the Kalinov Bridge. He smiles. He says nothing more.)"}}
      ],
      "do": ["quest_start:kalinov_most"]},
     {"if": ["act:4", "quest:kostejova_smrt:step=report"],
@@ -292,7 +292,7 @@
      ],
      "do": ["flag:kosmas_met_2"]},
     {"if": ["act:2", "quest:medulinin_odkaz:done", "!flag:kosmas_r_megera"],
-     "lines": [{"who": "kosmas", "text": {"cs": "Tři pověsti z Brd: Fabián, Medulína, Megera. Rytíř, dobrá a zlá. Je zvláštní dívat se, jak jedna pověst končí. Zapíšu to dřív, než to lidé začnou vyprávět jinak.", "en": "Three legends of Brdy: Fabián, Medulína, Megera. The knight, the good one and the wicked one. It is strange to watch a legend come to an end. I'll write it down before people start telling it differently."}}],
+     "lines": [{"who": "kosmas", "text": {"cs": "Jedna pověst z Brd a v ní tři: Fabián, Medulína, Megera. Rytíř, dobrá a zlá. Je zvláštní dívat se, jak jedna pověst končí. Zapíšu to dřív, než to lidé začnou vyprávět jinak.", "en": "One legend of Brdy, and three in it: Fabián, Medulína, Megera. The knight, the good one and the wicked one. It is strange to watch a legend come to an end. I'll write it down before people start telling it differently."}}],
      "do": ["flag:kosmas_r_megera"]},
     {"if": ["act:2"],
      "lines": [{"who": "kosmas", "text": {"cs": "Přines, co nepoznáš. Já zatím skládám střepy.", "en": "Bring me what you can't identify. Meanwhile I'll keep piecing the shards together."}}]},
@@ -476,7 +476,7 @@
   "kovar_vojtech": [
     {"if": ["quest:zrcadla_v_sevcine:step=kovar"],
      "lines": [
-      {"who": "kovar_vojtech", "text": {"cs": "Zrcadla v Ševčině? Ty věšel ještě můj děda. Bazilišek se tam vylíhl už jednou, za mého pradědy, z vejce, které snesl kohout.", "en": "The mirrors in Ševčín? My grandfather hung those. The basilisk hatched down there once before, in my great-grandfather's day, from an egg laid by a rooster."}},
+      {"who": "kovar_vojtech", "text": {"cs": "Zrcadla na Ševčinské? Ty věšel ještě můj děda. Bazilišek se tam vylíhl už jednou, za mého pradědy, z vejce, které snesl kohout.", "en": "The mirrors on the Ševčiny vein? My grandfather hung those. The basilisk hatched down there once before, in my great-grandfather's day, from an egg laid by a rooster."}},
       {"who": "kovar_vojtech", "text": {"cs": "Bazilišek zabíjí pohledem. Ale pohled se dá vrátit. Děda nechal v té žíle pověsit velká zrcadla. Kdo baziliška vyláká před zrcadlo, ten ho nechá zkamenět vlastníma očima.", "en": "A basilisk kills with a look. But a look can be sent back. Grandfather had great mirrors hung in that vein. Lure the basilisk in front of one, and you let its own eyes turn it to stone."}},
       {"who": "kovar_vojtech", "text": {"cs": "Na, tady je střep z dědova zrcadla. Kdyby ti ve tmě něco zíralo do zad, podívej se do něj dřív, než se otočíš.", "en": "Here, a shard of Grandfather's mirror. If something in the dark is staring at your back, look into this before you turn around."}}
      ],
@@ -769,7 +769,7 @@
       {"cs": "Děda říkal, že permoník chodí štolami a ťuká na skálu tam, kde je stříbro. Pak dodal: a tam, kde je propast, ťuká taky.", "en": "Grandfather said the permoník walks the galleries and taps on the rock where there's silver. Then he added: and he taps where there's a chasm, too."},
       {"cs": "Kořeny z Brd prorazily výdřevu ve třetím patře. Smrkové kořeny. A ten smrk stojí na Třemšíně, deset mil odsud.", "en": "Roots from Brdy have broken through the timbering on the third level. Spruce roots. And that spruce stands on Třemšín, ten leagues from here."},
       {"cs": "Ukovu ti cokoli. Jen sošku permoníka ne. Ty dělá Kuba a já mu je nekupuju.", "en": "I'll forge you anything. Except a permoník statue. Kuba makes those, and I don't buy them from him."},
-      {"cs": "V Ševčině se kdysi kopalo stříbro tak bohaté, že se žíla dala krájet jako sýr.", "en": "Once the silver in Ševčín ran so rich you could slice the vein like cheese."}
+      {"cs": "Na Ševčinské žíle se kdysi kopalo stříbro tak bohaté, že se žíla dala krájet jako sýr.", "en": "Once the silver of the Ševčiny vein ran so rich you could slice the vein like cheese."}
     ],
     "korenarka_medulina": [
       {"cs": "Kdo utrhne kapradí květ, ten rozumí řeči zvířat. Kdo ho utrhne a ohlédne se, ten rozumí už jen zvířatům.", "en": "Whoever picks the fern flower understands the speech of animals. Whoever picks it and looks back understands only animals from then on."},
@@ -797,7 +797,7 @@
       {"cs": "Kdysi jsem hledal cestu domů. Teď jsem cesta. Kdo jde po Brdech správně, jde po mně.", "en": "Once I searched for the way home. Now I am the way. Whoever walks Brdy rightly walks on me."},
       {"cs": "Kahany svítí teple. Hniloba svítí studeně. Tvůj kahan je studený.", "en": "Lamps burn warm. Rot glows cold. Your lamp is cold."},
       {"cs": "Šiška padá daleko od stromu, když fouká vítr. Ty jsi daleko od domova. Jaký vítr tě sem přinesl?", "en": "A cone falls far from the tree when the wind blows. You are far from home. What wind brought you here?"},
-      {"cs": "Megera, Medulína a já. Tři pověsti. Každý z nás tří slíbil něco dolů. Jen jedna to slíbila dobře.", "en": "Megera, Medulína and I. Three legends. Each of us three promised something to the deep. Only one of us promised well."},
+      {"cs": "Megera, Medulína a já. Jedna pověst, tři osudy. Každý z nás tří slíbil něco dolů. Jen jedna to slíbila dobře.", "en": "Megera, Medulína and I. One legend, three fates. Each of us three promised something to the deep. Only one of us promised well."},
       {"cs": "Stín je první věc, kterou dostaneš, když se narodíš na světlo. Kdo ho nemá, ten se na světlo nikdy nenarodil.", "en": "A shadow is the first thing you are given when you are born into the light. Whoever has none was never born into the light at all."},
       {"cs": "Až budeš dole a nebudeš vědět kudy, dýchni na šišku. Les si vzpomene.", "en": "When you are below and do not know the way, breathe on the cone. The forest will remember."}
     ],
@@ -826,7 +826,7 @@
       {"cs": "Ve vodách pod Jáchymovem je cosi, co léčí klouby a zabíjí trpělivost. Jednou sem budou jezdit lázeňští hosté. Hloupí lidé, ale platící.", "en": "In the waters beneath Jáchymov there is something that cures the joints and kills patience. One day spa guests will come here. Foolish people, but paying ones."},
       {"cs": "Napsal jsem o hornictví dialog Bermannus. Nikdo ho nečetl. Teď píšu knihu se stovkami obrázků čerpadel. Ta snad bude mít větší úspěch.", "en": "I wrote a dialogue on mining, the Bermannus. No one read it. Now I am writing a book with hundreds of pictures of pumps. That one may do better."},
       {"cs": "Viděl jsem světlonoše. Dýchne na tvou svíci a ta se zmenší. Přírodní jev, zatím bez vysvětlení. Nedoporučuji.", "en": "I have seen a lantern-bearer. It breathes on your candle and the candle shrinks. A natural phenomenon, as yet unexplained. Not recommended."},
-      {"cs": "Za tři sta let si sem pro smolinec přijede paní z Paříže a uvaří z něj světlo, které svítí ve tmě. Netuším, proč to říkám. Zdálo se mi to.", "en": "In three hundred years a lady from Paris will come here for pitchblende and boil out of it a light that shines in the dark. I have no idea why I say this. I dreamt it."},
+      {"cs": "Za necelá čtyři sta let si sem pro smolinec přijede paní z Paříže a uvaří z něj světlo, které svítí ve tmě. Netuším, proč to říkám. Zdálo se mi to.", "en": "In less than four hundred years a lady from Paris will come here for pitchblende and boil out of it a light that shines in the dark. I have no idea why I say this. I dreamt it."},
       {"cs": "Upír nepije krev, jak se říká. Pije teplo. Proto jsou po něm mrtví studení, a ne bledí. Zapsal jsem to latinsky, aby to tolik nestrašilo.", "en": "A vampire does not drink blood, as they say. It drinks warmth. That is why its dead are cold rather than pale. I wrote it in Latin so it would frighten less."},
       {"cs": "Ti malí s kahany, o kterých jsem psal, nemají rádi zvony. Psal jsem to? Nevím. Měl bych.", "en": "The little ones with lamps that I wrote about dislike bells. Did I write that? I don't know. I should."}
     ],
@@ -862,7 +862,7 @@
     ],
     "prevoznik": [
       {"cs": "Groš za cestu. Pražský groš, ne tolar. Na druhém břehu tolary neberou.", "en": "A groš a crossing. A Prague groš, not a thaler. They don't take thalers on the far bank."},
-      {"cs": "Kalinový most je z rozžhaveného železa. Kdo po něm jde, ten se chce ohlédnout. Kdo se ohlédne, spadne.", "en": "The Kalinov Bridge is made of red-hot iron. Whoever crosses it wants to look back. Whoever looks back falls."},
+      {"cs": "Kalinův most je z rozžhaveného železa. Kdo po něm jde, ten se chce ohlédnout. Kdo se ohlédne, spadne.", "en": "The Kalinov Bridge is made of red-hot iron. Whoever crosses it wants to look back. Whoever looks back falls."},
       {"cs": "Pod Navem je ještě něco. Tam nevozím. Tam se nevozí.", "en": "There is something beneath Nav as well. I don't ferry there. No one ferries there."},
       {"cs": "Veles tu pase stáda duší. Já mu je jen převážím. Platí líp než lidi.", "en": "Veles pastures his herds of souls here. I only ferry them for him. He pays better than people do."},
       {"cs": "Každý rok sem připluje zvon. Utopený zvon z nějaké vsi. Rozezvoní se, až když se vrátí domů.", "en": "Every year a bell drifts down here. A drowned bell from some village. It rings only once it's home again."},

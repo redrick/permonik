@@ -158,5 +158,5 @@
   "hrnek": {"name": {"cs": "Hrníček s dušičkou", "en": "Soul Teacup"}, "gender": "m", "icon": "hrnek", "slot": "quest", "kind": "quest", "size": [1, 1], "req": {"level": 1}, "price": 0, "qlvl": 1, "unsellable": true,
     "flavor": {"cs": "Obrácený hrníček z vodníkovy sbírky. Zevnitř je slyšet tichý pláč.", "en": "An upturned teacup from the Vodník's collection. Soft weeping can be heard inside."}},
   "zrcadlo_strep": {"name": {"cs": "Střep zrcadla", "en": "Mirror Shard"}, "gender": "m", "icon": "zrcadlo_strep", "slot": "quest", "kind": "quest", "size": [1, 1], "req": {"level": 1}, "price": 0, "qlvl": 1, "unsellable": true,
-    "flavor": {"cs": "Bazilišek se nesmí podívat sám na sebe. Proto je v Ševčině tolik zrcadel.", "en": "A basilisk must never see itself. That is why there are so many mirrors in the Ševčin mine."}}
+    "flavor": {"cs": "Bazilišek se nesmí podívat sám na sebe. Proto je na Ševčinské žíle tolik zrcadel.", "en": "A basilisk must never see itself. That is why there are so many mirrors along the Ševčiny vein."}}
 }

@@ -169,7 +169,7 @@ func _build_bar() -> void:
 	btns.position = Vector2(300, 112)
 	btns.add_theme_constant_override("separation", 6)
 	bar.add_child(btns)
-	for pair in [["character", "C"], ["inventory", "I"], ["skills", "S"], ["quests", "J"], ["automap", "Tab"]]:
+	for pair in [["character", "C"], ["inventory", "I"], ["skills", "S"], ["quests", "J"], ["kronika", "K"], ["automap", "Tab"]]:
 		var b := Button.new()
 		b.text = L.t(pair[0]).left(9)
 		b.tooltip_text = "%s (%s)" % [L.t(pair[0]), pair[1]]
@@ -339,7 +339,9 @@ func _on_message(text: String, color: Color) -> void:
 	l.text = text
 	log_box.add_child(l)
 	while log_box.get_child_count() > 6:
-		log_box.get_child(0).queue_free()
+		var old := log_box.get_child(0)
+		log_box.remove_child(old)
+		old.queue_free()
 	var tw := l.create_tween()
 	tw.tween_interval(5.0)
 	tw.tween_property(l, "modulate:a", 0.0, 1.5)
@@ -382,7 +384,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not visible or Game.player == null:
 		return
 	if event is InputEventKey and event.pressed and not event.echo:
-		for a in ["inventory", "character", "skills", "quests", "automap"]:
+		for a in ["inventory", "character", "skills", "quests", "kronika", "automap"]:
 			if event.is_action(a):
 				toggle(a)
 				get_viewport().set_input_as_handled()

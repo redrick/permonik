@@ -210,6 +210,10 @@ func _ai(delta: float) -> void:
 		velocity = Vector2.ZERO
 		moving = false
 		return
+	_gold_t -= delta
+	if _gold_t <= 0.0:
+		_gold_t = 0.15
+		level.collect_gold_near(global_position, 56.0)
 	if lmb_down and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		lmb_down = false
 	var spd := 210.0 * (1.0 + float(ch.d.get("move_speed", 0.0)) / 100.0) * speed_mult()
@@ -248,7 +252,7 @@ func _ai(delta: float) -> void:
 			if n == null:
 				intent = {}
 				return
-			var reach := 70.0 if intent.type != "prop" else 54.0 + float(n.get_meta("reach", 0.0))
+			var reach := 84.0 if intent.type != "prop" else 54.0 + float(n.get_meta("reach", 0.0))
 			if global_position.distance_to(n.global_position) <= reach:
 				path.clear()
 				velocity = Vector2.ZERO
@@ -258,9 +262,13 @@ func _ai(delta: float) -> void:
 				level.interact(self, t, n)
 			elif follow_path(delta, spd):
 				var t2: String = intent.type
+				var retried := bool(intent.get("retried", false))
 				intent = {}
 				if global_position.distance_to(n.global_position) <= reach + 50:
 					level.interact(self, t2, n)
+				elif t2 == "item" and not retried:
+					intent = {"type": "item", "node": n, "retried": true}
+					set_path_to(n.global_position)
 		"_done":
 			velocity = Vector2.ZERO
 			moving = false
@@ -277,6 +285,7 @@ func _ai(delta: float) -> void:
 
 
 var _repath := 0.0
+var _gold_t := 0.0
 
 
 func repath_soon(target: Vector2) -> void:

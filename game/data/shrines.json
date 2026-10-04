@@ -37,6 +37,6 @@
   "rod": {
     "name": {"cs": "Rodova modla", "en": "Idol of Rod"}, "prop": "modla_rod",
     "effect": {"mods": [{"stat": "xp_pct", "value": 20}], "duration": 300},
-    "msg": {"cs": "Rod, který přede osudy, ti přidal pár nití.", "en": "Rod, who spins the threads of fate, adds a few to yours."}
+    "msg": {"cs": "Rod a jeho rožanice, které předou osudy, ti přidaly pár nití.", "en": "Rod and his rozhanitsy, who spin fate, add a few threads to yours."}
   }
 }

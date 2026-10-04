@@ -93,7 +93,7 @@ func _column() -> VBoxContainer:
 	return vb
 
 
-func _btn(parent: Control, text: String, cb: Callable, w := 400.0) -> Button:
+func _btn(parent: Control, text: String, cb: Callable, w := 480.0) -> Button:
 	var b := UiTheme.button(text, cb, w, 30)
 	b.custom_minimum_size.y = 64
 	b.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
@@ -111,7 +111,7 @@ func _main() -> void:
 	cont.disabled = saves.is_empty()
 	if not saves.is_empty():
 		var s: Dictionary = saves[0]
-		cont.tooltip_text = "%s · %s %d" % [s.name, L.t("level"), int(s.level)]
+		cont.text = "%s: %s (%d)" % [L.t("menu_continue"), s.name, int(s.level)]
 	var lb := _btn(vb, UiTheme.t("menu_saves"), func(): _show("saves"))
 	lb.disabled = saves.is_empty()
 	_btn(vb, L.t("menu_new_game"), func(): _show("new"))

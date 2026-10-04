@@ -467,6 +467,7 @@ func _populate_dungeon() -> void:
 		var id: String = deco_ids.pick_random()
 		_place_prop(id, c, DB.prop(id).get("blocks", false))
 	_place_quest_props()
+	_place_books()
 	_spawn_monsters(rng, used)
 
 
@@ -478,6 +479,30 @@ func _find_free_near(c: Vector2i, rmin: int, rmax: int) -> Vector2i:
 				if _cell_free_area(n, 1) and n != gen.start and n != gen.exit:
 					return n
 	return c
+
+
+# Each book has one home (books.json "where"); dungeon copies sit in an open spot away from the stairs,
+# town copies on a lectern next to the chronicler.
+func _place_books() -> void:
+	var here := str(DB.act(act_n).get("town", {}).get("id", "")) if is_town else "act%d_floor%d" % [act_n, floor_n]
+	var n := 0
+	for bid in DB.books:
+		if str(DB.books[bid].get("where", "")) != here:
+			continue
+		var c := Vector2i(-1, -1)
+		if is_town:
+			c = _find_free_near(Vector2i(18 - n * 2, 21), 0, 3)
+		else:
+			for cand in _free_cells(12):
+				if _cell_free_area(cand, 1):
+					c = cand
+					break
+		if c.x < 0:
+			continue
+		var p := _place_prop("kniha", c)
+		p.interact = "book"
+		p.data["book"] = bid
+		n += 1
 
 
 func _place_quest_props() -> void:
@@ -626,6 +651,7 @@ func _populate_town() -> void:
 			p.interact = pl.interact
 	for k in tl.points:
 		arrive_points[k] = cell_center(tl.points[k])
+	_place_books()
 	var ad := DB.act(act_n)
 	var spots: Dictionary = tl.npc_spots
 	for nid in ad.get("town", {}).get("npcs", []):
@@ -698,16 +724,16 @@ func _make_portal_node(pos: Vector2) -> void:
 
 # ---------------------------------------------------------------- picking & interaction
 func pick_at(pos: Vector2):
-	if Input.is_action_pressed("show_items") or true:
+	if Input.is_action_pressed("show_items"):
 		for g in ground_items:
-			if is_instance_valid(g) and g.lbl.visible and g.hit_rect().has_point(pos):
+			if is_instance_valid(g) and g.hit_rect().has_point(pos):
 				return {"type": "item", "node": g}
 	var best = null
 	var bd := INF
 	for m in monsters:
 		if m.dead or not m.visible:
 			continue
-		if m.hit_rect().has_point(pos) and (is_town or lit(m.global_position) or m.kind == "boss"):
+		if m.hit_rect().has_point(pos) and _targetable(m):
 			var dd: float = m.center_pos().distance_to(pos)
 			if dd < bd:
 				bd = dd
@@ -726,6 +752,13 @@ func pick_at(pos: Vector2):
 	return null
 
 
+# Aggro monsters stay clickable a bit past the lamp, so archers and casters at the edge of the light can be answered.
+func _targetable(m: Monster) -> bool:
+	if is_town or m.kind == "boss" or lit(m.global_position):
+		return true
+	return m.aggro and player != null and player.global_position.distance_to(m.global_position) < player.light_radius_px() * 1.6 + 60.0
+
+
 func interact(pl: Player, type: String, node: Node) -> void:
 	match type:
 		"item":
@@ -738,6 +771,12 @@ func interact(pl: Player, type: String, node: Node) -> void:
 			_use_prop(pl, node)
 
 
+func collect_gold_near(pos: Vector2, r: float) -> void:
+	for g in ground_items.duplicate():
+		if is_instance_valid(g) and g.item.slot() == "gold" and g.global_position.distance_to(pos) <= r:
+			_pickup(g)
+
+
 func _pickup(g: GroundItem) -> void:
 	if not is_instance_valid(g):
 		return
@@ -748,6 +787,8 @@ func _pickup(g: GroundItem) -> void:
 		ground_items.erase(g)
 		g.queue_free()
 		Game.on_event("pick", g.item.base_id)
+		Game.learn("item", g.item.base_id)
+		Game.learn("unique", g.item.unique_id)
 		for qid in Game.quests.keys():
 			Game._check_pick_goals(qid)
 		if g.item.base_id == "srdce_zvonu":
@@ -797,6 +838,12 @@ func _use_prop(pl: Player, p: PropNode) -> void:
 			pl.start_action("attack", 0.35, 0.5, func(): _break_prop(p))
 		"shrine":
 			_use_shrine(p)
+		"book":
+			var bid := str(p.data.get("book", ""))
+			Game.learn("book", bid)
+			Sfx.play("ui_open", 0.6, 0.0)
+			if Game.main:
+				Game.main.ui.open_book(bid)
 		"quest":
 			_use_quest_prop(pl, p)
 
@@ -839,6 +886,7 @@ func _break_prop(p: PropNode) -> void:
 func _use_shrine(p: PropNode) -> void:
 	var sid := str(p.data.get("shrine", ""))
 	var sd: Dictionary = DB.shrines.get(sid, {})
+	Game.learn("shrine", sid)
 	p.used = true
 	p.set_hover(false)
 	if DB.has_tex("props/modla_used"):

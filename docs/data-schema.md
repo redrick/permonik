@@ -195,5 +195,29 @@ Goals: `{"kill": monster}`, `{"pick": item}`, `{"talk": npc}`, `{"use": prop}`,
 Kronika pages and boss-death lines that unlock with quests:
 `{ "kronika_1": {"title":{...}, "text":{...}} }`
 
+`kind`: `kronika` (story leaves), `boss` (death lines, after the kill), `bestiar` (in-world line about a
+monster; shown on top of its codex entry, bosses only after the kill).
+
+## codex.json
+Encyclopedia in the Kronika (key K): real folklore, history and places behind every name.
+```json
+{ "e_perun": { "cat": "god", "title": {...}, "text": {...}, "game": {...},
+  "refs": {"shrine": ["perun"], "unique": ["perunova_sekera"]}, "see": ["e_veles"] } }
+```
+`cat`: `creature`, `place`, `person`, `god`, `item`, `term` (= Kronika tabs). `game` (optional) says how
+the game bends it. An entry unlocks the first time the player meets any of its `refs`; no `refs` =
+always open. Ref kinds and when they fire: `monster` (it notices you), `npc` (talk), `town` / `floor`
+(`act2_floor3`, on arrival), `item` / `unique` (pickup), `shrine` (use), `quest` (start),
+`class` (own class), `book` (read). Knowledge is kept per save in `known` and survives difficulty changes.
+
+## books.json
+Readable public-domain legends, one lectern (`kniha` prop) each, re-readable in the Kronika's Books tab.
+```json
+{ "kniha_vodnik": { "title": {...}, "author": {...}, "source": "url", "licence": "public domain — …",
+  "pages": {"cs": ["…", "…"], "en": ["…"]}, "codex": ["e_vodnik"], "where": "act1_floor4" } }
+```
+`where`: a floor (`act1_floor4`, lectern in a random open spot) or a town id (`hora`, lectern beside
+the chronicler). Only public-domain texts or our own translations of them; record the basis in `licence`.
+
 ## slides.json
 `{ "intro": [ {"image":"intro_1","text":{...}}, … ], "act1_end": [ … ] }`

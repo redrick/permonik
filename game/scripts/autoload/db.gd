@@ -15,6 +15,10 @@ var dialog := {}
 var lore := {}
 var slides := {}
 var props := {}
+var codex := {}
+var books := {}
+var codex_refs := {}
+var codex_by_ref := {}
 
 var _tex := {}
 var _missing := {}
@@ -41,6 +45,25 @@ func reload() -> void:
 	lore = _j("lore", {})
 	slides = _j("slides", {})
 	props = _j("props", {})
+	codex = _j("codex", {})
+	books = _j("books", {})
+	_index_codex()
+
+
+func _index_codex() -> void:
+	codex_refs = {}
+	codex_by_ref = {}
+	for eid in codex:
+		var keys := []
+		var refs: Dictionary = codex[eid].get("refs", {})
+		for kind in refs:
+			for id in refs[kind]:
+				var k := "%s:%s" % [kind, id]
+				keys.append(k)
+				if not codex_by_ref.has(k):
+					codex_by_ref[k] = []
+				codex_by_ref[k].append(eid)
+		codex_refs[eid] = keys
 
 
 func _j(name: String, default):
