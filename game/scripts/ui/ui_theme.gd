@@ -95,6 +95,10 @@ static func get_theme() -> Theme:
 		return theme
 	font = load("res://assets/fonts/TataHand.ttf")
 	small = load("res://assets/fonts/PatrickHand-Regular.ttf")
+	var glag: Font = load("res://assets/fonts/NotoSansGlagolitic-Regular.ttf")
+	for f in [font, small]:
+		if f and glag and not f.fallbacks.has(glag):
+			f.fallbacks = f.fallbacks + [glag]
 	var th := Theme.new()
 	th.default_font = font
 	th.default_font_size = 24
@@ -306,8 +310,12 @@ static func draw_item(ci: CanvasItem, it: Item, r: Rect2, tint_bg := true) -> vo
 		var bg := Color(0, 0, 0, 0)
 		if it.is_equipment() and not Game.ch.can_equip(it):
 			bg = Color(0.55, 0.06, 0.05, 0.3)
-		elif it.rarity == Item.UNIQUE:
+		elif it.rarity == Item.UNIQUE or it.word != "":
 			bg = Color(0.75, 0.6, 0.2, 0.16)
+		elif it.rarity == Item.SET:
+			bg = Color(0.2, 0.7, 0.3, 0.16)
+		elif it.rarity == Item.RARE:
+			bg = Color(0.85, 0.8, 0.25, 0.14)
 		elif it.rarity == Item.MAGIC:
 			bg = Color(0.25, 0.35, 0.9, 0.16)
 		if bg.a > 0:
@@ -317,6 +325,18 @@ static func draw_item(ci: CanvasItem, it: Item, r: Rect2, tint_bg := true) -> vo
 		var s := minf(r.size.x / t.get_width(), r.size.y / t.get_height())
 		var sz := Vector2(t.get_width(), t.get_height()) * s
 		ci.draw_texture_rect(t, Rect2(r.position + (r.size - sz) / 2.0, sz), false)
+	if it.sockets > 0:
+		var d := minf(22.0, (r.size.x - 8) / it.sockets)
+		var y := r.end.y - d - 4
+		var x0 := r.position.x + (r.size.x - d * it.sockets) / 2.0
+		for k in it.sockets:
+			var c := Vector2(x0 + d * (k + 0.5), y + d / 2.0)
+			ci.draw_circle(c, d * 0.42, Color(0.05, 0.04, 0.04, 0.85))
+			ci.draw_arc(c, d * 0.42, 0.0, TAU, 16, Color(0.62, 0.6, 0.55, 0.9), 1.4, true)
+			if k < it.socketed.size():
+				var gt: Texture2D = it.socketed[k].icon()
+				if gt:
+					ci.draw_texture_rect(gt, Rect2(c - Vector2(d, d) * 0.42, Vector2(d, d) * 0.84), false)
 	if it.is_stackable() and it.qty > 1:
 		ci.draw_string_outline(small, r.position + Vector2(4, r.size.y - 5), str(it.qty), HORIZONTAL_ALIGNMENT_LEFT, -1, 18, 4, Color.BLACK)
 		ci.draw_string(small, r.position + Vector2(4, r.size.y - 5), str(it.qty), HORIZONTAL_ALIGNMENT_LEFT, -1, 18, INK)

@@ -1,5 +1,5 @@
 {
-  "havir": {
+  "havir": { "ar_bonus": 20,
     "name": {"cs": "Havíř", "en": "Miner"},
     "desc": {
       "cs": "Narodil se v Hoře, pod zvonicí, která přestala zvonit. Otcova parta sfárala do dolu Osel a už nevyfárala. Havíř zná skálu po hmatu, bije krumpáčem tam, kde se láme, a když skála nepovolí, poradí si střelným prachem. Nejvíc ze všech snese a nejvíc rozdá.",
@@ -20,7 +20,7 @@
     ],
     "default_rmb": "uder_do_zily"
   },
-  "zbojnice": {
+  "zbojnice": { "ar_bonus": 15,
     "name": {"cs": "Zbojnice", "en": "Brigand"},
     "desc": {
       "cs": "Psanec z Valašska s valaškou za pasem a kuší na zádech. Přišla pro Jánošíkovo zakopané stříbro a zůstala, protože hory volají. Je rychlá, nečekaná a nikomu nevěří — v podzemí je to ctnost.",
@@ -41,7 +41,7 @@
     ],
     "default_rmb": "sek_valaskou"
   },
-  "vedma": {
+  "vedma": { "ar_bonus": -10,
     "name": {"cs": "Vědma", "en": "Wise Woman"},
     "desc": {
       "cs": "Bylinkářka ze Šumavy s parožím na holi a červenými nitěmi na zápěstí. Každou noc se jí zdá o zvonu, který se topí. Hromy volá Perunovým jménem, oheň Svarožičovým a mráz Moraniným — a všichni tři zatím odpovídají.",
@@ -61,5 +61,110 @@
        "skills": ["mrazivy_dech", "ledova_zbroj", "moranina_naruc", "vynaseni_morany"]}
     ],
     "default_rmb": "jiskra"
+  },
+  "kovar": { "ar_bonus": 20,
+    "name": {"cs": "Kovář", "en": "Smith"},
+    "desc": {
+      "cs": "Kovář z Hory, co ukoval havířům krumpáče i kahany. Když přestali vyjíždět z Osla, sbalil kladivo a šel se podívat, kde jeho železo zůstalo. Bije jako kovadlina, nebojí se ohně a ze železa si ukove i spojence.",
+      "en": "The smith of Hora, who forged the miners their picks and their lamps. When they stopped coming back out of Osel, he picked up his hammer and went to see where his iron had gone. He strikes like an anvil, has no fear of fire, and can forge himself an ally out of iron."
+    },
+    "gender": "m",
+    "base": {"sila": 30, "obratnost": 15, "magie": 10, "vitalita": 30},
+    "base_hp": 50, "hp_per_vit": 2.5, "hp_per_level": 2.5,
+    "base_mana": 8, "mana_per_mag": 1.0, "mana_per_level": 0.8,
+    "start_items": ["palcat", "kytel", "lojovy_kahan", "ziva_voda", "ziva_voda", "svitek_brana"],
+    "trees": [
+      {"id": "kladivo", "name": {"cs": "Kladivo", "en": "Hammer"},
+       "skills": ["uder_kladivem", "rozkovat", "hod_kladivem", "kovadlina"]},
+      {"id": "vyhen", "name": {"cs": "Výheň", "en": "The Forge"},
+       "skills": ["rozpalene_zelezo", "jiskry", "vyhen", "struska"]},
+      {"id": "kovani", "name": {"cs": "Kování", "en": "Ironwork"},
+       "skills": ["kovana_kuze", "zelezny_strazce", "kalena_ocel", "kovarova_vydrz"]}
+    ],
+    "default_rmb": "uder_kladivem"
+  },
+  "zrec": { "ar_bonus": 0,
+    "name": {"cs": "Žrec", "en": "Priest"},
+    "desc": {
+      "cs": "Poslední žrec starých bohů, co ještě zná jejich jména. Na kopci nad Hradištěm obětoval Svantovítovi, Triglavovi a Perunovi, dokud mu nezačali odpovídat i ti, kdo už umřeli. Platí krví a volá předky.",
+      "en": "The last priest of the old gods who still knows their names. On the hill above the hillfort he made offerings to Svantovít, Triglav and Perun, until even the dead began to answer him. He pays in blood and calls on his ancestors."
+    },
+    "gender": "m",
+    "base": {"sila": 20, "obratnost": 15, "magie": 30, "vitalita": 25},
+    "base_hp": 40, "hp_per_vit": 2.0, "hp_per_level": 2.0,
+    "base_mana": 15, "mana_per_mag": 1.5, "mana_per_level": 1.5,
+    "start_items": ["berla", "kytel", "lojovy_kahan", "ziva_voda", "svatojanska_rosa", "svitek_brana"],
+    "trees": [
+      {"id": "modly", "name": {"cs": "Modly", "en": "Idols"},
+       "skills": ["svantovituv_zrak", "triglavova_zastita", "hnev_modly", "perunova_prizen"]},
+      {"id": "obet", "name": {"cs": "Oběť", "en": "Sacrifice"},
+       "skills": ["krvava_obet", "obetni_ohen", "krev_za_krev", "velka_obet"]},
+      {"id": "dedkove", "name": {"cs": "Dědkové", "en": "Ancestors"},
+       "skills": ["dedek", "hlas_predku", "babky", "rod"]}
+    ],
+    "default_rmb": "krvava_obet"
+  },
+  "vlkodlak": { "ar_bonus": 10,
+    "name": {"cs": "Vlkodlak", "en": "Werewolf"},
+    "desc": {
+      "cs": "Myslivec z Brd, kterého jednou za úplňku kousl vlk. Od té doby slyší les a les slyší jeho. Umí si přes sebe přehodit vlčí kůži, svolat smečku a nechat ze země vyrazit kořeny.",
+      "en": "A Brdy huntsman whom a wolf bit one full moon. Since then he hears the forest, and the forest hears him. He can throw the wolf's hide over himself, call the pack, and make roots burst from the ground."
+    },
+    "gender": "m",
+    "base": {"sila": 25, "obratnost": 25, "magie": 10, "vitalita": 25},
+    "base_hp": 45, "hp_per_vit": 2.4, "hp_per_level": 2.4,
+    "base_mana": 8, "mana_per_mag": 1.0, "mana_per_level": 1.0,
+    "start_items": ["nuz", "kozeny_kabatec", "lojovy_kahan", "ziva_voda", "ziva_voda", "svitek_brana"],
+    "trees": [
+      {"id": "promena", "name": {"cs": "Proměna", "en": "The Change"},
+       "skills": ["vlci_kuze", "kousnuti", "vyti", "besneni"]},
+      {"id": "smecka", "name": {"cs": "Smečka", "en": "The Pack"},
+       "skills": ["vlk", "smecka", "vudce_smecky", "vlkodlaci_bratr"]},
+      {"id": "les", "name": {"cs": "Les", "en": "The Forest"},
+       "skills": ["trni", "koreny", "lesni_duch", "hnev_lesa"]}
+    ],
+    "default_rmb": "kousnuti"
+  },
+  "alchymistka": { "ar_bonus": 0,
+    "name": {"cs": "Alchymistka", "en": "Alchemist"},
+    "desc": {
+      "cs": "Učednice z rudolfínské Prahy, co utekla od mistra, když místo zlata vařil jedy pro dvůr. Lučavkou rozpustí i kámen, z vltavské hlíny uhněte golema a za hrst grošů udělá z olova světlo.",
+      "en": "An apprentice from Rudolfine Prague who ran from her master when, instead of gold, he brewed poisons for the court. Her aqua regia dissolves even stone, she shapes golems from Vltava clay, and for a handful of groše she turns lead into light."
+    },
+    "gender": "f",
+    "base": {"sila": 15, "obratnost": 25, "magie": 30, "vitalita": 20},
+    "base_hp": 35, "hp_per_vit": 2.0, "hp_per_level": 2.0,
+    "base_mana": 15, "mana_per_mag": 1.6, "mana_per_level": 1.5,
+    "start_items": ["nuz", "kytel", "lojovy_kahan", "ziva_voda", "svatojanska_rosa", "svitek_brana"],
+    "trees": [
+      {"id": "lucavka", "name": {"cs": "Lučavka", "en": "Aqua Regia"},
+       "skills": ["lucavka", "jedovaty_dym", "kyselina", "kralovska_lucavka"]},
+      {"id": "golem", "name": {"cs": "Golem", "en": "Golem"},
+       "skills": ["hlineny_golem", "rtutovy_golem", "sem", "prazsky_golem"]},
+      {"id": "transmutace", "name": {"cs": "Transmutace", "en": "Transmutation"},
+       "skills": ["zlata_strela", "rtut", "kamen_mudrcu", "velke_dilo"]}
+    ],
+    "default_rmb": "lucavka"
+  },
+  "loutkarka": { "ar_bonus": 5,
+    "name": {"cs": "Loutkářka", "en": "Puppeteer"},
+    "desc": {
+      "cs": "Kočovná loutkářka, co jezdí s vozem a kufrem plným loutek od jarmarku k jarmarku. Kašpárek, čert i obří marioneta se pod jejíma rukama hýbou až příliš živě. Hraje na dudy z Chodska a šibalství má v malíčku.",
+      "en": "A travelling puppeteer who goes from fair to fair with her cart and a trunk full of puppets. Under her hands Kašpárek, the devil and the giant marionette move far too much like the living. She plays the Chodsko bagpipes and has mischief at her fingertips."
+    },
+    "gender": "f",
+    "base": {"sila": 15, "obratnost": 30, "magie": 25, "vitalita": 20},
+    "base_hp": 38, "hp_per_vit": 2.0, "hp_per_level": 2.0,
+    "base_mana": 14, "mana_per_mag": 1.5, "mana_per_level": 1.4,
+    "start_items": ["hul", "kytel", "lojovy_kahan", "ziva_voda", "svatojanska_rosa", "svitek_brana"],
+    "trees": [
+      {"id": "marionety", "name": {"cs": "Marionety", "en": "Marionettes"},
+       "skills": ["kasparek", "cert_na_niti", "loutkove_divadlo", "obri_marioneta"]},
+      {"id": "dudy", "name": {"cs": "Dudy", "en": "Bagpipes"},
+       "skills": ["chodska_pisen", "ukolebavka", "dupak", "hromove_dudy"]},
+      {"id": "sibalstvi", "name": {"cs": "Šibalství", "en": "Mischief"},
+       "skills": ["klubko", "mlha", "falesna_loutka", "hrom_z_kulis"]}
+    ],
+    "default_rmb": "kasparek"
   }
 }

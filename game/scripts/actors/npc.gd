@@ -7,6 +7,9 @@ var home := Vector2.ZERO
 var wander_t := 2.0
 var talk_t := 0.0
 var stock: Array = []
+var gamble_stock: Array = []
+var mark: Sprite2D
+var mark_kind := ""
 
 
 func setup(id: String, lv: Node) -> void:
@@ -35,6 +38,43 @@ func setup(id: String, lv: Node) -> void:
 		l.position = Vector2(0, -40)
 		add_child(l)
 	home = global_position
+	_make_mark()
+
+
+# "!" / "?" over the head when talking now starts or moves on a quest.
+func _make_mark() -> void:
+	mark = Sprite2D.new()
+	mark.visible = false
+	var t: Texture2D = tex.get("idle")
+	var top := -150.0
+	if t:
+		var img := t.get_image()
+		if img:
+			if img.is_compressed():
+				img.decompress()
+			top = -t.get_height() + 8.0 + img.get_used_rect().position.y
+	mark.position = Vector2(0, top - 34.0)
+	mark.z_index = 30
+	add_child(mark)
+	var tw := mark.create_tween().set_loops()
+	tw.tween_property(mark, "offset:y", -6.0, 0.6).set_trans(Tween.TRANS_SINE)
+	tw.tween_property(mark, "offset:y", 0.0, 0.6).set_trans(Tween.TRANS_SINE)
+	var timer := Timer.new()
+	timer.wait_time = 0.4
+	timer.autostart = true
+	timer.timeout.connect(_update_mark)
+	add_child(timer)
+	_update_mark()
+
+
+func _update_mark() -> void:
+	var k := Game.npc_marker(npc_id)
+	if k == mark_kind:
+		return
+	mark_kind = k
+	mark.visible = k != ""
+	if k != "":
+		mark.texture = DB.tex("ui/quest_" + k)
 
 
 func role() -> String:

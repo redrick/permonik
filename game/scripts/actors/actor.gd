@@ -189,8 +189,8 @@ func take_damage(amount: float, element := "physical", source: Node = null, opts
 		if level:
 			level.float_text(top_pos() + Vector2(randf_range(-14, 14), 0), str(maxi(1, int(round(amount)))),
 				Color("ffdd55") if opts.get("crit", false) else ELEMENT_COLORS.get(element, Color.WHITE), team == 0)
-		if amount > hp_max * 0.15 and not opts.get("no_stun", false):
-			stun_t = maxf(stun_t, 0.22)
+		if amount > hp_max / hit_divisor() and not opts.get("no_stun", false):
+			stun_t = maxf(stun_t, hit_recovery_time())
 			_on_hit_recover()
 		if opts.has("knock") and source:
 			knock = (global_position - source.global_position).normalized() * float(opts.knock)
@@ -199,6 +199,15 @@ func take_damage(amount: float, element := "physical", source: Node = null, opts
 		hp = 0.0
 		die(source)
 	return amount
+
+
+# D2 hit recovery: a blow worth more than 1/12 of a hero's life (1/8 of a monster's) staggers.
+func hit_divisor() -> float:
+	return 8.0
+
+
+func hit_recovery_time() -> float:
+	return 0.22
 
 
 func _modify_incoming(amount: float, _element: String, _source: Node, _opts: Dictionary) -> float:

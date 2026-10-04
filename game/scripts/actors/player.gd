@@ -3,6 +3,8 @@ extends Actor
 
 var lamp: PointLight2D
 var cam: Camera2D
+var look_key := ""
+var form := ""
 var intent := {}
 var lmb_down := false
 var action_t := 0.0
@@ -26,15 +28,13 @@ func setup(lv: Node) -> void:
 	collision_layer = 2
 	collision_mask = 1 | 4 | 8
 	var cid := Game.ch.class_id
-	var textures := {}
-	for p in ["idle", "walk1", "walk2", "attack", "cast", "hit", "dead"]:
-		var t := DB.tex("sprites/heroes/%s_%s" % [cid, p])
-		if t:
-			textures[p] = t
+	look_key = HeroLook.key(cid, HeroLook.gear_of(Game.ch))
+	var textures := HeroLook.textures(cid, HeroLook.gear_of(Game.ch))
 	if textures.is_empty():
 		textures["idle"] = DB.placeholder("hero", Vector2i(120, 200), Color("c9b48a"))
 	setup_visual(textures, true, 50.0)
 	display_name = Game.ch.hero_name
+	Game.ch.changed.connect(_refresh_look)
 	lamp = Fx.make_light(Color("ffcf8a"), 200.0, 1.15, true)
 	lamp.position = Vector2(0, -60)
 	lamp.range_item_cull_mask = 1
@@ -180,6 +180,9 @@ func _ai(delta: float) -> void:
 	var ch := Game.ch
 	invuln = maxf(0.0, invuln - delta)
 	ch.tick_buffs(delta)
+	if ch.active_form() != form:
+		form = ch.active_form()
+		_apply_form()
 	for k in cooldowns.keys():
 		cooldowns[k] -= delta
 		if cooldowns[k] <= 0.0:
@@ -394,3 +397,59 @@ func _animate(delta: float) -> void:
 	super._animate(delta)
 	if petrify > 0.0:
 		mat_set("stone", clampf(petrify, 0.0, 1.0))
+
+
+# A shapeshift wears a monster's drawings until it ends; then the hero's own (with their gear) return.
+func _apply_form() -> void:
+	if form == "":
+		look_key = ""
+		_refresh_look()
+		return
+	var tx := {}
+	for p in ["idle", "walk", "attack"]:
+		var t := DB.tex("sprites/monsters/%s_%s" % [form, p])
+		if t:
+			tx[p] = t
+	if not tx.has("idle"):
+		return
+	tex = {"idle": tx.idle, "walk1": tx.get("walk", tx.idle), "walk2": tx.idle, "attack": tx.get("attack", tx.idle),
+		"cast": tx.get("attack", tx.idle), "hit": tx.idle, "dead": tx.idle}
+	var t: Texture2D = tex.get(pose, tex.idle)
+	sprite.texture = t
+	sprite.offset = Vector2(0, -t.get_height() / 2.0 + 8.0)
+	Fx.burst(level, global_position + Vector2(0, -50), Color("8a7a6a"), 24, 140.0, 0.5, 0.3)
+
+
+# Re-dress the sprite when the worn gear changes.
+func _refresh_look() -> void:
+	if form != "":
+		return
+	var gear := HeroLook.gear_of(Game.ch)
+	var k := HeroLook.key(Game.ch.class_id, gear)
+	if k == look_key:
+		return
+	look_key = k
+	var textures := HeroLook.textures(Game.ch.class_id, gear)
+	if textures.is_empty():
+		return
+	tex = textures
+	var t: Texture2D = tex.get(pose, tex.get("idle"))
+	if t:
+		sprite.texture = t
+		sprite.offset = Vector2(0, -t.get_height() / 2.0 + 8.0)
+
+
+func hit_divisor() -> float:
+	return 12.0
+
+
+# 0.4 s base stagger, shortened by faster hit recovery (already diminished in CharData).
+func hit_recovery_time() -> float:
+	return 0.4 / (1.0 + float(Game.ch.d.get("hit_recovery", 0.0)) / 100.0)
+
+
+# A staggering blow breaks off the swing or spell in progress, as in D2.
+func _on_hit_recover() -> void:
+	action_t = 0.0
+	action_cb = Callable()
+	set_pose("hit", stun_t)

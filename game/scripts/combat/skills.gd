@@ -9,6 +9,12 @@ static func p(id: String, k: String, default = 0.0):
 	return default if v == null else v
 
 
+# Melee skills carry their own attack-rating bonus (ar_pct), as in D2.
+static func _strike(id: String, pl: Player, t: Actor, pct: float, opts := {}) -> bool:
+	opts["ar_pct"] = float(p(id, "ar_pct", 0.0))
+	return Combat.player_strike(pl, t, pct, opts)
+
+
 static func use(pl: Player, id: String, target: Vector2) -> bool:
 	var ch := Game.ch
 	var s := DB.skill(id)
@@ -45,6 +51,21 @@ static func use(pl: Player, id: String, target: Vector2) -> bool:
 			pl.intent = {"type": "monster", "node": tgt}
 			pl.set_path_to(tgt.global_position)
 			return false
+	# some skills are paid in life (the priest's sacrifice) or in gold (the alchemist's great work)
+	var hpc := float(p(id, "hp_cost", 0.0))
+	if hpc > 0.0:
+		var hp_take := float(ch.d.hp_max) * hpc / 100.0
+		if ch.hp <= hp_take + 1.0:
+			Game.msg(L.t({"cs": "Na tu oběť nemám dost krve.", "en": "Not enough blood for that offering."}), Color("e04b4b"))
+			return false
+		ch.hp -= hp_take
+		pl.hp = ch.hp
+	var gc := int(p(id, "gold_cost", 0.0))
+	if gc > 0:
+		if ch.gold < gc:
+			Game.msg(L.t({"cs": "Na tu proměnu nemám dost grošů.", "en": "Not enough gold for that transmutation."}), UiTheme.GOLD)
+			return false
+		ch.gold -= gc
 	ch.mana -= cost
 	var cdv := float(s.get("cooldown", 0))
 	if cdv > 0:
@@ -61,7 +82,7 @@ static func use(pl: Player, id: String, target: Vector2) -> bool:
 			pl.start_action("attack", weapon_dur * (1.0 + 0.3 * (hits_n - 1)), 0.55, func():
 				for i in hits_n:
 					if is_instance_valid(tgt) and not tgt.dead:
-						Combat.player_strike(pl, tgt, float(p(id, "dmg_pct", 100.0)), {"status": {"stun": float(p(id, "stun", 0.0))}, "knock": 80.0})
+						_strike(id, pl, tgt, float(p(id, "dmg_pct", 100.0)), {"status": {"stun": float(p(id, "stun", 0.0))}, "knock": 80.0})
 				Sfx.play_at("swing_heavy", pl.global_position))
 		"melee_arc":
 			pl.lunge = 8.0
@@ -70,7 +91,7 @@ static func use(pl: Player, id: String, target: Vector2) -> bool:
 				Sfx.play_at("swing_heavy", pl.global_position)
 				_arc_fx(pl, dir, 110.0, float(p(id, "arc", 100.0)))
 				for t in Combat.targets_in_cone(pl.level, pl.global_position, dir, 110.0, float(p(id, "arc", 100.0)), 1):
-					Combat.player_strike(pl, t, float(p(id, "dmg_pct", 100.0))))
+					_strike(id, pl, t, float(p(id, "dmg_pct", 100.0))))
 		"stomp":
 			pl.start_action("attack", weapon_dur * 1.1, 0.6, func():
 				var r := float(p(id, "radius", 100.0))
@@ -79,7 +100,8 @@ static func use(pl: Player, id: String, target: Vector2) -> bool:
 				Sfx.play_at("hit_stone", pl.global_position)
 				pl.level.shake(6.0)
 				for t in Combat.targets_in_radius(pl.level, pl.global_position, r, 1):
-					Combat.player_strike(pl, t, float(p(id, "dmg_pct", 100.0)), {"always_hit": true, "status": {"stun": float(p(id, "stun", 0.5))}}))
+					_strike(id, pl, t, float(p(id, "dmg_pct", 100.0)), {"always_hit": true, "status": {"stun": float(p(id, "stun", 0.5))}})
+					_fear(id, t))
 		"leap":
 			var dest : Vector2 = pl.level.clamp_walkable(pl.global_position, target, 380.0)
 			pl.invuln = 0.5
@@ -99,7 +121,7 @@ static func use(pl: Player, id: String, target: Vector2) -> bool:
 				pl.level.shake(5.0)
 				Sfx.play_at("hit_stone", dest)
 				for t in Combat.targets_in_radius(pl.level, dest, r, 1):
-					Combat.player_strike(pl, t, float(p(id, "dmg_pct", 100.0)), {"always_hit": true, "knock": 220.0}))
+					_strike(id, pl, t, float(p(id, "dmg_pct", 100.0)), {"always_hit": true, "knock": 220.0}))
 		"spin":
 			var dir := (target - pl.global_position).normalized()
 			var length := float(p(id, "length", 250.0))
@@ -115,7 +137,7 @@ static func use(pl: Player, id: String, target: Vector2) -> bool:
 				for m in Combat.targets_in_radius(pl.level, pl.global_position, 70.0, 1):
 					if not m in hit:
 						hit.append(m)
-						Combat.player_strike(pl, m, float(p(id, "dmg_pct", 100.0)))
+						_strike(id, pl, m, float(p(id, "dmg_pct", 100.0)))
 						Sfx.play_at("swing", pl.global_position, 0.6), 0.0, 1.0, 0.5)
 			tw.tween_callback(func(): pl.sprite.rotation = 0.0)
 		"projectile":
@@ -155,7 +177,8 @@ static func use(pl: Player, id: String, target: Vector2) -> bool:
 				var fr := float(p(id, "freeze", 0.0))
 				for t in Combat.targets_in_radius(pl.level, pl.global_position, r, 1):
 					Combat.player_spell_hit(pl, t, Combat.spell_damage(p(id, "dmg", Vector2(1, 4)), id), elem,
-						{"status": {"freeze": fr} if fr > 0.0 else {"slow": float(p(id, "slow", 0.0))}}))
+						{"status": {"freeze": fr} if fr > 0.0 else {"slow": float(p(id, "slow", 0.0))}})
+					_fear(id, t))
 		"cone":
 			var dir := (target - pl.global_position).normalized()
 			pl.start_action("cast", cast_dur, 0.5, func():
@@ -202,7 +225,8 @@ static func use(pl: Player, id: String, target: Vector2) -> bool:
 						var v = p(id, k)
 						if v is float:
 							mods[k] = v
-				Game.ch.add_buff(id, mods, float(p(id, "duration", 30.0)))
+				var form := str(s.get("params", {}).get("form", ""))
+				Game.ch.add_buff(id, mods, float(p(id, "duration", 30.0)), form)
 				Game.ch.changed.emit()
 				Fx.ring(pl.level, pl.global_position, 90.0, col if elem != "physical" else Color("ffd27a"))
 				Fx.burst(pl.level, pl.global_position + Vector2(0, -50), col if elem != "physical" else Color("ffd27a"), 18, 90.0, 0.8, 0.25, true)
@@ -215,6 +239,13 @@ static func use(pl: Player, id: String, target: Vector2) -> bool:
 		_:
 			return false
 	return true
+
+
+# A howl or a song that sends ordinary monsters running for a while.
+static func _fear(id: String, t: Actor) -> void:
+	var f := float(p(id, "fear", 0.0))
+	if f > 0.0 and is_instance_valid(t) and t.get("kind") == "normal":
+		t.flee_t = maxf(t.flee_t, f)
 
 
 static func elem_sfx(e: String, cast: bool) -> String:
@@ -279,7 +310,7 @@ static func _fire_projectiles(pl: Player, id: String, target: Vector2, elem: Str
 					return
 				Fx.sprite_fx(pl.level, fx, spot + Vector2(0, -20), 0.3)
 				for t in Combat.targets_in_radius(pl.level, spot, 36.0, 1):
-					Combat.player_strike(pl, t, pct, {"always_hit": true})
+					_strike(id, pl, t, pct, {"always_hit": true})
 				Fx.burst(pl.level, spot, Color("c8b898"), 4, 60.0, 0.3, 0.15))
 			continue
 		var pc := col if elem != "physical" else Color(0, 0, 0, 0)
@@ -288,10 +319,10 @@ static func _fire_projectiles(pl: Player, id: String, target: Vector2, elem: Str
 				_explode(pl, id, proj.global_position, exr, elem, col, dmg, pct, weapon_based)
 				return
 			if weapon_based:
-				var opts := {}
+				var opts := {"ranged": true}
 				if elem != "physical":
 					opts["element"] = elem
-				Combat.player_strike(pl, a, pct, opts)
+				_strike(id, pl, a, pct, opts)
 				if dmg is Vector2:
 					Combat.player_spell_hit(pl, a, Combat.spell_damage(dmg, id), elem)
 			else:
@@ -326,7 +357,7 @@ static func _explode(pl: Player, id: String, pos: Vector2, r: float, elem: Strin
 		if dmg is Vector2:
 			Combat.player_spell_hit(pl, t, Combat.spell_damage(dmg, id), elem, {"knock": 120.0})
 		elif weapon_based:
-			Combat.player_strike(pl, t, pct, {"always_hit": true})
+			_strike(id, pl, t, pct, {"always_hit": true})
 
 
 static func fire_weapon(pl: Player, target: Vector2, pct: float) -> void:
@@ -334,4 +365,4 @@ static func fire_weapon(pl: Player, target: Vector2, pct: float) -> void:
 	var fx := str(w.base().get("projectile", "bolt" if w.kind() == "crossbow" else "arrow")) if w else "arrow"
 	Sfx.play_at("bolt_shot" if fx == "bolt" else "arrow_shot", pl.global_position)
 	Projectile.spawn(pl.level, pl.global_position, target - pl.global_position, 720.0, fx, 1, func(a, _p):
-		Combat.player_strike(pl, a, pct))
+		Combat.player_strike(pl, a, pct, {"ranged": true}))

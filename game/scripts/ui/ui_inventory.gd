@@ -53,7 +53,9 @@ func _ready() -> void:
 		ct.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		row.add_child(ct)
 	gold_lbl = UiTheme.label("", 26, UiTheme.GOLD)
+	gold_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(gold_lbl)
+	row.add_child(UiTheme.button(L.t("inv_sort"), func(): Game.ch.inv.arrange(), 170, 22))
 	refresh()
 
 

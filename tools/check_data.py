@@ -6,6 +6,7 @@ Errors in the mechanics files fail the run. Problems in the narrative files (act
 dialog, lore, slides) are warnings unless --strict, since those may be work in progress.
 """
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -17,18 +18,22 @@ ASSETS_MD = ROOT / "docs" / "assets.md"
 STATS = set("""sila obratnost magie vitalita vse_staty hp mana hp_pct mana_pct dmg_pct dmg_min dmg_max
 to_hit armor armor_pct block fire_dmg lightning_dmg cold_dmg poison_dmg res_fire res_lightning res_cold
 res_poison res_all life_steal mana_steal attack_speed cast_speed move_speed light_radius gold_find
-magic_find hp_regen mana_regen thorns dmg_reduce skills crit xp_pct""".split())
+magic_find hp_regen mana_regen thorns dmg_reduce skills crit xp_pct to_hit_pct crushing_blow
+hit_recovery dmg_reduce_pct""".split())
 ELEMENTS = {"physical", "fire", "lightning", "cold", "poison"}
 SKILL_TYPES = {"melee", "melee_arc", "stomp", "leap", "spin", "projectile", "chain", "nova", "cone",
                "area", "wall", "trap", "summon", "buff", "cloud", "passive"}
-STRING_PARAMS = {"fx", "id", "effect", "requires"}
+STRING_PARAMS = {"fx", "id", "effect", "requires", "look", "tint", "form"}
 AI = {"melee", "ranged", "caster", "swarm", "charger", "exploder", "phaser", "thief", "summoner",
       "flyer", "boss"}
 SLOTS = {"weapon", "offhand", "head", "body", "belt", "lamp", "ring", "amulet", "consumable",
-         "gold", "quest"}
+         "gold", "quest", "gem", "letter", "charm", "key"}
 SLOT_GROUPS = {"weapon", "ranged", "offhand", "shield", "head", "body", "belt", "lamp", "ring",
-               "amulet", "armor", "jewelry", "any"}
+               "amulet", "armor", "jewelry", "any", "class"}
 SPEEDS = {"fast", "normal", "slow", "very_slow"}
+_classes = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "game", "data", "classes.json")))
+CLASS_IDS = set(_classes)
+TREE_IDS = {t["id"] for c in _classes.values() for t in c.get("trees", [])}
 ROLES = {"smith", "healer", "inn", "chronicler", "guide", "ghost", "other"}
 SEALS = {"voda", "kamen", "ohen", "smrt"}
 GENDERS = {"m", "f", "n"}
@@ -88,14 +93,14 @@ def parse_assets():
     for m in re.finditer(r"([A-Z][A-Za-z-]+)\s*(\d×\d)?[^:A-Z]*:\s*([^A-Z]*)", items):
         default = m.group(2)
         for part in m.group(3).split(","):
-            mm = re.match(r"\s*([a-z][a-z_]*)\s*(\d×\d)?", part)
+            mm = re.match(r"\s*([a-z][a-z_0-9]*)\s*(\d×\d)?", part)
             if mm:
                 size = mm.group(2) or default
                 a["items"][mm.group(1)] = tuple(int(x) for x in size.split("×")) if size else None
 
     sk = strip_parens(" ".join(section(md, "Skills").split()))
     a["skills"] = set()
-    for m in re.finditer(r"\b(havir|zbojnice|vedma|Plus)\b:?\s*([^.]*)", sk):
+    for m in re.finditer(r"\b(havir|zbojnice|vedma|kovar|zrec|vlkodlak|alchymistka|loutkarka|Plus)\b:?\s*([^.]*)", sk):
         a["skills"] |= set(re.findall(r"\b([a-z][a-z_]*[a-z])\b", m.group(2)))
     return a
 
@@ -140,7 +145,9 @@ def check_mods(where, mods, keys=("min", "max")):
         return
     for i, m in enumerate(mods):
         w = f"{where}.mods[{i}]"
-        if m.get("stat") not in STATS:
+        st = str(m.get("stat"))
+        if st not in STATS and not (st.startswith("class_") and st[6:] in CLASS_IDS) \
+                and not (st.startswith("tree_") and st[5:] in TREE_IDS):
             err(w, f"unknown stat {m.get('stat')!r}")
         for k in keys:
             if not num(m.get(k)):
@@ -169,7 +176,7 @@ def check_skills(skills, assets):
                 err(w, "cs and en desc use different placeholders")
         if s.get("type") not in SKILL_TYPES:
             err(w, f"unknown type {s.get('type')!r}")
-        if s.get("element") not in ELEMENTS:
+        if s.get("element") not in ELEMENTS and not (s.get("element") == "holy" and s.get("type") in ("buff", "passive")):
             err(w, f"unknown element {s.get('element')!r}")
         if s.get("tier") not in (1, 2, 3, 4):
             err(w, "tier must be 1..4")
@@ -192,16 +199,21 @@ def check_skills(skills, assets):
                 elif pv[0][0] > pv[0][1] or pv[1][0] > pv[1][1]:
                     err(pw, "dmg min > max")
                 continue
+            if pk == "scale" and num(pv):
+                continue
             if not (isinstance(pv, list) and len(pv) == 2 and all(num(x) for x in pv)):
                 err(pw, "must be [base, per_rank]")
-            elif s.get("type") in ("passive", "buff") and pk not in STATS and pk != "duration":
+            elif s.get("type") in ("passive", "buff") and pk not in STATS and pk not in ("duration", "form"):
                 err(pw, f"{s.get('type')} param must be a canonical stat or duration")
         if s.get("type") == "buff" and "duration" not in s.get("params", {}):
             err(w, "buff needs a duration param")
         if s.get("type") == "summon":
-            sid2 = s.get("params", {}).get("id")
-            if sid2 not in MONSTERS:
-                err(w, f"summon id {sid2!r} not in monsters.json")
+            prm = s.get("params", {})
+            if "look" in prm:
+                if prm["look"] not in MONSTERS:
+                    err(w, f"summon look {prm['look']!r} not in monsters.json")
+            elif prm.get("id") not in MONSTERS:
+                err(w, f"summon id {prm.get('id')!r} not in monsters.json")
         for other in s.get("synergy", {}):
             if other not in skills:
                 err(w, f"synergy refers to unknown skill {other!r}")
@@ -337,7 +349,7 @@ def check_items(items, assets):
             need(w, it, ["use", "stack"])
         tier = it.get("tier")
         if tier is not None:
-            lo, hi = {1: (1, 30), 2: (25, 60), 3: (55, 90)}.get(tier, (0, 0))
+            lo, hi = {1: (1, 30), 2: (25, 60), 3: (55, 90), 4: (75, 99)}.get(tier, (0, 0))
             if not lo <= it.get("qlvl", 0) <= hi:
                 warn(w, f"qlvl {it.get('qlvl')} outside tier {tier} range {lo}-{hi}")
     for icon in assets["items"]:

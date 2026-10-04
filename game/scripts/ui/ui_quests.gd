@@ -46,6 +46,9 @@ func refresh() -> void:
 		var h := UiTheme.label("%s %s · %s" % [L.t("act"), _roman(an), L.t(a.get("name", ""))], 28, UiTheme.GOLD)
 		list.add_child(h)
 		list.add_child(UiTheme.rule(540))
+		if a.has("goal"):
+			list.add_child(UiTheme.wrap_label(L.t(a.goal), 20, Color("e0c890"), 540))
+			list.add_child(UiTheme.sep(6))
 		active.sort_custom(func(x, y): return bool(DB.quests[x].get("main", false)) and not bool(DB.quests[y].get("main", false)))
 		for qid in active:
 			_quest(qid, true)
@@ -72,6 +75,9 @@ func _quest(qid: String, active: bool) -> void:
 	for s in q.get("steps", []):
 		if s.get("id", "") == step:
 			list.add_child(UiTheme.wrap_label("» " + L.t(s.get("text", "")), 21, Color("f0d8a8"), 520))
+			var where := Game.place_text(Game.goal_place(qid))
+			if where != "":
+				list.add_child(UiTheme.wrap_label("⌖ " + where, 18, UiTheme.FAINT, 520))
 	list.add_child(UiTheme.wrap_label(L.t(q.get("desc", "")), 19, UiTheme.DIM, 520))
 	list.add_child(UiTheme.sep(6))
 

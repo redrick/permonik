@@ -1,11 +1,14 @@
 class_name Item
 extends RefCounted
 
-enum { NORMAL, MAGIC, UNIQUE }
+enum { NORMAL, MAGIC, UNIQUE, RARE, SET }
 
 const COL_NORMAL := Color("e8e2d4")
 const COL_MAGIC := Color("7f9bff")
 const COL_UNIQUE := Color("d6b25e")
+const COL_RARE := Color("efe06a")
+const COL_SET := Color("5fd068")
+const COL_SOCKET := Color("a0a6ae")
 const COL_QUEST := Color("e98c3a")
 const COL_BAD := Color("e04b4b")
 const COL_INFO := Color("b9b3a6")
@@ -18,6 +21,12 @@ var prefix := ""
 var suffix := ""
 var unique_id := ""
 var mods: Array = []
+var affix_ids: Array = []      # rare: every prefix and suffix it rolled
+var rare_name: Array = []      # rare: [first word, second word] indices into rare_names.json
+var set_id := ""               # set piece id (sets.json)
+var sockets := 0
+var socketed: Array = []       # gem / letter items set into the sockets
+var word := ""                 # a finished word (words.json) when the letters spell one
 var dmg := Vector2i.ZERO
 var armor := 0
 var dur := 0
@@ -96,6 +105,14 @@ func color() -> Color:
 			return COL_MAGIC
 		UNIQUE:
 			return COL_UNIQUE
+		RARE:
+			return COL_RARE
+		SET:
+			return COL_SET
+	if word != "":
+		return COL_UNIQUE
+	if sockets > 0:
+		return COL_SOCKET
 	return COL_NORMAL
 
 
@@ -109,6 +126,15 @@ func display_name() -> String:
 	var bn := L.t(base().get("name", base_id))
 	if rarity == UNIQUE and identified:
 		return L.t(DB.uniques.get(unique_id, {}).get("name", bn))
+	if rarity == RARE and identified and rare_name.size() == 2:
+		var f: Array = DB.rare_names.get("first", [])
+		var g: Array = DB.rare_names.get("second", [])
+		if int(rare_name[0]) < f.size() and int(rare_name[1]) < g.size():
+			return "%s %s" % [L.t(f[int(rare_name[0])]), L.t(g[int(rare_name[1])])]
+	if rarity == SET and identified:
+		return L.t(DB.set_items.get(set_id, {}).get("name", bn))
+	if word != "":
+		return "%s „%s“" % [bn, L.t(DB.words.get(word, {}).get("name", word))]
 	if rarity == MAGIC and identified:
 		var parts := []
 		if prefix != "":
@@ -133,6 +159,92 @@ func stat_mods() -> Dictionary:
 	var out := {}
 	for m in mods:
 		out[m.stat] = out.get(m.stat, 0.0) + float(m.value)
+	var cat := socket_category()
+	for g in socketed:
+		for m in g.base().get("socket", {}).get(cat, []):
+			out[m.stat] = out.get(m.stat, 0.0) + float(m.value)
+	if word != "":
+		for m in DB.words.get(word, {}).get("mods", []):
+			out[m.stat] = out.get(m.stat, 0.0) + float(m.value)
+	return out
+
+
+# ---------------------------------------------------------------- sockets
+func is_socketable() -> bool:
+	return slot() in ["gem", "letter"]
+
+
+# Which table of a gem's effects applies: in a weapon, a shield, or anything else worn.
+func socket_category() -> String:
+	if slot() == "weapon":
+		return "weapon"
+	if slot() == "offhand" and kind() == "shield":
+		return "shield"
+	return "armor"
+
+
+func max_sockets() -> int:
+	var t := int(base().get("tier", 1))
+	var sz := size()
+	match slot():
+		"weapon":
+			if sz.x >= 2:
+				return 4 if t <= 1 else (5 if t == 2 else 6)
+			return 2 if sz.y <= 2 else (3 if t <= 2 else 4)
+		"body":
+			return 3 if t <= 1 else (4 if t == 2 else 5)
+		"head":
+			return 2 if t <= 2 else 3
+		"offhand":
+			if kind() == "shield":
+				return 3 if t <= 2 else 4
+			return 2
+	return 0
+
+
+func can_socket(g: Item) -> bool:
+	return g != null and g.is_socketable() and socketed.size() < sockets
+
+
+func socket(g: Item) -> bool:
+	if not can_socket(g):
+		return false
+	var one := Item.from_dict(g.to_dict())
+	one.qty = 1
+	socketed.append(one)
+	_check_word()
+	return true
+
+
+# A plain item whose sockets are filled with exactly a word's letters, in order, speaks the word.
+func _check_word() -> void:
+	word = ""
+	if rarity != NORMAL or socketed.size() != sockets:
+		return
+	var letters := []
+	for g in socketed:
+		if g.slot() != "letter":
+			return
+		letters.append(g.base_id.trim_prefix("glag_"))
+	var cat := socket_category()
+	var kinds := [cat]
+	if slot() in ["head", "body"]:
+		kinds.append("armor")
+	if slot() == "body":
+		kinds.append("body")
+	for wid in DB.words:
+		var wd: Dictionary = DB.words[wid]
+		if wd.get("letters", []) == letters:
+			for b in wd.get("bases", []):
+				if b in kinds:
+					word = wid
+					return
+
+
+func glyphs() -> String:
+	var out := ""
+	for l in DB.words.get(word, {}).get("letters", []):
+		out += str(DB.item("glag_" + str(l)).get("glyph", ""))
 	return out
 
 
@@ -145,9 +257,11 @@ func req() -> Dictionary:
 	if rarity == UNIQUE:
 		var q := int(DB.uniques.get(unique_id, {}).get("qlvl", 0))
 		r["level"] = maxi(int(r.get("level", 0)), int(q * 0.8))
-	elif rarity == MAGIC:
+	elif rarity == SET:
+		r["level"] = maxi(int(r.get("level", 0)), int(int(DB.set_items.get(set_id, {}).get("qlvl", 0)) * 0.8))
+	elif rarity == MAGIC or rarity == RARE:
 		var lv := 0
-		for id in [prefix, suffix]:
+		for id in [prefix, suffix] + affix_ids:
 			if id != "":
 				var a := _affix("prefixes", id)
 				if a.is_empty():
@@ -161,8 +275,11 @@ func price() -> int:
 	var p := float(base().get("price", 10))
 	if rarity == MAGIC:
 		p *= 2.0 + mods.size() * 1.5 + ilvl * 0.08
-	elif rarity == UNIQUE:
+	elif rarity == UNIQUE or rarity == SET:
 		p *= 6.0 + ilvl * 0.15
+	elif rarity == RARE:
+		p *= 3.0 + mods.size() * 1.8 + ilvl * 0.1
+	p *= 1.0 + sockets * 0.4
 	if max_dur > 0:
 		p *= 0.4 + 0.6 * float(dur) / max_dur
 	return maxi(1, int(p))
@@ -225,6 +342,53 @@ func tooltip(ch = null) -> Array:
 	elif rarity != NORMAL:
 		for m in mods:
 			lines.append([Item.mod_text(m.stat, m.value), COL_MAGIC])
+	if rarity == SET and identified:
+		var si: Dictionary = DB.set_items.get(set_id, {})
+		var sid := str(si.get("set", ""))
+		var sd: Dictionary = DB.sets.get(sid, {})
+		var have: int = ch.set_worn.get(sid, 0) if ch else 0
+		lines.append([" ", COL_INFO])
+		lines.append(["%s  (%d / %d)" % [L.t(sd.get("name", sid)), have, sd.get("pieces", []).size()], COL_SET])
+		var worn_ids := {}
+		if ch:
+			for sl in ch.equip:
+				var e: Item = ch.equip[sl]
+				if e and e.rarity == SET:
+					worn_ids[e.set_id] = true
+		for pid in sd.get("pieces", []):
+			lines.append(["  " + L.t(DB.set_items.get(pid, {}).get("name", pid)), COL_SET if worn_ids.has(pid) else Color(0.55, 0.6, 0.55)])
+		for k in sd.get("bonus", {}):
+			var need: int = sd.pieces.size() if k == "full" else int(k)
+			var label := L.t({"cs": "Celá sada", "en": "Full set"}) if k == "full" else L.t({"cs": "%d kusy", "en": "%d pieces"}) % need
+			var txt := ", ".join(sd.bonus[k].map(func(m): return Item.mod_text(m.stat, float(m.get("min", m.get("value", 0))))))
+			lines.append(["%s: %s" % [label, txt], COL_SET if have >= need else Color(0.5, 0.52, 0.5)])
+		if sd.has("flavor"):
+			lines.append(["„%s“" % L.t(sd.flavor), Color("8aa88a")])
+	if is_socketable():
+		var where := {"weapon": {"cs": "Ve zbrani", "en": "In a weapon"}, "armor": {"cs": "Ve zbroji", "en": "In armour"}, "shield": {"cs": "Ve štítu", "en": "In a shield"}}
+		if b.has("glyph"):
+			lines.append(["%s  ·  %s" % [b.glyph, b.get("latin", "")], Color("e0c890")])
+		for cat in ["weapon", "armor", "shield"]:
+			var ms: Array = b.get("socket", {}).get(cat, [])
+			if not ms.is_empty():
+				lines.append(["%s: %s" % [L.t(where[cat]), ", ".join(ms.map(func(m): return Item.mod_text(m.stat, m.value)))], COL_MAGIC])
+		lines.append([L.t({"cs": "Vlož do zásuvky: polož na předmět", "en": "Socket it: drop it onto an item"}), COL_INFO])
+	if word != "":
+		var wd: Dictionary = DB.words.get(word, {})
+		lines.append(["%s  %s — „%s“" % [glyphs(), L.t(wd.get("name", word)).to_upper(), L.t(wd.get("meaning", ""))], COL_UNIQUE])
+		for m in wd.get("mods", []):
+			lines.append([Item.mod_text(m.stat, m.value), COL_UNIQUE])
+	if sockets > 0:
+		lines.append([L.t({"cs": "Zásuvky: %d / %d", "en": "Sockets: %d / %d"}) % [socketed.size(), sockets], COL_SOCKET])
+		var cat2 := socket_category()
+		for g in socketed:
+			var eff: Array = g.base().get("socket", {}).get(cat2, [])
+			lines.append(["  %s%s — %s" % [str(g.base().get("glyph", "")) + " " if g.slot() == "letter" else "", g.display_name(),
+				", ".join(eff.map(func(m): return Item.mod_text(m.stat, m.value)))], COL_MAGIC])
+	var only := str(b.get("class", ""))
+	if only != "":
+		var ok_cls: bool = ch == null or ch.class_id == only
+		lines.append([L.t({"cs": "Jen pro: %s", "en": "%s only"}) % L.t(DB.classes.get(only, {}).get("name", only)), COL_NORMAL if ok_cls else COL_BAD])
 	var rq := req()
 	var parts := []
 	for k in ["level", "sila", "obratnost", "magie"]:
@@ -246,6 +410,17 @@ func tooltip(ch = null) -> Array:
 
 static func mod_text(stat: String, value: float) -> String:
 	var v := int(round(value))
+	if stat.begins_with("class_"):
+		var cn := L.t(DB.classes.get(stat.substr(6), {}).get("name", stat))
+		return L.t({"cs": "+%d ke všem dovednostem (%s)", "en": "+%d to %s skills"}) % [v, cn]
+	if stat.begins_with("tree_"):
+		var tid := stat.substr(5)
+		var tn := tid
+		for cid in DB.classes:
+			for t in DB.classes[cid].get("trees", []):
+				if t.id == tid:
+					tn = L.t(t.name)
+		return L.t({"cs": "+%d k dovednostem: %s", "en": "+%d to %s skills"}) % [v, tn]
 	var key := "mod_" + stat
 	var sgn := "+" if v >= 0 else ""
 	if L.ui.has(key) or MOD_TEXT.has(stat):
@@ -270,7 +445,7 @@ const MOD_TEXT := {
 	"to_hit": {"cs": "{v} k útoku", "en": "{v} to attack rating"},
 	"armor": {"cs": "{v} ke zbroji", "en": "{v} to armour"},
 	"armor_pct": {"cs": "{v} % zbroje", "en": "{v}% enhanced armour"},
-	"block": {"cs": "{v} % šance vykrýt", "en": "{v}% chance to block"},
+	"block": {"cs": "{v} k vykrývání", "en": "{v} to blocking"},
 	"fire_dmg": {"cs": "{v} ohnivého poškození", "en": "{v} fire damage"},
 	"lightning_dmg": {"cs": "{v} bleskového poškození", "en": "{v} lightning damage"},
 	"cold_dmg": {"cs": "{v} mrazivého poškození", "en": "{v} cold damage"},
@@ -293,14 +468,30 @@ const MOD_TEXT := {
 	"thorns": {"cs": "Útočník utrpí {v} poškození", "en": "Attacker takes {v} damage"},
 	"dmg_reduce": {"cs": "Poškození sníženo o {v}", "en": "Damage reduced by {v}"},
 	"skills": {"cs": "{v} ke všem dovednostem", "en": "{v} to all skills"},
-	"crit": {"cs": "{v} % šance na zničující úder", "en": "{v}% chance of crushing blow"},
+	"crit": {"cs": "{v} % šance na smrtící úder (dvojnásobné poškození)", "en": "{v}% deadly strike"},
+	"crushing_blow": {"cs": "{v} % šance na drtivý úder", "en": "{v}% chance of crushing blow"},
+	"hit_recovery": {"cs": "{v} % rychlejší zotavení z rány", "en": "{v}% faster hit recovery"},
+	"dmg_reduce_pct": {"cs": "Poškození sníženo o {v} %", "en": "Damage reduced by {v}%"},
+	"to_hit_pct": {"cs": "{v} % k útoku", "en": "{v}% bonus to attack rating"},
 	"xp_pct": {"cs": "{v} % zkušeností", "en": "{v}% experience"},
 }
 
 
 func to_dict() -> Dictionary:
-	return {"b": base_id, "r": rarity, "l": ilvl, "id": identified, "p": prefix, "s": suffix, "u": unique_id,
+	var out := {"b": base_id, "r": rarity, "l": ilvl, "id": identified, "p": prefix, "s": suffix, "u": unique_id,
 		"m": mods, "d": [dmg.x, dmg.y], "a": armor, "du": dur, "md": max_dur, "q": qty, "x": pos.x, "y": pos.y}
+	if not affix_ids.is_empty():
+		out["ax"] = affix_ids
+	if not rare_name.is_empty():
+		out["rn"] = rare_name
+	if set_id != "":
+		out["set"] = set_id
+	if sockets > 0:
+		out["so"] = sockets
+		out["sg"] = socketed.map(func(g): return g.to_dict())
+	if word != "":
+		out["w"] = word
+	return out
 
 
 static func from_dict(d: Dictionary) -> Item:
@@ -320,4 +511,11 @@ static func from_dict(d: Dictionary) -> Item:
 	it.max_dur = int(d.get("md", 0))
 	it.qty = int(d.get("q", 1))
 	it.pos = Vector2i(int(d.get("x", -1)), int(d.get("y", -1)))
+	it.affix_ids = d.get("ax", [])
+	it.rare_name = d.get("rn", [])
+	it.set_id = d.get("set", "")
+	it.sockets = int(d.get("so", 0))
+	for g in d.get("sg", []):
+		it.socketed.append(Item.from_dict(g))
+	it.word = d.get("w", "")
 	return it

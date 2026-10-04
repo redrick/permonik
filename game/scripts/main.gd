@@ -40,6 +40,10 @@ func _ready() -> void:
 		start_game(int(_arg(args, "--floor", "0")))
 		if args.has("--probe"):
 			add_child(load("res://scripts/debug/probe.gd").new())
+		if args.has("--skilltest"):
+			add_child(load("res://scripts/debug/skilltest.gd").new())
+		if args.has("--walktest"):
+			add_child(load("res://scripts/debug/walktest.gd").new())
 		if args.has("--autoplay"):
 			add_child(load("res://scripts/debug/autoplay.gd").new())
 		return

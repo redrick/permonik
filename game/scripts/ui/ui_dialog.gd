@@ -55,15 +55,7 @@ func _ready() -> void:
 
 
 func _pick_entry() -> Dictionary:
-	for e in DB.dialog.get(npc_id, []):
-		var ok := true
-		for c in e.get("if", []):
-			if not Game.cond(str(c)):
-				ok = false
-				break
-		if ok:
-			return e
-	return {}
+	return Game.dialog_entry(npc_id)
 
 
 func _speaker(who: String) -> void:
@@ -101,9 +93,21 @@ func _next() -> void:
 	var ln: Dictionary = lines[idx]
 	var who := str(ln.get("who", npc_id))
 	_speaker(who)
-	_say(L.t(ln.get("text_" + Game.ch.class_id, ln.get("text", ""))))
+	_say(L.t(_line_text(ln, who)))
 	_clear_buttons()
 	buttons.add_child(UiTheme.button(UiTheme.t("next"), _next, 200))
+
+
+# The hero's own variant if the line has one. A newer heroine without one borrows the feminine form the
+# two older heroines share (an NPC calling her "poutnice"), never their personal lines.
+func _line_text(ln: Dictionary, who: String):
+	var own := "text_" + Game.ch.class_id
+	if ln.has(own):
+		return ln[own]
+	if who != "hero" and str(DB.classes.get(Game.ch.class_id, {}).get("gender", "m")) == "f":
+		if ln.has("text_vedma") and ln.has("text_zbojnice") and str(ln.text_vedma) == str(ln.text_zbojnice):
+			return ln.text_vedma
+	return ln.get("text", "")
 
 
 func _clear_buttons() -> void:
@@ -145,16 +149,37 @@ func _menu() -> void:
 	match role:
 		"smith":
 			buttons.add_child(UiTheme.button(L.t("trade"), func(): ui.open_vendor(npc), 220))
+			buttons.add_child(UiTheme.button(L.t({"cs": "Výheň", "en": "Forge"}), func(): ui.open_forge(), 220))
+			buttons.add_child(UiTheme.button(L.t({"cs": "Výheň", "en": "Forge"}), func(): ui.open_forge(), 220))
 		"healer":
 			buttons.add_child(UiTheme.button(L.t("heal_me"), _heal, 220))
 			buttons.add_child(UiTheme.button(L.t("trade"), func(): ui.open_vendor(npc), 220))
 		"inn":
 			buttons.add_child(UiTheme.button(L.t("trade"), func(): ui.open_vendor(npc), 220))
+			buttons.add_child(UiTheme.button(L.t({"cs": "Kostky", "en": "Dice"}), func(): ui.open_vendor(npc, true), 220))
+			buttons.add_child(UiTheme.button(L.t({"cs": "Kostky", "en": "Dice"}), func(): ui.open_vendor(npc, true), 220))
 			buttons.add_child(UiTheme.button(L.t("gossip"), _gossip, 220))
 		"chronicler":
 			buttons.add_child(UiTheme.button(L.t("identify"), _identify_all, 240))
 			buttons.add_child(UiTheme.button(UiTheme.t("kronika"), func(): ui.open_kronika(), 220))
+	if npc_id == "prevoznik":
+		_ferry_buttons(ui)
 	buttons.add_child(UiTheme.button(L.t("leave"), func(): ui.close_panel(self), 200))
+
+
+# The ferryman rows you over the Smorodina to a guardian's tithe, one key a crossing.
+func _ferry_buttons(ui: UiRoot) -> void:
+	for f in DB.act(4).get("floors", []):
+		var ub: Dictionary = f.get("uber", {})
+		var key := str(ub.get("key", ""))
+		if key == "" or Game.ch.inv.count(key) <= 0:
+			continue
+		var fn := int(f.n)
+		var label := "%s → %s" % [L.t(DB.item(key).get("name", key)), L.t(f.get("name", ""))]
+		buttons.add_child(UiTheme.button(label, func():
+			Game.ch.inv.take(key, 1)
+			ui.close_panel(self)
+			Game.goto(4, fn, "start"), 360))
 
 
 func _heal() -> void:

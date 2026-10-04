@@ -305,5 +305,6 @@
   "codex_see": {"cs": "Viz také", "en": "See also"},
   "codex_unknown": {"cs": "Zatím nepoznáno", "en": "Not yet encountered"},
   "codex_empty_tab": {"cs": "Tady ještě nic není. Choď, dívej se, poslouchej.", "en": "Nothing here yet. Walk, look, listen."},
-  "codex_count": {"cs": "Poznáno {v} z {n}", "en": "Known {v} of {n}"}
+  "codex_count": {"cs": "Poznáno {v} z {n}", "en": "Known {v} of {n}"},
+  "inv_sort": {"cs": "Seřadit", "en": "Sort"}
 }

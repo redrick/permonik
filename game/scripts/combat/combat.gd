@@ -2,6 +2,14 @@ class_name Combat
 extends RefCounted
 
 
+const LEECH_BY_DIFF := [1.0, 0.67, 0.5]
+
+
+# D2's diminishing return for speed bonuses from gear: 120·x / (120 + x).
+static func diminish(x: float) -> float:
+	return 120.0 * x / (120.0 + x) if x > 0.0 else x
+
+
 static func hit_chance(alvl: int, dlvl: int, ar: float, def: float, lo := 0.05, hi := 0.95) -> float:
 	var c := 2.0 * float(alvl) / float(alvl + dlvl) * ar / maxf(1.0, ar + def)
 	return clampf(c, lo, hi)
@@ -21,15 +29,20 @@ static func player_strike(player: Actor, target: Actor, pct := 100.0, opts := {}
 	if target == null or target.dead:
 		return false
 	var d: Dictionary = Game.ch.d
-	var hc := hit_chance(Game.ch.level, target.mlvl, float(d.to_hit) + float(opts.get("to_hit", 0)), float(target.armor), 0.2)
+	var ar := (float(d.to_hit) + float(opts.get("to_hit", 0))) * (1.0 + float(opts.get("ar_pct", 0.0)) / 100.0)
+	var hc := hit_chance(Game.ch.level, target.mlvl, ar, float(target.armor))
 	if not opts.get("always_hit", false) and randf() > hc:
 		player.level.float_text(target.top_pos(), L.t({"cs": "vedle", "en": "miss"}), Color("9a948a"))
 		Sfx.play_at("swing", player.global_position, 0.5)
 		return false
 	var dm := player_weapon_damage(pct)
-	var crit := randf() * 100.0 < float(d.get("crit", 0.0)) + 3.0
+	var crit := randf() * 100.0 < float(d.get("crit", 0.0))
 	var amt := randf_range(dm.min, dm.max) * (2.0 if crit else 1.0)
-	var total := target.take_damage(amt, opts.get("element", "physical"), player, {"crit": crit, "knock": opts.get("knock", 0.0)})
+	var elem: String = opts.get("element", "physical")
+	if elem == "physical" and randf() * 100.0 < float(d.get("crushing_blow", 0.0)):
+		amt += _crushing(target, opts.get("ranged", false))
+		crit = true
+	var total := target.take_damage(amt, elem, player, {"crit": crit, "knock": opts.get("knock", 0.0)})
 	for e in dm.extra:
 		total += target.take_damage(randf_range(e.min, e.max), e.element, player, {"no_stun": true})
 		_elem_status(target, e.element, randf_range(e.min, e.max), player)
@@ -41,6 +54,13 @@ static func player_strike(player: Actor, target: Actor, pct := 100.0, opts := {}
 		Sfx.play_at(target.get_meta("hit_sfx", "hit_flesh"), target.global_position, 0.8)
 		wear_item("weapon", 0.08)
 	return true
+
+
+# D2 crushing blow: a share of what the target has left, less for champions and bosses, halved at range;
+# physical resistance still applies in take_damage.
+static func _crushing(t: Actor, ranged: bool) -> float:
+	var share := 0.25 if t.get("kind") == "normal" else 0.125
+	return t.hp * share * (0.5 if ranged else 1.0)
 
 
 static func _elem_status(t: Actor, e: String, amount: float, src: Node) -> void:
@@ -56,8 +76,9 @@ static func _elem_status(t: Actor, e: String, amount: float, src: Node) -> void:
 
 static func _leech(total: float) -> void:
 	var ch := Game.ch
-	var ls := float(ch.d.get("life_steal", 0.0))
-	var ms := float(ch.d.get("mana_steal", 0.0))
+	var k: float = LEECH_BY_DIFF[clampi(Game.difficulty, 0, 2)]
+	var ls := float(ch.d.get("life_steal", 0.0)) * k
+	var ms := float(ch.d.get("mana_steal", 0.0)) * k
 	if ls > 0.0:
 		ch.hp = minf(ch.d.hp_max, ch.hp + total * ls / 100.0)
 	if ms > 0.0:
@@ -92,7 +113,10 @@ static func monster_hit_player(m: Actor, p: Actor, dmg: Vector2, element := "phy
 	if not opts.get("always_hit", false) and randf() > hit_chance(m.mlvl, ch.level, ar, float(ch.d.armor), 0.05, 0.85):
 		p.level.float_text(p.top_pos(), L.t({"cs": "uhnul", "en": "dodge"}), Color("9a948a"), true)
 		return false
-	if element == "physical" and randf() * 100.0 < float(ch.d.get("block", 0)) * (1.0 if not p.moving else 0.5):
+	var blk := float(ch.d.get("block", 0))
+	if p.moving:
+		blk = minf(25.0, blk / 3.0)
+	if element == "physical" and randf() * 100.0 < blk:
 		p.level.float_text(p.top_pos(), L.t({"cs": "vykryto", "en": "block"}), Color("d8d0b8"), true)
 		Sfx.play_at("block", p.global_position)
 		p.set_pose("attack", 0.15)
@@ -100,6 +124,7 @@ static func monster_hit_player(m: Actor, p: Actor, dmg: Vector2, element := "phy
 		return false
 	var amt := randf_range(dmg.x, dmg.y)
 	if element == "physical":
+		amt *= 1.0 - float(ch.d.get("dmg_reduce_pct", 0.0)) / 100.0
 		amt = maxf(1.0, amt - float(ch.d.get("dmg_reduce", 0.0)))
 	var dealt := p.take_damage(amt, element, m, opts)
 	if dealt > 0.0:

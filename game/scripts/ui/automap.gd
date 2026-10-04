@@ -1,56 +1,61 @@
 class_name Automap
 extends Control
 
-var scale_px := 7.0
+# Tab: the whole explored level on a paper sheet, with the floor's name pencilled at the top.
+
+const SHEET := Vector2(1500, 938)
+
+var sheet: TextureRect
+var clip: Control
+var view: MapView
+var title: Label
 
 
-func _draw() -> void:
-	var lv: Level = Game.level
-	if lv == null or lv.player == null:
+func _ready() -> void:
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	sheet = TextureRect.new()
+	sheet.texture = DB.tex("ui/map_sheet")
+	sheet.stretch_mode = TextureRect.STRETCH_SCALE
+	sheet.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	sheet.modulate.a = 0.95
+	add_child(sheet)
+	clip = Control.new()
+	clip.clip_contents = true
+	clip.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	sheet.add_child(clip)
+	view = MapView.new()
+	view.follow = false
+	view.icon_px = 26.0
+	clip.add_child(view)
+	title = Label.new()
+	title.add_theme_font_override("font", load("res://assets/fonts/TataHand.ttf"))
+	title.add_theme_font_size_override("font_size", 44)
+	title.add_theme_color_override("font_color", Color(0.18, 0.14, 0.12, 0.9))
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	sheet.add_child(title)
+	visibility_changed.connect(_layout)
+	resized.connect(_layout)
+
+
+func _layout() -> void:
+	if not visible:
 		return
-	var vs := get_viewport_rect().size
-	var center := vs / 2.0 - Vector2(0, 60)
-	var pc := Vector2(lv.player.global_position) / Level.CELL
-	var wall_col := Color(0.85, 0.75, 0.55, 0.85)
-	var floor_col := Color(0.6, 0.55, 0.45, 0.18)
-	var water_col := Color(0.3, 0.55, 0.7, 0.35)
-	for y in lv.h:
-		for x in lv.w:
-			if lv.explored[y * lv.w + x] == 0:
-				continue
-			var p := center + (Vector2(x, y) - pc) * scale_px
-			if p.x < -10 or p.y < -10 or p.x > vs.x + 10 or p.y > vs.y + 10:
-				continue
-			if lv.gen.at(x, y) == DungeonGen.WALL:
-				var edge := false
-				for o in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
-					var n : Vector2i = Vector2i(x, y) + o
-					if n.x >= 0 and n.y >= 0 and n.x < lv.w and n.y < lv.h and lv.gen.at(n.x, n.y) != DungeonGen.WALL:
-						edge = true
-				if edge:
-					draw_rect(Rect2(p, Vector2(scale_px, scale_px)), wall_col)
-			else:
-				draw_rect(Rect2(p, Vector2(scale_px, scale_px)), water_col if lv.water[y * lv.w + x] == 1 else floor_col)
-	for pr in lv.props:
-		if not is_instance_valid(pr):
-			continue
-		var col := Color(0, 0, 0, 0)
-		match pr.interact:
-			"stairs_down", "stairs_up":
-				col = Color("e9c46a")
-			"waypoint":
-				col = Color("7fb0ff")
-			"portal":
-				col = Color("9fd0ff")
-			"shrine":
-				col = Color("c8a0ff") if not pr.used else Color(0, 0, 0, 0)
-			"quest":
-				col = Color("ff9a3a")
-			"book":
-				col = Color("fff0b8") if not Game.known.has("book:" + str(pr.data.get("book", ""))) else Color(0, 0, 0, 0)
-		var c := Vector2i(pr.position / Level.CELL)
-		if col.a > 0 and lv.explored[clampi(c.y, 0, lv.h - 1) * lv.w + clampi(c.x, 0, lv.w - 1)] == 1:
-			draw_circle(center + (pr.position / Level.CELL - pc) * scale_px, 5, col)
-	for n in lv.npcs:
-		draw_circle(center + (n.position / Level.CELL - pc) * scale_px, 4, Color("9ae07a"))
-	draw_circle(center, 5, Color("ff4a3a"))
+	var vs := size
+	var k := minf(1.0, minf((vs.x - 60) / SHEET.x, (vs.y - 230) / SHEET.y))
+	sheet.size = SHEET * k
+	sheet.position = Vector2((vs.x - sheet.size.x) / 2.0, maxf(20.0, (vs.y - 190 - sheet.size.y) / 2.0))
+	clip.position = Vector2(60, 90) * k
+	clip.size = sheet.size - Vector2(120, 140) * k
+	view.size = clip.size
+	title.position = Vector2(0, 22 * k)
+	title.size = Vector2(sheet.size.x, 60 * k)
+	var lv: Level = Game.level
+	if lv == null:
+		return
+	view.zoom = clampf(minf(clip.size.x / lv.w, clip.size.y / lv.h), 6.0, 18.0)
+	view.follow = lv.w * view.zoom > clip.size.x or lv.h * view.zoom > clip.size.y
+	if lv.is_town:
+		title.text = L.t(DB.act(lv.act_n).get("town", {}).get("name", ""))
+	else:
+		title.text = L.t(DB.floor_def(lv.act_n, lv.floor_n).get("name", ""))

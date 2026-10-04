@@ -20,6 +20,8 @@ static func _slot_ok(it: Item, slots: Array) -> bool:
 			return true
 		if g == "weapon" and s == "weapon":
 			return true
+		if g == "class" and str(it.base().get("class", "")) != "":
+			return true
 		if SLOT_GROUPS.has(g) and s in SLOT_GROUPS[g]:
 			return true
 	return false
@@ -31,9 +33,13 @@ static func random_base(ilvl: int, filter := "") -> String:
 	for id in DB.items:
 		var b: Dictionary = DB.items[id]
 		var sl := str(b.get("slot", ""))
-		if sl in ["gold", "quest"] or bool(b.get("no_drop", false)):
+		if sl in ["gold", "quest"] or bool(b.get("no_drop", false)) or bool(b.get("quest", false)):
 			continue
 		if filter == "equipment" and sl == "consumable":
+			continue
+		if sl in ["gem", "letter"] and filter != sl:
+			continue
+		if sl == "charm" and filter not in ["charm", "equipment"]:
 			continue
 		if filter != "" and filter != "equipment" and sl != filter:
 			continue
@@ -59,26 +65,74 @@ static func _weighted(w: Array) -> int:
 	return w.size() - 1
 
 
+# What a charm may carry, and how much of an affix's value each size keeps.
+const CHARM_STATS := ["hp", "mana", "to_hit", "dmg_max", "dmg_min", "res_fire", "res_cold", "res_lightning", "res_poison",
+	"res_all", "magic_find", "gold_find", "fire_dmg", "cold_dmg", "lightning_dmg", "poison_dmg", "armor", "hit_recovery",
+	"move_speed", "light_radius", "sila", "obratnost", "magie", "vitalita"]
+const CHARM_SCALE := {"hromovy_kamen_maly": 0.35, "hromovy_kamen": 0.6, "hromovy_kamen_velky": 1.0}
+
+
+static func _charm_ok(it: Item, a: Dictionary) -> bool:
+	for m in a.get("mods", []):
+		var st := str(m.get("stat", ""))
+		if st.begins_with("tree_"):
+			return it.base_id == "hromovy_kamen_velky"
+		if not st in CHARM_STATS:
+			return false
+	return true
+
+
 static func roll_affix(group: String, it: Item) -> Dictionary:
 	var cands := []
 	var ws := []
+	var charm := it.slot() == "charm"
 	for a in DB.affixes.get(group, []):
 		if int(a.get("qlvl", 1)) > it.ilvl:
 			continue
-		if not _slot_ok(it, a.get("slots", ["any"])):
+		if charm:
+			if not _charm_ok(it, a):
+				continue
+		elif not _slot_ok(it, a.get("slots", ["any"])):
 			continue
+		var w := float(a.get("weight", 10))
+		var owner := _skill_owner(a)
+		var cls := str(it.base().get("class", ""))
+		if owner != "" and cls != "":
+			if owner != cls:
+				continue
+			w *= 4.0
+		elif owner != "":
+			w *= 0.35
 		cands.append(a)
-		ws.append(float(a.get("weight", 10)))
+		ws.append(w)
 	if cands.is_empty():
 		return {}
 	return cands[_weighted(ws)]
 
 
+# The class a +skill affix belongs to ("" for any other affix).
+static func _skill_owner(a: Dictionary) -> String:
+	for m in a.get("mods", []):
+		var st := str(m.get("stat", ""))
+		if st.begins_with("class_"):
+			return st.substr(6)
+		if st.begins_with("tree_"):
+			var tid := st.substr(5)
+			for cid in DB.classes:
+				for t in DB.classes[cid].get("trees", []):
+					if t.id == tid:
+						return cid
+	return ""
+
+
 static func _apply_mods(it: Item, mods: Array) -> void:
+	var k := float(CHARM_SCALE.get(it.base_id, 1.0))
 	for m in mods:
 		var v := float(m.get("value", 0))
 		if m.has("min"):
 			v = randf_range(float(m.min), float(m.get("max", m.min)))
+		if k < 1.0 and not str(m.stat).begins_with("tree_"):
+			v = maxf(1.0, v * k) if v > 0 else v * k
 		it.mods.append({"stat": m.stat, "value": round(v)})
 
 
@@ -101,6 +155,80 @@ static func make_magic(it: Item) -> void:
 	if it.mods.is_empty():
 		it.rarity = Item.NORMAL
 		it.identified = true
+
+
+# D2 rare: up to three prefixes and three suffixes, never two of one family (perunuv_1 / perunuv_2),
+# and a two-word name of its own.
+static func make_rare(it: Item) -> void:
+	it.rarity = Item.RARE
+	it.identified = false
+	it.prefix = ""
+	it.suffix = ""
+	it.mods = []
+	it.affix_ids = []
+	var total := randi_range(3, 6) if it.ilvl >= 20 else randi_range(3, 4)
+	var counts := {"prefixes": 0, "suffixes": 0}
+	var families := {}
+	var tries := 0
+	while it.affix_ids.size() < total and tries < 40:
+		tries += 1
+		var group := "prefixes" if randf() < 0.5 else "suffixes"
+		if counts[group] >= 3:
+			group = "suffixes" if group == "prefixes" else "prefixes"
+		if counts[group] >= 3:
+			break
+		var a := roll_affix(group, it)
+		if a.is_empty():
+			continue
+		var fam := str(a.id).rsplit("_", true, 1)[0]
+		var clash := families.has(fam)
+		for m in a.get("mods", []):
+			if families.has("stat:" + str(m.stat)):
+				clash = true
+		if clash:
+			continue
+		families[fam] = true
+		for m in a.get("mods", []):
+			families["stat:" + str(m.stat)] = true
+		counts[group] += 1
+		it.affix_ids.append(a.id)
+		_apply_mods(it, a.get("mods", []))
+	if it.mods.is_empty():
+		it.rarity = Item.NORMAL
+		it.identified = true
+		return
+	it.rare_name = [randi() % maxi(1, DB.rare_names.get("first", []).size()), randi() % maxi(1, DB.rare_names.get("second", []).size())]
+
+
+static func make_set(it: Item) -> bool:
+	var cands := []
+	for iid in DB.set_items:
+		var si: Dictionary = DB.set_items[iid]
+		if si.get("base", "") == it.base_id and int(si.get("qlvl", 1)) <= it.ilvl + 3:
+			cands.append(iid)
+	if cands.is_empty():
+		return false
+	make_set_id(it, cands.pick_random())
+	it.identified = false
+	return true
+
+
+static func make_set_id(it: Item, iid: String) -> void:
+	var si: Dictionary = DB.set_items.get(iid, {})
+	it.rarity = Item.SET
+	it.set_id = iid
+	it.mods = []
+	_apply_mods(it, si.get("mods", []))
+	it.identified = true
+
+
+static func set_item(iid: String, ilvl: int) -> Item:
+	var si: Dictionary = DB.set_items.get(iid, {})
+	if si.is_empty():
+		return null
+	var it := Item.create(si.get("base", ""), ilvl)
+	make_set_id(it, iid)
+	return it
 
 
 static func make_unique(it: Item) -> bool:
@@ -141,16 +269,54 @@ static func roll_item(ilvl: int, mf := 0.0, magic_bonus := 0.0, filter := "") ->
 	if id == "":
 		return null
 	var it := Item.create(id, ilvl)
+	if it.slot() == "charm":
+		make_magic(it)
+		return it
 	if not it.is_equipment():
 		return it
 	var r := randf()
 	var uchance := 0.012 * (1.0 + mf / 100.0) * (1.0 + magic_bonus * 4.0)
+	var rchance := (0.05 if ilvl >= 6 else 0.0) * (1.0 + mf / 150.0) * (1.0 + magic_bonus * 2.0)
 	var mchance := 0.18 * (1.0 + mf / 200.0) + magic_bonus
+	var schance := 0.02 * (1.0 + mf / 100.0) * (1.0 + magic_bonus * 3.0)
 	if r < uchance and make_unique(it):
 		return it
-	if r < uchance + mchance or (it.slot() in ["ring", "amulet"]):
+	if r >= uchance and r < uchance + schance and make_set(it):
+		return it
+	r -= schance
+	if r < uchance + rchance:
+		make_rare(it)
+		return it
+	if r < uchance + rchance + mchance or (it.slot() in ["ring", "amulet"]):
 		make_magic(it)
+	elif it.max_sockets() > 0 and randf() < 0.15:
+		it.sockets = randi_range(1, it.max_sockets())
 	return it
+
+
+# A gem of a random stone, its grade climbing with the monster's level.
+static func gem(mlvl: int) -> Item:
+	var top := 1 if mlvl < 12 else (2 if mlvl < 30 else (3 if mlvl < 55 else 4))
+	var g := randi_range(maxi(1, top - 1), top)
+	var stones := ["granat", "vltavin", "ametyst", "achat", "kristal", "jaspis"]
+	return Item.create("%s_%d" % [stones.pick_random(), g], mlvl)
+
+
+# Letters follow D2's rune ladder: each step up is a quarter rarer, and none above the monster's level.
+static func letter(mlvl: int) -> Item:
+	var ids := []
+	var ws := []
+	var rank := 0
+	for id in DB.items:
+		if str(DB.items[id].get("slot", "")) == "letter" and int(DB.items[id].get("qlvl", 1)) <= mlvl + 2:
+			ids.append(id)
+	ids.sort_custom(func(a, b): return int(DB.items[a].qlvl) < int(DB.items[b].qlvl))
+	for id in ids:
+		ws.append(pow(0.75, rank))
+		rank += 1
+	if ids.is_empty():
+		return null
+	return Item.create(ids[_weighted(ws)], mlvl)
 
 
 static func gold(ilvl: int, gf := 0.0) -> Item:
@@ -188,8 +354,20 @@ static func monster_drops(mlvl: int, kind: String, mf: float, gf: float) -> Arra
 			var p := potion_for(mlvl)
 			if p:
 				out.append(p)
+		elif r < 0.46:
+			out.append(gem(mlvl))
+		elif r < 0.475:
+			var l := letter(mlvl)
+			if l:
+				out.append(l)
 	if kind == "boss":
 		out.append(gold(mlvl * 3, gf))
+		if randf() < 0.5:
+			out.append(gem(mlvl))
+		if randf() < 0.35:
+			var bl := letter(mlvl)
+			if bl:
+				out.append(bl)
 	return out
 
 
@@ -204,6 +382,38 @@ static func potion_for(mlvl: int) -> Item:
 	if not DB.items.has(id):
 		return null
 	return Item.create(id, mlvl)
+
+
+# The innkeeper's dice: plain-looking things you pay for blind; the roll happens when you buy.
+static func gamble_stock(level: int) -> Array:
+	var out := []
+	for sl in ["weapon", "weapon", "weapon", "body", "head", "offhand", "belt", "ring", "ring", "amulet", "amulet", "lamp", "charm"]:
+		var id := random_base(level + 5, sl)
+		if id != "":
+			var it := Item.create(id, level)
+			out.append(it)
+	return out
+
+
+static func gamble_price(it: Item, level: int) -> int:
+	return int((float(it.base().get("price", 50)) * 3.0 + 120.0) * (1.0 + level * 0.12))
+
+
+static func gamble(base_id: String, level: int) -> Item:
+	var it := Item.create(base_id, clampi(level + randi_range(-4, 5), 1, 99))
+	var r := randf()
+	if it.slot() == "charm":
+		make_magic(it)
+	elif r < 0.03 and make_unique(it):
+		pass
+	elif r < 0.07 and make_set(it):
+		pass
+	elif r < 0.25:
+		make_rare(it)
+	else:
+		make_magic(it)
+	it.identified = true
+	return it
 
 
 static func vendor_stock(role: String, level: int) -> Array:

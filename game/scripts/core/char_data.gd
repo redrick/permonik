@@ -21,13 +21,31 @@ var hp := 1.0
 var mana := 0.0
 var gold := 0
 var inv := Inventory.new(10, 4)
-var stash := Inventory.new(10, 8)
+var stash := Inventory.new(12, 10)
 var equip := {}
 var belt: Array = []
 var buffs: Array = []
 var rmb := "utok"
 var hotkeys := ["", "", "", ""]
 var d := {}
+var _charm_sig := ""
+var set_worn := {}
+
+
+func _init() -> void:
+	inv.changed.connect(_on_inv_changed)
+
+
+# Charms count from the bag, so the stats follow them in and out of it.
+func _on_inv_changed() -> void:
+	var sig := ""
+	for it in inv.items:
+		if it.slot() == "charm":
+			sig += "%d|" % it.get_instance_id()
+	if sig != _charm_sig:
+		_charm_sig = sig
+		recalc()
+		changed.emit()
 
 
 func cls() -> Dictionary:
@@ -68,6 +86,9 @@ func meets_req(k: String, v: int) -> bool:
 
 
 func can_equip(it: Item) -> bool:
+	var only := str(it.base().get("class", ""))
+	if only != "" and only != class_id:
+		return false
 	var r := it.req()
 	for k in r:
 		if not meets_req(k, int(r[k])):
@@ -93,7 +114,8 @@ func skill_rank(id: String) -> int:
 	var r := int(skills.get(id, 0))
 	if r <= 0:
 		return 0
-	return r + int(d.get("skills", 0))
+	var sk := DB.skill(id)
+	return r + int(d.get("skills", 0)) + int(d.get("class_" + class_id, 0)) + int(d.get("tree_" + str(sk.get("tree", "")), 0))
 
 
 func skill_param(id: String, p: String, rank := -1) -> Variant:
@@ -176,15 +198,24 @@ func belt_size() -> int:
 	return clampi(4 + (int(b.base().get("belt_slots", 0)) if b else 0), 4, 8)
 
 
-func add_buff(id: String, mods: Dictionary, seconds: float) -> void:
+func add_buff(id: String, mods: Dictionary, seconds: float, form := "") -> void:
 	for b in buffs:
 		if b.id == id:
 			b.mods = mods
 			b.t = seconds
+			b.form = form
 			recalc()
 			return
-	buffs.append({"id": id, "mods": mods, "t": seconds})
+	buffs.append({"id": id, "mods": mods, "t": seconds, "form": form})
 	recalc()
+
+
+# The shape a buff has put the hero in ("" = their own).
+func active_form() -> String:
+	for b in buffs:
+		if str(b.get("form", "")) != "":
+			return str(b.form)
+	return ""
 
 
 func tick_buffs(delta: float) -> void:
@@ -210,6 +241,28 @@ func recalc() -> void:
 		var sm := it.stat_mods()
 		for k in sm:
 			add.call(k, sm[k])
+	# set bonuses by how many pieces of each set are worn
+	var worn := {}
+	for sl in equip:
+		var it: Item = equip[sl]
+		if it and not it.broken() and it.rarity == Item.SET and it.identified:
+			var sid := str(DB.set_items.get(it.set_id, {}).get("set", ""))
+			if sid != "":
+				worn[sid] = int(worn.get(sid, 0)) + 1
+	set_worn = worn
+	for sid in worn:
+		var sd: Dictionary = DB.sets.get(sid, {})
+		for k in sd.get("bonus", {}):
+			var need: int = sd.pieces.size() if k == "full" else int(k)
+			if int(worn[sid]) >= need:
+				for bm in sd.bonus[k]:
+					add.call(str(bm.stat), float(bm.get("min", bm.get("value", 0))))
+	# charms work from the bag
+	for it in inv.items:
+		if it.slot() == "charm" and it.identified and meets_req("level", int(it.req().get("level", 0))):
+			var cm: Dictionary = it.stat_mods()
+			for k in cm:
+				add.call(k, cm[k])
 	for id in skills:
 		var s := DB.skill(id)
 		if s.get("type", "") != "passive":
@@ -233,7 +286,7 @@ func recalc() -> void:
 		if it and not it.broken():
 			arm += it.armor
 	out.armor = int(arm * (1.0 + m.get("armor_pct", 0.0) / 100.0) + m.get("armor", 0.0) + out.obratnost / 4)
-	out.to_hit = int(out.obratnost * 5 + level * 8 + m.get("to_hit", 0.0))
+	out.to_hit = maxi(1, int((out.obratnost * 5 - 35 + float(c.get("ar_bonus", 0)) + m.get("to_hit", 0.0)) * (1.0 + m.get("to_hit_pct", 0.0) / 100.0)))
 	var w := weapon()
 	var stat_name := "sila"
 	var wd := Vector2(1, 3)
@@ -245,15 +298,20 @@ func recalc() -> void:
 	var dmult : float = (1.0 + m.get("dmg_pct", 0.0) / 100.0) * (1.0 + out[stat_name] / 100.0)
 	out.dmg_min = (wd.x + m.get("dmg_min", 0.0)) * dmult
 	out.dmg_max = maxf(out.dmg_min, (wd.y + m.get("dmg_max", 0.0)) * dmult)
-	out.aps = SPEED.get(spd, 1.25) * (1.0 + m.get("attack_speed", 0.0) / 100.0)
-	out.cast_speed = 1.0 + m.get("cast_speed", 0.0) / 100.0
+	out.aps = SPEED.get(spd, 1.25) * (1.0 + Combat.diminish(m.get("attack_speed", 0.0)) / 100.0)
+	out.cast_speed = 1.0 + Combat.diminish(m.get("cast_speed", 0.0)) / 100.0
+	out.hit_recovery = Combat.diminish(m.get("hit_recovery", 0.0))
+	out.dmg_reduce_pct = minf(50.0, m.get("dmg_reduce_pct", 0.0))
 	var pen : int = [0, 30, 60][clampi(Game.difficulty, 0, 2)]
 	for e in ELEMENTS:
 		out["res_" + e] = clampi(int(m.get("res_" + e, 0.0) + m.get("res_all", 0.0)) - pen, -100, 75)
 		out[e + "_dmg"] = m.get(e + "_dmg", 0.0)
 	var lamp: Item = equip.get("lamp", null)
 	out.light_radius = 2.0 + (float(lamp.base().get("light", 0)) if lamp else 0.0) + m.get("light_radius", 0.0) + Game.seal_count()
-	out.block = int(m.get("block", 0.0) + (float(equip["offhand"].base().get("block", 0)) if equip.get("offhand") else 0.0))
+	# D2: blocking from the shield and items, turned into a chance by dexterity against level
+	var blocking: float = m.get("block", 0.0) + (float(equip["offhand"].base().get("block", 0)) if equip.get("offhand") else 0.0)
+	out.blocking = blocking
+	out.block = int(clampf(blocking * (out.obratnost - 15) / (level * 2.0), 0.0, 75.0)) if blocking > 0.0 else 0
 	for k in m:
 		if not out.has(k):
 			out[k] = m[k]
@@ -267,7 +325,8 @@ const STAT_KEYS := ["sila", "obratnost", "magie", "vitalita", "vse_staty", "hp",
 	"dmg_pct", "dmg_min", "dmg_max", "to_hit", "armor", "armor_pct", "block", "fire_dmg", "lightning_dmg",
 	"cold_dmg", "poison_dmg", "res_fire", "res_lightning", "res_cold", "res_poison", "res_all", "life_steal",
 	"mana_steal", "attack_speed", "cast_speed", "move_speed", "light_radius", "gold_find", "magic_find",
-	"hp_regen", "mana_regen", "thorns", "dmg_reduce", "skills", "crit", "xp_pct"]
+	"hp_regen", "mana_regen", "thorns", "dmg_reduce", "skills", "crit", "xp_pct", "to_hit_pct", "crushing_blow",
+	"hit_recovery", "dmg_reduce_pct"]
 
 
 func start_new(cid: String, nm: String) -> void:

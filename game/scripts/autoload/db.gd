@@ -17,6 +17,10 @@ var slides := {}
 var props := {}
 var codex := {}
 var books := {}
+var rare_names := {"first": [], "second": []}
+var sets := {}
+var set_items := {}
+var words := {}
 var codex_refs := {}
 var codex_by_ref := {}
 
@@ -47,6 +51,11 @@ func reload() -> void:
 	props = _j("props", {})
 	codex = _j("codex", {})
 	books = _j("books", {})
+	rare_names = _j("rare_names", {"first": [], "second": []})
+	var sd = _j("sets", {"sets": {}, "items": {}})
+	sets = sd.get("sets", {})
+	set_items = sd.get("items", {})
+	words = _j("words", {})
 	_index_codex()
 
 
@@ -97,7 +106,7 @@ func floor_def(act_n: int, f: int) -> Dictionary:
 
 
 func floor_count(act_n: int) -> int:
-	return act(act_n).get("floors", []).size()
+	return act(act_n).get("floors", []).filter(func(f): return not f.has("uber")).size()
 
 
 func monster(id: String) -> Dictionary:

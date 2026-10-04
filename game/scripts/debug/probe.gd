@@ -25,7 +25,11 @@ func _process(delta: float) -> void:
 		started = true
 		var pl := int(_arg("--plvl", "1"))
 		Game.ch.level = pl
-		var main_stat := "magie" if Game.ch.class_id == "vedma" else ("obratnost" if Game.ch.class_id == "zbojnice" else "sila")
+		var base: Dictionary = DB.classes[Game.ch.class_id].base
+		var main_stat := "sila"
+		for st in ["sila", "obratnost", "magie"]:
+			if int(base[st]) > int(base[main_stat]):
+				main_stat = st
 		Game.ch.alloc = {main_stat: 3 * (pl - 1), "vitalita": 2 * (pl - 1)}
 		for ai in _arg("--armor", "").split(",", false):
 			var it := Item.create(ai, pl)
@@ -54,7 +58,7 @@ func _process(delta: float) -> void:
 		get_tree().create_timer(float(_arg("--seconds", "10"))).timeout.connect(_report)
 		return
 	t += delta
-	if p.dead:
+	if p.dead or kills >= int(_arg("--n", "6")):
 		_report()
 		return
 	var best: Monster = null

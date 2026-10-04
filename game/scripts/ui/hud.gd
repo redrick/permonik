@@ -33,6 +33,8 @@ var say_t := 0.0
 var banner: Label
 var lvl_btn: Button
 var automap: Automap
+var minimap: Minimap
+var tracker: QuestTracker
 var hovered_controls: Array = []
 
 
@@ -48,6 +50,14 @@ func _ready() -> void:
 	automap.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	automap.visible = false
 	root.add_child(automap)
+	minimap = Minimap.new()
+	minimap.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	minimap.position = Vector2(-Minimap.SIZE - 14, 10)
+	root.add_child(minimap)
+	tracker = QuestTracker.new()
+	tracker.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	tracker.position = Vector2(-QuestTracker.W - 24, Minimap.SIZE + 18)
+	root.add_child(tracker)
 	_build_bar()
 	_build_target()
 	_build_boss()
@@ -323,12 +333,16 @@ func on_location(a: int, f: int) -> void:
 	tw.tween_interval(2.2)
 	tw.tween_property(banner, "modulate:a", 0.0, 1.0)
 	automap.visible = false
+	minimap.visible = true
+	tracker.visible = true
 	_on_boss_bar("", 0.0, false)
 
 
 func toggle(what: String) -> void:
 	if what == "automap":
 		automap.visible = not automap.visible
+		minimap.visible = not automap.visible
+		tracker.visible = not automap.visible
 		return
 	if Game.main:
 		Game.main.ui.toggle_panel(what)
@@ -434,8 +448,6 @@ func _process(delta: float) -> void:
 		say_t -= delta
 		if say_t <= 0.0:
 			create_tween().tween_property(say_box, "modulate:a", 0.0, 0.5)
-	if automap.visible:
-		automap.queue_redraw()
 
 
 func skill_for_slot(i: int) -> String:

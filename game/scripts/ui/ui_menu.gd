@@ -11,6 +11,7 @@ var name_edit: LineEdit
 var desc_lbl: Label
 var cards := {}
 var confirm_slot := ""
+var sel_slot := ""
 
 
 func _ready() -> void:
@@ -61,6 +62,26 @@ func _show(p: String) -> void:
 			_options()
 	content.modulate.a = 0.0
 	create_tween().tween_property(content, "modulate:a", 1.0, 0.25)
+
+
+func _unhandled_key_input(e: InputEvent) -> void:
+	if page != "saves" or not e.is_pressed() or e.is_echo():
+		return
+	var saves := Game.list_saves()
+	var i := -1
+	for j in saves.size():
+		if saves[j].slot == sel_slot:
+			i = j
+	match (e as InputEventKey).keycode:
+		KEY_UP, KEY_DOWN:
+			i = clampi(i + (1 if e.keycode == KEY_DOWN else -1), 0, saves.size() - 1)
+			sel_slot = str(saves[i].slot)
+			confirm_slot = ""
+			_show("saves")
+			get_viewport().set_input_as_handled()
+		KEY_ENTER, KEY_KP_ENTER:
+			_load(sel_slot)
+			get_viewport().set_input_as_handled()
 
 
 func on_escape() -> void:
@@ -130,65 +151,157 @@ func _load(slot: String) -> void:
 		Game.main.start_game()
 
 
-# ---------------------------------------------------------------- saves
+# ---------------------------------------------------------------- heroes
+# The heroes on the left, the chosen one standing on the right in what they wear now.
 func _saves() -> void:
-	var vb := _column()
-	vb.add_child(UiTheme.title(UiTheme.t("menu_saves"), 54))
-	var sc := ScrollContainer.new()
-	sc.custom_minimum_size = Vector2(1000, 620)
-	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	vb.add_child(sc)
-	var list := VBoxContainer.new()
-	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	list.add_theme_constant_override("separation", 8)
-	sc.add_child(list)
 	var saves := Game.list_saves()
 	if saves.is_empty():
-		list.add_child(UiTheme.label(L.t("empty_save"), 28, UiTheme.DIM))
-	for s: Dictionary in saves:
-		list.add_child(_save_row(s))
-	_btn(vb, L.t("menu_back"), func(): _show("main"), 300)
+		_show("main")
+		return
+	if sel_slot == "" or saves.filter(func(x): return x.slot == sel_slot).is_empty():
+		sel_slot = str(saves[0].slot)
+	var s: Dictionary = saves.filter(func(x): return x.slot == sel_slot)[0]
+	UiScreens.dim(content, 0.62)
+	var left := PanelContainer.new()
+	left.add_theme_stylebox_override("panel", UiTheme.flat(Color(0.05, 0.04, 0.035, 0.9), Color("4a3a28"), 2, 18))
+	left.position = Vector2(60, 70)
+	left.size = Vector2(560, 940)
+	content.add_child(left)
+	var lv := VBoxContainer.new()
+	lv.add_theme_constant_override("separation", 10)
+	left.add_child(lv)
+	lv.add_child(UiTheme.title(UiTheme.t("menu_saves"), 48))
+	var sc := ScrollContainer.new()
+	sc.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	lv.add_child(sc)
+	var list := VBoxContainer.new()
+	list.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	list.add_theme_constant_override("separation", 6)
+	sc.add_child(list)
+	for row: Dictionary in saves:
+		list.add_child(_hero_row(row))
+	var foot := HBoxContainer.new()
+	foot.add_theme_constant_override("separation", 12)
+	foot.alignment = BoxContainer.ALIGNMENT_CENTER
+	lv.add_child(foot)
+	foot.add_child(UiTheme.button(L.t("menu_new_game"), func(): _show("new"), 250, 26))
+	foot.add_child(UiTheme.button(L.t("menu_back"), func(): _show("main"), 250, 26))
+	_hero_stage(s)
 
 
-func _save_row(s: Dictionary) -> Control:
+func _hero_row(s: Dictionary) -> Control:
+	var on := str(s.slot) == sel_slot
 	var p := PanelContainer.new()
-	p.add_theme_stylebox_override("panel", UiTheme.flat(Color(0.06, 0.05, 0.04, 0.88), Color("4a3a28"), 2, 14))
+	p.add_theme_stylebox_override("panel", UiTheme.flat(Color(0.16, 0.12, 0.07, 0.95) if on else Color(0.08, 0.065, 0.05, 0.85),
+		UiTheme.GOLD if on else Color("3a2e20"), 2, 10))
+	p.mouse_filter = Control.MOUSE_FILTER_STOP
+	p.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	var slot := str(s.slot)
+	p.gui_input.connect(func(e: InputEvent):
+		if e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_LEFT:
+			if e.double_click:
+				_load(slot)
+			elif sel_slot != slot:
+				sel_slot = slot
+				confirm_slot = ""
+				_show("saves"))
 	var hb := HBoxContainer.new()
-	hb.add_theme_constant_override("separation", 16)
+	hb.add_theme_constant_override("separation", 14)
+	hb.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	p.add_child(hb)
 	var port := TextureRect.new()
 	port.texture = DB.tex("portraits/hero_" + str(s.get("class", "")))
-	port.custom_minimum_size = Vector2(84, 84)
+	port.custom_minimum_size = Vector2(72, 72)
 	port.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	port.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	port.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hb.add_child(port)
 	var info := VBoxContainer.new()
-	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	info.add_theme_constant_override("separation", 0)
+	info.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hb.add_child(info)
-	info.add_child(UiTheme.label(str(s.get("name", "?")), 32, UiTheme.GOLD))
+	info.add_child(UiTheme.label(str(s.get("name", "?")), 30, UiTheme.GOLD if on else UiTheme.INK))
+	var cls := L.t(DB.classes.get(str(s.get("class", "")), {}).get("name", s.get("class", "")))
+	info.add_child(UiTheme.label("%s · %s %d" % [cls, L.t("level"), int(s.get("level", 1))], 22, UiTheme.INK, true))
+	info.add_child(UiTheme.label("%s %s · %s" % [L.t("act"), UiQuests._roman(int(s.get("act", 1))), L.t("diff_%d" % int(s.get("difficulty", 0)))], 18, UiTheme.FAINT, true))
+	for c in info.get_children():
+		c.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return p
+
+
+# A soft round pool of colour: darkness behind the hero, lamplight under the feet.
+func _pool(col: Color, r: Rect2) -> TextureRect:
+	var g := Gradient.new()
+	g.set_color(0, col)
+	g.set_color(1, Color(col, 0.0))
+	var gt := GradientTexture2D.new()
+	gt.gradient = g
+	gt.fill = GradientTexture2D.FILL_RADIAL
+	gt.fill_from = Vector2(0.5, 0.5)
+	gt.fill_to = Vector2(0.5, 0.0)
+	var t := TextureRect.new()
+	t.texture = gt
+	t.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	t.stretch_mode = TextureRect.STRETCH_SCALE
+	t.position = r.position
+	t.size = r.size
+	t.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	return t
+
+
+func _hero_stage(s: Dictionary) -> void:
+	var stage := Control.new()
+	stage.position = Vector2(700, 40)
+	stage.size = Vector2(1160, 1000)
+	stage.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	content.add_child(stage)
+	stage.add_child(_pool(Color(1.0, 0.85, 0.6, 0.1), Rect2(stage.size.x / 2 - 520, 120, 1040, 900)))
+	stage.add_child(_pool(Color(1.0, 0.78, 0.45, 0.5), Rect2(stage.size.x / 2 - 320, 790, 640, 130)))
+	var fig := TextureRect.new()
+	fig.texture = HeroLook.portrait(str(s.get("class", "")), s.get("gear", {}))
+	fig.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	fig.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	fig.size = Vector2(760, 760)
+	fig.position = Vector2(stage.size.x / 2 - 380, 110)
+	fig.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	stage.add_child(fig)
+	var name_l := UiTheme.title(str(s.get("name", "?")), 64)
+	name_l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	name_l.position = Vector2(0, 30)
+	name_l.size = Vector2(stage.size.x, 80)
+	stage.add_child(name_l)
 	var cls := L.t(DB.classes.get(str(s.get("class", "")), {}).get("name", s.get("class", "")))
 	var act := DB.act(int(s.get("act", 1)))
-	info.add_child(UiTheme.label("%s · %s %d · %s %s · %s" % [cls, L.t("level"), int(s.get("level", 1)), L.t("act"), UiQuests._roman(int(s.get("act", 1))), L.t("diff_%d" % int(s.get("difficulty", 0)))], 22, UiTheme.INK, true))
-	var when := str(s.get("saved_at", "")).replace("T", " ")
-	info.add_child(UiTheme.label("%s · %s" % [L.t(act.get("name", "")), when], 18, UiTheme.FAINT, true))
+	var sub := UiTheme.label("%s · %s %d · %s" % [cls, L.t("level"), int(s.get("level", 1)), L.t(act.get("name", ""))], 28, UiTheme.INK)
+	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	sub.position = Vector2(0, 104)
+	sub.size = Vector2(stage.size.x, 40)
+	stage.add_child(sub)
+	var bar := HBoxContainer.new()
+	bar.alignment = BoxContainer.ALIGNMENT_CENTER
+	bar.add_theme_constant_override("separation", 18)
+	bar.position = Vector2(0, 890)
+	bar.size = Vector2(stage.size.x, 70)
+	stage.add_child(bar)
 	var slot := str(s.slot)
 	if confirm_slot == slot:
-		hb.add_child(UiTheme.label(UiTheme.t("menu_delete_q", {"v": s.get("name", "")}), 24, UiTheme.RED))
-		var yes := func():
+		bar.add_child(UiTheme.label(UiTheme.t("menu_delete_q", {"v": s.get("name", "")}), 26, UiTheme.RED))
+		bar.add_child(_mini(UiTheme.t("menu_yes"), func():
 			Game.delete_save(slot)
 			confirm_slot = ""
-			_show("saves" if not Game.list_saves().is_empty() else "main")
-		hb.add_child(_mini(UiTheme.t("menu_yes"), yes))
-		hb.add_child(_mini(UiTheme.t("menu_no"), func():
+			sel_slot = ""
+			_show("saves" if not Game.list_saves().is_empty() else "main")))
+		bar.add_child(_mini(UiTheme.t("menu_no"), func():
 			confirm_slot = ""
 			_show("saves")))
 	else:
-		hb.add_child(_mini(UiTheme.t("menu_load"), func(): _load(slot)))
-		hb.add_child(_mini(L.t("delete"), func():
+		var play := UiTheme.button(UiTheme.t("menu_load"), func(): _load(slot), 360, 34)
+		play.custom_minimum_size.y = 70
+		bar.add_child(play)
+		bar.add_child(_mini(L.t("delete"), func():
 			confirm_slot = slot
 			_show("saves")))
-	return p
 
 
 func _mini(text: String, cb: Callable) -> Button:
@@ -204,10 +317,10 @@ func _new() -> void:
 	vb.add_theme_constant_override("separation", 10)
 	vb.add_child(UiTheme.title(UiTheme.t("menu_pick_class"), 50))
 	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 30)
+	row.add_theme_constant_override("separation", 30 if DB.classes.size() <= 3 else 14)
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	vb.add_child(row)
-	for cid in CLASSES:
+	for cid in DB.classes:
 		row.add_child(_card(cid))
 	var box := PanelContainer.new()
 	box.add_theme_stylebox_override("panel", UiTheme.flat(Color(0.03, 0.025, 0.02, 0.86), Color("3a2e22"), 2, 16))
@@ -260,16 +373,17 @@ func _card(cid: String) -> Control:
 	t.texture = DB.tex("ui/class_" + cid)
 	if t.texture == null:
 		t.texture = DB.tex("portraits/hero_" + cid)
-	t.custom_minimum_size = Vector2(300, 450)
+	var wide := DB.classes.size() <= 3
+	t.custom_minimum_size = Vector2(300, 450) if wide else Vector2(196, 294)
 	t.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	t.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	t.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	vb.add_child(t)
 	var cd: Dictionary = DB.classes.get(cid, {})
-	var n := UiTheme.title(L.t(cd.get("name", cid)), 38)
+	var n := UiTheme.title(L.t(cd.get("name", cid)), 38 if wide else 28)
 	vb.add_child(n)
 	var b: Dictionary = cd.get("base", {})
-	var st := UiTheme.label("%s %d · %s %d · %s %d · %s %d" % [L.t("stat_sila").left(3), int(b.get("sila", 0)), L.t("stat_obratnost").left(3), int(b.get("obratnost", 0)), L.t("stat_magie").left(3), int(b.get("magie", 0)), L.t("stat_vitalita").left(3), int(b.get("vitalita", 0))], 17, UiTheme.DIM, true)
+	var st := UiTheme.label("%s %d · %s %d · %s %d · %s %d" % [L.t("stat_sila").left(3), int(b.get("sila", 0)), L.t("stat_obratnost").left(3), int(b.get("obratnost", 0)), L.t("stat_magie").left(3), int(b.get("magie", 0)), L.t("stat_vitalita").left(3), int(b.get("vitalita", 0))], 17 if wide else 13, UiTheme.DIM, true)
 	st.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	vb.add_child(st)
 	c.gui_input.connect(func(e: InputEvent):

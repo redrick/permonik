@@ -15,10 +15,12 @@ var h := 0
 var solid := PackedByteArray()
 var water := PackedByteArray()
 var explored := PackedByteArray()
+var explored_rev := 0
 var astar := AStarGrid2D.new()
 var floor_layer: TileMapLayer
 var deco_layer: TileMapLayer
 var water_layer: TileMapLayer
+var path_layer: TileMapLayer
 var wall_layer: TileMapLayer
 var ysort: Node2D
 var items_root: Node2D
@@ -37,6 +39,8 @@ var portal_node: PropNode
 var boss: Monster
 var font: Font
 var tileset_name := ""
+var used_cells := {}
+var placed := {}
 
 
 func build(a: int, f: int, arrive: String) -> void:
@@ -47,7 +51,7 @@ func build(a: int, f: int, arrive: String) -> void:
 	var ad := DB.act(a)
 	if is_town:
 		tileset_name = str(ad.get("town", {}).get("tileset", "town_hora"))
-		gen = TownLayout.make(a)
+		gen = TownLayout.make(a, hash("town:%d:%d:%d" % [Game.difficulty, a, Game.session_seed]))
 	else:
 		def = DB.floor_def(a, f)
 		tileset_name = str(ad.get("dungeon", {}).get("tileset", "hora"))
@@ -94,6 +98,10 @@ func _make_layers() -> void:
 	water_layer.tile_set = ts
 	water_layer.z_index = -19
 	add_child(water_layer)
+	path_layer = TileMapLayer.new()
+	path_layer.tile_set = ts
+	path_layer.z_index = -19
+	add_child(path_layer)
 	deco_layer = TileMapLayer.new()
 	deco_layer.tile_set = ts
 	deco_layer.z_index = -18
@@ -146,12 +154,19 @@ func _make_tileset() -> TileSet:
 	for i in 4:
 		_add_src(ts, i, _tile_tex("tiles/%s/floor_%d" % [tileset_name, i], Vector2i(64, 64), base), Vector2i(64, 64), Vector2i.ZERO)
 	for i in 3:
-		_add_src(ts, 10 + i, _tile_tex("tiles/%s/wall_%d" % [tileset_name, i], Vector2i(64, 96), base.darkened(0.3)), Vector2i(64, 96), Vector2i(0, 16))
+		var wt := _tile_tex("tiles/%s/wall_%d" % [tileset_name, i], Vector2i(64, 96), base.darkened(0.3))
+		_add_src(ts, 10 + i, wt, Vector2i(64, 96), Vector2i(0, 16))
+		# the same rock without its front face, for rock that has more rock (or nothing) below it
+		_add_src(ts, 15 + i, wt, Vector2i(64, 64), Vector2i(0, 32))
 	for i in 4:
 		var t := DB.tex("tiles/%s/floor_deco_%d" % [tileset_name, i])
 		if t:
 			_add_src(ts, 20 + i, t, Vector2i(64, 64), Vector2i.ZERO)
 	_add_src(ts, 30, _water_tex(), Vector2i(64, 64), Vector2i.ZERO)
+	for i in 3:
+		var t := DB.tex("tiles/%s/path_%d" % [tileset_name, i])
+		if t:
+			_add_src(ts, 40 + i, t, Vector2i(128, 128), Vector2i.ZERO)
 	return ts
 
 
@@ -169,6 +184,7 @@ func _paint_tiles() -> void:
 	var rng := RandomNumberGenerator.new()
 	rng.seed = hash(tileset_name) + floor_n
 	var has_deco := floor_layer.tile_set.has_source(20)
+	var has_path := is_town and floor_layer.tile_set.has_source(40)
 	for y in h:
 		for x in w:
 			var c := Vector2i(x, y)
@@ -176,10 +192,14 @@ func _paint_tiles() -> void:
 				floor_layer.set_cell(c, rng.randi_range(0, 3) if rng.randf() < 0.45 else 0, Vector2i.ZERO)
 				if water[y * w + x] == 1:
 					water_layer.set_cell(c, 30, Vector2i.ZERO)
+				elif has_path and (gen as TownLayout).paths.has(c):
+					path_layer.set_cell(c, 40 + rng.randi_range(0, 2), Vector2i.ZERO)
 				elif has_deco and rng.randf() < 0.07:
 					deco_layer.set_cell(c, 20 + rng.randi_range(0, 3), Vector2i.ZERO)
-			elif _near_floor(x, y, 2):
-				wall_layer.set_cell(c, 10 + (rng.randi_range(0, 2) if rng.randf() < 0.4 else 0), Vector2i.ZERO)
+			else:
+				var v := rng.randi_range(0, 2) if rng.randf() < 0.4 else 0
+				var face := y + 1 < h and gen.at(x, y + 1) != DungeonGen.WALL
+				wall_layer.set_cell(c, (10 if face else 15) + v, Vector2i.ZERO)
 
 
 func _near_floor(x: int, y: int, r: int) -> bool:
@@ -202,9 +222,9 @@ func _build_collision() -> void:
 	for y in h:
 		var x := 0
 		while x < w:
-			if solid[y * w + x] == 1 and _near_floor(x, y, 1):
+			if _rock(x, y) and _near_open(x, y):
 				var x0 := x
-				while x < w and solid[y * w + x] == 1 and _near_floor(x, y, 1):
+				while x < w and _rock(x, y) and _near_open(x, y):
 					x += 1
 				var cs := CollisionShape2D.new()
 				var rs := RectangleShape2D.new()
@@ -221,6 +241,18 @@ func _build_collision() -> void:
 					occ_root.add_child(oc)
 			else:
 				x += 1
+
+
+func _rock(x: int, y: int) -> bool:
+	return gen.at(x, y) == DungeonGen.WALL
+
+
+func _near_open(x: int, y: int) -> bool:
+	for oy in range(-1, 2):
+		for ox in range(-1, 2):
+			if not _rock(x + ox, y + oy) and x + ox >= 0 and y + oy >= 0 and x + ox < w and y + oy < h:
+				return true
+	return false
 
 
 func _build_astar() -> void:
@@ -366,7 +398,25 @@ func _place_prop(id: String, c: Vector2i, block := true) -> PropNode:
 	if blocks and int(fp[0]) > 0 and int(fp[1]) > 0:
 		var fw := int(fp[0])
 		var fh := int(fp[1])
-		block_cells(Vector2i(c.x - fw / 2, c.y - fh + 1), Vector2i(fw, fh))
+		var c0 := Vector2i(c.x - fw / 2, c.y - fh + 1)
+		block_cells(c0, Vector2i(fw, fh))
+		var body := StaticBody2D.new()
+		body.name = "Body"
+		body.collision_layer = 1
+		body.collision_mask = 0
+		var cs := CollisionShape2D.new()
+		var rs := RectangleShape2D.new()
+		rs.size = Vector2(fw, fh) * CELL
+		cs.shape = rs
+		body.add_child(cs)
+		body.position = Vector2(c0) * CELL + rs.size / 2.0 - p.position
+		p.add_child(body)
+		p.set_meta("cells", [c0, Vector2i(fw, fh)])
+		if astar.region.size.x > 0:
+			for yy in range(c0.y, c0.y + fh):
+				for xx in range(c0.x, c0.x + fw):
+					if xx >= 0 and yy >= 0 and xx < w and yy < h:
+						astar.set_point_solid(Vector2i(xx, yy), true)
 	return p
 
 
@@ -409,7 +459,11 @@ func _populate_dungeon() -> void:
 		arrive_points["stairs_up"] = arrive_points.start
 	var free := _free_cells(5)
 	var area := free.size()
-	var used := {}
+	used_cells.clear()
+	var used := used_cells
+	placed.clear()
+	_place_quest_props()
+	_place_books()
 	var n_break := int(area * 0.025)
 	var n_chest := 2 + int(area / 600)
 	var n_shrine := 1 + (1 if rng.randf() < 0.5 else 0)
@@ -439,16 +493,19 @@ func _populate_dungeon() -> void:
 		var p := _place_prop(id, c)
 		p.interact = "break"
 	for i in n_chest:
-		var c: Vector2i = take.call()
+		var c := _rule_cell({"far": 0.2, "spacing": 8, "group": "chest"})
 		if c.x < 0:
 			break
+		used[c] = true
 		_place_prop("truhla", c).interact = "chest"
 	var gods := DB.shrines.keys()
-	for i in n_shrine:
-		var c: Vector2i = take.call()
-		if c.x < 0 or gods.is_empty():
+	gods.shuffle()
+	for i in mini(n_shrine, gods.size()):
+		var c := _rule_cell({"far": 0.15, "spacing": 12, "from_boss": 10, "min_start": 8, "group": "shrine"})
+		if c.x < 0:
 			break
-		var g: String = gods.pick_random()
+		used[c] = true
+		var g: String = gods[i]
 		var p := _place_prop(str(DB.shrines[g].get("prop", "modla_" + g)), c)
 		p.interact = "shrine"
 		p.data["shrine"] = g
@@ -466,8 +523,6 @@ func _populate_dungeon() -> void:
 			break
 		var id: String = deco_ids.pick_random()
 		_place_prop(id, c, DB.prop(id).get("blocks", false))
-	_place_quest_props()
-	_place_books()
 	_spawn_monsters(rng, used)
 
 
@@ -491,12 +546,11 @@ func _place_books() -> void:
 			continue
 		var c := Vector2i(-1, -1)
 		if is_town:
-			c = _find_free_near(Vector2i(18 - n * 2, 21), 0, 3)
+			var tp: Dictionary = (gen as TownLayout).points
+			var lec: Vector2i = tp.get("lectern", tp.get("center", Vector2i(w / 2, h / 2)))
+			c = _find_free_near(lec + Vector2i(-n * 2, 0), 0, 3)
 		else:
-			for cand in _free_cells(12):
-				if _cell_free_area(cand, 1):
-					c = cand
-					break
+			c = _rule_cell({"far": 0.3, "from_boss": 9, "spacing": 10, "group": "book"})
 		if c.x < 0:
 			continue
 		var p := _place_prop("kniha", c)
@@ -505,18 +559,112 @@ func _place_books() -> void:
 		n += 1
 
 
+# Where a placement may go. far = share of the longest walk from the stairs; from_boss = cells from the
+# boss's room; spacing = cells from earlier placements of the same group; next_to = a placed id.
+# Where the tracked quests point on this map: the target itself when it is here, else the way towards it.
+func objective_points() -> Array:
+	var out := []
+	for tq in Game.tracked_quests():
+		var pl := Game.goal_place(tq.qid)
+		if pl.is_empty() or int(pl.act) != act_n:
+			continue
+		var floors: Array = pl.floors
+		var here := floor_n in floors
+		var pts := []
+		if here:
+			match str(pl.what):
+				"boss":
+					if boss and is_instance_valid(boss) and not boss.dead:
+						pts.append(boss.global_position)
+				"npc":
+					for n in npcs:
+						if n.npc_id == pl.id:
+							pts.append(n.global_position)
+				"prop":
+					for pr in props:
+						if is_instance_valid(pr) and pr.id == pl.id and pr.visible and not pr.used:
+							pts.append(pr.global_position)
+				"item":
+					for g in ground_items:
+						if is_instance_valid(g) and g.item.base_id == pl.id:
+							pts.append(g.global_position)
+		elif not floors.is_empty():
+			var down := int(floors.min()) > floor_n
+			for pr in props:
+				if is_instance_valid(pr) and pr.interact == ("stairs_down" if down else "stairs_up"):
+					pts.append(pr.global_position)
+		for p in pts:
+			out.append({"pos": p, "main": tq.main})
+	return out
+
+
+func _rule_cell(rule: Dictionary) -> Vector2i:
+	var cands: Array = []
+	if rule.has("next_to") and placed.has(str(rule.next_to)):
+		var anchor: Vector2i = placed[str(rule.next_to)][0]
+		for r in range(2, 5):
+			for oy in range(-r, r + 1):
+				for ox in range(-r, r + 1):
+					cands.append(anchor + Vector2i(ox, oy))
+	else:
+		cands = gen.dist.keys()
+		cands.shuffle()
+	var far := float(rule.get("far", 0.0)) * gen.max_dist
+	var from_boss := float(rule.get("from_boss", 0.0)) if gen.boss_spot.x >= 0 else 0.0
+	var spacing := float(rule.get("spacing", 0.0))
+	var group := str(rule.get("group", ""))
+	var others: Array = placed.get(group, []) if group != "" else []
+	for c in cands:
+		if not gen.dist.has(c) or gen.dist[c] < far or used_cells.has(c) or gen.at(c.x, c.y) != DungeonGen.FLOOR:
+			continue
+		if not _cell_free_area(c, 1) or (c - gen.start).length() < float(rule.get("min_start", 5)) or (c - gen.exit).length() < 3:
+			continue
+		if from_boss > 0.0 and (c - gen.boss_spot).length() < from_boss:
+			continue
+		var ok := true
+		for o in others:
+			if (c - o).length() < spacing:
+				ok = false
+				break
+		if not ok:
+			continue
+		used_cells[c] = true
+		if group != "":
+			if not placed.has(group):
+				placed[group] = []
+			placed[group].append(c)
+		return c
+	return Vector2i(-1, -1)
+
+
+# Story placements first, so nothing random can take their spot. Defaults: items to carry far from the
+# stairs, props a boss fights with in a ring round its room, anything else past the middle of the floor.
+func _quest_rule(qid: String) -> Dictionary:
+	var custom: Dictionary = def.get("rules", {}).get("place", {})
+	if custom.has(qid):
+		return custom[qid]
+	if DB.items.has(qid) and not DB.props.has(qid):
+		return {"far": 0.5, "from_boss": 9}
+	if gen.boss_spot.x >= 0:
+		return {"near": "boss"}
+	return {"far": 0.45}
+
+
 func _place_quest_props() -> void:
 	for q in def.get("quest_props", []):
 		var qid := str(q)
+		var rule := _quest_rule(qid)
+		rule["group"] = qid
 		if DB.items.has(qid) and not DB.props.has(qid):
 			if Game.ch.inv.count(qid) > 0:
 				continue
-			var cells := _free_cells(14)
-			if cells.size() > 0:
-				drop_item(Item.create(qid, 1), cell_center(cells[0]))
+			var ic := _rule_cell(rule)
+			if ic.x < 0:
+				ic = _rule_cell({"group": qid})
+			if ic.x >= 0:
+				drop_item(Item.create(qid, 1), cell_center(ic))
 			continue
 		var n := 1
-		var near_boss := gen.boss_spot.x >= 0
 		match qid:
 			"hrnek_dusicka":
 				n = 6
@@ -524,32 +672,42 @@ func _place_quest_props() -> void:
 				n = 4
 			"kbelik":
 				n = 4
+		var ring0 := randf() * TAU
 		for i in n:
-			var c: Vector2i
-			if near_boss and qid != "dub" and qid != "truhla_kostej":
-				c = _find_free_near(gen.boss_spot + Vector2i(int(cos(TAU * i / n) * 6), int(sin(TAU * i / n) * 4)), 0, 3)
+			var c := Vector2i(-1, -1)
+			if str(rule.get("near", "")) == "boss":
+				var a := ring0 + TAU * i / n
+				c = _find_free_near(gen.boss_spot + Vector2i(int(cos(a) * 6), int(sin(a) * 4)), 0, 3)
+				used_cells[c] = true
+				if not placed.has(qid):
+					placed[qid] = []
+				placed[qid].append(c)
 			else:
-				var cells := _free_cells(16)
-				if cells.is_empty():
-					break
-				c = cells[i % cells.size()]
+				c = _rule_cell(rule)
+				if c.x < 0:
+					c = _rule_cell({"group": qid, "next_to": rule.get("next_to", "")} if rule.has("next_to") else {"group": qid})
+			if c.x < 0:
+				break
 			var p := _place_prop(qid, c, qid in ["dub", "zrcadlo"])
 			p.interact = "quest"
 
 
+# Each visit draws its own mix from the floor's pool, so the same floor is not always the same fight.
 func _spawn_monsters(rng: RandomNumberGenerator, used: Dictionary) -> void:
 	var pool: Array = def.get("monsters", [])
 	pool = pool.filter(func(m): return DB.monsters.has(m))
+	pool.shuffle()
+	var mix: Array = pool.slice(0, maxi(2, pool.size() - 1))
 	var base_l := Game.mlvl_base(int(def.get("level", 1)))
 	if not pool.is_empty():
-		var free := _free_cells(9)
-		var packs := int(free.size() / 75.0 * float(def.get("density", 1.0)))
+		var area := gen.dist.size()
+		var packs := int(area / 75.0 * float(def.get("density", 1.0)) * rng.randf_range(0.85, 1.15))
 		var champs := 1 + (1 if floor_n > 1 else 0) + Game.difficulty
 		for i in packs:
-			if free.is_empty():
+			var c := _rule_cell({"spacing": 6, "from_boss": 10, "min_start": 9, "group": "pack"})
+			if c.x < 0:
 				break
-			var c: Vector2i = free.pop_back()
-			var mid: String = pool.pick_random()
+			var mid: String = (mix if rng.randf() < 0.85 else pool).pick_random()
 			var pk = DB.monster(mid).get("pack", [2, 5])
 			var count := rng.randi_range(int(pk[0]), int(pk[1]))
 			var champ := i < champs
@@ -563,9 +721,16 @@ func _spawn_monsters(rng: RandomNumberGenerator, used: Dictionary) -> void:
 					m.hp_max *= 1.3
 					m.hp = m.hp_max
 	var bid = def.get("boss", null)
-	if bid != null and DB.monsters.has(str(bid)) and not _boss_dead(str(bid)):
+	var uber: Dictionary = def.get("uber", {})
+	if bid != null and DB.monsters.has(str(bid)) and (not uber.is_empty() or not _boss_dead(str(bid))):
 		var pos := cell_center(gen.boss_spot if gen.boss_spot.x >= 0 else gen.exit)
 		boss = spawn_monster(str(bid), pos, base_l + 1)
+		# the guardian that still keeps its tithe: the same fight, much harder
+		if boss and not uber.is_empty():
+			boss.hp_max *= float(uber.get("hp", 3.0))
+			boss.hp = boss.hp_max
+			boss.dmg *= float(uber.get("dmg", 1.6))
+			boss.set_meta("uber", true)
 
 
 func _boss_dead(bid: String) -> bool:
@@ -608,6 +773,7 @@ func on_monster_died(m: Monster) -> void:
 		if lines.has("death"):
 			boss_say(m, L.t(lines.death), 6.0)
 		Game.save()
+		_tithe_drops(m)
 	if m.no_drops:
 		return
 	var ch := Game.ch
@@ -625,6 +791,24 @@ func on_monster_died(m: Monster) -> void:
 		drops.append(g)
 	for it in drops:
 		drop_item(it, m.global_position + Vector2(randf_range(-50, 50), randf_range(-30, 30)))
+
+
+const KEY_BY_BOSS := {"vodnik": "klic_vody", "bazilisek": "klic_kamene", "jezibaba": "klic_ohne", "kostej": "klic_smrti"}
+
+
+# On Noční můra and Nav the seal guardians may leave their key; their tithes leave a seal and rich loot.
+func _tithe_drops(m: Monster) -> void:
+	if m.has_meta("uber"):
+		var seal := str(def.get("uber", {}).get("seal", ""))
+		if DB.items.has(seal):
+			drop_item(Item.create(seal, m.mlvl), m.global_position)
+		for i in 3:
+			var it := Loot.roll_item(m.mlvl, 200, 1.5, "equipment")
+			if it:
+				drop_item(it, m.global_position + Vector2(randf_range(-60, 60), randf_range(-40, 40)))
+		return
+	if Game.difficulty >= 1 and KEY_BY_BOSS.has(m.id) and randf() < [0.0, 0.3, 0.45][clampi(Game.difficulty, 0, 2)]:
+		drop_item(Item.create(KEY_BY_BOSS[m.id], m.mlvl), m.global_position)
 
 
 func _xp_for(m: Monster) -> int:
@@ -805,7 +989,7 @@ func _use_prop(pl: Player, p: PropNode) -> void:
 			else:
 				Game.goto(act_n, floor_n + 1, "stairs_down")
 		"stairs_up":
-			if floor_n <= 1:
+			if floor_n <= 1 or def.has("uber"):
 				Game.goto(act_n, 0, "mine")
 			else:
 				Game.goto(act_n, floor_n - 1, "stairs_up")
@@ -858,8 +1042,15 @@ func _break_prop(p: PropNode) -> void:
 		p.sprite.visible = false
 	Sfx.play_at("urn_break" if p.id == "urna" else "barrel_break", p.global_position)
 	Fx.burst(self, p.global_position + Vector2(0, -30), Color("8a7458"), 14, 140, 0.5, 0.2)
-	astar.set_point_solid(p.cell, false)
-	solid[p.cell.y * w + p.cell.x] = 0 if gen.at(p.cell.x, p.cell.y) != DungeonGen.WALL else 1
+	var body := p.get_node_or_null("Body")
+	if body:
+		body.queue_free()
+	var cells: Array = p.get_meta("cells", [p.cell, Vector2i.ONE])
+	for yy in range(cells[0].y, cells[0].y + cells[1].y):
+		for xx in range(cells[0].x, cells[0].x + cells[1].x):
+			if xx >= 0 and yy >= 0 and xx < w and yy < h and gen.at(xx, yy) != DungeonGen.WALL:
+				solid[yy * w + xx] = 0
+				astar.set_point_solid(Vector2i(xx, yy), false)
 	var r := randf()
 	var lvl := Game.mlvl_base(int(def.get("level", 1)))
 	if r < 0.12 and act_n >= 1 and p.id == "sud":
@@ -988,8 +1179,9 @@ func _explore() -> void:
 	for oy in range(-r, r + 1):
 		for ox in range(-r, r + 1):
 			var n := c + Vector2i(ox, oy)
-			if n.x >= 0 and n.y >= 0 and n.x < w and n.y < h and ox * ox + oy * oy <= r * r:
+			if n.x >= 0 and n.y >= 0 and n.x < w and n.y < h and ox * ox + oy * oy <= r * r and explored[n.y * w + n.x] == 0:
 				explored[n.y * w + n.x] = 1
+				explored_rev += 1
 
 
 func _update_hover() -> void:

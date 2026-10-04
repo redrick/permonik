@@ -17,12 +17,12 @@
     "class": "havir", "tree": "krumpac", "tier": 1,
     "name": {"cs": "Úder do žíly", "en": "Strike the Vein"},
     "desc": {
-      "cs": "Havíř najde v nepříteli puklinu jako v rudné žíle a udeří přesně do ní. Způsobí {dmg_pct} % poškození zbraní a omráčí na {stun} s.",
-      "en": "The Miner finds the crack in a foe as he would in an ore vein, and strikes it true. Deals {dmg_pct}% weapon damage and stuns for {stun} s."
+      "cs": "Havíř najde v nepříteli puklinu jako v rudné žíle a udeří přesně do ní. Způsobí {dmg_pct} % poškození zbraní a omráčí na {stun} s. Útok +{ar_pct} %.",
+      "en": "The Miner finds the crack in a foe as he would in an ore vein, and strikes it true. Deals {dmg_pct}% weapon damage and stuns for {stun} s. +{ar_pct}% attack rating."
     },
     "type": "melee", "element": "physical",
     "mana": [2, 0.1], "cooldown": 0,
-    "params": {"dmg_pct": [140, 14], "hits": [1, 0], "stun": [0.3, 0.02]},
+    "params": {"ar_pct": [20, 5], "dmg_pct": [140, 14], "hits": [1, 0], "stun": [0.3, 0.02]},
     "synergy": {"rozrazka": 3, "otres": 3},
     "max_rank": 20
   },
@@ -30,12 +30,12 @@
     "class": "havir", "tree": "krumpac", "tier": 2,
     "name": {"cs": "Rozrážka", "en": "Breakthrough"},
     "desc": {
-      "cs": "Široký švih krumpáčem, jakým se razí nová chodba. Zasáhne všechny v oblouku {arc}° za {dmg_pct} % poškození zbraní.",
-      "en": "A wide swing of the pick, the kind that drives a new gallery. Hits everything in a {arc}° arc for {dmg_pct}% weapon damage."
+      "cs": "Široký švih krumpáčem, jakým se razí nová chodba. Zasáhne všechny v oblouku {arc}° za {dmg_pct} % poškození zbraní. Útok +{ar_pct} %.",
+      "en": "A wide swing of the pick, the kind that drives a new gallery. Hits everything in a {arc}° arc for {dmg_pct}% weapon damage. +{ar_pct}% attack rating."
     },
     "type": "melee_arc", "element": "physical",
     "mana": [4, 0.3], "cooldown": 0,
-    "params": {"dmg_pct": [120, 11], "arc": [100, 2]},
+    "params": {"ar_pct": [15, 4], "dmg_pct": [120, 11], "arc": [100, 2]},
     "synergy": {"uder_do_zily": 4, "zurivost_hory": 2},
     "max_rank": 20
   },
@@ -43,12 +43,12 @@
     "class": "havir", "tree": "krumpac", "tier": 3,
     "name": {"cs": "Otřes", "en": "Tremor"},
     "desc": {
-      "cs": "Havíř udeří do počvy a hora odpoví. Všichni do vzdálenosti {radius} utrží {dmg_pct} % poškození zbraní a jsou na {stun} s omráčeni.",
-      "en": "The Miner strikes the floor and the mountain answers. Everyone within {radius} takes {dmg_pct}% weapon damage and is stunned for {stun} s."
+      "cs": "Havíř udeří do počvy a hora odpoví. Všichni do vzdálenosti {radius} utrží {dmg_pct} % poškození zbraní a jsou na {stun} s omráčeni. Útok +{ar_pct} %.",
+      "en": "The Miner strikes the floor and the mountain answers. Everyone within {radius} takes {dmg_pct}% weapon damage and is stunned for {stun} s. +{ar_pct}% attack rating."
     },
     "type": "stomp", "element": "physical",
     "mana": [8, 0.5], "cooldown": 1.5,
-    "params": {"dmg_pct": [110, 10], "radius": [120, 3], "stun": [1.0, 0.08]},
+    "params": {"ar_pct": [10, 3], "dmg_pct": [110, 10], "radius": [120, 3], "stun": [1.0, 0.08]},
     "synergy": {"uder_do_zily": 3, "rozrazka": 3},
     "max_rank": 20
   },
@@ -176,12 +176,12 @@
     "class": "zbojnice", "tree": "valaska", "tier": 1,
     "name": {"cs": "Sek valaškou", "en": "Axe Cut"},
     "desc": {
-      "cs": "Dva rychlé seky valaškou, jak se učí na salaši. Každý způsobí {dmg_pct} % poškození zbraní; seků je {hits}.",
-      "en": "Two quick cuts of the shepherd's axe, as taught up at the sheepfold. Each deals {dmg_pct}% weapon damage; {hits} cuts in all."
+      "cs": "Dva rychlé seky valaškou, jak se učí na salaši. Každý způsobí {dmg_pct} % poškození zbraní; seků je {hits}. Útok +{ar_pct} %.",
+      "en": "Two quick cuts of the shepherd's axe, as taught up at the sheepfold. Each deals {dmg_pct}% weapon damage; {hits} cuts in all. +{ar_pct}% attack rating."
     },
     "type": "melee", "element": "physical",
     "mana": [2, 0.1], "cooldown": 0,
-    "params": {"dmg_pct": [75, 7], "hits": [2, 0.06], "stun": [0, 0]},
+    "params": {"ar_pct": [25, 6], "dmg_pct": [75, 7], "hits": [2, 0.06], "stun": [0, 0]},
     "synergy": {"vir": 3, "hod_valaskou": 2},
     "max_rank": 20
   },
@@ -202,12 +202,12 @@
     "class": "zbojnice", "tree": "valaska", "tier": 3,
     "name": {"cs": "Zbojnický skok", "en": "Brigand's Leap"},
     "desc": {
-      "cs": "Odzemek přes vatru, jen místo vatry jsou nepřátelé. Skočí k cíli a dopadne s valaškou napřed: {dmg_pct} % poškození zbraní v okruhu {radius}.",
-      "en": "The odzemek leap over the fire, only the fire is a crowd of enemies. She jumps to the target and lands axe-first: {dmg_pct}% weapon damage within {radius}."
+      "cs": "Odzemek přes vatru, jen místo vatry jsou nepřátelé. Skočí k cíli a dopadne s valaškou napřed: {dmg_pct} % poškození zbraní v okruhu {radius}. Útok +{ar_pct} %.",
+      "en": "The odzemek leap over the fire, only the fire is a crowd of enemies. She jumps to the target and lands axe-first: {dmg_pct}% weapon damage within {radius}. +{ar_pct}% attack rating."
     },
     "type": "leap", "element": "physical",
     "mana": [9, 0.5], "cooldown": 1,
-    "params": {"dmg_pct": [140, 12], "radius": [80, 2]},
+    "params": {"ar_pct": [20, 4], "dmg_pct": [140, 12], "radius": [80, 2]},
     "synergy": {"sek_valaskou": 3, "vir": 3},
     "max_rank": 20
   },
@@ -215,12 +215,12 @@
     "class": "zbojnice", "tree": "valaska", "tier": 4,
     "name": {"cs": "Vír", "en": "Whirl"},
     "desc": {
-      "cs": "Prolétne nepřáteli jako vichr Valašskem a seká kolem sebe na vzdálenost {length}. Každý zásah způsobí {dmg_pct} % poškození zbraní.",
-      "en": "She tears through her foes like a gale across Moravian Wallachia, cutting all around her for a distance of {length}. Each hit deals {dmg_pct}% weapon damage."
+      "cs": "Prolétne nepřáteli jako vichr Valašskem a seká kolem sebe na vzdálenost {length}. Každý zásah způsobí {dmg_pct} % poškození zbraní. Útok +{ar_pct} %.",
+      "en": "She tears through her foes like a gale across Moravian Wallachia, cutting all around her for a distance of {length}. Each hit deals {dmg_pct}% weapon damage. +{ar_pct}% attack rating."
     },
     "type": "spin", "element": "physical",
     "mana": [16, 0.8], "cooldown": 0,
-    "params": {"dmg_pct": [95, 9], "length": [260, 10]},
+    "params": {"ar_pct": [15, 4], "dmg_pct": [95, 9], "length": [260, 10]},
     "synergy": {"sek_valaskou": 4, "zbojnicky_skok": 3},
     "max_rank": 20
   },
@@ -487,6 +487,726 @@
     "mana": [24, 1.2], "cooldown": 2,
     "params": {"dmg": [[30, 56], [15, 28]], "speed": [260, 0], "count": [1, 0], "pierce": [99, 0], "explode_radius": [130, 3], "fx": "morana"},
     "synergy": {"moranina_naruc": 5, "mrazivy_dech": 3},
+    "max_rank": 20
+  },
+  "uder_kladivem": {
+    "class": "kovar", "tree": "kladivo", "tier": 1,
+    "name": {"cs": "Úder kladivem", "en": "Hammer Blow"},
+    "desc": {
+      "cs": "Kovář vloží do rány celou váhu kovadliny. Způsobí {dmg_pct} % poškození zbraní a omráčí na {stun} s. Útok +{ar_pct} %.",
+      "en": "The Smith puts the whole weight of the anvil behind the blow. Deals {dmg_pct}% weapon damage and stuns for {stun} s. +{ar_pct}% attack rating."
+    },
+    "type": "melee", "element": "physical", "mana": [3, 0.2], "cooldown": 0,
+    "params": {"dmg_pct": [150, 14], "hits": [1, 0], "stun": [0.4, 0.02], "ar_pct": [20, 5]},
+    "synergy": {"rozkovat": 4},
+    "max_rank": 20
+  },
+  "rozkovat": {
+    "class": "kovar", "tree": "kladivo", "tier": 2,
+    "name": {"cs": "Rozkovat", "en": "Hammer Out"},
+    "desc": {
+      "cs": "Široký úder, jako když se rozkovává pruh železa. Zasáhne vše v oblouku {arc}° za {dmg_pct} % poškození zbraní. Útok +{ar_pct} %.",
+      "en": "A wide blow, like hammering out a bar of iron. Hits everything in a {arc}° arc for {dmg_pct}% weapon damage. +{ar_pct}% attack rating."
+    },
+    "type": "melee_arc", "element": "physical", "mana": [5, 0.3], "cooldown": 0,
+    "params": {"dmg_pct": [125, 11], "arc": [110, 2], "ar_pct": [15, 4]},
+    "synergy": {"uder_kladivem": 3},
+    "max_rank": 20
+  },
+  "hod_kladivem": {
+    "class": "kovar", "tree": "kladivo", "tier": 3,
+    "name": {"cs": "Hod kladivem", "en": "Hammer Throw"},
+    "desc": {
+      "cs": "Mrští kladivem, které proletí {pierce} nepřáteli a vrátí se mu do ruky. Způsobí {dmg_pct} % poškození zbraní.",
+      "en": "Hurls his hammer, which flies through {pierce} enemies and comes back to his hand. Deals {dmg_pct}% weapon damage."
+    },
+    "type": "projectile", "element": "physical", "mana": [6, 0.4], "cooldown": 0,
+    "params": {"dmg_pct": [120, 11], "speed": [480, 0], "count": [1, 0], "pierce": [2, 0.15], "returns": [1, 0], "fx": "rock"},
+    "synergy": {"uder_kladivem": 4},
+    "max_rank": 20
+  },
+  "kovadlina": {
+    "class": "kovar", "tree": "kladivo", "tier": 4,
+    "name": {"cs": "Kovadlina", "en": "Anvil"},
+    "desc": {
+      "cs": "Udeří do země, jako by pod ním ležela kovadlina. Vše v okruhu {radius} utrží {dmg_pct} % poškození zbraní a na {stun} s strne.",
+      "en": "He strikes the ground as if an anvil lay beneath him. Everything within {radius} takes {dmg_pct}% weapon damage and is stunned for {stun} s."
+    },
+    "type": "stomp", "element": "physical", "mana": [12, 0.7], "cooldown": 3,
+    "params": {"dmg_pct": [140, 12], "radius": [130, 3], "stun": [1.2, 0.08]},
+    "synergy": {"uder_kladivem": 3, "rozkovat": 3},
+    "max_rank": 20
+  },
+  "rozpalene_zelezo": {
+    "class": "kovar", "tree": "vyhen", "tier": 1,
+    "name": {"cs": "Rozpálené železo", "en": "Red-hot Iron"},
+    "desc": {
+      "cs": "Rozžhaví zbraň do běla. Na {duration} s přidá každému zásahu {fire_dmg} poškození ohněm.",
+      "en": "Heats his weapon white-hot. For {duration} s every hit adds {fire_dmg} fire damage."
+    },
+    "type": "buff", "element": "fire", "mana": [8, 0.5], "cooldown": 4,
+    "params": {"fire_dmg": [8, 4], "duration": [30, 2]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "jiskry": {
+    "class": "kovar", "tree": "vyhen", "tier": 2,
+    "name": {"cs": "Jiskry z výhně", "en": "Forge Sparks"},
+    "desc": {
+      "cs": "Vyrazí z kladiva sprchu jisker. V kuželu na {range} pálí za {dmg} poškození ohněm a zpomalí.",
+      "en": "Strikes a shower of sparks from the hammer. In a cone up to {range} they burn for {dmg} fire damage and slow."
+    },
+    "type": "cone", "element": "fire", "mana": [5, 0.3], "cooldown": 0,
+    "params": {"dmg": [[4, 9], [3, 5]], "range": [150, 4], "arc": [60, 0], "slow": [20, 1]},
+    "synergy": {"rozpalene_zelezo": 3},
+    "max_rank": 20
+  },
+  "vyhen": {
+    "class": "kovar", "tree": "vyhen", "tier": 3,
+    "name": {"cs": "Výheň", "en": "The Forge"},
+    "desc": {
+      "cs": "Rozdmýchá na zemi kus výhně. Hoří {duration} s a v okruhu {radius} pálí za {dmg} poškození ohněm každých {tick} s.",
+      "en": "Fans a patch of forge-fire on the ground. It burns for {duration} s, scorching everything within {radius} for {dmg} fire damage every {tick} s."
+    },
+    "type": "area", "element": "fire", "mana": [13, 0.8], "cooldown": 0,
+    "params": {"dmg": [[7, 14], [5, 8]], "radius": [90, 2], "duration": [5, 0.2], "tick": [0.5, 0], "delay": [0, 0], "fx": "flame"},
+    "synergy": {"jiskry": 3},
+    "max_rank": 20
+  },
+  "struska": {
+    "class": "kovar", "tree": "vyhen", "tier": 4,
+    "name": {"cs": "Žhavá struska", "en": "Molten Slag"},
+    "desc": {
+      "cs": "Vylije proud žhavé strusky. Zeď dlouhá {length} hoří {duration} s za {dmg} poškození ohněm.",
+      "en": "Pours out a stream of molten slag. A wall {length} long burns for {duration} s for {dmg} fire damage."
+    },
+    "type": "wall", "element": "fire", "mana": [12, 0.8], "cooldown": 0,
+    "params": {"dmg": [[12, 20], [7, 11]], "length": [200, 8], "duration": [4, 0.2], "fx": "flame"},
+    "synergy": {"vyhen": 4, "jiskry": 3},
+    "max_rank": 20
+  },
+  "kovana_kuze": {
+    "class": "kovar", "tree": "kovani", "tier": 1,
+    "name": {"cs": "Kovaná kůže", "en": "Forged Skin"},
+    "desc": {
+      "cs": "Kůže mu ztvrdne jako okuje. Trvale +{armor_pct} % ke zbroji a +{hp} k životu.",
+      "en": "His skin hardens like mill scale. Permanently +{armor_pct}% armour and +{hp} life."
+    },
+    "type": "passive", "element": "physical", "mana": [0, 0], "cooldown": 0,
+    "params": {"armor_pct": [15, 6], "hp": [10, 5]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "zelezny_strazce": {
+    "class": "kovar", "tree": "kovani", "tier": 2,
+    "name": {"cs": "Železný strážce", "en": "Iron Guardian"},
+    "desc": {
+      "cs": "Vykove strážce ze železa, který s ním {duration} s bojuje a bije za {dmg} poškození.",
+      "en": "Forges a guardian of iron that fights beside him for {duration} s, striking for {dmg} damage."
+    },
+    "type": "summon", "element": "physical", "mana": [16, 1.0], "cooldown": 5,
+    "params": {"look": "smolak", "tint": "#9aa4b0", "scale": 0.85, "count": [1, 0.05], "duration": [25, 1], "dmg": [[8, 16], [5, 9]]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "kalena_ocel": {
+    "class": "kovar", "tree": "kovani", "tier": 3,
+    "name": {"cs": "Kalená ocel", "en": "Tempered Steel"},
+    "desc": {
+      "cs": "Co prošlo ohněm a vodou, to vydrží. Trvale +{res_all} % ke všem odolnostem a +{block} k vykrývání.",
+      "en": "What has been through fire and water endures. Permanently +{res_all}% to all resistances and +{block} to blocking."
+    },
+    "type": "passive", "element": "physical", "mana": [0, 0], "cooldown": 0,
+    "params": {"res_all": [4, 1], "block": [5, 1]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "kovarova_vydrz": {
+    "class": "kovar", "tree": "kovani", "tier": 4,
+    "name": {"cs": "Kovářova výdrž", "en": "The Smith's Endurance"},
+    "desc": {
+      "cs": "Na {duration} s jsou rány proti němu o {dmg_reduce_pct} % slabší, obnovuje {hp_regen} života za sekundu a rychleji se zotaví z úderu (+{hit_recovery} %).",
+      "en": "For {duration} s blows against him are {dmg_reduce_pct}% weaker, he regenerates {hp_regen} life a second and recovers from hits faster (+{hit_recovery}%)."
+    },
+    "type": "buff", "element": "physical", "mana": [15, 0.8], "cooldown": 20,
+    "params": {"dmg_reduce_pct": [10, 1], "hp_regen": [4, 1], "hit_recovery": [20, 2], "duration": [20, 1]},
+    "synergy": {"kovana_kuze": 3},
+    "max_rank": 20
+  },
+  "svantovituv_zrak": {
+    "class": "zrec", "tree": "modly", "tier": 1,
+    "name": {"cs": "Svantovítův zrak", "en": "Svantovít's Gaze"},
+    "desc": {
+      "cs": "Čtyři tváře Svantovíta hledí na všechny strany. Na {duration} s +{to_hit_pct} % k útoku a +{dmg_pct} % k poškození.",
+      "en": "The four faces of Svantovít look every way at once. For {duration} s +{to_hit_pct}% attack rating and +{dmg_pct}% damage."
+    },
+    "type": "buff", "element": "holy", "mana": [10, 0.5], "cooldown": 2,
+    "params": {"to_hit_pct": [20, 4], "dmg_pct": [15, 3], "duration": [60, 4]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "triglavova_zastita": {
+    "class": "zrec", "tree": "modly", "tier": 2,
+    "name": {"cs": "Triglavova záštita", "en": "Triglav's Shelter"},
+    "desc": {
+      "cs": "Trojhlavý bůh drží nebe, zemi i podsvětí. Na {duration} s +{res_all} % ke všem odolnostem a obnova {hp_regen} života za sekundu.",
+      "en": "The three-headed god holds sky, earth and underworld. For {duration} s +{res_all}% to all resistances and {hp_regen} life regenerated a second."
+    },
+    "type": "buff", "element": "holy", "mana": [12, 0.6], "cooldown": 2,
+    "params": {"res_all": [10, 2], "hp_regen": [3, 0.8], "duration": [60, 4]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "hnev_modly": {
+    "class": "zrec", "tree": "modly", "tier": 3,
+    "name": {"cs": "Hněv modly", "en": "Wrath of the Idol"},
+    "desc": {
+      "cs": "Vztyčí modlu, do které bije Perunův hrom. Vše v okruhu {radius} trpí {duration} s za {dmg} poškození bleskem každých {tick} s.",
+      "en": "Raises an idol that Perun's thunder keeps striking. Everything within {radius} takes {dmg} lightning damage every {tick} s for {duration} s."
+    },
+    "type": "area", "element": "lightning", "mana": [15, 0.8], "cooldown": 0,
+    "params": {"dmg": [[6, 18], [4, 9]], "radius": [100, 2], "duration": [6, 0.2], "tick": [0.6, 0], "delay": [0, 0], "fx": "spark"},
+    "synergy": {"svantovituv_zrak": 3},
+    "max_rank": 20
+  },
+  "perunova_prizen": {
+    "class": "zrec", "tree": "modly", "tier": 4,
+    "name": {"cs": "Perunova přízeň", "en": "Perun's Favour"},
+    "desc": {
+      "cs": "Hromovládce se na něj usměje. Na {duration} s +{lightning_dmg} poškození bleskem, +{attack_speed} % k rychlosti útoku a +{cast_speed} % ke kouzlení.",
+      "en": "The Thunderer smiles on him. For {duration} s +{lightning_dmg} lightning damage, +{attack_speed}% attack speed and +{cast_speed}% cast speed."
+    },
+    "type": "buff", "element": "lightning", "mana": [18, 1.0], "cooldown": 10,
+    "params": {"lightning_dmg": [15, 5], "attack_speed": [15, 1], "cast_speed": [15, 1], "duration": [45, 3]},
+    "synergy": {"svantovituv_zrak": 3, "hnev_modly": 3},
+    "max_rank": 20
+  },
+  "krvava_obet": {
+    "class": "zrec", "tree": "obet", "tier": 1,
+    "name": {"cs": "Krvavá oběť", "en": "Blood Offering"},
+    "desc": {
+      "cs": "Pustí si krev na čepel a udeří. Stojí {hp_cost} % života, ale zbraň udeří za {dmg_pct} % poškození. Útok +{ar_pct} %.",
+      "en": "Lets his own blood onto the blade and strikes. Costs {hp_cost}% life, but the weapon hits for {dmg_pct}% damage. +{ar_pct}% attack rating."
+    },
+    "type": "melee", "element": "physical", "mana": [2, 0.1], "cooldown": 0,
+    "params": {"dmg_pct": [180, 16], "hits": [1, 0], "hp_cost": [4, 0], "ar_pct": [20, 5]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "obetni_ohen": {
+    "class": "zrec", "tree": "obet", "tier": 2,
+    "name": {"cs": "Obětní oheň", "en": "Sacrificial Fire"},
+    "desc": {
+      "cs": "Zapálí oběť kolem sebe. Za {hp_cost} % života vzplane okruh {radius} a spálí vše za {dmg} poškození ohněm.",
+      "en": "Sets the offering ablaze around him. For {hp_cost}% life a ring {radius} wide flares up, burning everything for {dmg} fire damage."
+    },
+    "type": "nova", "element": "fire", "mana": [8, 0.5], "cooldown": 0,
+    "params": {"dmg": [[12, 24], [8, 13]], "radius": [140, 4], "hp_cost": [6, 0]},
+    "synergy": {"krvava_obet": 3},
+    "max_rank": 20
+  },
+  "krev_za_krev": {
+    "class": "zrec", "tree": "obet", "tier": 3,
+    "name": {"cs": "Krev za krev", "en": "Blood for Blood"},
+    "desc": {
+      "cs": "Co dá, to si vezme zpět. Trvale se mu vrací {life_steal} % poškození jako život a útočník utrží {thorns} poškození.",
+      "en": "What he gives, he takes back. Permanently {life_steal}% of damage returns as life, and attackers take {thorns} damage."
+    },
+    "type": "passive", "element": "physical", "mana": [0, 0], "cooldown": 0,
+    "params": {"life_steal": [3, 0.3], "thorns": [5, 3]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "velka_obet": {
+    "class": "zrec", "tree": "obet", "tier": 4,
+    "name": {"cs": "Velká oběť", "en": "The Great Offering"},
+    "desc": {
+      "cs": "Obětuje {hp_cost} % života starým bohům. Kde ukáže, tam {duration} s hoří oheň za {dmg} poškození každých {tick} s v okruhu {radius}.",
+      "en": "Offers {hp_cost}% of his life to the old gods. Where he points, fire burns for {duration} s, {dmg} damage every {tick} s within {radius}."
+    },
+    "type": "area", "element": "fire", "mana": [10, 0.6], "cooldown": 4,
+    "params": {"dmg": [[25, 45], [14, 24]], "radius": [120, 3], "duration": [4, 0.2], "tick": [0.5, 0], "delay": [0.4, 0], "hp_cost": [10, 0], "fx": "flame"},
+    "synergy": {"krvava_obet": 3, "obetni_ohen": 4},
+    "max_rank": 20
+  },
+  "dedek": {
+    "class": "zrec", "tree": "dedkove", "tier": 1,
+    "name": {"cs": "Dědek", "en": "Grandfather Spirit"},
+    "desc": {
+      "cs": "Zavolá ducha předka ze svého rodu. Dědek s ním {duration} s bojuje a bije za {dmg} poškození.",
+      "en": "Calls the spirit of an ancestor of his line. The old man fights beside him for {duration} s, striking for {dmg} damage."
+    },
+    "type": "summon", "element": "physical", "mana": [12, 0.7], "cooldown": 3,
+    "params": {"look": "kostlivy_havir", "tint": "#bfe0ff", "scale": 0.95, "count": [1, 0.05], "duration": [25, 1], "dmg": [[6, 12], [4, 7]]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "hlas_predku": {
+    "class": "zrec", "tree": "dedkove", "tier": 2,
+    "name": {"cs": "Hlas předků", "en": "Voice of the Ancestors"},
+    "desc": {
+      "cs": "Předkové mu šeptají do ucha. Na {duration} s +{hp_pct} % života a +{res_all} % ke všem odolnostem.",
+      "en": "The ancestors whisper in his ear. For {duration} s +{hp_pct}% life and +{res_all}% to all resistances."
+    },
+    "type": "buff", "element": "holy", "mana": [12, 0.6], "cooldown": 2,
+    "params": {"hp_pct": [12, 2], "res_all": [8, 1], "duration": [60, 4]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "babky": {
+    "class": "zrec", "tree": "dedkove", "tier": 3,
+    "name": {"cs": "Babky", "en": "The Grandmothers"},
+    "desc": {
+      "cs": "Přijdou babky z rodu, {count} najednou. {duration} s mrazí nepřátele za {dmg} poškození mrazem.",
+      "en": "The grandmothers of his line come, {count} at once. For {duration} s they freeze his foes for {dmg} cold damage."
+    },
+    "type": "summon", "element": "cold", "mana": [20, 1.2], "cooldown": 6,
+    "params": {"look": "navka", "tint": "#d8e8ff", "scale": 0.85, "count": [2, 0.1], "duration": [20, 1], "dmg": [[6, 12], [4, 7]]},
+    "synergy": {"dedek": 3},
+    "max_rank": 20
+  },
+  "rod": {
+    "class": "zrec", "tree": "dedkove", "tier": 4,
+    "name": {"cs": "Rod", "en": "Rod"},
+    "desc": {
+      "cs": "Rod, bůh předků, drží celý jeho rod pohromadě. Trvale +{hp_pct} % života, +{xp_pct} % zkušeností a +{magic_find} % k nalezení kouzelných věcí.",
+      "en": "Rod, god of the ancestors, holds his whole line together. Permanently +{hp_pct}% life, +{xp_pct}% experience and +{magic_find}% magic find."
+    },
+    "type": "passive", "element": "holy", "mana": [0, 0], "cooldown": 0,
+    "params": {"hp_pct": [5, 1], "xp_pct": [2, 0.5], "magic_find": [5, 2]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "vlci_kuze": {
+    "class": "vlkodlak", "tree": "promena", "tier": 1,
+    "name": {"cs": "Vlčí kůže", "en": "The Wolf's Hide"},
+    "desc": {
+      "cs": "Přehodí přes sebe vlčí kůži a promění se ve vlkodlaka. Na {duration} s +{hp_pct} % života, +{attack_speed} % k rychlosti útoku a +{move_speed} % k rychlosti.",
+      "en": "Throws the wolf hide over himself and becomes the werewolf. For {duration} s +{hp_pct}% life, +{attack_speed}% attack speed and +{move_speed}% speed."
+    },
+    "type": "buff", "element": "physical", "mana": [12, 0.5], "cooldown": 3,
+    "params": {"form": "vlkodlak", "hp_pct": [25, 3], "attack_speed": [15, 1], "move_speed": [10, 1], "duration": [60, 4]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "kousnuti": {
+    "class": "vlkodlak", "tree": "promena", "tier": 2,
+    "name": {"cs": "Kousnutí", "en": "Bite"},
+    "desc": {
+      "cs": "Zakousne se jako vlk. Způsobí {dmg_pct} % poškození zbraní a nepřítele na {stun} s omráčí. Útok +{ar_pct} %.",
+      "en": "Bites like a wolf. Deals {dmg_pct}% weapon damage and stuns the foe for {stun} s. +{ar_pct}% attack rating."
+    },
+    "type": "melee", "element": "physical", "mana": [3, 0.2], "cooldown": 0,
+    "params": {"dmg_pct": [140, 13], "hits": [1, 0], "stun": [0.3, 0.02], "ar_pct": [25, 6]},
+    "synergy": {"vlci_kuze": 3},
+    "max_rank": 20
+  },
+  "vyti": {
+    "class": "vlkodlak", "tree": "promena", "tier": 3,
+    "name": {"cs": "Vytí", "en": "Howl"},
+    "desc": {
+      "cs": "Zavyje, až se tma zachvěje. Vše v okruhu {radius} utrží {dmg_pct} % poškození zbraní a obyčejní nepřátelé na {fear} s utečou.",
+      "en": "Howls until the dark shivers. Everything within {radius} takes {dmg_pct}% weapon damage, and ordinary foes flee for {fear} s."
+    },
+    "type": "stomp", "element": "physical", "mana": [10, 0.5], "cooldown": 6,
+    "params": {"dmg_pct": [60, 6], "radius": [160, 4], "stun": [0.2, 0], "fear": [3, 0.15]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "besneni": {
+    "class": "vlkodlak", "tree": "promena", "tier": 4,
+    "name": {"cs": "Běsnění", "en": "Frenzy"},
+    "desc": {
+      "cs": "Přestane se ovládat. Na {duration} s +{dmg_pct} % k poškození, +{attack_speed} % k rychlosti útoku a {life_steal} % krádeže života, ale zbroj {armor_pct} %.",
+      "en": "Lets go of himself. For {duration} s +{dmg_pct}% damage, +{attack_speed}% attack speed and {life_steal}% life stolen, but armour {armor_pct}%."
+    },
+    "type": "buff", "element": "physical", "mana": [14, 0.8], "cooldown": 8,
+    "params": {"dmg_pct": [40, 7], "attack_speed": [15, 1], "life_steal": [4, 0.3], "armor_pct": [-30, 0], "duration": [15, 0.5]},
+    "synergy": {"vlci_kuze": 3, "kousnuti": 3},
+    "max_rank": 20
+  },
+  "vlk": {
+    "class": "vlkodlak", "tree": "smecka", "tier": 1,
+    "name": {"cs": "Vlk", "en": "Wolf"},
+    "desc": {
+      "cs": "Hvízdne a z lesa přiběhne vlk. Bojuje s ním {duration} s a kouše za {dmg} poškození.",
+      "en": "He whistles and a wolf comes running out of the forest. It fights beside him for {duration} s, biting for {dmg} damage."
+    },
+    "type": "summon", "element": "physical", "mana": [10, 0.6], "cooldown": 2,
+    "params": {"look": "vlk", "tint": "#ffffff", "scale": 0.9, "count": [1, 0.05], "duration": [30, 1], "dmg": [[5, 10], [3, 6]]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "smecka": {
+    "class": "vlkodlak", "tree": "smecka", "tier": 2,
+    "name": {"cs": "Smečka", "en": "The Pack"},
+    "desc": {
+      "cs": "Přivolá {count} vlky najednou. {duration} s s ním loví a koušou za {dmg} poškození.",
+      "en": "Calls {count} wolves at once. For {duration} s they hunt with him, biting for {dmg} damage."
+    },
+    "type": "summon", "element": "physical", "mana": [18, 1.0], "cooldown": 6,
+    "params": {"look": "vlk", "tint": "#d8d0c8", "scale": 0.85, "count": [2, 0.15], "duration": [25, 1], "dmg": [[5, 10], [3, 6]]},
+    "synergy": {"vlk": 4},
+    "max_rank": 20
+  },
+  "vudce_smecky": {
+    "class": "vlkodlak", "tree": "smecka", "tier": 3,
+    "name": {"cs": "Vůdce smečky", "en": "Pack Leader"},
+    "desc": {
+      "cs": "Smečka ho poslouchá. Trvale +{hp} k životu, +{obratnost} k obratnosti a +{move_speed} % k rychlosti.",
+      "en": "The pack obeys him. Permanently +{hp} life, +{obratnost} dexterity and +{move_speed}% speed."
+    },
+    "type": "passive", "element": "physical", "mana": [0, 0], "cooldown": 0,
+    "params": {"hp": [15, 5], "obratnost": [3, 1], "move_speed": [4, 0.5]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "vlkodlaci_bratr": {
+    "class": "vlkodlak", "tree": "smecka", "tier": 4,
+    "name": {"cs": "Vlkodlačí bratr", "en": "Werewolf Brother"},
+    "desc": {
+      "cs": "Z tmy vystoupí jeho vlkodlačí bratr a {duration} s trhá nepřátele za {dmg} poškození.",
+      "en": "His werewolf brother steps out of the dark and tears into his foes for {duration} s, {dmg} damage a blow."
+    },
+    "type": "summon", "element": "physical", "mana": [24, 1.4], "cooldown": 12,
+    "params": {"look": "vlkodlak", "tint": "#ffffff", "scale": 0.9, "count": [1, 0], "duration": [25, 1], "dmg": [[18, 34], [10, 18]]},
+    "synergy": {"smecka": 3},
+    "max_rank": 20
+  },
+  "trni": {
+    "class": "vlkodlak", "tree": "les", "tier": 1,
+    "name": {"cs": "Trní", "en": "Thorns"},
+    "desc": {
+      "cs": "Nastraží {count} trnitých keřů. Co do nich vleze, utrží {dmg} poškození a chvíli uvízne. Keře vydrží {duration} s.",
+      "en": "Sets {count} thorn bushes. Whatever walks in takes {dmg} damage and is caught for a while. They last {duration} s."
+    },
+    "type": "trap", "element": "physical", "mana": [6, 0.4], "cooldown": 0,
+    "params": {"dmg": [[8, 14], [5, 8]], "radius": [50, 0], "count": [1, 0.1], "duration": [30, 0], "stun": [1.0, 0.05]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "koreny": {
+    "class": "vlkodlak", "tree": "les", "tier": 2,
+    "name": {"cs": "Kořeny", "en": "Roots"},
+    "desc": {
+      "cs": "Ze země vyrazí kořeny. {duration} s v okruhu {radius} drtí za {dmg} poškození jedem každých {tick} s.",
+      "en": "Roots burst from the ground. For {duration} s everything within {radius} is crushed for {dmg} poison damage every {tick} s."
+    },
+    "type": "area", "element": "poison", "mana": [11, 0.7], "cooldown": 0,
+    "params": {"dmg": [[5, 10], [3, 6]], "radius": [90, 2], "duration": [5, 0.2], "tick": [0.5, 0], "delay": [0, 0], "fx": "web"},
+    "synergy": {"trni": 3},
+    "max_rank": 20
+  },
+  "lesni_duch": {
+    "class": "vlkodlak", "tree": "les", "tier": 3,
+    "name": {"cs": "Lesní duch", "en": "Forest Spirit"},
+    "desc": {
+      "cs": "Les ho nosí v sobě. Trvale obnovuje {hp_regen} života za sekundu a +{res_poison} % k odolnosti proti jedu.",
+      "en": "The forest carries him. Permanently regenerates {hp_regen} life a second and +{res_poison}% poison resistance."
+    },
+    "type": "passive", "element": "poison", "mana": [0, 0], "cooldown": 0,
+    "params": {"hp_regen": [2, 0.5], "res_poison": [10, 2]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "hnev_lesa": {
+    "class": "vlkodlak", "tree": "les", "tier": 4,
+    "name": {"cs": "Hněv lesa", "en": "Wrath of the Forest"},
+    "desc": {
+      "cs": "Zvedne ze země zeď trnů dlouhou {length}. {duration} s drásá vše, co se přiblíží, za {dmg} poškození jedem.",
+      "en": "Raises a wall of thorns {length} long. For {duration} s it rakes anything that comes close for {dmg} poison damage."
+    },
+    "type": "wall", "element": "poison", "mana": [14, 0.8], "cooldown": 0,
+    "params": {"dmg": [[14, 24], [8, 13]], "length": [200, 8], "duration": [5, 0.2], "fx": "web"},
+    "synergy": {"trni": 3, "koreny": 3},
+    "max_rank": 20
+  },
+  "lucavka": {
+    "class": "alchymistka", "tree": "lucavka", "tier": 1,
+    "name": {"cs": "Lučavka", "en": "Acid Flask"},
+    "desc": {
+      "cs": "Hodí baňku lučavky. Roztříští se v okruhu {explode_radius} a poleje vše za {dmg} poškození jedem.",
+      "en": "Throws a flask of acid. It shatters within {explode_radius}, drenching everything for {dmg} poison damage."
+    },
+    "type": "projectile", "element": "poison", "mana": [4, 0.3], "cooldown": 0,
+    "params": {"dmg": [[4, 10], [3, 6]], "speed": [420, 0], "count": [1, 0], "explode_radius": [60, 2], "fx": "naloz"},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "jedovaty_dym": {
+    "class": "alchymistka", "tree": "lucavka", "tier": 2,
+    "name": {"cs": "Jedovatý dým", "en": "Noxious Fumes"},
+    "desc": {
+      "cs": "Rozbije křivuli s dýmem, který na {duration} s oslepí vše v okruhu {radius}.",
+      "en": "Breaks a retort of fumes that blinds everything within {radius} for {duration} s."
+    },
+    "type": "cloud", "element": "poison", "mana": [12, 0.5], "cooldown": 8,
+    "params": {"radius": [120, 4], "duration": [5, 0.3], "effect": "blind"},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "kyselina": {
+    "class": "alchymistka", "tree": "lucavka", "tier": 3,
+    "name": {"cs": "Kyselina", "en": "Acid Pool"},
+    "desc": {
+      "cs": "Vylije na zem louži kyseliny. {duration} s v okruhu {radius} leptá za {dmg} poškození jedem každých {tick} s.",
+      "en": "Pours a pool of acid on the ground. For {duration} s it eats at everything within {radius} for {dmg} poison damage every {tick} s."
+    },
+    "type": "area", "element": "poison", "mana": [12, 0.7], "cooldown": 0,
+    "params": {"dmg": [[6, 12], [4, 7]], "radius": [90, 2], "duration": [6, 0.2], "tick": [0.5, 0], "delay": [0, 0], "fx": "web"},
+    "synergy": {"lucavka": 3},
+    "max_rank": 20
+  },
+  "kralovska_lucavka": {
+    "class": "alchymistka", "tree": "lucavka", "tier": 4,
+    "name": {"cs": "Královská lučavka", "en": "Royal Aqua Regia"},
+    "desc": {
+      "cs": "Lučavka, která rozpustí i zlato. Výbuch v okruhu {explode_radius} způsobí {dmg} poškození jedem.",
+      "en": "The acid that dissolves even gold. The blast within {explode_radius} deals {dmg} poison damage."
+    },
+    "type": "projectile", "element": "poison", "mana": [16, 1.0], "cooldown": 2,
+    "params": {"dmg": [[20, 40], [12, 22]], "speed": [380, 0], "count": [1, 0], "explode_radius": [110, 3], "fx": "naloz"},
+    "synergy": {"lucavka": 4, "kyselina": 3},
+    "max_rank": 20
+  },
+  "hlineny_golem": {
+    "class": "alchymistka", "tree": "golem", "tier": 1,
+    "name": {"cs": "Hliněný golem", "en": "Clay Golem"},
+    "desc": {
+      "cs": "Uhněte golema z vltavské hlíny a vloží mu do úst šém. {duration} s ji chrání a bije za {dmg} poškození.",
+      "en": "Shapes a golem from Vltava clay and puts the shem in its mouth. It guards her for {duration} s, striking for {dmg} damage."
+    },
+    "type": "summon", "element": "physical", "mana": [14, 0.8], "cooldown": 4,
+    "params": {"look": "smolak", "tint": "#c8a07a", "scale": 0.85, "count": [1, 0], "duration": [30, 1], "dmg": [[8, 16], [5, 9]]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "rtutovy_golem": {
+    "class": "alchymistka", "tree": "golem", "tier": 2,
+    "name": {"cs": "Rtuťový golem", "en": "Mercury Golem"},
+    "desc": {
+      "cs": "Golem ze rtuti, rychlý a studený. {duration} s mrazí nepřátele za {dmg} poškození mrazem.",
+      "en": "A golem of quicksilver, fast and cold. For {duration} s it chills her foes for {dmg} cold damage."
+    },
+    "type": "summon", "element": "cold", "mana": [16, 0.9], "cooldown": 5,
+    "params": {"look": "smolak", "tint": "#c8d0dc", "scale": 0.75, "count": [1, 0], "duration": [25, 1], "dmg": [[8, 16], [5, 9]]},
+    "synergy": {"hlineny_golem": 3},
+    "max_rank": 20
+  },
+  "sem": {
+    "class": "alchymistka", "tree": "golem", "tier": 3,
+    "name": {"cs": "Šém", "en": "The Shem"},
+    "desc": {
+      "cs": "Zná slovo, které oživuje hlínu. Trvale +{armor_pct} % ke zbroji, +{magie} k magii a +{mana} k maně.",
+      "en": "She knows the word that brings clay to life. Permanently +{armor_pct}% armour, +{magie} magic and +{mana} mana."
+    },
+    "type": "passive", "element": "physical", "mana": [0, 0], "cooldown": 0,
+    "params": {"armor_pct": [10, 4], "magie": [3, 1], "mana": [10, 4]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "prazsky_golem": {
+    "class": "alchymistka", "tree": "golem", "tier": 4,
+    "name": {"cs": "Pražský golem", "en": "The Golem of Prague"},
+    "desc": {
+      "cs": "Ten pravý, rabiho Löwa. {duration} s drtí nepřátele za {dmg} poškození.",
+      "en": "The real one, Rabbi Loew's. For {duration} s it crushes her foes for {dmg} damage."
+    },
+    "type": "summon", "element": "physical", "mana": [30, 1.6], "cooldown": 15,
+    "params": {"look": "smolak", "tint": "#a88a6a", "scale": 1.25, "count": [1, 0], "duration": [30, 1], "dmg": [[30, 55], [16, 28]]},
+    "synergy": {"hlineny_golem": 3, "rtutovy_golem": 3},
+    "max_rank": 20
+  },
+  "zlata_strela": {
+    "class": "alchymistka", "tree": "transmutace", "tier": 1,
+    "name": {"cs": "Zlatá střela", "en": "Gilded Bolt"},
+    "desc": {
+      "cs": "Vystřelí paprsek, jako když se z olova rodí zlato. Způsobí {dmg} poškození bleskem.",
+      "en": "Fires a ray, as gold is born from lead. Deals {dmg} lightning damage."
+    },
+    "type": "projectile", "element": "lightning", "mana": [3, 0.2], "cooldown": 0,
+    "params": {"dmg": [[2, 14], [2, 7]], "speed": [700, 0], "count": [1, 0], "fx": "spark"},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "rtut": {
+    "class": "alchymistka", "tree": "transmutace", "tier": 2,
+    "name": {"cs": "Rtuť", "en": "Quicksilver"},
+    "desc": {
+      "cs": "Vypije kapku rtuti (nezkoušejte to). Na {duration} s +{move_speed} % k rychlosti, +{attack_speed} % k útoku a +{cast_speed} % ke kouzlení.",
+      "en": "Drinks a drop of quicksilver (do not try this). For {duration} s +{move_speed}% speed, +{attack_speed}% attack speed and +{cast_speed}% cast speed."
+    },
+    "type": "buff", "element": "physical", "mana": [10, 0.5], "cooldown": 4,
+    "params": {"move_speed": [15, 1], "attack_speed": [10, 1], "cast_speed": [15, 1], "duration": [40, 2]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "kamen_mudrcu": {
+    "class": "alchymistka", "tree": "transmutace", "tier": 3,
+    "name": {"cs": "Kámen mudrců", "en": "Philosopher's Stone"},
+    "desc": {
+      "cs": "Má ho v kapse, nebo si to aspoň myslí. Trvale obnovuje {hp_regen} života za sekundu, +{mana_regen} % many a +{magic_find} % k nalezení kouzelných věcí.",
+      "en": "She has it in her pocket, or thinks she does. Permanently regenerates {hp_regen} life a second, +{mana_regen}% mana regeneration and +{magic_find}% magic find."
+    },
+    "type": "passive", "element": "physical", "mana": [0, 0], "cooldown": 0,
+    "params": {"hp_regen": [2, 0.4], "mana_regen": [10, 3], "magic_find": [6, 2]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "velke_dilo": {
+    "class": "alchymistka", "tree": "transmutace", "tier": 4,
+    "name": {"cs": "Velké dílo", "en": "The Great Work"},
+    "desc": {
+      "cs": "Promění {gold_cost} grošů v čisté světlo. Okruh {radius} zasáhne {dmg} poškození bleskem.",
+      "en": "Turns {gold_cost} groše into pure light. A ring {radius} wide strikes for {dmg} lightning damage."
+    },
+    "type": "nova", "element": "lightning", "mana": [12, 0.6], "cooldown": 3,
+    "params": {"dmg": [[30, 70], [18, 36]], "radius": [170, 4], "gold_cost": [50, 15]},
+    "synergy": {"zlata_strela": 4},
+    "max_rank": 20
+  },
+  "kasparek": {
+    "class": "loutkarka", "tree": "marionety", "tier": 1,
+    "name": {"cs": "Kašpárek", "en": "Kašpárek"},
+    "desc": {
+      "cs": "Vytáhne z kufru Kašpárka. Na nitích {duration} s skáče kolem a mlátí za {dmg} poškození.",
+      "en": "Pulls Kašpárek out of the trunk. On his strings he hops about for {duration} s, thumping for {dmg} damage."
+    },
+    "type": "summon", "element": "physical", "mana": [9, 0.5], "cooldown": 2,
+    "params": {"look": "sotek", "tint": "#ffd060", "scale": 1.0, "count": [1, 0.05], "duration": [25, 1], "dmg": [[5, 10], [3, 6]]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "cert_na_niti": {
+    "class": "loutkarka", "tree": "marionety", "tier": 2,
+    "name": {"cs": "Čert na niti", "en": "Devil on a String"},
+    "desc": {
+      "cs": "Loutka čerta z rodinného divadla, jen trochu víc živá. {duration} s pálí nepřátele za {dmg} poškození ohněm.",
+      "en": "The devil puppet from the family theatre, only a little more alive. For {duration} s it scorches her foes for {dmg} fire damage."
+    },
+    "type": "summon", "element": "fire", "mana": [15, 0.9], "cooldown": 5,
+    "params": {"look": "cert", "tint": "#e8b8a0", "scale": 0.7, "count": [1, 0], "duration": [25, 1], "dmg": [[8, 16], [5, 9]]},
+    "synergy": {"kasparek": 3},
+    "max_rank": 20
+  },
+  "loutkove_divadlo": {
+    "class": "loutkarka", "tree": "marionety", "tier": 3,
+    "name": {"cs": "Loutkové divadlo", "en": "Puppet Theatre"},
+    "desc": {
+      "cs": "Rozloží celé divadlo, {count} loutky najednou. {duration} s hrají nepřátelům za {dmg} poškození.",
+      "en": "Sets up the whole theatre, {count} puppets at once. For {duration} s they perform on her foes for {dmg} damage."
+    },
+    "type": "summon", "element": "physical", "mana": [22, 1.2], "cooldown": 8,
+    "params": {"look": "sotek", "tint": "#d8c0a0", "scale": 0.9, "count": [3, 0.15], "duration": [20, 1], "dmg": [[5, 10], [3, 6]]},
+    "synergy": {"kasparek": 4},
+    "max_rank": 20
+  },
+  "obri_marioneta": {
+    "class": "loutkarka", "tree": "marionety", "tier": 4,
+    "name": {"cs": "Obří marioneta", "en": "Giant Marionette"},
+    "desc": {
+      "cs": "Marioneta velká jako kostel, vede ji deset nití. {duration} s dupe po nepřátelích za {dmg} poškození.",
+      "en": "A marionette as tall as a church, worked by ten strings. For {duration} s it stamps on her foes for {dmg} damage."
+    },
+    "type": "summon", "element": "physical", "mana": [30, 1.6], "cooldown": 15,
+    "params": {"look": "hejkal", "tint": "#c8a888", "scale": 1.2, "count": [1, 0], "duration": [25, 1], "dmg": [[28, 50], [15, 26]]},
+    "synergy": {"loutkove_divadlo": 3},
+    "max_rank": 20
+  },
+  "chodska_pisen": {
+    "class": "loutkarka", "tree": "dudy", "tier": 1,
+    "name": {"cs": "Chodská píseň", "en": "Chodsko Song"},
+    "desc": {
+      "cs": "Zahraje na dudy písničku z Chodska. Na {duration} s +{attack_speed} % k rychlosti útoku a +{move_speed} % k rychlosti.",
+      "en": "Plays a tune from Chodsko on the bagpipes. For {duration} s +{attack_speed}% attack speed and +{move_speed}% speed."
+    },
+    "type": "buff", "element": "physical", "mana": [8, 0.4], "cooldown": 2,
+    "params": {"attack_speed": [12, 1], "move_speed": [10, 1], "duration": [60, 4]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "ukolebavka": {
+    "class": "loutkarka", "tree": "dudy", "tier": 2,
+    "name": {"cs": "Ukolébavka", "en": "Lullaby"},
+    "desc": {
+      "cs": "Zahraje ukolébavku, při které usne i čert. Vše v okruhu {radius} utrží {dmg} poškození mrazem a na {freeze} s strne.",
+      "en": "Plays a lullaby that would put even the devil to sleep. Everything within {radius} takes {dmg} cold damage and freezes for {freeze} s."
+    },
+    "type": "nova", "element": "cold", "mana": [12, 0.7], "cooldown": 3,
+    "params": {"dmg": [[4, 10], [3, 6]], "radius": [150, 4], "freeze": [1.2, 0.08]},
+    "synergy": {"chodska_pisen": 3},
+    "max_rank": 20
+  },
+  "dupak": {
+    "class": "loutkarka", "tree": "dudy", "tier": 3,
+    "name": {"cs": "Dupák", "en": "The Stamping Dance"},
+    "desc": {
+      "cs": "Rozjede tanec, při kterém se nedá stát. Na {duration} s +{dmg_pct} % k poškození a {life_steal} % krádeže života.",
+      "en": "Strikes up a dance no one can stand still for. For {duration} s +{dmg_pct}% damage and {life_steal}% life stolen."
+    },
+    "type": "buff", "element": "physical", "mana": [12, 0.6], "cooldown": 4,
+    "params": {"dmg_pct": [25, 4], "life_steal": [3, 0.3], "duration": [45, 3]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "hromove_dudy": {
+    "class": "loutkarka", "tree": "dudy", "tier": 4,
+    "name": {"cs": "Hromové dudy", "en": "Thunder Pipes"},
+    "desc": {
+      "cs": "Dudy zahučí jako bouře. Blesk přeskočí {jumps}krát až na {range} a každý zásah způsobí {dmg} poškození bleskem.",
+      "en": "The pipes drone like a storm. Lightning leaps {jumps} times up to {range} apart, each strike dealing {dmg} lightning damage."
+    },
+    "type": "chain", "element": "lightning", "mana": [14, 0.8], "cooldown": 0,
+    "params": {"dmg": [[6, 30], [3, 12]], "jumps": [4, 0.25], "range": [200, 0]},
+    "synergy": {"ukolebavka": 3, "chodska_pisen": 3},
+    "max_rank": 20
+  },
+  "klubko": {
+    "class": "loutkarka", "tree": "sibalstvi", "tier": 1,
+    "name": {"cs": "Klubko nití", "en": "Tangle of Strings"},
+    "desc": {
+      "cs": "Rozhodí {count} klubek nití. Kdo se do nich zamotá, utrží {dmg} poškození a chvíli se nehne. Vydrží {duration} s.",
+      "en": "Scatters {count} tangles of string. Whoever gets caught takes {dmg} damage and can't move for a while. They last {duration} s."
+    },
+    "type": "trap", "element": "physical", "mana": [6, 0.4], "cooldown": 0,
+    "params": {"dmg": [[6, 12], [4, 7]], "radius": [50, 0], "count": [1, 0.1], "duration": [30, 0], "stun": [1.5, 0.05]},
+    "synergy": {},
+    "max_rank": 20
+  },
+  "mlha": {
+    "class": "loutkarka", "tree": "sibalstvi", "tier": 2,
+    "name": {"cs": "Mlha z kulis", "en": "Stage Fog"},
+    "desc": {
+      "cs": "Pustí z kulis mlhu, ve které nikdo nic nevidí. Okruh {radius} na {duration} s.",
+      "en": "Lets stage fog roll out of the wings; no one can see a thing in it. A circle {radius} wide for {duration} s."
+    },
+    "type": "cloud", "element": "physical", "mana": [12, 0.5], "cooldown": 8,
+    "params": {"radius": [130, 4], "duration": [5, 0.3], "effect": "blind"},
+    "synergy": {"klubko": 3},
+    "max_rank": 20
+  },
+  "falesna_loutka": {
+    "class": "loutkarka", "tree": "sibalstvi", "tier": 3,
+    "name": {"cs": "Falešná loutka", "en": "Decoy Puppets"},
+    "desc": {
+      "cs": "Rozhodí {count} drobných loutek, které {duration} s štípou nepřátele za {dmg} poškození.",
+      "en": "Scatters {count} little puppets that nip at her foes for {duration} s, {dmg} damage a bite."
+    },
+    "type": "summon", "element": "physical", "mana": [14, 0.8], "cooldown": 6,
+    "params": {"look": "sotek", "tint": "#e8dcc8", "scale": 0.6, "count": [3, 0.2], "duration": [15, 0.5], "dmg": [[3, 7], [2, 4]]},
+    "synergy": {"klubko": 3},
+    "max_rank": 20
+  },
+  "hrom_z_kulis": {
+    "class": "loutkarka", "tree": "sibalstvi", "tier": 4,
+    "name": {"cs": "Hrom z kulis", "en": "Thunder from the Wings"},
+    "desc": {
+      "cs": "Divadelní hrom, jenže tentokrát opravdový. Okruh {radius} zasáhne {dmg} poškození bleskem a obyčejné nepřátele na {fear} s vyděsí.",
+      "en": "Stage thunder, only this time it's real. A ring {radius} wide strikes for {dmg} lightning damage and frightens ordinary foes away for {fear} s."
+    },
+    "type": "nova", "element": "lightning", "mana": [16, 0.9], "cooldown": 3,
+    "params": {"dmg": [[18, 40], [10, 20]], "radius": [170, 4], "fear": [2, 0.1]},
+    "synergy": {"mlha": 3},
     "max_rank": 20
   }
 }

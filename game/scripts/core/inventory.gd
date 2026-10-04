@@ -105,6 +105,60 @@ func take(base_id: String, n := 1) -> bool:
 	return n == 0
 
 
+const SORT_GROUPS := ["weapon", "offhand", "body", "head", "belt", "lamp", "amulet", "ring", "quest", "consumable"]
+
+
+# Tidy the grid: merge stacks, then pack big things first, grouped by kind, column by column. If the
+# repack would not fit (it always should), nothing moves.
+func arrange() -> void:
+	var merged: Array = []
+	for it in items:
+		var into: Item = null
+		if it.is_stackable() and it.slot() != "gold":
+			for o in merged:
+				if o.base_id == it.base_id and o.qty < int(o.base().get("max_stack", 1)):
+					into = o
+					break
+		if into:
+			var room := int(into.base().get("max_stack", 1)) - into.qty
+			var k := mini(room, it.qty)
+			into.qty += k
+			it.qty -= k
+			if it.qty > 0:
+				merged.append(it)
+		else:
+			merged.append(it)
+	merged.sort_custom(func(a: Item, b: Item) -> bool:
+		var sa: Vector2i = a.size()
+		var sb: Vector2i = b.size()
+		if sa.x * sa.y != sb.x * sb.y:
+			return sa.x * sa.y > sb.x * sb.y
+		if sa.y != sb.y:
+			return sa.y > sb.y
+		var ga := SORT_GROUPS.find(a.slot())
+		var gb := SORT_GROUPS.find(b.slot())
+		if ga != gb:
+			return (ga if ga >= 0 else 99) < (gb if gb >= 0 else 99)
+		if a.base_id != b.base_id:
+			return a.base_id < b.base_id
+		return a.rarity > b.rarity)
+	var old := {}
+	for it in items:
+		old[it] = it.pos
+	var keep := items
+	items = []
+	for it in merged:
+		var p := find_space(it)
+		if p.x < 0:
+			items = keep
+			for o in old:
+				o.pos = old[o]
+			return
+		it.pos = p
+		items.append(it)
+	changed.emit()
+
+
 func to_array() -> Array:
 	return items.map(func(i): return i.to_dict())
 

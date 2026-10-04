@@ -1,8 +1,9 @@
 # Asset contract
 
-All art is drawn in code in the private repo `permonik-art` with the Velká a malá detektivka library ( `lib.py`,
-`style3.py`, `osobni.py`, `palette.py`, `chars3.py`, `letter.py`, `style_data/`, `fonts/`). Do not edit
-those copied files except to append colours to `palette.py`; new drawing code goes into new modules.
+All art is drawn in code in `art/` with the Velká a malá detektivka library ( `lib.py`,
+`style3.py`, `osobni.py`, `palette.py`, `chars3.py`, `letter.py`, `style_data/`, `fonts/`). Keep those
+close to the comic's copy (they only lost the family's own characters); append colours to `palette.py`,
+put new drawing code in new modules.
 
 Render with `common.py` there: `render(name, w_px, h_px, draw, folder, paper=False)`. Sizes are final
 pixels; the draw function gets a `Box` in points (`px / 2`). `common.FEET` = 4 pt (8 px) is the
@@ -26,15 +27,16 @@ Same pencil line, crayon fills, faces and paper grain as the comics, but darker:
 
 | Folder | What | Size |
 |---|---|---|
-| `sprites/heroes/` | `<class>_<pose>.png`, class ∈ havir, zbojnice, vedma; pose ∈ idle, walk1, walk2, attack, cast, hit, dead | 240×240 each, figure ~130 px tall, feet at FEET, centred. `dead` lies on the ground in the same canvas. |
+| `sprites/heroes/` | in layers (`heroes_gear.py`), so worn gear shows: `<class>/<pose>/<layer>[.<look>].png`, pose ∈ idle, walk1, walk2, attack, cast, hit, dead. Layers back to front: headgear_back, back, body_far, weapon_far, lamp_far, hand_far, offhand, legs, body, belt, lamp, weapon_belt, body_near, weapon, hand, head, headgear. Look = the base item's `icon`; `default` = what the class wears with the slot empty (a `kytel` counts as empty). The game stacks them per gear (`scripts/core/hero_look.gd`). `sprites/heroes_big/<class>/idle/` = the same at 600×600 for the hero list | 240×240 each, figure ~130 px tall, feet at FEET, centred. `dead` lies on the ground in the same canvas. |
 | `sprites/npcs/` | `<npc>.png` + `<npc>_talk.png` | 200×240, figure ~130 px (children / small folk smaller) |
 | `portraits/` | `<npc>.png` (also heroes: `hero_<class>.png`, bosses: `boss_<id>.png`) | 256×256, head and shoulders, dark vignette background filling the square |
 | `sprites/monsters/` | `<id>_idle.png`, `<id>_walk.png`, `<id>_attack.png` (walk optional) | per creature, all poses of one creature **same canvas**, feet at FEET, centred. Small 96–128, medium 192–224, large 256–320, bosses 320–512 |
 | `sprites/fx/` | projectiles and effects (see list) | small, centred, pointing right |
-| `tiles/<set>/` | `floor_0..3.png` 64×64 · `wall_0..2.png` 64×96 (top 64 px = rock top seen from above, bottom 32 px = front face) · `floor_deco_0..3.png` 64×64 transparent overlays (cracks, rubble, rails, puddles, bones) | |
+| `tiles/<set>/` | `floor_0..3.png` 64×64 · `wall_0..2.png` 64×96 (top 64 px = rock top seen from above, bottom 32 px = front face) · `floor_deco_0..3.png` 64×64 transparent overlays (cracks, rubble, rails, puddles, bones) · towns also `path_0..2.png` 128×128 soft footpath decals drawn centred on a 64 px cell so neighbours overlap | |
 | `props/` | `<id>.png`, base (ground contact) at bottom-centre with FEET margin | see list |
 | `items/` | `<icon>.png`, inventory icon, `w*56 × h*56` px for an item `w×h` cells, item centred, transparent | |
 | `ui/` | HUD, panels, cursor, title, menus | see list |
+| `ui/map_*`, `ui/minimap_*` | automap (`map_art.py`): `map_sheet` 1600×1000 paper, `minimap_disc` / `minimap_frame` 280×280 (map radius 118 px), seamless crayon swatches `map_floor`, `map_floor_town`, `map_water` 256×256, pencil symbols `map_stairs_down/up`, `map_cage`, `map_shrine`, `map_quest`, `map_book`, `map_npc`, `map_hero`, `map_portal`, `map_boss` 32×32 | |
 | `ui/skills/` | `<skill_id>.png` | 64×64, opaque square icon |
 | `slides/` | story illustrations | 1920×1080, `paper=True` |
 
@@ -129,6 +131,11 @@ Consumables 1×1: ziva_voda, ziva_voda_velka, svatojanska_rosa, svatojanska_rosa
 kapradi_kvet, svitek_brana, svitek_zjeveni. Gold: grose_malo, grose_hromadka, grose_hodne.
 Quest 1×1 unless noted: srdce_zvonu 1×2, strana_kroniky, zlaty_sin, kostejova_jehla, vejce,
 mrtva_voda, hrnek (teacup), zrcadlo_strep.
+Gems 1×1 (six Czech stones, grades 1–4, `items_more.py`): achat_1, achat_2, achat_3, achat_4, ametyst_1, ametyst_2, ametyst_3, ametyst_4, granat_1, granat_2, granat_3, granat_4, jaspis_1, jaspis_2, jaspis_3, jaspis_4, kristal_1, kristal_2, kristal_3, kristal_4, vltavin_1, vltavin_2, vltavin_3, vltavin_4.
+Letters 1×1 (Glagolitic, `items_more.py`): glag_a, glag_b, glag_c, glag_ch, glag_d, glag_e, glag_g, glag_i, glag_ja, glag_k, glag_l, glag_m, glag_n, glag_o, glag_p, glag_r, glag_s, glag_t, glag_u, glag_v, glag_z.
+Charm (thunderstones, work from the bag, `items_more.py`): hromovy_kamen_maly 1×1, hromovy_kamen 1×2, hromovy_kamen_velky 1×3.
+Key 1×1 (endgame, `items_more.py`): klic_vody, klic_kamene, klic_ohne, klic_smrti, pecet_vody, pecet_kamene, pecet_ohne, pecet_smrti; unique icon permonikuv_desatek 1×3.
+Class (one class only, drawn in `items_more.py`): faracka 2×2 (havir), zbojnicky_opasek 2×1 (zbojnice), zarikadla 2×2 (vedma), zastera 2×3 (kovar), obetni_nuz 1×2 (zrec), vlci_kape 2×2 (vlkodlak), krivule 2×2 (alchymistka), vahadlo 2×2 (loutkarka).
 
 ### Skills (`ui/skills/<id>.png`)
 havir: uder_do_zily, rozrazka, otres, zurivost_hory, naloz, doutnak, odstrel, retez_nalozi,
@@ -137,6 +144,11 @@ zbojnice: sek_valaskou, hod_valaskou, zbojnicky_skok, vir, rychla_strela, prustr
 dest_sipu, uskok, past_na_vlky, janosikuv_opasek, kourova_clona.
 vedma: jiskra, hromova_koule, retezovy_blesk, peruniv_hnev, ohnivy_jazyk, ohniva_stena,
 kupalska_vatra, zar_ptak, mrazivy_dech, ledova_zbroj, moranina_naruc, vynaseni_morany.
+kovar: uder_kladivem, rozkovat, hod_kladivem, kovadlina, rozpalene_zelezo, jiskry, vyhen, struska, kovana_kuze, zelezny_strazce, kalena_ocel, kovarova_vydrz.
+zrec: svantovituv_zrak, triglavova_zastita, hnev_modly, perunova_prizen, krvava_obet, obetni_ohen, krev_za_krev, velka_obet, dedek, hlas_predku, babky, rod.
+vlkodlak: vlci_kuze, kousnuti, vyti, besneni, vlk, smecka, vudce_smecky, vlkodlaci_bratr, trni, koreny, lesni_duch, hnev_lesa.
+alchymistka: lucavka, jedovaty_dym, kyselina, kralovska_lucavka, hlineny_golem, rtutovy_golem, sem, prazsky_golem, zlata_strela, rtut, kamen_mudrcu, velke_dilo.
+loutkarka: kasparek, cert_na_niti, loutkove_divadlo, obri_marioneta, chodska_pisen, ukolebavka, dupak, hromove_dudy, klubko, mlha, falesna_loutka, hrom_z_kulis.
 Plus utok (basic attack), brana (town portal), zjeveni (identify).
 
 ### UI (`ui/`)

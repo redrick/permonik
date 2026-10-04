@@ -12,7 +12,7 @@ In short: you may play the game and share these files unchanged, non-commerciall
 not modify them, build new art from them, or use them commercially.
 
 The art is drawn in a personal hand-drawn style (line, faces, handwriting and crayon textures taken from
-the author's family). The code that produces it is not part of this repository.
+the author's family). It is our own. The code that draws it is in `art/`, see `art/LICENSE.md`.
 
 ## Fonts
 
@@ -21,3 +21,4 @@ the author's family). The code that produces it is not part of this repository.
 | `fonts/TataHand.ttf`, `fonts/TataHandB.ttf` | © 2026 Andrej Antas, **all rights reserved**. Made from the author's handwriting. Included only so the game can run; you may not extract, install, use or redistribute them separately. |
 | `fonts/f_Bangers-Regular.ttf` | SIL Open Font License 1.1, see `fonts/OFL-bangers.txt` |
 | `fonts/PatrickHand-Regular.ttf` | SIL Open Font License 1.1, see `fonts/OFL-patrickhand.txt` |
+| `fonts/NotoSansGlagolitic-Regular.ttf` | Noto Sans Glagolitic, © 2022 The Noto Project Authors, SIL Open Font License 1.1, see `fonts/OFL-noto-glagolitic.txt` |

@@ -1,0 +1,29 @@
+{
+ "strokes": 31,
+ "bow_per_len": 0.0021,
+ "wobble_mm": 0.205,
+ "wobble_periods_mm": [
+  10.8,
+  32.2
+ ],
+ "wobble_weights": [
+  0.5,
+  0.5
+ ],
+ "width_mm": 0.455,
+ "pressure_cv": 0.382,
+ "end_width_ratio": 1.074,
+ "hatch": {
+  "angle": 92.5,
+  "spacing_mm": 1.64,
+  "end_weight": 16.39,
+  "cross_angles": [
+   52.5,
+   82.5
+  ],
+  "shadow": {
+   "angle": 62.5,
+   "spacing_mm": 2.0
+  }
+ }
+}

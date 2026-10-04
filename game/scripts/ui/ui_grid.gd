@@ -103,11 +103,19 @@ func _gui_input(event: InputEvent) -> void:
 			if ui.vendor_open():
 				ui.vendor_panel().sell(it, false)
 			elif ui.left is UiStash:
-				if Game.ch.stash.add(it):
+				if (ui.left as UiStash).box().add(it):
+					i.remove(it)
+					ui.changed()
+			elif ui.left is UiForge:
+				if (ui.left as UiForge).box.add(it):
 					i.remove(it)
 					ui.changed()
 			else:
 				ui.use_or_equip(it)
+		elif it and mode == "forge":
+			if Game.ch.inv.add(it):
+				i.remove(it)
+				ui.changed()
 		elif it and mode == "stash":
 			if Game.ch.inv.add(it):
 				i.remove(it)
@@ -122,6 +130,12 @@ func _put(ui: UiRoot) -> void:
 	if bl.size() == 0:
 		if i.place(h, at):
 			ui.held = null
+	elif bl.size() == 1 and bl[0].can_socket(h):
+		bl[0].socket(h)
+		ui.held = null
+		Sfx.play("block", 0.4)
+		ui.changed()
+		return
 	elif bl.size() == 1:
 		var o: Item = bl[0]
 		var mx := int(o.base().get("max_stack", 1))

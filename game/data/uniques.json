@@ -233,5 +233,6 @@
     "name": {"cs": "Žíla Oslu", "en": "Vein of the Osel"}, "base": "krumpac_hlubinny", "qlvl": 75,
     "mods": [{"stat": "dmg_pct", "min": 200, "max": 250}, {"stat": "sila", "min": 20, "max": 25}, {"stat": "crit", "min": 10, "max": 12}, {"stat": "hp_pct", "min": 10, "max": 10}, {"stat": "light_radius", "min": 1, "max": 1}],
     "flavor": {"cs": "Ukovaný ze stříbra, které se z Oslu nikdy nevytěžilo. Kope jen dolů a nikdy se neotupí.", "en": "Forged from silver that was never brought up out of the Osel. It digs only downward, and it never dulls."}
-  }
+  },
+  "permonikuv_desatek": {"name": {"cs": "Permoníkův desátek", "en": "Permoník's Tithe"}, "base": "hromovy_kamen_velky", "icon": "permonikuv_desatek", "qlvl": 85, "quest_only": true, "mods": [{"stat": "skills", "min": 1, "max": 1}, {"stat": "vse_staty", "min": 10, "max": 20}, {"stat": "res_all", "min": 10, "max": 20}, {"stat": "xp_pct", "min": 5, "max": 10}, {"stat": "light_radius", "min": 1, "max": 1}], "flavor": {"cs": "Studený jako jeho kahan. Každý desátý havíř, co nikdy nevyjel, je v něm.", "en": "Cold as his lamp. Every tenth miner who never came back up is in it."}}
 }

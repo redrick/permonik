@@ -2,6 +2,9 @@ extends Node
 
 signal message(text: String, color: Color)
 signal quests_changed
+
+const SHARED_STASH := "user://saves/_shared_stash.json"
+var shared_stash := Inventory.new(12, 10)
 signal location_changed
 signal boss_bar(name: String, ratio: float, visible: bool)
 
@@ -32,6 +35,7 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_setup_input()
 	quests_changed.connect(save)
+	load_shared_stash()
 
 
 func _process(delta: float) -> void:
@@ -176,10 +180,104 @@ func quest_done(qid: String) -> void:
 	ch.stat_points += int(r.get("stat_points", 0))
 	if r.has("item"):
 		give_item(str(r.item))
+	for id in r.get("items", []):
+		give_item(str(id))
 	msg("%s: %s" % [L.t("quest_done"), L.t(q.get("name", qid))], Color("e9c46a"))
 	Sfx.play("quest_done")
 	quests_changed.emit()
 	ch.changed.emit()
+
+
+# ---------------------------------------------------------------- where to go next (tracker, map, marks)
+# The dialog an NPC would open now: the first entry whose conditions hold.
+func dialog_entry(nid: String) -> Dictionary:
+	for e in DB.dialog.get(nid, []):
+		var ok := true
+		for c in e.get("if", []):
+			if not cond(str(c)):
+				ok = false
+				break
+		if ok:
+			return e
+	return {}
+
+
+# "new" / "new_side": talking now starts a quest; "turnin": talking now moves an active quest on.
+func npc_marker(nid: String) -> String:
+	for qid in quests:
+		if _cur_goal(qid).get("talk", "") == nid:
+			return "turnin"
+	for a in dialog_entry(nid).get("do", []):
+		var p := str(a).split(":")
+		if p[0] == "quest_start" and p.size() > 1 and quest_state(p[1]) == "none":
+			return "new" if bool(DB.quests.get(p[1], {}).get("main", false)) else "new_side"
+		if p[0] in ["quest_done", "quest_step"] and p.size() > 1 and quest_state(p[1]) == "active":
+			return "turnin"
+	return ""
+
+
+# Where a goal is: {act, floors, what, id}. what = reach / boss / hunt / item / prop / npc.
+func goal_place(qid: String) -> Dictionary:
+	var g := _cur_goal(qid)
+	var qa := int(DB.quests.get(qid, {}).get("act", act))
+	if g.has("reach"):
+		var p := str(g.reach).trim_prefix("act").split("_floor")
+		if p.size() == 2:
+			return {"act": int(p[0]), "floors": [int(p[1])], "what": "reach", "id": ""}
+	if g.has("talk"):
+		return {"act": qa, "floors": [0], "what": "npc", "id": str(g.talk)}
+	for key in ["kill", "pick", "use"]:
+		if not g.has(key):
+			continue
+		var id := str(g[key])
+		var floors := []
+		var what: String = {"kill": "hunt", "pick": "item", "use": "prop"}[key]
+		for f in DB.act(qa).get("floors", []):
+			if key == "kill" and str(f.get("boss", "")) == id:
+				return {"act": qa, "floors": [int(f.n)], "what": "boss", "id": id}
+			if key == "kill" and id in f.get("monsters", []):
+				floors.append(int(f.n))
+			if key != "kill" and id in f.get("quest_props", []):
+				floors.append(int(f.n))
+		if not floors.is_empty():
+			return {"act": qa, "floors": floors, "what": what, "id": id}
+		return {"act": qa, "floors": [], "what": what, "id": id}
+	return {}
+
+
+func place_text(pl: Dictionary) -> String:
+	if pl.is_empty():
+		return ""
+	var a := int(pl.act)
+	if pl.what == "npc":
+		return "%s · %s" % [L.t(DB.act(a).get("town", {}).get("name", "")), L.t(DB.npcs.get(pl.id, {}).get("name", pl.id))]
+	var fl: Array = pl.floors
+	if fl.is_empty():
+		return ""
+	var mine := L.t(DB.act(a).get("dungeon", {}).get("name", ""))
+	if fl.size() == 1:
+		return "%s · %s" % [mine, L.t(DB.floor_def(a, int(fl[0])).get("name", ""))]
+	return "%s · %s %d–%d" % [mine, L.t("floor"), int(fl.min()), int(fl.max())]
+
+
+# The quests the HUD shows: the act's main quest first, then the side quests.
+func tracked_quests() -> Array:
+	var out := []
+	for qid in quests:
+		if quest_state(qid) != "active":
+			continue
+		var q: Dictionary = DB.quests.get(qid, {})
+		var step_text := ""
+		for st in q.get("steps", []):
+			if st.id == quest_step(qid):
+				step_text = L.t(st.get("text", ""))
+		var g := _cur_goal(qid)
+		var need := int(g.get("count", 1))
+		out.append({"qid": qid, "main": bool(q.get("main", false)), "name": L.t(q.get("name", qid)), "text": step_text,
+			"where": place_text(goal_place(qid)), "n": int(quests[qid].get("n", 0)) if need > 1 else -1, "count": need,
+			"act": int(q.get("act", 0))})
+	out.sort_custom(func(x, y): return x.main and not y.main or (x.main == y.main and x.act > y.act))
+	return out
 
 
 func _cur_goal(qid: String) -> Dictionary:
@@ -317,7 +415,7 @@ func waypoint_key(a: int, f: int) -> String:
 func goto(a: int, f: int, arrive := "start") -> void:
 	act = a
 	floor_n = f
-	if f > 0:
+	if f > 0 and not DB.floor_def(a, f).has("uber"):
 		waypoints[waypoint_key(a, f)] = true
 		on_event("reach", "act%d_floor%d" % [a, f])
 		learn("floor", "act%d_floor%d" % [a, f])
@@ -388,6 +486,23 @@ func save() -> void:
 	var f := FileAccess.open("user://saves/%s.json" % save_slot, FileAccess.WRITE)
 	if f:
 		f.store_string(JSON.stringify(data))
+	save_shared_stash()
+
+
+# One stash every hero can reach, kept beside the hero files.
+func save_shared_stash() -> void:
+	DirAccess.make_dir_recursive_absolute("user://saves")
+	var f := FileAccess.open(SHARED_STASH, FileAccess.WRITE)
+	if f:
+		f.store_string(JSON.stringify(shared_stash.to_array()))
+
+
+func load_shared_stash() -> void:
+	if not FileAccess.file_exists(SHARED_STASH):
+		return
+	var d = JSON.parse_string(FileAccess.get_file_as_string(SHARED_STASH))
+	if d is Array:
+		shared_stash.load_array(d)
 
 
 func load_game(slot: String) -> bool:
@@ -420,14 +535,14 @@ func list_saves() -> Array:
 	if da == null:
 		return out
 	for fn in da.get_files():
-		if not fn.ends_with(".json"):
+		if not fn.ends_with(".json") or fn.begins_with("_"):
 			continue
 		var data = JSON.parse_string(FileAccess.get_file_as_string("user://saves/" + fn))
 		if data is Dictionary:
 			var c: Dictionary = data.get("char", {})
 			out.append({"slot": fn.get_basename(), "name": c.get("name", "?"), "class": c.get("class", ""),
 				"level": c.get("level", 1), "act": data.get("act", 1), "difficulty": data.get("difficulty", 0),
-				"saved_at": data.get("saved_at", "")})
+				"saved_at": data.get("saved_at", ""), "gear": HeroLook.gear_from_equip(c.get("equip", {}))})
 	out.sort_custom(func(a, b): return a.saved_at > b.saved_at)
 	return out
 

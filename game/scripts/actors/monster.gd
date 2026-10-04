@@ -542,3 +542,7 @@ func _revive_later() -> void:
 			collision_layer = 4
 			level.float_text(top_pos(), L.t({"cs": "Vstává!", "en": "Rises!"}), Color("cfe8ff")))
 	stun_t = 5.0
+
+
+func hit_divisor() -> float:
+	return 4.0 if kind == "boss" else 8.0

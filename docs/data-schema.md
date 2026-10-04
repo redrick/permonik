@@ -20,13 +20,25 @@ IDs are lowercase ASCII with underscores and match the asset names in `docs/asse
 - **Weapon damage** = weapon roll × (1 + dmg_pct/100) + flat, × (1 + stat/100) where stat is the
   weapon's `dmg_stat` (sila or obratnost). **Spell damage** = skill roll × (1 + magie/100) ×
   (1 + elemental skill synergies).
-- **Hit chance** (D2): `2 * alvl/(alvl+dlvl) * AR/(AR+DEF)`, clamped 5–95 %. Player AR =
-  `obratnost*5 + level*8 + to_hit`. Monster `armor` is its DEF; player DEF = sum of item armor
-  (+ armor_pct). Monster AR = `mlvl*12 + to_hit`.
+- **Combat follows Diablo II.**
+  - Hit chance `2 · alvl/(alvl+dlvl) · AR/(AR+DEF)`, clamped 5–95 %.
+  - Player AR = `(obratnost·5 − 35 + class ar_bonus + to_hit) · (1 + to_hit_pct/100)`; no AR per level, the
+    melee skills carry their own `ar_pct` instead. Class `ar_bonus`: Havíř +20, Zbojnice +15, Vědma −10.
+  - Player DEF = item armour (+ armor_pct) + obratnost/4. Monster AR = `mlvl·6 + 6 + to_hit`, hit chance on
+    the player capped at 85 %.
+  - Block = `blocking · (obratnost − 15) / (level · 2)`, cap 75 %; while moving a third of that, cap 25 %.
+    Blocking = the shield's `block` + `block` from items.
+  - Hit recovery: a blow worth more than 1/12 of the hero's life (1/8 of a monster's, 1/4 of a boss's)
+    staggers and breaks off the current swing or spell. Hero stagger 0.4 s / (1 + FHR).
+  - Speed from gear (`attack_speed`, `cast_speed`, `hit_recovery`) is diminished: `120·x/(120+x)`.
+  - `crit` = deadly strike (double physical damage). `crushing_blow` takes 1/4 of a normal monster's
+    remaining life (1/8 champions and bosses, half at range), physical resistance applies.
+  - Physical damage taken: × (1 − dmg_reduce_pct/100, cap 50 %), then − dmg_reduce (min 1).
+  - Life/mana leech × 1 / 0.67 / 0.5 on Normal / Noční můra / Nav.
 - **Resists** 0–100 (100 = immune, monsters only). Player resist cap 75; difficulty penalty
   0 / −30 / −60.
-- **Item tiers**: base items come in up to three tiers (normal / kovaný / hlubinný) as separate
-  entries sharing an `icon`. Rough ranges: one-hand dmg T1 1–15, T2 10–45, T3 30–110; body armor
+- **Item tiers**: base items come in four tiers (normal qlvl 1–22 / kovaný 25–46 / hlubinný 55–76 /
+  navský 79–95) as separate entries sharing an `icon`; navský ≈ hlubinný × 1.75 damage, × 1.7 armour. Rough ranges: one-hand dmg T1 1–15, T2 10–45, T3 30–110; body armor
   T1 6–40, T2 50–150, T3 160–420.
 - **Attack speed**: `speed` ∈ fast (1.6 attacks/s), normal (1.25), slow (0.95), very_slow (0.75).
 
@@ -35,9 +47,11 @@ IDs are lowercase ASCII with underscores and match the asset names in `docs/asse
 `sila obratnost magie vitalita vse_staty hp mana hp_pct mana_pct dmg_pct dmg_min dmg_max to_hit
 armor armor_pct block fire_dmg lightning_dmg cold_dmg poison_dmg res_fire res_lightning res_cold
 res_poison res_all life_steal mana_steal attack_speed cast_speed move_speed light_radius
-gold_find magic_find hp_regen mana_regen thorns dmg_reduce skills crit xp_pct`
+gold_find magic_find hp_regen mana_regen thorns dmg_reduce skills crit xp_pct to_hit_pct crushing_blow
+hit_recovery dmg_reduce_pct`
 (`fire_dmg` etc. = added max damage; the engine adds a range `value/2 .. value`. `*_steal`, `crit`,
-`*_pct`, `*_speed`, `*_find`, `xp_pct` are percent. `skills` = +N to all skills.)
+`*_pct`, `*_speed`, `*_find`, `xp_pct` are percent. `skills` = +N to all skills. `crit` = deadly strike, `crushing_blow`, `hit_recovery` (FHR), `to_hit_pct`,
+`dmg_reduce_pct` are percent.)
 
 ## classes.json
 ```json
@@ -140,16 +154,18 @@ Mod names are nouns (*Rychlost, Kamenná kůže, Oheň*) so they need no gender.
 
 ## acts.json
 ```json
-[ { "id": 1, "name": {...}, "subtitle": {...},
+[ { "id": 1, "name": {...}, "subtitle": {...}, "goal": {...},   // goal = the act's main thread in one line (tracker, quest log)
     "town": {"id":"hora","name":{...},"tileset":"town_hora","music":"town_hora",
              "npcs":["permonik","kosmas","kovar_hnevek","korenarka_dorota","senkyrka_bara"]},
     "dungeon": {"name":{...},"tileset":"hora","music":"mine_1"},
-    "floors": [ { "n":1, "level":1, "style":"gallery", "size":[56,56], "water":0.0,
+    "floors": [ { "n":1, "level":1, "styles":["gallery","mixed"], "size":[56,56], "water":0.0,
                   "monsters":["krysa","sotek","kostlivy_havir"], "density":1.0,
                   "boss":null, "quest_props":[] },
-                { "n":4, "level":7, "style":"cave", "size":[48,48], "water":0.45,
+                { "n":4, "level":7, "styles":["lair","cave"], "size":[48,48], "water":0.45,
                   "monsters":["utopenec","kostlivy_havir"], "boss":"vodnik",
-                  "quest_props":["hrnek_dusicka"] } ],
+                  "quest_props":["hrnek_dusicka"],
+                  "rules": {"arena":[7,5], "min_path":40,
+                            "place": {"dub": {"far":0.5, "from_boss":12}, "truhla_kostej": {"next_to":"dub"}}} } ],
     "quests": ["klekani","kostnice","dusicky","srdce_zvonu"],
     "intro": "act1_intro", "outro": "act1_end" } ]
 ```
@@ -157,6 +173,58 @@ Mod names are nouns (*Rychlost, Kamenná kůže, Oheň*) so they need no gender.
 (one big boss arena + approach). `water` 0–1 = how much of the floor floods (slows, Vodník).
 
 Vendor roles come from `npcs.json`.
+
+### Floor generation
+
+Every floor and town is generated again on each game start (`Game.session_seed`); within one session a
+floor keeps its plan, but its monsters are drawn again on every visit. What stays fixed are the rules:
+
+- **Layout**: one of `styles` (`gallery` rooms and tunnels, `mixed` roughened galleries, `cave` cellular
+  caves, `lair` arena with side caves), size ±10 %, water ±30 %. A draw that breaks the rules is thrown
+  away (up to 12 tries): the stairs down must be at least `rules.min_path` steps away (default
+  0.35 × (w+h)), the boss room at least 60 % of the longest walk.
+- **Boss floors**: the boss gets its own room (`rules.arena` = radii in cells, default 7×5) at the far
+  end, and the stairs down are behind it.
+- **Story first**: `quest_props` are placed before anything random. Defaults: an item to pick up lies
+  past half of the longest walk and away from the boss room; a prop on a boss floor stands in a ring
+  around the boss room; any other prop past 45 %. `rules.place.<id>` overrides it with `far` (share of the
+  longest walk), `from_boss` (cells), `spacing` (cells from others of its kind), `next_to` (an id placed
+  earlier on this floor).
+- **The rest**: shrines ≥ 12 cells apart, chests ≥ 8, books past 30 %, monster packs ≥ 6 cells apart,
+  never within 9 cells of the stairs or inside the boss room. Each visit uses all but one of the floor's
+  monster types (15 % of packs may still pick from the whole pool) and ±15 % density.
+- **Towns** (`scripts/world/town_layout.gd`): shaft on the north edge with the cage beside it, the well
+  (camp fire) square in the middle with arrival point and stash, the chronicler's lectern on the square,
+  smith, inn and healer each with its keeper at the door 7–16 cells from the square, the landmark
+  further out, Fabián and the Třemšínský mužíček among the trees at the rim, footpaths from the square to
+  the shaft and each door. Every NPC and point must be reachable or the town is drawn again.
+
+## Loot systems
+
+- **Rarities**: normal, magic (1 prefix and/or 1 suffix), rare (3–6 affixes, max 3 of each kind, never two
+  of one family or two on one stat, two-word name from `rare_names.json`), set (`sets.json`), unique
+  (`uniques.json`). A plain item may drop with sockets (15 %).
+- **Class-only bases** carry `"class"` and a `"look"` (the worn layer to draw). `class_<id>` and
+  `tree_<id>` stats add ranks to a class's skills or one tree; on a class item they only roll for that
+  class, four times as often; elsewhere at a third of the weight.
+- **Sockets** (`max_sockets` by slot, size, tier). Gems (`slot: gem`, six stones × four grades) and letters
+  (`slot: letter`, 21 Glagolitic letters on a D2-rune ladder, each step a quarter rarer) carry
+  `"socket": {"weapon": […], "armor": […], "shield": […]}`. Drop one onto an item to set it.
+- **words.json**: `{"letters": ["g","r","o","m"], "bases": ["weapon"|"armor"|"body"|"shield"], "mods": […]}`.
+  A plain (white) item whose sockets hold exactly those letters, in order, speaks the word: name in
+  gold, word mods on top of the letters' own.
+- **Charms** (`slot: charm`, small/normal/great thunderstones) are always magic, roll only charm-friendly
+  stats at 35 / 60 / 100 % strength (great ones also `tree_*`), and count while in the bag.
+- **sets.json**: `{"sets": {id: {"name", "class"?, "pieces": [...], "bonus": {"2": [...], "3": [...], "full": [...]}, "flavor"}},
+  "items": {id: {"set", "base", "name", "qlvl", "mods"}}}`. Bonuses add up by pieces worn.
+- **The forge** (smith, `scripts/core/forge.gd`): gem and letter upgrades, sockets, unsocketing, rerolls,
+  tier upgrades, potions, and the four tithe seals into *Permoníkův desátek*.
+- **Stash** 12×10 per hero plus a shared 12×10 chest (`user://saves/_shared_stash.json`). **Gambling** at
+  the innkeeper: you buy a base blind; 3 % unique, 4 % set, 18 % rare, the rest magic.
+- **Tithes** (endgame): on Noční můra (30 %) and Nav (45 %) the four seal guardians drop their key; the
+  ferryman in Nav takes a key to an `uber` floor (act 4, n 11–14, `"uber": {"hp", "dmg", "key", "seal"}`):
+  the same fight at ×3 life ×1.6 damage, dropping its seal and three rich items. `uber` floors are not
+  counted, get no waypoint, and their stairs lead back to camp.
 
 ## npcs.json
 `{ "kovar_hnevek": {"name":{...}, "role":"smith", "portrait":"kovar_hnevek"} }`

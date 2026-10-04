@@ -9,23 +9,23 @@ The story bible lives in the author's private notes, not in this repo.
 - **Godot 4.6.3** portable binary: `~/apps/godot-4.6/Godot_v4.6.3-stable_linux.x86_64`.
   Run: `… --path game`. Parse check: `… --headless --editor --quit-after 300 --path game`.
 - GDScript only, no plugins.
-- Art is drawn in code in the private sibling repo `../permonik-art` (the family's pencil-and-crayon
-  library, see `docs/assets.md`). It renders into `game/assets/`. Never recolour PNGs by hand; change the
-  drawing code there and re-render.
+- Art is drawn in code in `art/` (the family's pencil-and-crayon library, see `docs/assets.md`).
+  It renders into `game/assets/`. Never recolour PNGs by hand; change the drawing code and re-render.
 - Audio is synthesised with numpy (`tools/audio_synth.py`) into `game/assets/audio/`.
 
 ## Layout
 - `game/` Godot project. `game/data/*.json` = all content (schema: `docs/data-schema.md`).
   `game/scripts/` code, `game/scenes/` scenes, `game/assets/` generated art and audio.
 - `docs/` = GitHub Pages site (`index.html`, `img/`, `screenshots/`; CZ/EN, no spoiler of the Permoník twist) + contracts (assets, data schema, audio). `tools/` helpers.
+  Class cards, ability animations, sets and words on the site come from `python3 tools/site_build.py` (writes `docs/data.js`, `docs/img/{anim,class,skills,items}/`); rerun after changing classes, skills, sets or words.
 
 ## Languages
 Czech + English. Content text in JSON is `{"cs","en"}`; UI strings in `game/data/ui.json`.
 `L.t(x)` translates a dict or a UI key.
 
 ## Licence split
-Code/data/docs/tools: MIT. `game/assets/`: CC BY-NC-ND 4.0, TataHand fonts all rights reserved.
-Never add the drawing code, style data, scans or the children's names to this repo.
+Code/data/docs/tools/`art/*.py`: MIT. `game/assets/`, `art/style_data/`: CC BY-NC-ND 4.0, TataHand
+fonts all rights reserved. Never add the children's names (they were scrubbed from the base library).
 
 ## Conventions
 - Few code comments: only what the code can't say.

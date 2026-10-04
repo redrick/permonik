@@ -233,12 +233,13 @@ func open_npc(npc: Npc) -> void:
 	_sync_pause()
 
 
-func open_vendor(npc: Npc) -> void:
+func open_vendor(npc: Npc, gamble := false) -> void:
 	if npc == null:
 		return
 	close_all()
 	var v := UiVendor.new()
 	v.npc = npc
+	v.gamble = gamble
 	left = v
 	_place(left, "left")
 	_open_inventory()
@@ -269,6 +270,14 @@ func open_waypoints() -> void:
 	modal = UiWaypoints.new()
 	_place(modal, "center")
 	Sfx.play("waypoint", 0.6)
+	_sync_pause()
+
+
+func open_forge() -> void:
+	close_all()
+	left = UiForge.new()
+	_place(left, "left")
+	_open_inventory()
 	_sync_pause()
 
 
@@ -409,6 +418,14 @@ func equip_click(sl: String) -> void:
 			ch.equip.erase(sl)
 			held = cur
 			after_equip()
+		return
+	var worn: Item = ch.equip.get(sl, null)
+	if worn and worn.can_socket(held):
+		worn.socket(held)
+		held = null
+		Sfx.play("block", 0.4)
+		ch.recalc()
+		after_equip()
 		return
 	if not (sl in ch.slot_for(held)):
 		Game.msg(UiTheme.t("wrong_slot"), UiTheme.DIM)

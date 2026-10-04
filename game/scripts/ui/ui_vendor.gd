@@ -2,6 +2,7 @@ class_name UiVendor
 extends UiPanel
 
 var npc: Npc
+var gamble := false
 var stock_inv := Inventory.new(10, 10)
 var gold_lbl: Label
 var repair_btn: Button
@@ -12,7 +13,9 @@ func _ready() -> void:
 	custom_minimum_size = Vector2(644, 0)
 	if npc.stock.is_empty():
 		npc.stock = Loot.vendor_stock(npc.role(), Game.ch.level)
-	set_title(npc.display_name)
+	if gamble and npc.gamble_stock.is_empty():
+		npc.gamble_stock = Loot.gamble_stock(Game.ch.level)
+	set_title(npc.display_name + ("  ·  " + L.t({"cs": "Kostky", "en": "Dice"}) if gamble else ""))
 	_rebuild()
 	var g := UiGrid.make(func(): return stock_inv, "vendor")
 	g.vendor = self
@@ -33,7 +36,7 @@ func _ready() -> void:
 func _rebuild() -> void:
 	stock_inv.items.clear()
 	var seen := {}
-	for it: Item in npc.stock:
+	for it: Item in (npc.gamble_stock if gamble else npc.stock):
 		if it.slot() == "consumable":
 			if seen.has(it.base_id):
 				continue
@@ -42,11 +45,11 @@ func _rebuild() -> void:
 		if p.x >= 0:
 			it.pos = p
 			stock_inv.items.append(it)
-	_sig = npc.stock.size()
+	_sig = (npc.gamble_stock if gamble else npc.stock).size()
 
 
 func refresh() -> void:
-	if _sig != npc.stock.size():
+	if _sig != (npc.gamble_stock if gamble else npc.stock).size():
 		_rebuild()
 	gold_lbl.text = "%d %s" % [Game.ch.gold, L.t("gold")]
 	if repair_btn:
@@ -56,6 +59,8 @@ func refresh() -> void:
 
 
 func price_of(it: Item) -> int:
+	if gamble:
+		return Loot.gamble_price(it, Game.ch.level)
 	return maxi(1, int(it.price() * (1.0 + 0.5 * Game.difficulty)))
 
 
@@ -80,7 +85,15 @@ func buy(it: Item) -> void:
 		Game.msg(L.t("not_enough_gold"), UiTheme.DIM)
 		return
 	var ok := false
-	if it.slot() == "consumable":
+	if gamble:
+		var won := Loot.gamble(it.base_id, Game.ch.level)
+		ok = ch.inv.add(won)
+		if ok:
+			var i := npc.gamble_stock.find(it)
+			var fresh := Loot.gamble_stock(Game.ch.level)
+			npc.gamble_stock[i] = fresh[randi() % fresh.size()]
+			Game.msg(won.display_name(), won.color())
+	elif it.slot() == "consumable":
 		ok = ch.pickup(Item.create(it.base_id, it.ilvl))
 	else:
 		ok = ch.inv.add(it)

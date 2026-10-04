@@ -3,8 +3,8 @@ MIT License
 Copyright (c) 2026 Andrej Antas
 
 This licence covers the game code, game data, tools and documentation in this repository
-(everything except the game/assets/ directory, which has its own terms in
-game/assets/LICENSE.md).
+(everything except game/assets/, which has its own terms in game/assets/LICENSE.md, and
+art/style_data/ and art/fonts/, which have theirs in art/LICENSE.md).
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

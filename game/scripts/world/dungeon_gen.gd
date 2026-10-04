@@ -29,17 +29,81 @@ func walkable(c: Vector2i) -> bool:
 	return at(c.x, c.y) != WALL
 
 
+var style := "gallery"
+var dist := {}
+var max_dist := 1
+
+
+# Layout is random per seed within the floor's rules; a draw that breaks them is thrown away.
 func generate(def: Dictionary, seed_v: int) -> void:
+	for attempt in 12:
+		_generate_once(def, seed_v + attempt * 7919)
+		if _meets_rules(def):
+			return
+
+
+func _generate_once(def: Dictionary, seed_v: int) -> void:
 	rng.seed = seed_v
 	var sz = def.get("size", [56, 56])
-	w = int(sz[0])
-	h = int(sz[1])
+	w = int(round(int(sz[0]) * rng.randf_range(0.9, 1.1)))
+	h = int(round(int(sz[1]) * rng.randf_range(0.9, 1.1)))
 	grid = PackedByteArray()
 	grid.resize(w * h)
 	grid.fill(WALL)
 	rooms.clear()
-	var style := str(def.get("style", "gallery"))
-	match style:
+	boss_spot = Vector2i(-1, -1)
+	var styles: Array = def.get("styles", [def.get("style", "gallery")])
+	style = str(styles[rng.randi_range(0, styles.size() - 1)])
+	_carve(style)
+	_keep_largest()
+	var is_boss: bool = def.get("boss", null) != null
+	_place_ends(style == "lair" or is_boss)
+	if is_boss:
+		_make_arena(def)
+	var water := float(def.get("water", 0.0)) * rng.randf_range(0.7, 1.3)
+	if water > 0.0:
+		_flood(water)
+	dist = bfs(start)
+	max_dist = 1
+	for c in dist:
+		max_dist = maxi(max_dist, dist[c])
+
+
+func _meets_rules(def: Dictionary) -> bool:
+	var rules: Dictionary = def.get("rules", {})
+	if not dist.has(exit) or dist[exit] < int(rules.get("min_path", (w + h) * 0.35)):
+		return false
+	if boss_spot.x >= 0 and (not dist.has(boss_spot) or dist[boss_spot] < max_dist * 0.6):
+		return false
+	return dist.size() >= int(w * h * float(rules.get("min_open", 0.2)))
+
+
+# The boss always gets a room of its own at the far end, whatever the layout; the stairs down wait behind it.
+func _make_arena(def: Dictionary) -> void:
+	var ar = def.get("rules", {}).get("arena", [7, 5])
+	if style != "lair":
+		var far := exit
+		var rx := float(ar[0])
+		var ry := float(ar[1])
+		var c := Vector2i(clampi(far.x, int(rx) + 2, w - int(rx) - 3), clampi(far.y, int(ry) + 2, h - int(ry) - 3))
+		_carve_blob(c, rx, ry)
+		_tunnel(c, far, 2)
+		rooms.append(Rect2i(c - Vector2i(int(rx), int(ry)), Vector2i(int(rx) * 2, int(ry) * 2)))
+		boss_spot = c
+	var d := bfs(start)
+	var best := exit
+	var bd := -1
+	for y in range(boss_spot.y - 8, boss_spot.y + 9):
+		for x in range(boss_spot.x - 8, boss_spot.x + 9):
+			var cc := Vector2i(x, y)
+			if d.has(cc) and open_cell(cc) and d[cc] > bd and (cc - boss_spot).length() >= 3:
+				bd = d[cc]
+				best = cc
+	exit = best
+
+
+func _carve(st: String) -> void:
+	match st:
 		"cave":
 			_cave()
 		"mixed":
@@ -49,11 +113,6 @@ func generate(def: Dictionary, seed_v: int) -> void:
 			_lair()
 		_:
 			_gallery()
-	_keep_largest()
-	_place_ends(style == "lair" or def.get("boss", null) != null)
-	var water := float(def.get("water", 0.0))
-	if water > 0.0:
-		_flood(water)
 
 
 func _carve_rect(r: Rect2i) -> void:

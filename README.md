@@ -14,13 +14,17 @@ books, only darker. All music and sound is synthesised.
 
 ## Features
 
-- Three heroes: **Havíř** (miner), **Zbojnice** (brigand) and **Vědma** (wise woman). Each has three skill
-  trees of four skills with up to 20 ranks.
+- Eight heroes: **Havíř** (miner), **Zbojnice** (brigand), **Vědma** (wise woman), **Kovář** (smith),
+  **Žrec** (priest of the old gods), **Vlkodlak** (werewolf huntsman), **Alchymistka** (alchemist) and
+  **Loutkářka** (puppeteer). Each has three skill trees of four skills with up to 20 ranks; what they wear
+  shows on them.
 - Four acts, four towns and 17 procedurally generated mine floors. Lighting comes only from your lamp,
   and the lamp is an equipment slot of its own.
 - Thirteen scripted boss fights from Czech and Slavic folklore, plus the final three-phase fight.
-- Diablo-1-style items: normal, magic and unique, unidentified magic items, durability and repair, and a
-  grid inventory. There are also a stash, a potion belt, vendors and shrines to Slavic gods.
+- Diablo-2-style items in four tiers: normal, magic, rare, set and unique; sockets with Czech gems and
+  Glagolitic letters that spell words; thunderstone charms; class items and +skills; the smith's forge;
+  a shared stash, gambling, and the guardians' tithes as endgame. Durability, repair, a grid inventory, a
+  potion belt, vendors and shrines to Slavic gods.
 - Waypoints (shaft cages), town portal, automap, quests and dialogue, and story slides between acts.
 - Maximum level 100 across three difficulties: Normal, Noční můra (Nightmare) and Nav.
 - Czech and English.
@@ -72,16 +76,19 @@ To check the scripts parse: `godot --headless --editor --quit-after 300 --path g
 | Path | Contents |
 |---|---|
 | `game/` | The Godot project: `scripts/` (code), `data/` (all content as JSON), `assets/` (generated art, audio, fonts), `shaders/` |
+| `art/` | Python drawing code and style data that render all of `game/assets/` images |
 | `tools/` | Audio synthesiser and the data validator |
 | `docs/` | The presentation website (`index.html`, `img/`, `screenshots/`, served by GitHub Pages from `/docs`) and the contracts: asset IDs and sizes (`assets.md`), data schema and formulas (`data-schema.md`), audio list (`audio.md`) |
 
 ### Art
 
-Every PNG in `game/assets/` is rendered by Python drawing code that lives in a separate, private
-repository (`permonik-art`), because it carries the family's personal drawing style. That repository
-writes straight into this one (`../permonik/game/assets` by default, or `$PERMONIK_GAME/assets`). The
-rendered images are committed here, so the game runs without it. The asset contract (IDs, sizes,
-anchors) is in `docs/assets.md`.
+Every PNG in `game/assets/` is rendered by the Python drawing code in `art/` (see `art/README.md`). It
+writes into `game/assets/` (or `$PERMONIK_GAME/assets`). The rendered images are committed, so the game
+runs without Python. The asset contract (IDs, sizes, anchors) is in `docs/assets.md`.
+
+The hand-drawn style is our own: the pencil line, faces and handwriting were measured from Andrej's
+drawings and the crayon textures scanned from the family's colouring. The drawing code is MIT like the
+rest; the style data, scans and handwriting fonts are not (see `art/LICENSE.md`).
 
 ### Regenerating audio and checking data
 

@@ -195,5 +195,45 @@
       {"id": "konec", "text": {"cs": "Vrať se do tábora. Kosmas čeká s perem.", "en": "Return to the camp. Kosmas is waiting with his quill."}, "goal": {"talk": "kosmas"}}
     ],
     "reward": {"xp": 60000, "gold": 10000, "skill_points": 1, "stat_points": 5}
+  },
+  "bludicky": {
+    "act": 1, "giver": "korenarka_dorota", "main": false,
+    "name": {"cs": "Bludičky v Oslu", "en": "Will-o'-the-Wisps in Osel"},
+    "desc": {"cs": "Bludičky jsou malá bledá světýlka. Lidé říkají, že jsou to duše dětí, které umřely nepokřtěné, a nevěst, které nedošly k oltáři. Svítí poutníkům na cestu, jenže do bažiny. V Oslu teď svítí horníkům do zatopených štol.", "en": "Will-o'-the-wisps are small pale lights. People say they are the souls of children who died unbaptised and of brides who never reached the altar. They light a traveller's way, straight into the bog. In Osel they now light the miners' way into the flooded galleries."},
+    "steps": [
+      {"id": "hunt", "text": {"cs": "Zhasni osm bludiček v Dole Osel.", "en": "Put out eight will-o'-the-wisps in the Osel Mine."}, "goal": {"kill": "bludicka", "count": 8}},
+      {"id": "report", "text": {"cs": "Vrať se ke kořenářce Dorotě.", "en": "Return to Dorota the herb woman."}, "goal": {"talk": "korenarka_dorota"}}
+    ],
+    "reward": {"xp": 900, "gold": 250, "item": "svatojanska_rosa_velka"}
+  },
+  "hejkal": {
+    "act": 2, "giver": "hostinsky_kuba", "main": false,
+    "name": {"cs": "Kdo volá v Brdech", "en": "Who Calls in the Brdy"},
+    "desc": {"cs": "Hejkal je chlupatý lesní muž z Brd a Šumavy. V noci volá „hej, hej!“ a kdo se mu ozve, tomu skočí na záda a nechá se nosit, dokud člověk nepadne. Teď volá i ze štol pod Březovými Horami.", "en": "The hejkal is a hairy wild man of the Brdy and Šumava woods. At night he calls out \"hej, hej!\", and whoever answers, he leaps on their back and rides them until they drop. Now he calls from the galleries under Březové Hory too."},
+    "steps": [
+      {"id": "hunt", "text": {"cs": "Umlč šest hejkalů ve Vojtěšské šachtě. A neozývej se jim.", "en": "Silence six hejkals in the Vojtěch shaft. And don't call back."}, "goal": {"kill": "hejkal", "count": 6}},
+      {"id": "report", "text": {"cs": "Vrať se k hostinskému Kubovi.", "en": "Return to Kuba the innkeeper."}, "goal": {"talk": "hostinsky_kuba"}}
+    ],
+    "reward": {"xp": 3000, "gold": 600, "item": "ziva_voda_velka"}
+  },
+  "svetlonosi": {
+    "act": 3, "giver": "senkyrka_rozina", "main": false,
+    "name": {"cs": "Světlonoši", "en": "The Lantern-Bearers"},
+    "desc": {"cs": "Světlonoš je duše člověka, který za živa přesunul mezník a ukradl sousedovi kus pole. Po smrti musí bloudit se světlem v hlavě, dokud někdo kámen nevrátí. V Peklu pod Jáchymovem jich chodí celé zástupy a polykají světlo kahanů.", "en": "A lantern-bearer is the soul of someone who, in life, moved a boundary stone and stole a strip of his neighbour's field. After death he must wander with a light in his head until someone puts the stone back. Whole crowds of them walk the Hell beneath Jáchymov, swallowing the light of the lamps."},
+    "steps": [
+      {"id": "hunt", "text": {"cs": "Vysvoboď šest světlonošů v Dole Svornost.", "en": "Release six lantern-bearers in the Svornost Mine."}, "goal": {"kill": "svetlonos", "count": 6}},
+      {"id": "report", "text": {"cs": "Vrať se k šenkýřce Rozině.", "en": "Return to Rozina the barmaid."}, "goal": {"talk": "senkyrka_rozina"}}
+    ],
+    "reward": {"xp": 9000, "gold": 1500, "item": "ziva_voda_velka"}
+  },
+  "navky": {
+    "act": 4, "giver": "anicka", "main": false,
+    "name": {"cs": "Sestry z vody", "en": "Sisters of the Water"},
+    "desc": {"cs": "Navky jsou duše utonulých dívek. Ve slovanských pověstech zpívají u vody a lákají k sobě živé. V Navu ale zapomněly i na zpěv a jen mrazí. Anička byla jednou z nich, než ji pustil Vodníkův hrníček.", "en": "Navkas are the souls of drowned girls. In Slavic tales they sing by the water and lure the living to them. In Nav they have forgotten even the singing and only freeze. Anička was one of them, until the Vodník's teacup let her go."},
+    "steps": [
+      {"id": "hunt", "text": {"cs": "Dej pokoj osmi navkám v Navu.", "en": "Lay eight navkas to rest in Nav."}, "goal": {"kill": "navka", "count": 8}},
+      {"id": "report", "text": {"cs": "Vrať se k Aničce.", "en": "Return to Anička."}, "goal": {"talk": "anicka"}}
+    ],
+    "reward": {"xp": 25000, "gold": 4000, "item": "kapradi_kvet"}
   }
 }
