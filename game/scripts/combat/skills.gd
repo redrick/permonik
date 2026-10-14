@@ -78,14 +78,12 @@ static func use(pl: Player, id: String, target: Vector2) -> bool:
 	match type:
 		"melee":
 			var hits_n := int(p(id, "hits", 1.0))
-			pl.lunge = 10.0
 			pl.start_action("attack", weapon_dur * (1.0 + 0.3 * (hits_n - 1)), 0.55, func():
 				for i in hits_n:
 					if is_instance_valid(tgt) and not tgt.dead:
 						_strike(id, pl, tgt, float(p(id, "dmg_pct", 100.0)), {"status": {"stun": float(p(id, "stun", 0.0))}, "knock": 80.0})
 				Sfx.play_at("swing_heavy", pl.global_position))
 		"melee_arc":
-			pl.lunge = 8.0
 			var dir := (target - pl.global_position).normalized()
 			pl.start_action("attack", weapon_dur, 0.55, func():
 				Sfx.play_at("swing_heavy", pl.global_position)
@@ -143,7 +141,7 @@ static func use(pl: Player, id: String, target: Vector2) -> bool:
 		"projectile":
 			var weapon_based : bool = s.get("params", {}).has("dmg_pct")
 			pl.start_action("attack" if weapon_based else "cast", weapon_dur if weapon_based else cast_dur, 0.5, func():
-				_fire_projectiles(pl, id, target, elem, col, weapon_based))
+				_fire_projectiles(pl, id, target, elem, col, weapon_based), "shoot" if weapon_based else "")
 		"chain":
 			pl.start_action("cast", cast_dur, 0.5, func():
 				Sfx.play_at("lightning_cast", pl.global_position)

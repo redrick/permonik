@@ -7,6 +7,9 @@ var look_key := ""
 var form := ""
 var intent := {}
 var lmb_down := false
+var pad_hold := false
+var move_dir := Vector2.RIGHT
+var _pad_scan := 0.0
 var action_t := 0.0
 var action_hit_at := 0.0
 var action_cb: Callable
@@ -25,6 +28,7 @@ func setup(lv: Node) -> void:
 	level = lv
 	team = 0
 	radius = 15.0
+	stride_len = 40.0
 	collision_layer = 2
 	collision_mask = 1 | 4 | 8
 	var cid := Game.ch.class_id
@@ -114,6 +118,7 @@ func die(_killer: Node) -> void:
 		return
 	dead = true
 	Game.ch.hp = 0
+	reset_rig()
 	set_pose("dead")
 	collision_layer = 0
 	Sfx.play("player_death")
@@ -201,7 +206,8 @@ func _ai(delta: float) -> void:
 	_update_lamp()
 	if action_t > 0.0:
 		var prev := action_t
-		action_t -= delta / maxf(0.3, 1.0 if not status.has("chill") else 1.4)
+		swing_speed = 1.0 if not status.has("chill") else 1.0 / 1.4
+		action_t -= delta * swing_speed
 		if prev > action_hit_at and action_t <= action_hit_at and action_cb.is_valid():
 			var cb := action_cb
 			action_cb = Callable()
@@ -231,9 +237,9 @@ func _ai(delta: float) -> void:
 		"stand_attack":
 			face_to(intent.pos)
 			basic_attack(null, intent.pos)
-			if not lmb_down:
+			if not _held():
 				intent = {}
-			else:
+			elif lmb_down:
 				intent.pos = mouse_world()
 		"monster":
 			var t: Actor = intent.node if is_instance_valid(intent.node) else null
@@ -245,7 +251,7 @@ func _ai(delta: float) -> void:
 			if _in_attack_range(t):
 				path.clear()
 				basic_attack(t, t.global_position)
-				if not lmb_down:
+				if not _held():
 					intent = {"type": "_done"}
 			else:
 				repath_soon(t.global_position)
@@ -272,14 +278,23 @@ func _ai(delta: float) -> void:
 				elif t2 == "item" and not retried:
 					intent = {"type": "item", "node": n, "retried": true}
 					set_path_to(n.global_position)
+		"stick":
+			var dv: Vector2 = intent.dir
+			path.clear()
+			velocity = dv * spd
+			moving = dv.length() > 0.05
+			if moving:
+				face_to(global_position + dv)
 		"_done":
 			velocity = Vector2.ZERO
 			moving = false
-			if not lmb_down:
+			if not _held():
 				intent = {}
 		_:
 			velocity = Vector2.ZERO
 			moving = false
+	if velocity.length() > 1.0:
+		move_dir = velocity.normalized()
 	if moving:
 		step_t -= delta
 		if step_t <= 0.0:
@@ -298,11 +313,13 @@ func repath_soon(target: Vector2) -> void:
 		set_path_to(target)
 
 
-func start_action(pose_name: String, duration: float, hit_frac: float, cb: Callable) -> void:
+func start_action(pose_name: String, duration: float, hit_frac: float, cb: Callable, style := "") -> void:
 	action_t = duration
 	action_hit_at = duration * (1.0 - hit_frac)
 	action_cb = cb
-	set_pose(pose_name, duration)
+	if style == "":
+		style = "cast" if pose_name == "cast" else "melee"
+	play_swing(duration, duration * hit_frac, pose_name, style)
 
 
 func basic_attack(target: Actor, pos: Vector2) -> void:
@@ -312,9 +329,8 @@ func basic_attack(target: Actor, pos: Vector2) -> void:
 	var w := Game.ch.weapon()
 	var dur := 1.0 / float(Game.ch.d.get("aps", 1.2))
 	if w and w.is_ranged():
-		start_action("attack", dur, 0.5, func(): Skills.fire_weapon(self, pos, 100.0))
+		start_action("attack", dur, 0.5, func(): Skills.fire_weapon(self, pos, 100.0), "shoot")
 		return
-	lunge = 8.0
 	start_action("attack", dur, 0.55, func():
 		Sfx.play_at("swing", global_position, 0.7)
 		if target and is_instance_valid(target) and not target.dead:
@@ -325,14 +341,96 @@ func basic_attack(target: Actor, pos: Vector2) -> void:
 				Combat.player_strike(self, hits[0]))
 
 
-func use_skill(id: String) -> void:
+func use_skill(id: String, at := Vector2.INF) -> void:
 	if id == "" or action_t > 0.0 or not can_act():
 		return
+	if at == Vector2.INF:
+		at = mouse_world()
 	if id == "utok":
-		var pick = level.pick_at(mouse_world())
-		basic_attack(pick.node if pick and pick.type == "monster" else null, mouse_world())
+		var pick = level.pick_at(at)
+		basic_attack(pick.node if pick and pick.type == "monster" else null, at)
 		return
-	Skills.use(self, id, mouse_world())
+	Skills.use(self, id, at)
+
+
+func _held() -> bool:
+	return lmb_down or pad_hold
+
+
+# ---------------------------------------------------------------- touch pad
+func auto_target(reach := 520.0) -> Monster:
+	var cur = intent.get("node") if intent.get("type", "") == "monster" else null
+	var best: Monster = null
+	var bs := INF
+	for m in level.monsters:
+		if m.dead or not m.visible or not level._targetable(m):
+			continue
+		var to: Vector2 = m.global_position - global_position
+		var d := to.length()
+		if d > reach or not level.line_of_sight(global_position, m.global_position):
+			continue
+		var s := d * (1.25 - 0.25 * move_dir.dot(to / maxf(d, 1.0)))
+		if m == cur:
+			s *= 0.6
+		if s < bs:
+			bs = s
+			best = m
+	return best
+
+
+func nearest_interactable(reach := 240.0) -> Dictionary:
+	var best := {}
+	var bd := reach
+	for pair in [["npc", level.npcs], ["item", level.ground_items], ["prop", level.props]]:
+		for n in pair[1]:
+			if not is_instance_valid(n) or (pair[0] == "prop" and (n.interact == "" or n.used)):
+				continue
+			var d: float = n.global_position.distance_to(global_position)
+			if d < bd:
+				bd = d
+				best = {"type": pair[0], "node": n}
+	return best
+
+
+func pad_attack(first: bool) -> void:
+	if dead or Game.paused_ui:
+		return
+	var t = intent.get("node") if intent.get("type", "") == "monster" else null
+	if t and is_instance_valid(t) and not t.dead:
+		return
+	_pad_scan -= get_process_delta_time()
+	if not first and _pad_scan > 0.0:
+		return
+	_pad_scan = 0.12
+	var m := auto_target()
+	if m:
+		intent = {"type": "monster", "node": m}
+		if not _in_attack_range(m):
+			set_path_to(m.global_position)
+		return
+	if not first:
+		return
+	var n := nearest_interactable()
+	if not n.is_empty():
+		intent = n
+		set_path_to(n.node.global_position)
+		return
+	path.clear()
+	intent = {"type": "stand_attack", "pos": global_position + move_dir * 80.0}
+
+
+func pad_aim(id: String) -> Vector2:
+	var type := str(DB.skill(id).get("type", "melee"))
+	var m := auto_target(300.0 if type in ["melee", "melee_arc", "spin", "stomp", "utok"] or id == "utok" else 700.0)
+	if m:
+		return m.center_pos()
+	return global_position + move_dir * 220.0
+
+
+func pad_skill(id: String, at := Vector2.INF) -> void:
+	if id == "" or dead or Game.paused_ui:
+		return
+	use_skill(id, pad_aim(id) if at == Vector2.INF else at)
 
 
 func use_belt(i: int) -> void:

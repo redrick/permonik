@@ -1,3 +1,4 @@
+class_name Main
 extends Node
 
 var world: Node2D
@@ -7,6 +8,10 @@ var ui: UiRoot
 var fade: ColorRect
 var overlay: CanvasLayer
 var loading := false
+var pad: TouchPad
+var ui_scale := 1.0
+
+const UI_SCALES := [0.0, 1.0, 1.15, 1.3, 1.5]
 
 
 func _ready() -> void:
@@ -18,6 +23,11 @@ func _ready() -> void:
 	hud.visible = false
 	ui = UiRoot.new()
 	add_child(ui)
+	if TouchPad.wanted():
+		pad = TouchPad.new()
+		add_child(pad)
+	apply_ui_scale()
+	get_viewport().size_changed.connect(apply_ui_scale)
 	overlay = CanvasLayer.new()
 	overlay.layer = 90
 	add_child(overlay)
@@ -29,7 +39,7 @@ func _ready() -> void:
 	var cur := DB.tex("ui/cursor")
 	if cur:
 		Input.set_custom_mouse_cursor(cur, Input.CURSOR_ARROW, Vector2(0, 0))
-	var args := OS.get_cmdline_user_args()
+	var args := Game.args
 	if args.has("--shot"):
 		add_child(load("res://scripts/debug/shot.gd").new())
 	if args.has("--quick"):
@@ -44,10 +54,51 @@ func _ready() -> void:
 			add_child(load("res://scripts/debug/skilltest.gd").new())
 		if args.has("--walktest"):
 			add_child(load("res://scripts/debug/walktest.gd").new())
+		if args.has("--touchtest"):
+			add_child(load("res://scripts/debug/touchtest.gd").new())
+		if args.has("--loottest"):
+			add_child(load("res://scripts/debug/loottest.gd").new())
 		if args.has("--autoplay"):
 			add_child(load("res://scripts/debug/autoplay.gd").new())
 		return
 	show_menu()
+
+
+# HUD, panels and the touch pad are scaled as whole layers; their roots get the smaller logical size, and
+# pieces drawn at a fixed design size (the 1920 px bar, tall panels) shrink back to fit it.
+func apply_ui_scale() -> void:
+	var cfg := ConfigFile.new()
+	cfg.load("user://settings.cfg")
+	var want := float(cfg.get_value("main", "ui_scale", 0.0))
+	if Game.args.has("--ui-scale"):
+		want = float(Game.args[Game.args.find("--ui-scale") + 1])
+	ui_scale = want if want > 0.0 else auto_ui_scale()
+	var sz := get_viewport().get_visible_rect().size / ui_scale
+	for pair in [[hud, hud.root], [ui, ui.root], [pad, pad.view if pad else null]]:
+		if pair[0] == null:
+			continue
+		pair[0].scale = Vector2.ONE * ui_scale
+		pair[1].set_anchors_preset(Control.PRESET_TOP_LEFT)
+		pair[1].position = Vector2.ZERO
+		pair[1].size = sz
+	hud.fit()
+	ui.fit_all()
+
+
+func auto_ui_scale() -> float:
+	var dpi := float(DisplayServer.screen_get_dpi())
+	if not OS.has_feature("mobile") or dpi <= 0.0:
+		return 1.0
+	var inches := Vector2(DisplayServer.screen_get_size()).length() / dpi
+	return 1.3 if inches < 8.0 else 1.0
+
+
+func world_to_screen(p: Vector2) -> Vector2:
+	return world.get_viewport().get_canvas_transform() * p
+
+
+func screen_to_world(p: Vector2) -> Vector2:
+	return world.get_viewport().get_canvas_transform().affine_inverse() * p
 
 
 func _arg(args: PackedStringArray, k: String, d: String) -> String:
@@ -170,6 +221,10 @@ func boss_line(who: String, text: String, portrait: String, dur := 4.5) -> void:
 
 func mouse_over_ui() -> bool:
 	return ui.mouse_over_ui() or hud.mouse_over_ui()
+
+
+func over_ui_at(p: Vector2) -> bool:
+	return ui.over_ui_at(p) or hud.over_ui_at(p)
 
 
 func on_player_died() -> void:

@@ -342,8 +342,7 @@ func _ai_charger(p: Actor, d: float, delta: float) -> void:
 
 func _begin_attack() -> void:
 	windup = 0.28 if kind != "boss" else 0.4
-	set_pose("attack", windup + 0.25)
-	lunge = 6.0
+	play_swing(windup + 0.25, windup, "attack", "cast" if ai in ["ranged", "caster", "summoner"] else "melee")
 	cd = attack_cd * randf_range(0.85, 1.15)
 
 
@@ -351,7 +350,6 @@ func _strike(p: Actor) -> void:
 	if p == null:
 		return
 	face_to(p.global_position)
-	lunge = 10.0
 	if ai in ["ranged", "caster", "summoner"]:
 		_shoot(p.global_position)
 		return

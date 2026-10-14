@@ -10,6 +10,9 @@ var count_lbl: Label
 var title_lbl: Label
 var page: VBoxContainer
 var text_scroll: ScrollContainer
+var read_btn: Button
+var speech := ""
+var read_at := 0
 var current := ""
 
 
@@ -41,10 +44,18 @@ func _ready() -> void:
 	hb.add_child(paper)
 	var pv := VBoxContainer.new()
 	paper.add_child(pv)
+	var head_row := HBoxContainer.new()
+	pv.add_child(head_row)
 	title_lbl = UiTheme.label("", 32, UiTheme.GOLD)
 	title_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	title_lbl.custom_minimum_size = Vector2(520, 0)
-	pv.add_child(title_lbl)
+	title_lbl.custom_minimum_size = Vector2(470, 0)
+	title_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	head_row.add_child(title_lbl)
+	read_btn = UiTheme.small_button("▶", _toggle_read, 44)
+	read_btn.tooltip_text = L.t({"cs": "Přečíst nahlas", "en": "Read aloud"})
+	read_btn.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	read_btn.visible = _voice() != ""
+	head_row.add_child(read_btn)
 	pv.add_child(UiTheme.rule(520))
 	text_scroll = ScrollContainer.new()
 	text_scroll.custom_minimum_size = Vector2(540, 620)
@@ -216,7 +227,8 @@ func _show(key: String) -> void:
 		return
 	if key.begins_with("lore:"):
 		var e: Dictionary = DB.lore.get(key.substr(5), {})
-		_page(L.t(e.get("title", key)), [[L.t(e.get("text", "")), Color("e6d9bc")]])
+		var mid := str(e.get("monster", ""))
+		_page(L.t(e.get("title", key)), [[L.t(e.get("text", "")), Color("e6d9bc")]], [], _pictures({"monster": [mid]} if mid != "" else {}))
 		return
 	var eid := key.substr(6)
 	var e: Dictionary = DB.codex.get(eid, {})
@@ -235,23 +247,52 @@ func _show(key: String) -> void:
 	for s in e.get("see", []):
 		if DB.codex.has(s) and Game.codex_visible(s):
 			see.append(s)
-	_page(L.t(e.get("title", eid)), blocks, see)
+	_page(L.t(e.get("title", eid)), blocks, see, _pictures(e.get("refs", {})))
 	if not Game.known.has("read:" + eid):
 		Game.known["read:" + eid] = true
 		_open_tab(tab)
 
 
-func _page(title: String, blocks: Array, see := []) -> void:
+func _page(title: String, blocks: Array, see := [], pics := {}) -> void:
 	title_lbl.text = title
+	_stop_read()
+	speech = title
 	for c in page.get_children():
 		c.queue_free()
+	var big: Array = pics.get("big", [])
+	if not big.is_empty():
+		var row := HBoxContainer.new()
+		row.alignment = BoxContainer.ALIGNMENT_CENTER
+		row.add_theme_constant_override("separation", 10)
+		page.add_child(row)
+		for t in big:
+			var fr := PanelContainer.new()
+			fr.add_theme_stylebox_override("panel", UiTheme.flat(Color(0.1, 0.08, 0.06), Color("4a3a28"), 2, 6))
+			var tr := TextureRect.new()
+			tr.texture = t
+			tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			tr.custom_minimum_size = Vector2(160, 190) if big.size() > 1 else Vector2(240, 220)
+			fr.add_child(tr)
+			row.add_child(fr)
+		page.add_child(UiTheme.sep(4))
 	for b in blocks:
 		var txt: String = b[0]
+		speech += ".\n" + txt.trim_prefix("#")
 		if txt.begins_with("#"):
 			page.add_child(UiTheme.sep(6))
 			page.add_child(UiTheme.label(txt.substr(1), 22, b[1]))
 		else:
 			page.add_child(UiTheme.wrap_label(txt, 23, b[1], 520))
+	var icons: Array = pics.get("icons", [])
+	if not icons.is_empty():
+		page.add_child(UiTheme.sep(6))
+		var irow := HFlowContainer.new()
+		irow.custom_minimum_size = Vector2(520, 0)
+		irow.add_theme_constant_override("h_separation", 6)
+		page.add_child(irow)
+		for spec in icons:
+			irow.add_child(UiForge.RecipeIcon.make(spec))
 	if not see.is_empty():
 		page.add_child(UiTheme.sep(8))
 		page.add_child(UiTheme.label(UiTheme.t("codex_see"), 22, UiTheme.GOLD))
@@ -276,3 +317,88 @@ func _jump(eid: String) -> void:
 	if cat != tab:
 		_open_tab(cat)
 	_show(current)
+
+
+# What we have drawings for, limited to what the player has met so nothing is spoiled.
+func _pictures(refs: Dictionary) -> Dictionary:
+	var big := []
+	for mid in refs.get("monster", []):
+		if Game.known.has("monster:" + str(mid)) or Game.flags.get("killed_" + str(mid), false):
+			big.append(DB.tex("portraits/boss_" + str(mid)) if DB.has_tex("portraits/boss_" + str(mid)) else DB.tex("sprites/monsters/%s_idle" % mid))
+	for nid in refs.get("npc", []):
+		if Game.known.has("npc:" + str(nid)):
+			big.append(DB.tex_or("portraits/" + str(nid), "sprites/npcs/" + str(nid)))
+	for cid in refs.get("class", []):
+		big.append(DB.tex("portraits/hero_" + str(cid)))
+	for sid in refs.get("shrine", []):
+		big.append(DB.tex("props/modla_" + str(sid)))
+	big = big.filter(func(t): return t != null).slice(0, 3)
+	var icons := []
+	for uid in refs.get("unique", []):
+		var u: Dictionary = DB.uniques.get(uid, {})
+		if Game.known.has("unique:" + str(uid)) and DB.items.has(str(u.get("base", ""))):
+			var it := Item.create(str(u.base), 1)
+			it.unique_id = uid
+			it.rarity = Item.UNIQUE
+			var lines := [[L.t(u.get("name", uid)), Item.COL_UNIQUE], [L.t(DB.item(it.base_id).get("name", "")), Item.COL_INFO]]
+			if u.has("flavor"):
+				lines.append(["„%s“" % L.t(u.flavor), Color("a08a5a")])
+			icons.append({"item": it, "n": 1, "lines": lines})
+	for iid in refs.get("item", []):
+		if Game.known.has("item:" + str(iid)) and DB.items.has(str(iid)):
+			var it := Item.create(str(iid), 1)
+			icons.append({"item": it, "n": 1, "lines": it.tooltip(Game.ch)})
+	return {"big": big, "icons": icons.slice(0, 8)}
+
+
+# ---------------------------------------------------------------- reading aloud
+# Uses the system's text-to-speech; the button stays hidden when there is no voice for the language.
+static var _voices := {}
+
+
+static func _voice() -> String:
+	if not _voices.has(L.lang):
+		_voices[L.lang] = _pick_voice() if DisplayServer.has_feature(DisplayServer.FEATURE_TEXT_TO_SPEECH) else ""
+	return _voices[L.lang]
+
+
+static func _pick_voice() -> String:
+	var voices := DisplayServer.tts_get_voices_for_language(L.lang)
+	if voices.is_empty():
+		return ""
+	var all := DisplayServer.tts_get_voices()
+	for pref in ["piper", "rhvoice", "natural", "neural", "zdenek", "jirka", "alan"]:
+		for v in all:
+			if v.id in voices and (str(v.name) + str(v.id)).to_lower().contains(pref):
+				return v.id
+	for v in voices:
+		if not str(v).to_lower().contains("espeak"):
+			return v
+	return voices[0]
+
+
+func _toggle_read() -> void:
+	if DisplayServer.tts_is_speaking():
+		_stop_read()
+		return
+	var v := _voice()
+	if v != "" and speech != "":
+		DisplayServer.tts_speak(speech, v, 80, 0.95, 0.92)
+		read_at = Time.get_ticks_msec()
+		read_btn.text = "■"
+
+
+func _stop_read() -> void:
+	if DisplayServer.tts_is_speaking():
+		DisplayServer.tts_stop()
+	if read_btn:
+		read_btn.text = "▶"
+
+
+func refresh() -> void:
+	if read_btn and read_btn.text == "■" and Time.get_ticks_msec() - read_at > 1000 and not DisplayServer.tts_is_speaking():
+		read_btn.text = "▶"
+
+
+func _exit_tree() -> void:
+	_stop_read()

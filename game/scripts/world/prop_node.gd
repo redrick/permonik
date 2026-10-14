@@ -11,6 +11,9 @@ var cell := Vector2i.ZERO
 var data := {}
 var hover := false
 
+# A material per prop would cost a draw call each; props only wear one while hovered.
+static var _outline: ShaderMaterial
+
 
 static func create(prop_id: String, pos: Vector2, with_shadow := true) -> PropNode:
 	var p := PropNode.new()
@@ -32,9 +35,6 @@ func _build(with_shadow: bool) -> void:
 		t = DB.placeholder("prop_" + id, Vector2i(maxi(48, int(fp[0]) * 64), maxi(48, int(fp[1]) * 64 + 40)), Color("7a6a58"))
 	sprite.texture = t
 	sprite.offset = Vector2(0, -t.get_height() / 2.0 + 8.0)
-	var mat := ShaderMaterial.new()
-	mat.shader = Actor.SHADER
-	sprite.material = mat
 	if with_shadow and not def.get("footprint", [1, 1]) == [0, 0] and t.get_height() < 260:
 		var sh := Sprite2D.new()
 		sh.texture = Actor.shadow_texture()
@@ -70,8 +70,12 @@ func set_hover(on: bool) -> void:
 	if hover == on:
 		return
 	hover = on
-	(sprite.material as ShaderMaterial).set_shader_parameter("outline", 2.0 if on else 0.0)
-	(sprite.material as ShaderMaterial).set_shader_parameter("outline_color", Color(0.95, 0.85, 0.5, 1))
+	if on and _outline == null:
+		_outline = ShaderMaterial.new()
+		_outline.shader = Actor.SHADER
+		_outline.set_shader_parameter("outline", 2.0)
+		_outline.set_shader_parameter("outline_color", Color(0.95, 0.85, 0.5, 1))
+	sprite.material = _outline if on else null
 
 
 func label() -> String:

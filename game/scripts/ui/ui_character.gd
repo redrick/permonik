@@ -7,6 +7,7 @@ var xp_lbl: Label
 var pts_lbl: Label
 var stat_vals := {}
 var stat_btns := {}
+var stat_grid: GridContainer
 var derived := {}
 
 const DERIVED := ["hp", "mana", "armor", "to_hit", "damage", "attack_speed", "block", "res_fire",
@@ -32,6 +33,7 @@ func _ready() -> void:
 	g.add_theme_constant_override("v_separation", 4)
 	g.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	body.add_child(g)
+	stat_grid = g
 	for s in CharData.BASE_STATS:
 		var l := UiTheme.label(L.t("stat_" + s), 28)
 		l.custom_minimum_size = Vector2(220, 0)
@@ -98,6 +100,7 @@ func refresh() -> void:
 		v.text = str(cur)
 		v.add_theme_color_override("font_color", UiTheme.BLUE if cur > base else (UiTheme.RED if cur < base else Color.WHITE))
 		stat_btns[s].visible = ch.stat_points > 0
+	stat_grid.columns = 3 if ch.stat_points > 0 else 2
 	pts_lbl.text = UiTheme.t("stat_points", {"v": ch.stat_points}) if ch.stat_points > 0 else ""
 	pts_lbl.visible = ch.stat_points > 0
 	var vals := {

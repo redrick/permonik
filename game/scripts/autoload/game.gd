@@ -25,20 +25,37 @@ var main: Node = null
 var player: Node = null
 var level: Node = null
 var portal := {}
+var floor_loot := {}   # "difficulty:act:floor" -> {"seed": session_seed, "items": [[item dict, x, y], ...]}
 var paused_ui := false
 var play_time := 0.0
 var session_seed := randi()
 var _autosave_t := 30.0
+# A release APK can't be started with command-line args; tools/android.sh run <args> writes them here.
+const DEVICE_ARGS := "/storage/emulated/0/Android/data/cz.antas.permonik/files/args.txt"
+var args := PackedStringArray()
 
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	args = OS.get_cmdline_user_args()
+	if OS.has_feature("android") and FileAccess.file_exists(DEVICE_ARGS):
+		args.append_array(FileAccess.get_file_as_string(DEVICE_ARGS).split(" ", false))
+	if args.has("--seed"):
+		session_seed = int(args[args.find("--seed") + 1])
 	_setup_input()
 	quests_changed.connect(save)
 	load_shared_stash()
 
 
+var _fps_t := 5.0
+
+
 func _process(delta: float) -> void:
+	if args.has("--fps"):
+		_fps_t -= delta
+		if _fps_t <= 0.0:
+			_fps_t = 5.0
+			print("FPS %d" % Engine.get_frames_per_second())
 	if level and not get_tree().paused:
 		play_time += delta
 		_autosave_t -= delta
@@ -50,7 +67,7 @@ func _process(delta: float) -> void:
 # Heroes save themselves (D2 style): every 30 s, on quest changes, on leaving and on closing the window.
 # Loading always starts in the town of the hero's current act.
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_CLOSE_REQUEST and level:
+	if what in [NOTIFICATION_WM_CLOSE_REQUEST, NOTIFICATION_APPLICATION_PAUSED] and level:
 		save()
 
 
@@ -280,6 +297,18 @@ func tracked_quests() -> Array:
 	return out
 
 
+# The tracker's checkbox: whether a quest's targets are marked on the map.
+func quest_on_map(qid: String) -> bool:
+	return not flags.has("map_off:" + qid)
+
+
+func set_quest_on_map(qid: String, on: bool) -> void:
+	if on:
+		flags.erase("map_off:" + qid)
+	else:
+		flags["map_off:" + qid] = true
+
+
 func _cur_goal(qid: String) -> Dictionary:
 	if quest_state(qid) != "active":
 		return {}
@@ -451,6 +480,7 @@ func start_next_difficulty() -> void:
 	quests = {}
 	flags = {}
 	waypoints = {}
+	floor_loot = {}
 	act = 1
 	ch.recalc()
 	save()
@@ -469,6 +499,7 @@ func new_game(cid: String, nm: String, persist := true) -> void:
 	flags = {}
 	waypoints = {}
 	portal = {}
+	floor_loot = {}
 	play_time = 0.0
 	known = {}
 	save_slot = "%s_%d" % [cid, Time.get_unix_time_from_system()] if persist else ""
@@ -479,9 +510,11 @@ func new_game(cid: String, nm: String, persist := true) -> void:
 func save() -> void:
 	if save_slot == "":
 		return
+	if level and is_instance_valid(level):
+		level.stash_loot()
 	DirAccess.make_dir_recursive_absolute("user://saves")
 	var data := {"v": 1, "char": ch.to_dict(), "difficulty": difficulty, "act": act, "quests": quests,
-		"flags": flags, "waypoints": waypoints, "known": known, "unlocked": unlocked_difficulty, "time": play_time,
+		"flags": flags, "waypoints": waypoints, "known": known, "unlocked": unlocked_difficulty, "time": play_time, "floor_loot": floor_loot,
 		"saved_at": Time.get_datetime_string_from_system()}
 	var f := FileAccess.open("user://saves/%s.json" % save_slot, FileAccess.WRITE)
 	if f:
@@ -520,6 +553,7 @@ func load_game(slot: String) -> bool:
 	flags = data.get("flags", {})
 	waypoints = data.get("waypoints", {})
 	known = data.get("known", {})
+	floor_loot = data.get("floor_loot", {})
 	unlocked_difficulty = int(data.get("unlocked", 0))
 	play_time = float(data.get("time", 0.0))
 	ch.from_dict(data.get("char", {}))

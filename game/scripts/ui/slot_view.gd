@@ -49,7 +49,7 @@ func _draw() -> void:
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if kind == "belt":
-			if event.button_index == MOUSE_BUTTON_RIGHT and Game.player:
+			if Game.player and (event.button_index == MOUSE_BUTTON_RIGHT or (TouchPad.active and Game.main.ui.right == null and Game.main.ui.held == null)):
 				Game.player.use_belt(index)
 			elif event.button_index == MOUSE_BUTTON_LEFT and Game.main:
 				var ui: UiRoot = Game.main.ui

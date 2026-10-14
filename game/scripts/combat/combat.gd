@@ -51,6 +51,7 @@ static func player_strike(player: Actor, target: Actor, pct := 100.0, opts := {}
 			target.apply_status(s, float(opts.status[s]))
 	if total > 0.0:
 		_leech(total)
+		Fx.impact(player.level, target, elem, crit)
 		Sfx.play_at(target.get_meta("hit_sfx", "hit_flesh"), target.global_position, 0.8)
 		wear_item("weapon", 0.08)
 	return true
@@ -128,6 +129,7 @@ static func monster_hit_player(m: Actor, p: Actor, dmg: Vector2, element := "phy
 		amt = maxf(1.0, amt - float(ch.d.get("dmg_reduce", 0.0)))
 	var dealt := p.take_damage(amt, element, m, opts)
 	if dealt > 0.0:
+		p.level.shake(clampf(dealt / p.hp_max * 40.0, 2.0, 7.0))
 		var th := float(ch.d.get("thorns", 0.0))
 		if th > 0.0 and opts.get("melee", true):
 			m.take_damage(th, "physical", p, {"no_stun": true})

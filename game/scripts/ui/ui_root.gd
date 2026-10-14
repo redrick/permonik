@@ -61,6 +61,8 @@ func _tip_panel() -> PanelContainer:
 
 # ---------------------------------------------------------------- layout
 func _place(c: Control, where: String) -> void:
+	c.set_meta("place", where)
+	c.resized.connect(_fit.bind(c))
 	root.add_child(c)
 	root.move_child(c, root.get_child_count() - 1)
 	for t in [tip_box, tip_cmp, cursor_layer]:
@@ -102,6 +104,29 @@ func _place(c: Control, where: String) -> void:
 			c.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
 
+func fit_all() -> void:
+	for c in [left, right, modal, popup]:
+		if c and is_instance_valid(c):
+			_fit(c)
+
+
+# Panels are laid out at the 1080 px design height; a scaled-up UI on a short screen shrinks them to fit.
+func _fit(c: Control) -> void:
+	var where: String = c.get_meta("place", "full")
+	if where == "full" or c.size.x <= 0.0 or c.size.y <= 0.0:
+		return
+	var bar: float = Game.main.hud.bar_h() if Game.main else float(BAR_H)
+	var k := minf(1.0, minf((root.size.x - 12.0) / c.size.x, (root.size.y - bar - 10.0) / c.size.y))
+	match where:
+		"left":
+			c.pivot_offset = Vector2(0, c.size.y)
+		"right":
+			c.pivot_offset = c.size
+		_:
+			c.pivot_offset = c.size / 2.0
+	c.scale = Vector2(k, k)
+
+
 func _free(c: Control) -> void:
 	if c and is_instance_valid(c):
 		c.queue_free()
@@ -140,9 +165,12 @@ func any_open() -> bool:
 
 
 func mouse_over_ui() -> bool:
+	return over_ui_at(root.get_global_mouse_position())
+
+
+func over_ui_at(mp: Vector2) -> bool:
 	if screen or slides:
 		return true
-	var mp := root.get_global_mouse_position()
 	for c in [left, right, modal, popup]:
 		if c and is_instance_valid(c) and c.visible and c.get_global_rect().has_point(mp):
 			return true

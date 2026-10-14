@@ -38,6 +38,17 @@ var hover := false
 var float_h := 0.0
 var lunge := 0.0
 var petrify := 0.0
+var rig: Node2D
+var swing_t := -1.0
+var swing_dur := 0.0
+var swing_hit := 0.0
+var swing_pose := "attack"
+var swing_style := "melee"
+var swing_speed := 1.0
+var recoil := 0.0
+var recoil_dir := 1.0
+var stride := 0.0
+var stride_len := 0.0
 
 
 func _ready() -> void:
@@ -71,11 +82,13 @@ func setup_visual(textures: Dictionary, with_shadow := true, shadow_w := -1.0) -
 		var sw := shadow_w if shadow_w > 0 else radius * 3.2
 		shadow.scale = Vector2(sw / 64.0, sw / 64.0 * 0.9)
 		add_child(shadow)
+	rig = Node2D.new()
+	add_child(rig)
 	sprite = Sprite2D.new()
 	var mat := ShaderMaterial.new()
 	mat.shader = SHADER
 	sprite.material = mat
-	add_child(sprite)
+	rig.add_child(sprite)
 	set_pose("idle", 0.0)
 
 
@@ -189,8 +202,13 @@ func take_damage(amount: float, element := "physical", source: Node = null, opts
 		if level:
 			level.float_text(top_pos() + Vector2(randf_range(-14, 14), 0), str(maxi(1, int(round(amount)))),
 				Color("ffdd55") if opts.get("crit", false) else ELEMENT_COLORS.get(element, Color.WHITE), team == 0)
+		recoil = maxf(recoil, clampf(amount / hp_max * 6.0, 0.45, 1.0))
+		if source is Node2D:
+			var dx: float = global_position.x - (source as Node2D).global_position.x
+			recoil_dir = signf(dx) if absf(dx) > 1.0 else float(-facing)
 		if amount > hp_max / hit_divisor() and not opts.get("no_stun", false):
 			stun_t = maxf(stun_t, hit_recovery_time())
+			swing_t = -1.0
 			_on_hit_recover()
 		if opts.has("knock") and source:
 			knock = (global_position - source.global_position).normalized() * float(opts.knock)
@@ -236,6 +254,7 @@ func die(_killer: Node) -> void:
 	collision_mask = 0
 	died.emit(self)
 	set_hover(false)
+	reset_rig()
 	if shadow:
 		create_tween().tween_property(shadow, "modulate:a", 0.0, 0.6)
 	var tw := create_tween()
@@ -313,20 +332,80 @@ func _process(delta: float) -> void:
 	_animate(delta)
 
 
+# The drawings have one frame per pose, so the motion between them is done on the rig:
+# anticipation before the blow, a snap on impact, and a recoil on whoever gets hit.
+func play_swing(dur: float, hit_at: float, strike_pose := "attack", style := "melee") -> void:
+	swing_t = 0.0
+	swing_dur = maxf(dur, hit_at + 0.05)
+	swing_hit = maxf(hit_at, 0.0)
+	swing_pose = strike_pose
+	swing_style = style
+	set_pose("idle", swing_hit)
+	if swing_hit <= 0.0:
+		set_pose(strike_pose, swing_dur)
+		swing_pose = ""
+
+
+func reset_rig() -> void:
+	swing_t = -1.0
+	recoil = 0.0
+	if rig:
+		rig.position = Vector2.ZERO
+		rig.rotation = 0.0
+		rig.scale = Vector2.ONE
+
+
 func _animate(delta: float) -> void:
 	var bob := 0.0
+	var rot := 0.0
+	var off := 0.0
+	var sc := Vector2.ONE
 	if moving and pose_t <= 0.0:
-		bob = -absf(sin(anim_t * 9.0)) * 3.0
-		if tex.has("walk") and int(anim_t * 4.0) % 2 == 0:
-			if pose != "walk":
-				set_pose("walk")
+		stride += velocity.length() * delta / (stride_len if stride_len > 0.0 else maxf(28.0, radius * 2.2))
+		var step := int(stride) % 2
+		bob = -sin(fmod(stride, 1.0) * PI) * 3.0
+		rot = 0.035
+		if tex.has("walk"):
+			set_pose("walk" if step == 0 else "idle")
 		elif tex.has("walk1"):
-			set_pose("walk1" if int(anim_t * 5.0) % 2 == 0 else "walk2")
+			set_pose("walk1" if step == 0 else "walk2")
 		elif pose != "idle":
 			set_pose("idle")
 	elif pose_t <= 0.0 and pose != "idle":
 		set_pose("idle")
 	else:
 		bob = sin(anim_t * 2.2) * 0.8
+		sc.y += sin(anim_t * 2.2) * 0.008
+	if swing_t >= 0.0:
+		swing_t += delta * swing_speed
+		var wind := 0.0
+		var hit := 0.0
+		if swing_t < swing_hit:
+			wind = ease(swing_t / swing_hit, 0.45)
+		else:
+			if swing_pose != "":
+				set_pose(swing_pose, swing_dur - swing_t)
+				swing_pose = ""
+			var k := swing_t - swing_hit
+			hit = k / 0.05 if k < 0.05 else 1.0 - ease(clampf((k - 0.05) / maxf(0.06, swing_dur - swing_hit - 0.05), 0.0, 1.0), 0.6)
+			wind = 1.0 - minf(1.0, k / 0.05)
+		match swing_style:
+			"cast":
+				sc *= Vector2(1.0 + 0.05 * wind - 0.04 * hit, 1.0 - 0.06 * wind + 0.07 * hit)
+				rot += -0.03 * wind
+			"shoot":
+				rot += -0.05 * wind - 0.06 * hit
+				off += -3.0 * wind - 6.0 * hit
+			_:
+				rot += -0.10 * wind + 0.14 * hit
+				off += -6.0 * wind + 14.0 * hit
+				sc *= Vector2(1.0 - 0.04 * wind + 0.07 * hit, 1.0 + 0.04 * wind - 0.05 * hit)
+		if swing_t >= swing_dur:
+			swing_t = -1.0
+	var r := recoil * recoil
+	recoil = maxf(0.0, recoil - delta * 6.0)
+	rig.position = Vector2(off * facing + recoil_dir * r * 9.0, 0.0)
+	rig.rotation = rot * facing + recoil_dir * r * 0.12
+	rig.scale = sc * Vector2(1.0 + 0.08 * r, 1.0 - 0.08 * r)
 	lunge = move_toward(lunge, 0.0, delta * 60.0)
 	sprite.position = Vector2(lunge * facing, bob - float_h)

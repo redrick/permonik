@@ -155,6 +155,7 @@ const FALLBACK := {
 	"dlc_soon": {"cs": "Pokračování příště…", "en": "To be continued…"},
 	"act": {"cs": "Dějství", "en": "Act"},
 	"press_any": {"cs": "Klikni nebo stiskni mezerník", "en": "Click or press space"},
+	"press_any_touch": {"cs": "Klepni pro další", "en": "Tap to continue"},
 	"empty_save": {"cs": "Žádná uložená hra", "en": "No saved game"},
 	"delete": {"cs": "Smazat", "en": "Delete"},
 	"stash": {"cs": "Truhla", "en": "Stash"},

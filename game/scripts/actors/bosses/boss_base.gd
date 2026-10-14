@@ -15,7 +15,7 @@ var _test_log := 0.0
 
 func setup(mid: String, level_n: int, lv: Node, champion := false) -> void:
 	super.setup(mid, level_n, lv, champion)
-	_test = kind == "boss" and OS.get_cmdline_user_args().has("--boss-test")
+	_test = kind == "boss" and Game.args.has("--boss-test")
 	_init_boss()
 
 

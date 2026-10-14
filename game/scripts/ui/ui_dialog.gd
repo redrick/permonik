@@ -150,13 +150,11 @@ func _menu() -> void:
 		"smith":
 			buttons.add_child(UiTheme.button(L.t("trade"), func(): ui.open_vendor(npc), 220))
 			buttons.add_child(UiTheme.button(L.t({"cs": "Výheň", "en": "Forge"}), func(): ui.open_forge(), 220))
-			buttons.add_child(UiTheme.button(L.t({"cs": "Výheň", "en": "Forge"}), func(): ui.open_forge(), 220))
 		"healer":
 			buttons.add_child(UiTheme.button(L.t("heal_me"), _heal, 220))
 			buttons.add_child(UiTheme.button(L.t("trade"), func(): ui.open_vendor(npc), 220))
 		"inn":
 			buttons.add_child(UiTheme.button(L.t("trade"), func(): ui.open_vendor(npc), 220))
-			buttons.add_child(UiTheme.button(L.t({"cs": "Kostky", "en": "Dice"}), func(): ui.open_vendor(npc, true), 220))
 			buttons.add_child(UiTheme.button(L.t({"cs": "Kostky", "en": "Dice"}), func(): ui.open_vendor(npc, true), 220))
 			buttons.add_child(UiTheme.button(L.t("gossip"), _gossip, 220))
 		"chronicler":

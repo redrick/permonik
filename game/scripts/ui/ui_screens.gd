@@ -72,6 +72,30 @@ static func options(rebuild: Callable) -> VBoxContainer:
 	vb.add_child(_slider(UiTheme.t("menu_music"), Sfx.music_volume, func(v: float):
 		Sfx.music_volume = v
 		Sfx.save_settings()))
+	var sr := HBoxContainer.new()
+	sr.add_theme_constant_override("separation", 8)
+	vb.add_child(sr)
+	var sl := UiTheme.label(UiTheme.t("menu_ui_scale"), 28)
+	sl.custom_minimum_size = Vector2(200, 0)
+	sr.add_child(sl)
+	var cfg0 := ConfigFile.new()
+	cfg0.load("user://settings.cfg")
+	var cur := float(cfg0.get_value("main", "ui_scale", 0.0))
+	for v in Main.UI_SCALES:
+		var val: float = v
+		var pick := func():
+			var cfg := ConfigFile.new()
+			cfg.load("user://settings.cfg")
+			cfg.set_value("main", "ui_scale", val)
+			cfg.save("user://settings.cfg")
+			Game.main.apply_ui_scale()
+			rebuild.call()
+		var b := UiTheme.button(UiTheme.t("menu_ui_auto") if val == 0.0 else "%d %%" % roundi(val * 100), pick, 96, 22)
+		if is_equal_approx(val, cur):
+			b.add_theme_color_override("font_color", UiTheme.GOLD)
+		sr.add_child(b)
+	if OS.has_feature("mobile"):
+		return vb
 	var fs := CheckBox.new()
 	fs.text = UiTheme.t("menu_fullscreen")
 	fs.focus_mode = Control.FOCUS_NONE

@@ -331,10 +331,24 @@ func tooltip(ch = null) -> Array:
 		lines.append([L.t({"cs": "Doplní %d %% života", "en": "Restores %d%% life"}) % int(u.heal_pct), COL_INFO])
 	if u.has("mana_pct"):
 		lines.append([L.t({"cs": "Doplní %d %% many", "en": "Restores %d%% mana"}) % int(u.mana_pct), COL_INFO])
-	if b.has("desc") or b.has("flavor"):
-		lines.append([L.t(b.get("desc", b.get("flavor", ""))), COL_INFO])
+	if b.has("desc"):
+		lines.append([L.t(b.desc), COL_NORMAL])
+	match slot():
+		"quest", "key":
+			lines.append([L.t({"cs": "Předmět k úkolu", "en": "Quest item"}), COL_QUEST])
+		"charm":
+			lines.append([L.t({"cs": "Působí, když ho neseš v torně", "en": "Works while carried in your bag"}), COL_INFO])
+		"gem":
+			if Forge._grade(self) < 4:
+				lines.append([L.t({"cs": "3 stejné ve výhni → o stupeň lepší", "en": "3 alike in the forge → one grade better"}), COL_INFO])
+		"letter":
+			lines.append([L.t({"cs": "Písmena v zásuvkách jednoho předmětu mohou složit slovo", "en": "Letters socketed in one item can spell a word"}), COL_INFO])
+	if b.has("flavor"):
+		lines.append(["„%s“" % L.t(b.flavor), Color("a08a5a")])
 	if u.has("heal_pct") or u.has("mana_pct") or u.has("rejuv"):
 		lines.append([L.t({"cs": "Pravým tlačítkem vypít", "en": "Right-click to drink"}), COL_INFO])
+	elif u.has("portal") or u.has("identify"):
+		lines.append([L.t({"cs": "Pravým tlačítkem přečíst", "en": "Right-click to read"}), COL_INFO])
 	if max_dur > 0:
 		lines.append(["%s: %d / %d" % [L.t("durability"), dur, max_dur], COL_BAD if dur < max_dur / 5 else COL_INFO])
 	if rarity != NORMAL and not identified:

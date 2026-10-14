@@ -10,3 +10,6 @@ __pycache__/
 # Stray render/test output
 game/assets/**/_*.pdf
 *.wav
+
+# Android build output
+build/

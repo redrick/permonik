@@ -185,3 +185,30 @@ static func sprite_fx(level: Node, id: String, pos: Vector2, dur := 0.6, scale :
 	if rise != 0.0:
 		tw.tween_property(s, "position:y", s.position.y - rise, dur)
 	tw.chain().tween_callback(s.queue_free)
+
+
+static var _stop_gen := 0
+
+
+# A brief slow-down on big impacts so a blow reads as landing. Only the latest stop may
+# restore the speed, so overlapping stops can never leave the game slowed.
+static func hitstop(level: Node, sec: float) -> void:
+	if Engine.time_scale < 1.0:
+		return
+	_stop_gen += 1
+	var gen := _stop_gen
+	Engine.time_scale = 0.25
+	level.get_tree().create_timer(sec, true, false, true).timeout.connect(func():
+		if gen == Fx._stop_gen:
+			Engine.time_scale = 1.0)
+
+
+static func impact(level: Node, target: Actor, element: String, crit: bool) -> void:
+	var col: Color = ELEM.get(element, ELEM.physical)
+	var big := crit or target.dead
+	var pos := target.center_pos() + Vector2(randf_range(-8, 8), randf_range(-10, 10))
+	burst(level, pos, col, 14 if big else 8, 260.0 if big else 180.0, 0.22, 0.16 if big else 0.12)
+	flash(level, pos, col, 90.0 if big else 60.0, 0.12, 1.0)
+	if big:
+		hitstop(level, 0.06)
+	level.shake(4.0 if big else 1.5)

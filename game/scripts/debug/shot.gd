@@ -16,6 +16,14 @@ func _ready() -> void:
 		await get_tree().create_timer(0.5).timeout
 	for p in _arg("--panel", "").split(",", false):
 		Game.main.ui.toggle_panel(p)
+	if args.has("--recipes"):
+		UiForge.show_recipes = true
+	for k in _arg("--know", "").split(",", false):
+		Game.learn(k.get_slice(":", 0), k.get_slice(":", 1))
+	if args.has("--codex"):
+		for n in get_tree().root.find_children("*", "", true, false):
+			if n is UiKronika:
+				n._jump(_arg("--codex", ""))
 	if args.has("--open"):
 		Game.main.ui.call("open_" + _arg("--open", "stash"))
 	if args.has("--book"):

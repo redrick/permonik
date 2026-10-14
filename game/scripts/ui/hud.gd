@@ -55,8 +55,11 @@ func _ready() -> void:
 	minimap.position = Vector2(-Minimap.SIZE - 14, 10)
 	root.add_child(minimap)
 	tracker = QuestTracker.new()
-	tracker.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	tracker.position = Vector2(-QuestTracker.W - 24, Minimap.SIZE + 18)
+	if TouchPad.wanted():
+		tracker.position = Vector2(16, 104)
+	else:
+		tracker.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+		tracker.position = Vector2(-QuestTracker.W - 34, Minimap.SIZE + 8)
 	root.add_child(tracker)
 	_build_bar()
 	_build_target()
@@ -381,17 +384,29 @@ func _on_level(lv: int) -> void:
 	tw.tween_property(banner, "modulate:a", 0.0, 0.8)
 
 
+func fit() -> void:
+	var k := minf(1.0, root.size.x / 1920.0)
+	bar.pivot_offset = Vector2(960, BAR_H)
+	bar.scale = Vector2(k, k)
+
+
+func bar_h() -> float:
+	return BAR_H * bar.scale.y
+
+
 func mouse_over_ui() -> bool:
+	return over_ui_at(root.get_global_mouse_position())
+
+
+func over_ui_at(mp: Vector2) -> bool:
 	if not visible:
 		return false
-	var mp := root.get_global_mouse_position()
-	var r := Rect2(bar.global_position + Vector2(0, 30), Vector2(1920, BAR_H))
-	if r.has_point(mp):
+	if (bar.get_global_transform() * Rect2(0, 30, 1920, BAR_H - 30)).has_point(mp):
 		return true
 	for c in [hp_orb, mana_orb]:
-		if c.get_global_rect().has_point(mp):
+		if (c.get_global_transform() * Rect2(Vector2.ZERO, c.size)).has_point(mp):
 			return true
-	return false
+	return tracker.over_controls(mp)
 
 
 func _unhandled_input(event: InputEvent) -> void:

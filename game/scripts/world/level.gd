@@ -82,6 +82,7 @@ func build(a: int, f: int, arrive: String) -> void:
 	_build_collision()
 	_build_astar()
 	_spawn_player(arrive)
+	_restore_loot()
 	var music := str(ad.get("town", {}).get("music", "town_hora")) if is_town else str(ad.get("dungeon", {}).get("music", "mine_%d" % a))
 	if def.get("boss", null) != null and not is_town:
 		music = music
@@ -147,26 +148,71 @@ func _add_src(ts: TileSet, sid: int, t: Texture2D, size: Vector2i, origin: Vecto
 	td.texture_origin = origin
 
 
+# All variants of a layer share one texture, so the layer draws in a few batches instead of one per cell.
+# Tiles sit PAD px apart with their edge pixels smeared into the gap against filtering bleed.
+const PAD := 4
+
+
+# entries: [texture, texture_origin]; tile i lands at atlas coords (i, 0), as tall as its texture.
+func _atlas_src(ts: TileSet, sid: int, entries: Array, region: Vector2i) -> void:
+	var hmax := 0
+	for e in entries:
+		hmax = maxi(hmax, e[0].get_height())
+	var img := Image.create(entries.size() * (region.x + PAD), hmax, false, Image.FORMAT_RGBA8)
+	for i in entries.size():
+		var tile: Image = entries[i][0].get_image()
+		if tile.is_compressed():
+			tile.decompress()
+		tile.convert(Image.FORMAT_RGBA8)
+		var r := Rect2i(0, 0, region.x, tile.get_height())
+		var x := i * (region.x + PAD)
+		for dx in [-PAD / 2, PAD / 2]:
+			img.blit_rect(tile, r, Vector2i(x + dx, 0))
+		if tile.get_height() < hmax:
+			img.blit_rect(tile, Rect2i(0, tile.get_height() - 1, region.x, 1), Vector2i(x, tile.get_height()))
+		img.blit_rect(tile, r, Vector2i(x, 0))
+	var src := TileSetAtlasSource.new()
+	src.texture = ImageTexture.create_from_image(img)
+	src.texture_region_size = region
+	src.separation = Vector2i(PAD, 0)
+	ts.add_source(src, sid)
+	for i in entries.size():
+		var at := Vector2i(i, 0)
+		src.create_tile(at, Vector2i(1, maxi(1, entries[i][0].get_height() / region.y)))
+		src.get_tile_data(at, 0).texture_origin = entries[i][1]
+
+
 func _make_tileset() -> TileSet:
 	var ts := TileSet.new()
 	ts.tile_size = Vector2i(CELL, CELL)
 	var base := Color("4a4038") if not is_town else Color("6a6450")
+	var floors := []
 	for i in 4:
-		_add_src(ts, i, _tile_tex("tiles/%s/floor_%d" % [tileset_name, i], Vector2i(64, 64), base), Vector2i(64, 64), Vector2i.ZERO)
+		floors.append([_tile_tex("tiles/%s/floor_%d" % [tileset_name, i], Vector2i(64, 64), base), Vector2i.ZERO])
+	_atlas_src(ts, 0, floors, Vector2i(64, 64))
+	var walls := []
+	var tops := []
 	for i in 3:
 		var wt := _tile_tex("tiles/%s/wall_%d" % [tileset_name, i], Vector2i(64, 96), base.darkened(0.3))
-		_add_src(ts, 10 + i, wt, Vector2i(64, 96), Vector2i(0, 16))
+		walls.append([wt, Vector2i(0, 16)])
 		# the same rock without its front face, for rock that has more rock (or nothing) below it
-		_add_src(ts, 15 + i, wt, Vector2i(64, 64), Vector2i(0, 32))
+		tops.append([ImageTexture.create_from_image(wt.get_image().get_region(Rect2i(0, 0, 64, 64))), Vector2i(0, 32)])
+	_atlas_src(ts, 10, walls + tops, Vector2i(64, 32))
+	var decos := []
 	for i in 4:
 		var t := DB.tex("tiles/%s/floor_deco_%d" % [tileset_name, i])
 		if t:
-			_add_src(ts, 20 + i, t, Vector2i(64, 64), Vector2i.ZERO)
+			decos.append([t, Vector2i.ZERO])
+	if not decos.is_empty():
+		_atlas_src(ts, 20, decos, Vector2i(64, 64))
 	_add_src(ts, 30, _water_tex(), Vector2i(64, 64), Vector2i.ZERO)
+	var paths := []
 	for i in 3:
 		var t := DB.tex("tiles/%s/path_%d" % [tileset_name, i])
 		if t:
-			_add_src(ts, 40 + i, t, Vector2i(128, 128), Vector2i.ZERO)
+			paths.append([t, Vector2i.ZERO])
+	if not paths.is_empty():
+		_atlas_src(ts, 40, paths, Vector2i(128, 128))
 	return ts
 
 
@@ -185,21 +231,23 @@ func _paint_tiles() -> void:
 	rng.seed = hash(tileset_name) + floor_n
 	var has_deco := floor_layer.tile_set.has_source(20)
 	var has_path := is_town and floor_layer.tile_set.has_source(40)
+	var decos_n := (floor_layer.tile_set.get_source(20) as TileSetAtlasSource).get_tiles_count() if has_deco else 0
+	var paths_n := (floor_layer.tile_set.get_source(40) as TileSetAtlasSource).get_tiles_count() if has_path else 0
 	for y in h:
 		for x in w:
 			var c := Vector2i(x, y)
 			if solid[y * w + x] == 0:
-				floor_layer.set_cell(c, rng.randi_range(0, 3) if rng.randf() < 0.45 else 0, Vector2i.ZERO)
+				floor_layer.set_cell(c, 0, Vector2i(rng.randi_range(0, 3) if rng.randf() < 0.45 else 0, 0))
 				if water[y * w + x] == 1:
 					water_layer.set_cell(c, 30, Vector2i.ZERO)
 				elif has_path and (gen as TownLayout).paths.has(c):
-					path_layer.set_cell(c, 40 + rng.randi_range(0, 2), Vector2i.ZERO)
+					path_layer.set_cell(c, 40, Vector2i(rng.randi_range(0, paths_n - 1), 0))
 				elif has_deco and rng.randf() < 0.07:
-					deco_layer.set_cell(c, 20 + rng.randi_range(0, 3), Vector2i.ZERO)
+					deco_layer.set_cell(c, 20, Vector2i(rng.randi_range(0, decos_n - 1), 0))
 			else:
 				var v := rng.randi_range(0, 2) if rng.randf() < 0.4 else 0
 				var face := y + 1 < h and gen.at(x, y + 1) != DungeonGen.WALL
-				wall_layer.set_cell(c, (10 if face else 15) + v, Vector2i.ZERO)
+				wall_layer.set_cell(c, 10, Vector2i(v + (0 if face else 3), 0))
 
 
 func _near_floor(x: int, y: int, r: int) -> bool:
@@ -565,6 +613,8 @@ func _place_books() -> void:
 func objective_points() -> Array:
 	var out := []
 	for tq in Game.tracked_quests():
+		if not Game.quest_on_map(tq.qid):
+			continue
 		var pl := Game.goal_place(tq.qid)
 		if pl.is_empty() or int(pl.act) != act_n:
 			continue
@@ -817,13 +867,47 @@ func _xp_for(m: Monster) -> int:
 	return int(m.xp_value * mult)
 
 
-func drop_item(it: Item, pos: Vector2) -> void:
+func drop_item(it: Item, pos: Vector2, quiet := false) -> void:
 	if is_solid(pos):
 		pos = cell_center(_nearest_open(to_cell(pos)))
 	var g := GroundItem.create(it, pos)
 	items_root.add_child(g)
 	ground_items.append(g)
-	Sfx.play_at("drop_item", pos, 0.5)
+	if not quiet:
+		Sfx.play_at("drop_item", pos, 0.5)
+
+
+# Floors are rebuilt on every visit, so whatever lies on the ground is kept aside when the hero leaves
+# and laid back down on return. If the layout changed (a new session), it is heaped by the arrival point.
+func _loot_key() -> String:
+	return "%d:%d:%d" % [Game.difficulty, act_n, floor_n]
+
+
+func _exit_tree() -> void:
+	stash_loot()
+
+
+func stash_loot() -> void:
+	var quest_ids: Array = def.get("quest_props", [])
+	var kept := []
+	for g in ground_items:
+		if is_instance_valid(g) and g.item and not g.item.base_id in quest_ids:
+			kept.append([g.item.to_dict(), g.position.x, g.position.y])
+	if kept.is_empty():
+		Game.floor_loot.erase(_loot_key())
+	else:
+		Game.floor_loot[_loot_key()] = {"seed": Game.session_seed, "items": kept.slice(maxi(0, kept.size() - 300))}
+
+
+func _restore_loot() -> void:
+	var saved: Dictionary = Game.floor_loot.get(_loot_key(), {})
+	var same_map := int(saved.get("seed", -1)) == Game.session_seed
+	for e in saved.get("items", []):
+		var it := Item.from_dict(e[0])
+		var pos := Vector2(float(e[1]), float(e[2]))
+		if not same_map and player:
+			pos = player.global_position + Vector2(randf_range(-90, 90), randf_range(-60, 60))
+		drop_item(it, pos, true)
 
 
 # ---------------------------------------------------------------- town
