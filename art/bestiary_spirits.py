@@ -9,6 +9,8 @@ WISP_GLOW = Col(0.8, "#b8f08a")
 BLP = {
     "idle": dict(lean=0, trail=0, fh=(-7, 18), nh=(9, 22), head=0, spark=False),
     "walk": dict(lean=-12, trail=7, fh=(-9, 17), nh=(8, 20), head=6, spark=False),
+    "walk2": dict(lean=-8, trail=11, fh=(-10, 15), nh=(7, 18), head=3, spark=False),
+    "windup": dict(lean=7, trail=-2, fh=(-6, 22), nh=(-3, 35), head=-5, spark=False),
     "attack": dict(lean=-4, trail=3, fh=(-8, 20), nh=(10, 36), head=8, spark=True),
 }
 
@@ -57,6 +59,8 @@ FIRE_CORE = Col(0.45, "#6b4a3c")
 OMP = {
     "idle": dict(s=1.0, hop=0, arms=(-40, 220), lean=0, burst=False),
     "walk": dict(s=1.0, hop=3, arms=(-20, 250), lean=-14, burst=False),
+    "walk2": dict(s=1.0, hop=3, arms=(-55, 285), lean=-10, burst=False, dy=(0, 3)),
+    "windup": dict(s=0.9, hop=0, arms=(35, 145), lean=6, burst=False),
     "attack": dict(s=1.25, hop=1, arms=(30, 150), lean=0, burst=True),
 }
 
@@ -73,7 +77,7 @@ def ohnivy_muzik(pose):
             stroke([(math.cos(aa)*r0, 18+math.sin(aa)*r0), (math.cos(aa)*r1, 18+math.sin(aa)*r1)], LINE*0.8, g=FLAME, alpha=0.8)
     else:
         glow(0, 16, 20, EMBER, 0.12, 4)
-    for x, dy in ((-3, hop), (3, 0)):
+    for x, dy in zip((-3, 3), q.get("dy", (hop, 0))):
         tube([(x, 9+hop), (x+1, 2.5+dy*0.6)], 3, 2.6, FIRE_CORE, lw=LINE*0.8, sh=0)
         shape(ell(x+2, 1.4+dy*0.6, 2.6, 1.4, 12), FIRE_CORE, LINE*0.7)
     with T(0, 8+hop, s, rot=q["lean"]):
@@ -113,6 +117,8 @@ MURA_HAIR = Col(0.7, "#bcb7b0")
 MRP = {
     "idle": dict(lean=-10, w1=0, w2=0, fh=(14, 6), nh=(18, 10), head=-6, legs=0),
     "walk": dict(lean=-16, w1=-26, w2=-14, fh=(12, 4), nh=(16, 6), head=-2, legs=4),
+    "walk2": dict(lean=-13, w1=18, w2=8, fh=(13, 6), nh=(17, 8), head=-4, legs=-2),
+    "windup": dict(lean=-2, w1=32, w2=24, fh=(14, 24), nh=(21, 23), head=4, legs=2),
     "attack": dict(lean=-30, w1=14, w2=10, fh=(30, 18), nh=(34, 10), head=20, legs=8),
 }
 
@@ -199,6 +205,8 @@ ROPE = Col(0.6, "#9a8a6a")
 BBP = {
     "idle": dict(tilt=0, sq=1.0, open=0, reach=0, ff=(-7, 0), nf=(7, 0)),
     "walk": dict(tilt=-8, sq=0.94, open=0.25, reach=0, ff=(-11, 3), nf=(9, 0)),
+    "walk2": dict(tilt=-4, sq=0.97, open=0.1, reach=0, ff=(-7, 0), nf=(11, 3)),
+    "windup": dict(tilt=9, sq=0.92, open=0.6, reach=0, ff=(-9, 0), nf=(8, 0)),
     "attack": dict(tilt=-18, sq=1.05, open=1.0, reach=1, ff=(-14, 0), nf=(10, 0)),
 }
 
@@ -258,6 +266,8 @@ GHOST = Col(0.68, "#a8acb4")
 SVP = {
     "idle": dict(lean=-4, fh=(10, 14), nh=(14, 18), sway=0, head=-4, blaze=False),
     "walk": dict(lean=-12, fh=(6, 12), nh=(16, 20), sway=6, head=0, blaze=False),
+    "walk2": dict(lean=-9, fh=(16, 20), nh=(6, 12), sway=-2, head=-2, blaze=False),
+    "windup": dict(lean=5, fh=(4, 20), nh=(8, 25), sway=8, head=-8, blaze=False),
     "attack": dict(lean=-16, fh=(32, 30), nh=(34, 22), sway=4, head=8, blaze=True),
 }
 
@@ -326,6 +336,8 @@ SMOL = Col(0.8, "#9cf266")
 SMP = {
     "idle": dict(hip=(-2, 32), lean=-10, ff=(-10, 2), nf=(9, 2), fh=(16, -10), nh=(22, -8), head=-4, smash=False),
     "walk": dict(hip=(-2, 31), lean=-16, ff=(10, 4), nf=(-12, 2), fh=(8, -10), nh=(28, -4), head=0, smash=False),
+    "walk2": dict(hip=(-2, 31.5), lean=-14, ff=(-12, 2), nf=(10, 4), fh=(28, -4), nh=(8, -10), head=-2, smash=False),
+    "windup": dict(hip=(-1, 28), lean=-26, ff=(-14, 2), nf=(11, 2), fh=(-6, -4), nh=(-2, -2), head=-10, smash=False),
     "attack": dict(hip=(-4, 33), lean=6, ff=(-16, 2), nf=(12, 2), fh=(10, 66), nh=(20, 64), head=10, smash=True),
 }
 
@@ -396,6 +408,8 @@ CURSE = Col(0.7, "#c27cff")
 BSP = {
     "idle": dict(hip=(-2, 44), lean=-14, ff=(-9, 2), nf=(8, 2), fh=(18, 14), nh=(22, 16), head=-6, cast=0),
     "walk": dict(hip=(-2, 43), lean=-22, ff=(10, 4), nf=(-12, 2), fh=(10, 8), nh=(26, 18), head=0, cast=0),
+    "walk2": dict(hip=(-2, 43.5), lean=-20, ff=(-12, 2), nf=(10, 4), fh=(26, 18), nh=(10, 8), head=-2, cast=0),
+    "windup": dict(hip=(-1, 44), lean=-2, ff=(-12, 2), nf=(9, 2), fh=(-10, 40), nh=(-6, 45), head=4, cast=0),
     "attack": dict(hip=(-6, 44), lean=-6, ff=(-16, 2), nf=(10, 2), fh=(26, 46), nh=(32, 38), head=12, cast=1),
 }
 

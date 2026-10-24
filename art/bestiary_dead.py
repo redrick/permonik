@@ -99,6 +99,8 @@ def rag_hem(x0, x1, y, depth, n, seed=0):
 SKP = {
     "idle": dict(lean=-4, hip=(0, 33.0), ff=(-6, 2.5), nf=(6, 2.5), head=0, jaw=0),
     "walk": dict(lean=-8, hip=(0, 31.5), ff=(9, 2.5), nf=(-9, 4.5), head=-4, jaw=0),
+    "walk2": dict(lean=-7, hip=(0, 31.8), ff=(-9, 4.5), nf=(9, 2.5), head=-2, jaw=0),
+    "windup": dict(lean=5, hip=(1, 32.5), ff=(-8, 2.5), nf=(9, 2.5), head=8, jaw=10),
     "attack": dict(lean=-18, hip=(-2, 29.5), ff=(-15, 2.5), nf=(11, 2.5), head=-6, jaw=22),
 }
 
@@ -132,7 +134,7 @@ def kostlivy_havir(pose):
 
     def far(q):
         sh = (-1.5, 19)
-        tgt = {"idle": (-4, 1), "walk": (-8, 5), "attack": (17, 11)}[pose]
+        tgt = {"idle": (-4, 1), "walk": (-8, 5), "walk2": (7, 6), "windup": (8, 12), "attack": (17, 11)}[pose]
         skel_arm(sh, tgt, BONE_FAR)
 
     def torso(q):
@@ -160,6 +162,14 @@ def kostlivy_havir(pose):
             skel_arm(sh, h, BONE)
             pick((h[0]-9, h[1]-6), (h[0]+7, h[1]+16), 12)
             swoosh(bez((-6, 40), (2, 54), (20, 54), (28, 32)), 2.4, WHITE, 0.3)
+        elif pose == "windup":
+            h = (-3, 31)
+            skel_arm(sh, h, BONE)
+            pick((h[0]+8, h[1]-7), (h[0]-9, h[1]+11), 12)
+        elif pose == "walk2":
+            h = (-2, 7)
+            skel_arm(sh, h, BONE)
+            pick((h[0]-12, h[1]-10), (h[0]+9, h[1]+15), 11)
         elif pose == "walk":
             h = (9, 6)
             skel_arm(sh, h, BONE)
@@ -174,7 +184,7 @@ def kostlivy_havir(pose):
 def kostlivy_kusinik(pose):
     def far(q):
         sh = (-1.5, 19)
-        tgt = {"idle": (10, 9), "walk": (10, 10), "attack": (19, 22)}[pose]
+        tgt = {"idle": (10, 9), "walk": (10, 10), "walk2": (11, 10), "windup": (16, 17), "attack": (19, 22)}[pose]
         skel_arm(sh, tgt, BONE_FAR)
         rr = rrect(-9, -2, 4.2, 12, 1.5)
         with T(0, 0, 1, rot=12):
@@ -205,6 +215,10 @@ def kostlivy_kusinik(pose):
             crossbow((h[0]-6, h[1]), 0, True)
             for i, dy in enumerate((-3, 0, 3)):
                 stroke([(34, 22+dy), (39, 22+dy*1.4)], LINE*0.6, g=WHITE)
+        elif pose == "windup":
+            h = (9, 17)
+            skel_arm(sh, h, BONE)
+            crossbow((h[0]-5, h[1]), 8, True)
         else:
             h = (6, 9) if pose == "idle" else (7, 10)
             skel_arm(sh, h, BONE)
@@ -230,14 +244,14 @@ def kostejuv_nesmrtelny(pose):
     def back(q):
         hx, hy = q["hip"]
         with T(hx, hy, 1, rot=q["lean"]):
-            sw = {"idle": 0, "walk": -3, "attack": -8}[pose]
+            sw = {"idle": 0, "walk": -3, "walk2": -1, "windup": -5, "attack": -8}[pose]
             cl = bez((-4, 25), (-12, 18), (-14+sw, 6), (-16+sw, -16)) + rag_hem(-16+sw, -2, -16, 4, 7, 2) + \
                  bez((-2, -16), (-4, -4), (2, 10), (4, 24))
             form(cl, VIOLET, sh=0.2)
 
     def far(q):
         sh = (-1.5, 19)
-        tgt = {"idle": (2, 8), "walk": (-6, 6), "attack": (-10, 12)}[pose]
+        tgt = {"idle": (2, 8), "walk": (-6, 6), "walk2": (6, 7), "windup": (7, 13), "attack": (-10, 12)}[pose]
         e, h = skel_arm(sh, tgt, BONE_FAR)
         with T(h[0]+1, h[1]+1):
             sd = ell(0, 0, 8, 9.5, 30)
@@ -276,6 +290,14 @@ def kostejuv_nesmrtelny(pose):
             skel_arm(sh, h, BONE)
             sword(h, 25)
             swoosh(bez((-4, 58), (12, 64), (28, 52), (31, 30)), 2.6, EYE_G, 0.3)
+        elif pose == "windup":
+            h = (-3, 30)
+            skel_arm(sh, h, BONE)
+            sword(h, 125)
+        elif pose == "walk2":
+            h = (6, 11)
+            skel_arm(sh, h, BONE)
+            sword(h, -50)
         else:
             h = (9, 10) if pose == "idle" else (10, 12)
             skel_arm(sh, h, BONE)
@@ -307,6 +329,8 @@ TROUS = Col(0.4, "#5b5968")
 UTP = {
     "idle": dict(hip=(0, 36), lean=-10, ff=(-7, 2), nf=(8, 2), fh=(13, 3), nh=(16, 5), head=-8, mouth=0.45),
     "walk": dict(hip=(0, 35), lean=-14, ff=(10, 2), nf=(-10, 3.5), fh=(6, 2), nh=(20, 9), head=-6, mouth=0.45),
+    "walk2": dict(hip=(0, 35.3), lean=-13, ff=(-10, 3.5), nf=(10, 2), fh=(20, 9), nh=(5, 2), head=-5, mouth=0.45),
+    "windup": dict(hip=(1, 35.5), lean=-3, ff=(-9, 2), nf=(9, 2), fh=(12, 33), nh=(17, 32), head=10, mouth=0.8),
     "attack": dict(hip=(-3, 33.5), lean=-22, ff=(-17, 2), nf=(11, 2), fh=(27, 21), nh=(30, 15), head=4, mouth=1.0),
 }
 
@@ -376,6 +400,8 @@ GAUNT_D = Col(0.55, "#958da3")
 UPP = {
     "idle": dict(hip=(0, 38), lean=-6, ff=(-5, 1.5), nf=(6, 1.5), hb=-12, hf=10, fh=(10, 18), nh=(13, 20), head=-6, mouth=0, flare=0),
     "walk": dict(hip=(1, 37), lean=-14, ff=(10, 1.5), nf=(-8, 3), hb=-17, hf=12, fh=(12, 20), nh=(15, 23), head=-4, mouth=0, flare=4),
+    "walk2": dict(hip=(1, 37.3), lean=-13, ff=(-8, 3), nf=(10, 1.5), hb=-15, hf=13, fh=(13, 22), nh=(14, 21), head=-5, mouth=0, flare=6),
+    "windup": dict(hip=(1, 38.5), lean=-2, ff=(-6, 1.5), nf=(8, 1.5), hb=-22, hf=18, fh=(12, 36), nh=(16, 37), head=10, mouth=1, flare=16),
     "attack": dict(hip=(-2, 36), lean=-24, ff=(-14, 1.5), nf=(12, 1.5), hb=-26, hf=16, fh=(30, 28), nh=(33, 22), head=6, mouth=1, flare=12),
 }
 
@@ -458,6 +484,8 @@ NAV_HAIR_L = Col(0.45, "#66748a")
 NVP = {
     "idle": dict(hip=(0, 38), lean=-3, hb=-9, hf=9, fh=(6, 14), nh=(9, 13), head=-3, sway=0, cast=False),
     "walk": dict(hip=(1, 39), lean=-10, hb=-14, hf=8, fh=(4, 12), nh=(12, 16), head=0, sway=5, cast=False),
+    "walk2": dict(hip=(1, 39.5), lean=-8, hb=-12, hf=10, fh=(10, 15), nh=(5, 12), head=-2, sway=-4, cast=False),
+    "windup": dict(hip=(-1, 38), lean=0, hb=-11, hf=9, fh=(10, 16), nh=(15, 31), head=6, sway=2, cast="charge"),
     "attack": dict(hip=(-1, 38), lean=-6, hb=-12, hf=11, fh=(-8, 20), nh=(27, 27), head=4, sway=3, cast=True),
 }
 
@@ -490,6 +518,7 @@ def navka(pose):
         shape(ell(h[0], h[1], 1.9, 1.5, 12), NAV_SKIN, LINE*0.7)
         if q["cast"]:
             glow(h[0]+3, h[1], 9, COLD, 0.22, 4)
+        if q["cast"] is True:
             for k in range(6):
                 aa = math.radians(k*60+15)
                 stroke([(h[0]+3+math.cos(aa)*1.5, h[1]+math.sin(aa)*1.5), (h[0]+3+math.cos(aa)*5.5, h[1]+math.sin(aa)*5.5)], LINE*0.7, g=COLD_L)

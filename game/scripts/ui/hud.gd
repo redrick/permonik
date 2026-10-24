@@ -15,6 +15,10 @@ var mana_orb: TextureProgressBar
 var hp_lbl: Label
 var mana_lbl: Label
 var xp_bar: TextureProgressBar
+var xp_lbl: Label
+var hurt: TextureRect
+var hurt_flash := 0.0
+var last_hp := -1.0
 var belt_slots: Array = []
 var skill_slots: Array = []
 var target_box: VBoxContainer
@@ -50,6 +54,8 @@ func _ready() -> void:
 	automap.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	automap.visible = false
 	root.add_child(automap)
+	hurt = UiScreens.vignette(root, Color(0.55, 0.0, 0.0, 0.9), 0.45)
+	hurt.modulate.a = 0.0
 	minimap = Minimap.new()
 	minimap.set_anchors_preset(Control.PRESET_TOP_RIGHT)
 	minimap.position = Vector2(-Minimap.SIZE - 14, 10)
@@ -160,6 +166,13 @@ func _build_bar() -> void:
 	xp_bar.max_value = 1000
 	xp_bar.mouse_filter = Control.MOUSE_FILTER_PASS
 	bar.add_child(xp_bar)
+	xp_lbl = _label(15, Color(0.92, 0.86, 0.7, 0.75))
+	xp_lbl.position = xp_bar.position + Vector2(0, -2)
+	xp_lbl.size = xp_bar.size
+	xp_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	xp_lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	xp_lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	bar.add_child(xp_lbl)
 	for i in 8:
 		var s := SlotView.new()
 		s.hud = self
@@ -178,17 +191,22 @@ func _build_bar() -> void:
 		s.position = Vector2(SKILL_X + i * SLOT_GAP, SLOT_Y)
 		bar.add_child(s)
 		skill_slots.append(s)
-	var btns := HBoxContainer.new()
-	btns.position = Vector2(300, 112)
-	btns.add_theme_constant_override("separation", 6)
+	var touch := TouchPad.wanted()
+	var btns := GridContainer.new()
+	btns.columns = 3
+	btns.position = Vector2(214, 52 if touch else 64)
+	btns.add_theme_constant_override("h_separation", 6)
+	btns.add_theme_constant_override("v_separation", 6)
 	bar.add_child(btns)
 	for pair in [["character", "C"], ["inventory", "I"], ["skills", "S"], ["quests", "J"], ["kronika", "K"], ["automap", "Tab"]]:
 		var b := Button.new()
 		b.text = L.t(pair[0]).left(9)
 		b.tooltip_text = "%s (%s)" % [L.t(pair[0]), pair[1]]
 		b.add_theme_font_override("font", font)
-		b.add_theme_font_size_override("font_size", 18)
-		b.custom_minimum_size = Vector2(0, 34)
+		b.add_theme_font_size_override("font_size", 22 if touch else 18)
+		b.custom_minimum_size = Vector2(130, 46 if touch else 38)
+		b.clip_text = true
+		b.alignment = HORIZONTAL_ALIGNMENT_CENTER
 		b.focus_mode = Control.FOCUS_NONE
 		var action: String = pair[0]
 		b.pressed.connect(func(): toggle(action))
@@ -418,6 +436,10 @@ func _unhandled_input(event: InputEvent) -> void:
 				toggle(a)
 				get_viewport().set_input_as_handled()
 				return
+		if (event as InputEventKey).keycode == KEY_H:
+			toggle("hireling")
+			get_viewport().set_input_as_handled()
+			return
 		if event.is_action("pause"):
 			if Game.main.ui.any_open():
 				Game.main.ui.close_all()
@@ -441,6 +463,8 @@ func _process(delta: float) -> void:
 	var x1 := CharData.xp_for(ch.level + 1)
 	xp_bar.value = 1000.0 * float(ch.xp - x0) / maxf(1.0, x1 - x0)
 	xp_bar.tooltip_text = "%s %d · %s %d / %d" % [L.t("level"), ch.level, L.t("xp"), ch.xp, x1]
+	xp_lbl.text = "%s %d  ·  %d %%" % [L.t("level"), ch.level, int(xp_bar.value / 10.0)]
+	_update_hurt(delta, ch.hp / maxf(1.0, d.hp_max))
 	lvl_btn.visible = ch.stat_points > 0 or ch.skill_points > 0
 	if lvl_btn.visible:
 		lvl_btn.modulate.a = 0.6 + 0.4 * sin(Time.get_ticks_msec() / 200.0)
@@ -450,7 +474,7 @@ func _process(delta: float) -> void:
 	for s in skill_slots:
 		s.queue_redraw()
 	var info: Dictionary = Game.level.hover_info() if Game.level else {}
-	target_box.visible = not info.is_empty()
+	target_box.visible = not info.is_empty() and not (info.get("kind", "") == "boss" and boss_box.visible)
 	if target_box.visible:
 		target_name.text = info.name
 		target_name.add_theme_color_override("font_color", info.color)
@@ -463,6 +487,22 @@ func _process(delta: float) -> void:
 		say_t -= delta
 		if say_t <= 0.0:
 			create_tween().tween_property(say_box, "modulate:a", 0.0, 0.5)
+
+
+# Red edges: a flash on a heavy blow, and a slow pulse while life is low.
+func _update_hurt(delta: float, ratio: float) -> void:
+	var hp := Game.ch.hp
+	if last_hp >= 0.0 and hp < last_hp:
+		hurt_flash = maxf(hurt_flash, clampf((last_hp - hp) / maxf(1.0, Game.ch.d.hp_max) * 4.0, 0.0, 0.8))
+	last_hp = hp
+	hurt_flash = maxf(0.0, hurt_flash - delta * 1.8)
+	var low := 0.0
+	if ratio < 0.35 and hp > 0.0:
+		low = (1.0 - ratio / 0.35) * (0.45 + 0.25 * sin(Time.get_ticks_msec() / 160.0))
+		hp_orb.modulate = Color(1.0 + low * 0.6, 1.0, 1.0)
+	else:
+		hp_orb.modulate = Color.WHITE
+	hurt.modulate.a = maxf(hurt_flash, low)
 
 
 func skill_for_slot(i: int) -> String:

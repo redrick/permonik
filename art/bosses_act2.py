@@ -31,7 +31,7 @@ def ladle(p0, p1, spill=False):
 
 
 def megera(pose):
-    lean = {"idle": 0, "walk": 5, "attack": 7}[pose]
+    lean = {"idle": 0, "walk": 5, "walk2": 3, "windup": -3, "attack": 7}[pose]
     shadow(0, 36)
     hx, hy = 24 + lean, 106
     hair = []
@@ -49,11 +49,15 @@ def megera(pose):
         lad = ((-4 + lean, 94), (36 + lean, 126))
     elif pose == "walk":
         lad = ((52 + lean, 4), (36 + lean, 122))
+    elif pose == "walk2":
+        lad = ((32 + lean, 4), (38 + lean, 124))
+    elif pose == "windup":
+        lad = ((32 + lean, 98), (-12 + lean, 132))
     else:
         lad = ((42, 4), (40, 126))
     if pose != "attack":
         ladle(*lad)
-    for lx in ((10, 18) if pose != "walk" else (6, 26)):
+    for lx in {"walk": (6, 26), "walk2": (2, 22)}.get(pose, (10, 18)):
         tube([(lx - 2, 20), (lx, 5)], 4.5, 4.0, col("#6e6a62"), sh=0.1)
     skirt = [(-22, 72), (14 + lean * 0.5, 68)] + bez((14 + lean * 0.5, 68), (22, 50), (28, 30), (28, 12)) + \
         ragged((28, 12), (-34, 12), 8, 6, 2.0) + bez((-34, 12), (-34, 36), (-28, 56), (-22, 72))
@@ -65,7 +69,7 @@ def megera(pose):
             stroke([(x + 1 + k * w / 3, y - 0.8), (x + 2 + k * w / 3, y + 0.8)], LINE * 0.35)
     for (x0, x1) in ((-18, -24), (0, 2), (16, 22)):
         stroke(bez((x0 + lean * 0.3, 68), (x0, 50), (x1, 30), (x1, 16)), LINE * 0.5, g=RED_DK)
-    for fx in ((14, 20) if pose != "walk" else (8, 30)):
+    for fx in {"walk": (8, 30), "walk2": (2, 24)}.get(pose, (14, 20)):
         sh_ = [(fx - 6, 1), (fx - 6, 7), (fx + 4, 7)] + bez((fx + 4, 7), (fx + 10, 6), (fx + 13, 4), (fx + 16, 6)) + [(fx + 13, 1)]
         shape(sh_, SHOE, LINE * 0.8)
     tors = [(-22, 72)] + bez((-22, 72), (-32, 88), (-30, 108), (-16, 118)) + \
@@ -132,6 +136,11 @@ def megera(pose):
         shape(ell(hand[0], hand[1], 3.8, 3.2, 12), HAG, LINE * 0.8)
         claws(hand, 130, 3, 4, 1.0, 10, HAG_DK, curl=40)
         motion([bez((-10, 128), (0, 146), (22, 156), (44, 154)), bez((-2, 132), (8, 146), (24, 150), (38, 150))])
+    elif pose == "windup":
+        s0 = (8 + lean, 108); hand = (21 + lean, 106.5)
+        tube([s0, (18 + lean, 98)], 6.5, 5.5, SHIRT); tube([(18 + lean, 98), hand], 5.5, 4.4, HAG)
+        shape(ell(hand[0], hand[1], 3.8, 3.2, 12), HAG, LINE * 0.8)
+        claws(hand, 150, 3, 4, 1.0, 10, HAG_DK, curl=40)
     else:
         s0 = (8 + lean, 108)
         hand = pt(lad[0], math.degrees(math.atan2(lad[1][1] - lad[0][1], lad[1][0] - lad[0][0])), 86)
@@ -168,8 +177,8 @@ def ghostfire(pts, hx_=EYE_BLUE, w=6, a=0.55):
 
 def prokop(pose):
     gallop = pose != "idle"
-    lift = {"idle": 0, "walk": 6, "attack": 8}[pose]
-    tilt = {"idle": 0, "walk": -3, "attack": -6}[pose]
+    lift = {"idle": 0, "walk": 6, "walk2": 3, "windup": 4, "attack": 8}[pose]
+    tilt = {"idle": 0, "walk": -3, "walk2": 1, "windup": 6, "attack": -6}[pose]
     shadow(0, 70)
     with T(0, lift, 1, rot=tilt):
         if pose == "idle":
@@ -178,6 +187,12 @@ def prokop(pose):
         elif pose == "walk":
             far = [((-46, 82), -80, 32, -95, 40), ((36, 84), -70, 30, -150, 40)]
             near = [((-56, 80), -130, 32, -110, 40), ((28, 84), -40, 30, -100, 40)]
+        elif pose == "walk2":
+            far = [((-46, 82), -125, 32, -105, 40), ((36, 84), -45, 30, -100, 40)]
+            near = [((-56, 80), -80, 32, -95, 40), ((28, 84), -70, 30, -150, 40)]
+        elif pose == "windup":
+            far = [((-46, 82), -95, 32, -100, 40), ((36, 84), -40, 28, -140, 34)]
+            near = [((-56, 80), -110, 32, -95, 40), ((28, 84), -15, 28, -120, 34)]
         else:
             far = [((-46, 82), -110, 32, -100, 38), ((36, 84), -50, 30, -110, 38)]
             near = [((-56, 80), -150, 32, -120, 38), ((28, 84), -10, 30, -70, 38)]
@@ -233,7 +248,7 @@ def prokop(pose):
             horse_leg(*leg)
         rein = [(56, 112), (36, 124), (24, 124)]
         stroke(rein, LINE * 0.8, g=RUST_DK)
-        lean = {"idle": 0, "walk": 4, "attack": 10}[pose]
+        lean = {"idle": 0, "walk": 4, "walk2": 3, "windup": -5, "attack": 10}[pose]
         shape(rrect(-20, 98, 36, 10, 3), col("#6b4a30"), LINE)
         thigh = [(-12, 108), (8, 110), (12, 98), (14, 84), (6, 82), (0, 96), (-12, 100)]
         form(thigh, ARMOUR, sdx=-2, sdy=1, sh=0.18)
@@ -244,6 +259,8 @@ def prokop(pose):
         with T(0, 108, 1, rot=-lean):
             if pose == "attack":
                 tube([(-10, 40), (4, 28), (16, 22)], 6.5, 5.5, ARMOUR)
+            elif pose == "windup":
+                tube([(-10, 40), (-14, 26), (-6, 22)], 6.5, 5.5, ARMOUR)
             body = [(-14, 0), (12, 0)] + bez((12, 0), (18, 14), (18, 34), (14, 44)) + \
                 [(-14, 46)] + bez((-14, 46), (-20, 30), (-20, 12), (-14, 0))
             form(body, ARMOUR, sdx=-4, sdy=1, sh=0.2)
@@ -268,6 +285,8 @@ def prokop(pose):
                     dot(x, y, 0.5, HOLLOW)
             if pose == "attack":
                 hand = (16, 22)
+            elif pose == "windup":
+                hand = (-6, 22)
             else:
                 hand = (22, 18)
                 tube([(-2, 38), (12, 20), hand], 6.5, 5.5, ARMOUR)
@@ -276,6 +295,10 @@ def prokop(pose):
             lance((-30, 132), (74, 121))
         elif pose == "walk":
             lance((-2, 92), (42, 188))
+        elif pose == "walk2":
+            lance((2, 92), (36, 190))
+        elif pose == "windup":
+            lance((-58, 112), (40, 150))
         else:
             lance((22, 70), (22, 194), side=1)
 
@@ -337,11 +360,15 @@ def bazilisek(pose):
     att = pose == "attack"
     if pose == "walk":
         lf = [(-6, 72), (-20, 36), (-30, 6)]; ln_ = [(12, 70), (34, 44), (40, 16)]
+    elif pose == "walk2":
+        lf = [(-6, 72), (4, 40), (10, 6)]; ln_ = [(10, 70), (2, 40), (-12, 8)]
+    elif pose == "windup":
+        lf = [(-8, 72), (-24, 38), (-32, 6)]; ln_ = [(10, 70), (20, 36), (22, 6)]
     elif att:
         lf = [(-8, 72), (-30, 40), (-42, 6)]; ln_ = [(10, 70), (22, 34), (24, 6)]
     else:
         lf = [(-8, 72), (-16, 38), (-12, 6)]; ln_ = [(8, 70), (18, 36), (16, 6)]
-    wy = {"idle": 0, "walk": -10, "attack": 6}[pose]
+    wy = {"idle": 0, "walk": -10, "walk2": 5, "windup": 14, "attack": 6}[pose]
     wing_shape(22, 4, wy * 0.7, WING_DK, col("#33403c"), 0.92)
     chicken_leg(*lf, far=True)
     tail = bez((-34, 76), (-72, 70), (-98, 42), (-84, 18)) + bez((-84, 18), (-72, 4), (-42, 4), (-38, 20))
@@ -386,6 +413,10 @@ def bazilisek(pose):
         nk = [(16, 112), (34, 132), (50, 126), (58, 118)]; hd = (62, 118); ha = -10
     elif pose == "walk":
         nk = [(16, 112), (26, 140), (44, 150), (56, 148)]; hd = (60, 150); ha = -6
+    elif pose == "walk2":
+        nk = [(16, 112), (24, 142), (40, 154), (52, 154)]; hd = (56, 156); ha = 0
+    elif pose == "windup":
+        nk = [(16, 112), (12, 146), (20, 164), (30, 168)]; hd = (34, 170); ha = 18
     else:
         nk = [(16, 112), (22, 144), (34, 158), (46, 160)]; hd = (52, 162); ha = 4
     neck = bez(*nk, 14)

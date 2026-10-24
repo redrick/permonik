@@ -2,7 +2,8 @@ class_name Level
 extends Node2D
 
 const CELL := 64
-const DARK := {1: Color(0.07, 0.065, 0.075), 2: Color(0.06, 0.07, 0.06), 3: Color(0.075, 0.06, 0.055), 4: Color(0.055, 0.05, 0.08)}
+const SHADOW_MASK := 4
+const DARK := {1: Color(0.15, 0.135, 0.15), 2: Color(0.12, 0.145, 0.13), 3: Color(0.16, 0.13, 0.115), 4: Color(0.12, 0.11, 0.17)}
 const TOWN_DUSK := {1: Color(0.42, 0.4, 0.52), 2: Color(0.38, 0.42, 0.46), 3: Color(0.4, 0.36, 0.42), 4: Color(0.22, 0.22, 0.34)}
 
 var act_n := 1
@@ -16,6 +17,9 @@ var solid := PackedByteArray()
 var water := PackedByteArray()
 var explored := PackedByteArray()
 var explored_rev := 0
+var fog: Sprite2D
+var fog_img: Image
+var fog_dirty := false
 var astar := AStarGrid2D.new()
 var floor_layer: TileMapLayer
 var deco_layer: TileMapLayer
@@ -27,6 +31,7 @@ var items_root: Node2D
 var fx_root: Node2D
 var text_root: Node2D
 var player: Player
+var hireling: Hireling
 var monsters: Array = []
 var npcs: Array = []
 var props: Array = []
@@ -72,9 +77,13 @@ func build(a: int, f: int, arrive: String) -> void:
 			water[y * w + x] = 1 if v == DungeonGen.WATER else 0
 	_make_layers()
 	_paint_tiles()
+	if not is_town:
+		_make_wall_shade()
 	var cm := CanvasModulate.new()
-	cm.color = TOWN_DUSK.get(a, Color(0.4, 0.4, 0.5)) if is_town else DARK.get(a, Color(0.07, 0.065, 0.075)).darkened(f * 0.04)
+	cm.color = TOWN_DUSK.get(a, Color(0.4, 0.4, 0.5)) if is_town else DARK.get(a, Color(0.15, 0.135, 0.15)).darkened(f * 0.03)
 	add_child(cm)
+	if not is_town:
+		_make_fog()
 	if is_town:
 		_populate_town()
 	else:
@@ -82,6 +91,7 @@ func build(a: int, f: int, arrive: String) -> void:
 	_build_collision()
 	_build_astar()
 	_spawn_player(arrive)
+	spawn_hireling()
 	_restore_loot()
 	var music := str(ad.get("town", {}).get("music", "town_hora")) if is_town else str(ad.get("dungeon", {}).get("music", "mine_%d" % a))
 	if def.get("boss", null) != null and not is_town:
@@ -117,6 +127,8 @@ func _make_layers() -> void:
 	wall_layer.tile_set = ts
 	wall_layer.y_sort_enabled = true
 	ysort.add_child(wall_layer)
+	for tl in [floor_layer, water_layer, path_layer, deco_layer, wall_layer]:
+		tl.light_mask = 1 | SHADOW_MASK
 	fx_root = Node2D.new()
 	fx_root.z_index = 10
 	add_child(fx_root)
@@ -233,21 +245,39 @@ func _paint_tiles() -> void:
 	var has_path := is_town and floor_layer.tile_set.has_source(40)
 	var decos_n := (floor_layer.tile_set.get_source(20) as TileSetAtlasSource).get_tiles_count() if has_deco else 0
 	var paths_n := (floor_layer.tile_set.get_source(40) as TileSetAtlasSource).get_tiles_count() if has_path else 0
+	var noise := FastNoiseLite.new()
+	noise.seed = rng.seed
+	noise.frequency = 0.09
+	var patches := PackedVector2Array()
 	for y in h:
 		for x in w:
 			var c := Vector2i(x, y)
 			if solid[y * w + x] == 0:
+				var nv := noise.get_noise_2d(x, y)
 				floor_layer.set_cell(c, 0, Vector2i(rng.randi_range(0, 3) if rng.randf() < 0.45 else 0, 0))
 				if water[y * w + x] == 1:
 					water_layer.set_cell(c, 30, Vector2i.ZERO)
 				elif has_path and (gen as TownLayout).paths.has(c):
 					path_layer.set_cell(c, 40, Vector2i(rng.randi_range(0, paths_n - 1), 0))
-				elif has_deco and rng.randf() < 0.07:
+				elif has_deco and rng.randf() < (0.14 if nv > 0.3 else 0.03):
 					deco_layer.set_cell(c, 20, Vector2i(rng.randi_range(0, decos_n - 1), 0))
+				if is_town and nv > 0.12 and not (has_path and (gen as TownLayout).paths.has(c)):
+					patches.append(Vector2(x * CELL + rng.randf_range(0, CELL), y * CELL + rng.randf_range(0, CELL)))
 			else:
 				var v := rng.randi_range(0, 2) if rng.randf() < 0.4 else 0
 				var face := y + 1 < h and gen.at(x, y + 1) != DungeonGen.WALL
 				wall_layer.set_cell(c, 10, Vector2i(v + (0 if face else 3), 0))
+
+	if not patches.is_empty():
+		var n := Node2D.new()
+		n.z_index = -20
+		var tex := Fx.soft()
+		var cols := [Color(0.24, 0.32, 0.12, 0.4), Color(0.3, 0.36, 0.16, 0.32), Color(0.18, 0.24, 0.1, 0.35)]
+		n.draw.connect(func():
+			for i in patches.size():
+				var r := 46.0 + float(i * 37 % 30)
+				n.draw_texture_rect(tex, Rect2(patches[i] - Vector2(r, r * 0.7), Vector2(r * 2.0, r * 1.4)), false, cols[i % 3]))
+		add_child(n)
 
 
 func _near_floor(x: int, y: int, r: int) -> bool:
@@ -431,7 +461,10 @@ func clamp_walkable(from: Vector2, to: Vector2, maxd: float) -> Vector2:
 
 func actors_of_team(team: int) -> Array:
 	if team == 0:
-		return [player] if player and not player.dead else []
+		var out := [player] if player and not player.dead else []
+		if hireling and is_instance_valid(hireling) and not hireling.dead:
+			out.append(hireling)
+		return out
 	return monsters
 
 
@@ -770,6 +803,7 @@ func _spawn_monsters(rng: RandomNumberGenerator, used: Dictionary) -> void:
 				if m and champ and k > 0:
 					m.hp_max *= 1.3
 					m.hp = m.hp_max
+	_spawn_superuniques(rng, base_l)
 	var bid = def.get("boss", null)
 	var uber: Dictionary = def.get("uber", {})
 	if bid != null and DB.monsters.has(str(bid)) and (not uber.is_empty() or not _boss_dead(str(bid))):
@@ -781,6 +815,31 @@ func _spawn_monsters(rng: RandomNumberGenerator, used: Dictionary) -> void:
 			boss.hp = boss.hp_max
 			boss.dmg *= float(uber.get("dmg", 1.6))
 			boss.set_meta("uber", true)
+
+
+func _spawn_superuniques(rng: RandomNumberGenerator, base_l: int) -> void:
+	var here := "act%d_floor%d" % [act_n, floor_n]
+	for sid in DB.superuniques:
+		var d: Dictionary = DB.superuniques[sid]
+		if str(d.get("where", "")) != here:
+			continue
+		var c := _rule_cell({"far": 0.45, "from_boss": 10, "spacing": 8, "min_start": 12, "group": "pack"})
+		if c.x < 0:
+			c = _rule_cell({"far": 0.3, "from_boss": 5, "min_start": 8})
+		if c.x < 0:
+			continue
+		var m := spawn_monster(str(d.get("monster", "")), cell_center(c), base_l + 2)
+		if m == null:
+			continue
+		m.make_superunique(sid)
+		var mn: Array = d.get("minions", [])
+		if mn.size() == 3:
+			for k in rng.randi_range(int(mn[1]), int(mn[2])):
+				var pos := cell_center(c) + Vector2(rng.randf_range(-100, 100), rng.randf_range(-80, 80))
+				var f := spawn_monster(str(mn[0]), cell_center(c) if is_solid(pos) else pos, base_l + 1)
+				if f:
+					f.hp_max *= 1.3
+					f.hp = f.hp_max
 
 
 func _boss_dead(bid: String) -> bool:
@@ -803,6 +862,30 @@ func spawn_monster(mid: String, pos: Vector2, lvl: int, champion := false) -> Mo
 	m.setup(mid, lvl, self, champion)
 	monsters.append(m)
 	return m
+
+
+var corpses: Array = []
+var decals: Array = []
+
+
+func add_corpse(m: Monster) -> void:
+	corpses.append(m)
+	if corpses.size() > 40:
+		var old = corpses.pop_front()
+		if is_instance_valid(old):
+			old.remove_corpse()
+	get_tree().create_timer(45.0).timeout.connect(func():
+		if is_instance_valid(m) and m in corpses:
+			corpses.erase(m)
+			m.remove_corpse())
+
+
+func add_decal(n: Node2D) -> void:
+	decals.append(n)
+	if decals.size() > 80:
+		var old = decals.pop_front()
+		if is_instance_valid(old):
+			old.create_tween().tween_property(old, "modulate:a", 0.0, 1.0).finished.connect(old.queue_free)
 
 
 func on_monster_died(m: Monster) -> void:
@@ -828,6 +911,10 @@ func on_monster_died(m: Monster) -> void:
 		return
 	var ch := Game.ch
 	var drops := Loot.monster_drops(m.mlvl, m.kind, float(ch.d.get("magic_find", 0.0)), float(ch.d.get("gold_find", 0.0)))
+	if m.su_id != "":
+		var su := Loot.roll_item(m.mlvl + 2, float(ch.d.get("magic_find", 0.0)) + 100.0, 1.0, "equipment", true)
+		if su:
+			drops.append(su)
 	if m.kind == "boss":
 		for uid in m.data.get("drops", []):
 			if randf() < 0.65 or Game.difficulty > 0:
@@ -874,7 +961,7 @@ func drop_item(it: Item, pos: Vector2, quiet := false) -> void:
 	items_root.add_child(g)
 	ground_items.append(g)
 	if not quiet:
-		Sfx.play_at("drop_item", pos, 0.5)
+		g.toss()
 
 
 # Floors are rebuilt on every visit, so whatever lies on the ground is kept aside when the hero leaves
@@ -954,6 +1041,20 @@ func _spawn_player(arrive: String) -> void:
 		var pp: Vector2 = Game.portal.pos if not is_town else arrive_points.get("portal", pos + Vector2(80, 0))
 		if is_town or Game.portal.floor == floor_n:
 			_make_portal_node(pp)
+
+
+func spawn_hireling() -> void:
+	if hireling and is_instance_valid(hireling):
+		hireling.queue_free()
+	hireling = null
+	var m: Dictionary = Game.ch.merc
+	if m.is_empty() or m.get("dead", false) or player == null:
+		return
+	hireling = Hireling.new()
+	var spot := random_open_near(player.global_position, 60.0, 120.0)
+	hireling.position = spot if spot != Vector2.INF else player.global_position + Vector2(-60, 20)
+	ysort.add_child(hireling)
+	hireling.setup(self)
 
 
 # ---------------------------------------------------------------- portals
@@ -1198,28 +1299,80 @@ func _use_quest_prop(pl: Player, p: PropNode) -> void:
 		return
 	match p.id:
 		"zvon":
+			Sfx.play_at("bell_toll", p.global_position, 0.5)
 			if Game.ch.inv.count("srdce_zvonu") > 0:
-				Game.on_event("use", "zvon")
+				Game.msg(L.t({"cs": "Tohle není zvon z Hory. Srdce zvonu patří Báře do krčmy.", "en": "This is not the Mountain's bell. Take the clapper to Bára at the tavern."}), Color("e9d8a6"))
+			elif Game.quest_state("srdce_zvonu") == "active":
+				Game.msg(L.t({"cs": "Zvon bez srdce jen tupě duní. Bára slyšela srdce cinkat o patro níž.", "en": "Without its clapper the bell only thuds. Bára heard the clapper clinking one level further down."}), Color("e9d8a6"))
+			else:
+				Game.msg(L.t({"cs": "Zvon bez srdce jen tupě duní.", "en": "Without its clapper the bell only thuds."}), Color("e9d8a6"))
 	Game.on_event("use", p.id)
 
 
 # ---------------------------------------------------------------- feedback
-func float_text(pos: Vector2, text: String, color: Color, is_player := false) -> void:
+func float_text(pos: Vector2, text: String, color: Color, is_player := false, size := 0) -> void:
+	var l := _float_label(text, color, size if size > 0 else (24 if is_player else 26))
+	l.position = pos - l.size / 2.0 + Vector2(0, -12)
+	var tw := l.create_tween().set_parallel(true)
+	tw.tween_property(l, "scale", Vector2.ONE, 0.14).from(Vector2.ONE * 1.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.tween_property(l, "position:y", l.position.y - 46, 1.0).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	tw.tween_property(l, "modulate:a", 0.0, 0.45).set_delay(0.6)
+	tw.chain().tween_callback(l.queue_free)
+
+
+func miss_text(pos: Vector2, text: String) -> void:
+	var l := _float_label(text, Color(0.62, 0.6, 0.56, 0.85), 18)
+	l.position = pos - l.size / 2.0 + Vector2(randf_range(-10, 10), -4)
+	var tw := l.create_tween().set_parallel(true)
+	tw.tween_property(l, "position:y", l.position.y - 22, 0.6).set_ease(Tween.EASE_OUT)
+	tw.tween_property(l, "modulate:a", 0.0, 0.3).set_delay(0.3)
+	tw.chain().tween_callback(l.queue_free)
+
+
+# Hits on the same target within a short window add up into one number instead of a column of small ones.
+func damage_number(target: Node2D, amount: float, color: Color, crit := false, is_player := false) -> void:
+	var now := Time.get_ticks_msec()
+	var prev = target.get_meta("dmg_label") if target.has_meta("dmg_label") else null
+	if is_instance_valid(prev) and not prev.is_queued_for_deletion() and now - int(target.get_meta("dmg_t", 0)) < 350:
+		amount += float(prev.get_meta("sum", 0.0))
+		crit = crit or bool(prev.get_meta("crit", false))
+		prev.queue_free()
+	var n := maxi(1, int(round(amount)))
+	var big := crit or (is_player and target is Actor and amount > (target as Actor).hp_max * 0.2)
+	var size := 46 if crit else (int(clampf(26.0 + log(float(n)) * 2.2, 26.0, 38.0)) if not is_player else 28)
+	var col := Color("ffd23f") if crit else (Color("ff5a4a") if is_player else color)
+	var l := _float_label(str(n) + ("!" if crit else ""), col, size)
+	l.set_meta("sum", amount)
+	l.set_meta("crit", crit)
+	target.set_meta("dmg_label", l)
+	target.set_meta("dmg_t", now)
+	var top: Vector2 = target.top_pos() if target.has_method("top_pos") else target.global_position + Vector2(0, -60)
+	var side := (1.0 if randf() < 0.5 else -1.0) * randf_range(8.0, 22.0)
+	l.position = top - l.size / 2.0 + Vector2(side * 0.5, -8)
+	var tw := l.create_tween().set_parallel(true)
+	tw.tween_property(l, "scale", Vector2.ONE, 0.18 if big else 0.12).from(Vector2.ONE * (1.9 if big else 1.4)).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.tween_property(l, "position:x", l.position.x + side, 0.9).set_ease(Tween.EASE_OUT)
+	tw.tween_property(l, "position:y", l.position.y - (60 if big else 40), 0.9).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	tw.tween_property(l, "modulate:a", 0.0, 0.35).set_delay(0.75 if big else 0.55)
+	tw.chain().tween_callback(l.queue_free)
+
+
+func _float_label(text: String, color: Color, size: int) -> Label:
 	var l := Label.new()
 	l.text = text
 	l.add_theme_font_override("font", font)
-	l.add_theme_font_size_override("font_size", 26 if not is_player else 24)
+	l.add_theme_font_size_override("font_size", size)
 	l.add_theme_color_override("font_color", color)
-	l.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.9))
-	l.add_theme_constant_override("outline_size", 6)
-	l.position = pos + Vector2(-30, -20)
+	l.add_theme_color_override("font_outline_color", Color(0.04, 0.03, 0.03, 0.95))
+	l.add_theme_constant_override("outline_size", maxi(6, size / 4))
+	l.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.6))
+	l.add_theme_constant_override("shadow_offset_y", 2)
 	l.material = CanvasItemMaterial.new()
 	(l.material as CanvasItemMaterial).light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
 	text_root.add_child(l)
-	var tw := l.create_tween().set_parallel(true)
-	tw.tween_property(l, "position:y", l.position.y - 50, 0.9).set_ease(Tween.EASE_OUT)
-	tw.tween_property(l, "modulate:a", 0.0, 0.9).set_delay(0.35)
-	tw.chain().tween_callback(l.queue_free)
+	l.reset_size()
+	l.pivot_offset = l.size / 2.0
+	return l
 
 
 func boss_say(m: Monster, text: String, dur := 4.5) -> void:
@@ -1251,10 +1404,14 @@ func _process(delta: float) -> void:
 	if not is_town:
 		var lr := player.light_radius_px() * 1.15
 		for m in monsters:
-			var near: bool = m.global_position.distance_to(player.global_position) < lr or m.kind == "boss"
-			m.visible = near or m.light != null
+			var d: float = m.global_position.distance_to(player.global_position)
+			var near: bool = m.kind == "boss" or (d < lr and (d < CELL * 1.6 or in_sight(m.global_position)))
+			m.sight = move_toward(m.sight, 1.0 if near else 0.0, delta * 5.0)
+			m.visible = m.sight > 0.01 or m.light != null
+			m.sprite.self_modulate.a = m.sight if m.light == null else maxf(m.sight, 0.25)
 			if m.shadow:
-				m.shadow.visible = near
+				m.shadow.visible = m.sight > 0.5
+			m.update_bar(delta)
 
 
 func _explore() -> void:
@@ -1266,6 +1423,77 @@ func _explore() -> void:
 			if n.x >= 0 and n.y >= 0 and n.x < w and n.y < h and ox * ox + oy * oy <= r * r and explored[n.y * w + n.x] == 0:
 				explored[n.y * w + n.x] = 1
 				explored_rev += 1
+				if fog_img:
+					fog_img.set_pixel(n.x + 1, n.y + 1, Color(0, 0, 0, 0))
+					fog_dirty = true
+	if fog_dirty:
+		fog_dirty = false
+		(fog.texture as ImageTexture).update(fog_img)
+
+
+# Contact shadow on the floor along every wall, so rooms read as dug out rather than painted on.
+func _make_wall_shade() -> void:
+	var tex := {}
+	for d in [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]:
+		var g := Gradient.new()
+		g.offsets = PackedFloat32Array([0.0, 0.45, 1.0])
+		g.colors = PackedColorArray([Color(0, 0, 0, 0.62), Color(0, 0, 0, 0.22), Color(0, 0, 0, 0)])
+		var t := GradientTexture2D.new()
+		t.gradient = g
+		t.width = 32
+		t.height = 32
+		t.fill_from = Vector2(0.5, 0.5) + Vector2(d) * 0.5
+		t.fill_to = Vector2(0.5, 0.5) - Vector2(d) * 0.5
+		tex[d] = t
+	var rects := []
+	for y in h:
+		for x in w:
+			if solid[y * w + x] == 1:
+				continue
+			var o := Vector2(x * CELL, y * CELL)
+			if y > 0 and solid[(y - 1) * w + x] == 1:
+				rects.append([tex[Vector2i.UP], Rect2(o + Vector2(0, 30), Vector2(CELL, 30))])
+			if y < h - 1 and solid[(y + 1) * w + x] == 1:
+				rects.append([tex[Vector2i.DOWN], Rect2(o + Vector2(0, CELL - 14), Vector2(CELL, 14))])
+			if x > 0 and solid[y * w + x - 1] == 1:
+				rects.append([tex[Vector2i.LEFT], Rect2(o, Vector2(22, CELL))])
+			if x < w - 1 and solid[y * w + x + 1] == 1:
+				rects.append([tex[Vector2i.RIGHT], Rect2(o + Vector2(CELL - 22, 0), Vector2(22, CELL))])
+	var n := Node2D.new()
+	n.z_index = -17
+	n.light_mask = 1 | SHADOW_MASK
+	n.draw.connect(func():
+		for r in rects:
+			n.draw_texture_rect(r[0], r[1], false))
+	add_child(n)
+
+
+# Unexplored cells stay pitch black; explored ones show dimly under the ambient, like D1's remembered walls.
+func _make_fog() -> void:
+	fog_img = Image.create(w + 2, h + 2, false, Image.FORMAT_RGBA8)
+	fog_img.fill(Color(0, 0, 0, 1))
+	fog = Sprite2D.new()
+	fog.texture = ImageTexture.create_from_image(fog_img)
+	fog.centered = false
+	fog.scale = Vector2(CELL, CELL)
+	fog.position = Vector2(-CELL * 1.5, -CELL * 1.5)
+	fog.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	fog.z_index = 30
+	var mat := CanvasItemMaterial.new()
+	mat.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	fog.material = mat
+	add_child(fog)
+
+
+func in_sight(p: Vector2) -> bool:
+	var a := to_cell(player.global_position)
+	var b := to_cell(p)
+	var n := maxi(absi(b.x - a.x), absi(b.y - a.y))
+	for i in range(1, n):
+		var c := Vector2i(roundi(lerpf(a.x, b.x, float(i) / n)), roundi(lerpf(a.y, b.y, float(i) / n)))
+		if c.x >= 0 and c.y >= 0 and c.x < w and c.y < h and solid[c.y * w + c.x] == 1:
+			return false
+	return true
 
 
 func _update_hover() -> void:

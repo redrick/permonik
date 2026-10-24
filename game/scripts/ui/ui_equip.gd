@@ -2,6 +2,7 @@ class_name UiEquip
 extends Control
 
 var slot := "weapon"
+var merc := false
 
 
 static func make(sl: String, pos: Vector2, cells: Vector2i) -> UiEquip:
@@ -22,6 +23,8 @@ func _process(_d: float) -> void:
 
 
 func _item() -> Item:
+	if merc:
+		return Game.ch.merc.get("equip", {}).get(slot, null)
 	return Game.ch.equip.get(slot, null)
 
 
@@ -36,9 +39,9 @@ func _draw() -> void:
 	var it := _item()
 	var ui := UiRoot.inst
 	if ui.held:
-		var fits: bool = slot in Game.ch.slot_for(ui.held)
+		var fits: bool = (ui.held.slot() == slot or (slot == "weapon" and ui.held.slot() == "weapon")) if merc else slot in Game.ch.slot_for(ui.held)
 		if fits:
-			var ok := Game.ch.can_equip(ui.held)
+			var ok := Hireling.slot_ok(Game.ch.merc, ui.held, slot) if merc else Game.ch.can_equip(ui.held)
 			draw_rect(r.grow(-2), Color(0.3, 0.8, 0.35, 0.18) if ok else Color(0.9, 0.2, 0.2, 0.22))
 	if it:
 		UiTheme.draw_item(self, it, r.grow(-4))
@@ -67,15 +70,22 @@ func _gui_input(event: InputEvent) -> void:
 		if ui.identify_mode:
 			ui.identify(_item())
 			return
-		ui.equip_click(slot)
+		if merc:
+			ui.merc_equip_click(slot)
+		else:
+			ui.equip_click(slot)
 	elif event.button_index == MOUSE_BUTTON_RIGHT:
 		if ui.identify_mode:
 			ui.identify_mode = false
 			return
 		var it := _item()
 		if it and ui.held == null and Game.ch.inv.add(it):
-			Game.ch.equip.erase(slot)
-			ui.after_equip()
+			if merc:
+				Game.ch.merc.equip.erase(slot)
+				ui.merc_changed()
+			else:
+				Game.ch.equip.erase(slot)
+				ui.after_equip()
 
 
 func tip() -> Dictionary:

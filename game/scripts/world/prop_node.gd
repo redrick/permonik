@@ -35,13 +35,20 @@ func _build(with_shadow: bool) -> void:
 		t = DB.placeholder("prop_" + id, Vector2i(maxi(48, int(fp[0]) * 64), maxi(48, int(fp[1]) * 64 + 40)), Color("7a6a58"))
 	sprite.texture = t
 	sprite.offset = Vector2(0, -t.get_height() / 2.0 + 8.0)
-	if with_shadow and not def.get("footprint", [1, 1]) == [0, 0] and t.get_height() < 260:
+	if with_shadow and not def.get("footprint", [1, 1]) == [0, 0]:
 		var sh := Sprite2D.new()
 		sh.texture = Actor.shadow_texture()
-		var sw := t.get_width() * 0.7
-		sh.scale = Vector2(sw / 64.0, sw / 64.0 * 0.7)
+		if t.get_height() < 260:
+			var sw := t.get_width() * 0.7
+			sh.scale = Vector2(sw / 64.0, sw / 64.0 * 0.7)
+		else:
+			var fw := float(def.get("footprint", [2, 1])[0]) * 64.0 * 1.05
+			sh.scale = Vector2(fw / 64.0, minf(fw / 64.0 * 0.32, 1.4))
+			sh.position = Vector2(0, -6)
 		add_child(sh)
 	add_child(sprite)
+	if id in CHIMNEYS:
+		_smoke(t)
 	var lt = def.get("light", null)
 	if lt is Dictionary:
 		light = Fx.make_light(Color(lt.get("color", "#ffb85c")), float(lt.get("radius", 3)) * 64.0, 0.95)
@@ -50,7 +57,73 @@ func _build(with_shadow: bool) -> void:
 		var tw := light.create_tween().set_loops()
 		tw.tween_property(light, "energy", 0.8, 0.25 + randf() * 0.2)
 		tw.tween_property(light, "energy", 1.0, 0.25 + randf() * 0.2)
+	if id in ["kovarna", "pec"]:
+		var st = load("res://assets/audio/sfx/ember_crackle.ogg")
+		if st:
+			st = st.duplicate()
+			st.loop = true
+			var ap := AudioStreamPlayer2D.new()
+			ap.stream = st
+			ap.max_distance = 500.0
+			ap.volume_db = linear_to_db(maxf(Sfx.volume, 0.001))
+			ap.autoplay = true
+			add_child(ap)
 	set_meta("reach", float(t.get_width()) * 0.3)
+
+
+const CHIMNEYS := ["dum_a", "dum_b", "chalupa", "kovarna", "hostinec", "mincovna"]
+static var _chimney := {}
+
+
+# The drawn smoke curl is the highest ink on a house, so the chimney sits just under it.
+static func chimney_of(prop_id: String, t: Texture2D) -> Vector2:
+	if _chimney.has(prop_id):
+		return _chimney[prop_id]
+	var img := t.get_image()
+	if img.is_compressed():
+		img.decompress()
+	var out := Vector2(-1, -1)
+	for y in img.get_height():
+		for x in img.get_width():
+			if img.get_pixel(x, y).a > 0.16:
+				out = Vector2(x + 2, y + 26)
+				break
+		if out.x >= 0:
+			break
+	_chimney[prop_id] = out
+	return out
+
+
+func _smoke(t: Texture2D) -> void:
+	var c := chimney_of(id, t)
+	if c.x < 0:
+		return
+	var p := CPUParticles2D.new()
+	p.texture = Fx.soft()
+	p.amount = 9
+	p.lifetime = 3.2
+	p.preprocess = 3.0
+	p.direction = Vector2.UP
+	p.spread = 12.0
+	p.initial_velocity_min = 14.0
+	p.initial_velocity_max = 24.0
+	p.gravity = Vector2(9, -6)
+	p.scale_amount_min = 0.35
+	p.scale_amount_max = 0.6
+	var curve := Curve.new()
+	curve.add_point(Vector2(0, 0.4))
+	curve.add_point(Vector2(1, 1.6))
+	p.scale_amount_curve = curve
+	var g := Gradient.new()
+	g.offsets = PackedFloat32Array([0.0, 0.25, 1.0])
+	g.colors = PackedColorArray([Color(0.55, 0.53, 0.56, 0.0), Color(0.5, 0.49, 0.53, 0.3), Color(0.42, 0.42, 0.48, 0.0)])
+	p.color_ramp = g
+	var mat := CanvasItemMaterial.new()
+	mat.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	p.material = mat
+	p.position = Vector2(c.x - t.get_width() / 2.0, c.y - t.get_height() + 8.0)
+	p.z_index = 1
+	add_child(p)
 
 
 func set_texture(prop_id: String) -> void:

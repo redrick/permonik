@@ -56,6 +56,20 @@ On the first run Godot imports the assets, which takes a minute.
 | P | Read a town portal scroll |
 | Esc | Close panels / pause menu |
 
+On phones and tablets (and in mobile browsers) the game switches to touch controls: a floating stick,
+an attack button that picks its own target, a skill arc and potion buttons. The full scheme is in
+[docs/touch-controls.md](docs/touch-controls.md). Settings → Interface scales the UI for small screens.
+
+### Builds
+
+```sh
+tools/release.sh 0.1.0     # web, Linux, Windows and Android into build/release/0.1.0/
+tools/android.sh deploy    # build, install and start on a connected Android device
+```
+
+The Android release key is read from `~/.config/permonik/release.env` (not in the repo); without it the
+APK is signed with Godot's debug key.
+
 ### Developer shortcuts
 
 Arguments after `--` start the game directly in a level. These runs are not saved.

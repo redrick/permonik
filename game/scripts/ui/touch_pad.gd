@@ -32,14 +32,14 @@ var _ctx_t := 0.0
 
 
 static func wanted() -> bool:
-	return OS.has_feature("mobile") or Game.args.has("--touch")
+	return OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios") or Game.args.has("--touch")
 
 
 func _ready() -> void:
 	active = true
 	layer = 35
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	desktop_test = not OS.has_feature("mobile")
+	desktop_test = Game.args.has("--touch")
 	Input.emulate_mouse_from_touch = false
 	font = load("res://assets/fonts/TataHand.ttf")
 	view = Control.new()

@@ -17,6 +17,8 @@ var slides := {}
 var props := {}
 var codex := {}
 var books := {}
+var superuniques := {}
+var hirelings := {}
 var rare_names := {"first": [], "second": []}
 var sets := {}
 var set_items := {}
@@ -41,6 +43,8 @@ func reload() -> void:
 	uniques = _j("uniques", {})
 	shrines = _j("shrines", {})
 	champions = _j("champions", {"names": [], "mods": {}})
+	superuniques = _j("superuniques", {})
+	hirelings = _j("hirelings", {})
 	npcs = _j("npcs", {})
 	var a = _j("acts", [])
 	acts = a if a is Array else []

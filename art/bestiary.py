@@ -5,7 +5,7 @@ import bestiary_beasts as B
 import bestiary_folk as F
 import bestiary_spirits as Sp
 
-POSES = ("idle", "walk", "attack")
+POSES = ("idle", "walk", "walk2", "windup", "attack")
 
 CREATURES = [
     # id, w, h, fn, shadow rx (None = none), flyer shadow rx, lift[, dx]

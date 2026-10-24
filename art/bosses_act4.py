@@ -128,12 +128,12 @@ def dleg(hip, knee, ankle, foot, w, c):
 
 
 def san(pose):
-    st = {"idle": 0, "walk": 1, "attack": 2, "portrait": 0}[pose]
+    st = {"idle": 0, "walk": 1, "attack": 2, "portrait": 0, "walk2": 4, "windup": 5}[pose]
     shadow(-12, 92)
-    wv = (0, 6) if st == 2 else (0, 0)
+    wv = {2: (0, 6), 4: (0, 10), 5: (-4, 16)}.get(st, (0, 0))
     dwing((-2, 122), (-8 + wv[0], 182 + wv[1]), (-24, 222 + wv[1]),
           [(-62, 246 + wv[1] * 0.3), (-84, 222 + wv[1]), (-86, 190), (-66, 158)], (-28, 128), WING_DK)
-    lf = [(-60, 10), (24, 6)] if st != 1 else [(-46, 12), (8, 8)]
+    lf = {1: [(-46, 12), (8, 8)], 4: [(-70, 6), (34, 6)], 5: [(-64, 6), (18, 6)]}.get(st, [(-60, 10), (24, 6)])
     dleg((-52, 60), (-36, 40), (-48, 14), (lf[0][0], 6), 24, DRAGON_DK)
     dleg((18, 70), (24, 42), (18, 14), (lf[1][0], 6), 20, DRAGON_DK)
     tail = bez((-72, 72), (-108, 70), (-122, 44), (-106, 20), 24)
@@ -164,13 +164,17 @@ def san(pose):
     for i, x in enumerate(range(-72, 20, 12)):
         y = 92 + 26 * math.sin(math.pi * (x + 74) / 96) * 0.95
         shape([(x - 4, y - 2), (x + 1, y + 9 + (i % 2) * 3), (x + 5, y - 2)], DRAGON_DK, LINE * 0.6)
-    lf2 = [(-40, 6), (44, 4)] if st != 1 else [(-64, 6), (56, 8)]
+    lf2 = {1: [(-64, 6), (56, 8)], 4: [(-32, 6), (30, 6)], 5: [(-44, 6), (36, 4)]}.get(st, [(-40, 6), (44, 4)])
     dleg((-46, 66), (-28, 44), (-36, 14), (lf2[0][0], 6), 28, DRAGON)
     dleg((32, 76), (44, 48), (36, 16), (lf2[1][0], 6), 24, DRAGON)
     if st == 2:
         hp = {"poison": ((78, 66), -22), "frost": ((80, 132), -10), "fire": ((68, 192), -20)}
     elif pose == "portrait":
         hp = {"poison": ((60, 136), -12), "frost": ((76, 160), 2), "fire": ((52, 186), 10)}
+    elif st == 5:
+        hp = {"poison": ((58, 106), 16), "frost": ((60, 164), 24), "fire": ((34, 212), 32)}
+    elif st == 4:
+        hp = {"poison": ((74, 100), -4), "frost": ((76, 156), 8), "fire": ((50, 206), 14)}
     elif st == 1:
         hp = {"poison": ((78, 90), -12), "frost": ((80, 146), -2), "fire": ((58, 196), 4)}
     else:
@@ -182,7 +186,7 @@ def san(pose):
         neck(b0, (b0[0] + 10, b0[1] + (hy - b0[1]) * 0.7), (hx - 22, hy - 4), (hx, hy), 26, 14, c, dk)
     for kind in ("fire", "frost", "poison"):
         (hx, hy), r = hp[kind]
-        gape = {0: 8, 1: 12, 2: 30}[st] + (14 if pose == "portrait" else 0)
+        gape = {0: 8, 1: 12, 2: 30, 4: 10, 5: 18}[st] + (14 if pose == "portrait" else 0)
         dhead(hx - 14, hy, 1.35, kind, rot=r, gape=gape, breathe=18 if st == 2 else 0)
 
 
@@ -232,15 +236,15 @@ def lid_down(top, foot, w0, sway, pool):
 
 
 def vij(pose):
-    st = {"idle": 0, "walk": 1, "attack": 2, "open": 3}[pose]
+    st = {"idle": 0, "walk": 1, "attack": 2, "open": 3, "walk2": 4, "windup": 5}[pose]
     shadow(-6, 100)
     for (x0, a, l) in ((-42, 188, 22), (-30, 196, 16), (-58, 172, 20), (36, 352, 18), (24, 344, 14)):
-        x0 += (8 if st == 1 and x0 > 0 else 0)
+        x0 += (8 if st == 1 and x0 > 0 else -8 if st == 4 and x0 < 0 else 0)
         tube([(x0, 9), pt((x0, 9), a, l * 0.6), pt(pt((x0, 9), a, l * 0.6), a + (-8 if a < 270 else 8), l * 0.5)], 6, 1.2, ROOT, LINE * 0.6, sh=0)
     tube([(-62, 150), (-98, 104), (-104, 26)], 26, 18, EARTH_DK, sh=0.18)
     for a in (190, 220, 250, 280, 310):
         tube([(-104, 24), pt((-104, 24), a, 11), pt(pt((-104, 24), a, 11), a + 30, 7)], 6, 1.2, ROOT, LINE * 0.6, sh=0)
-    fl = 8 if st == 1 else 0
+    fl = {1: 8, 4: -6, 5: 3}.get(st, 0)
     tube([(-40, 50), (-46 - fl, 20)], 34, 32, EARTH_DK, sh=0.15)
     tube([(28, 50), (34 + fl, 20)], 36, 34, VIJ_EARTH, sh=0.15)
     body = bez((-82, 44), (-104, 80), (-100, 130), (-74, 160)) + bez((-74, 160), (-56, 186), (-20, 200), (8, 194)) + \
@@ -268,6 +272,10 @@ def vij(pose):
     s0 = (64, 128)
     if st == 2:
         e0, h0, ha = (100, 168), (86, 206), 100
+    elif st == 5:
+        e0, h0, ha = (114, 98), (118, 160), 70
+    elif st == 4:
+        e0, h0, ha = (94, 102), (86, 22), -100
     elif st == 1:
         e0, h0, ha = (98, 100), (106, 22), -80
     else:
@@ -280,7 +288,7 @@ def vij(pose):
         tube([q, pt(q, a, 8), pt(pt(q, a, 8), a + 25, 6)], 3, 0.8, ROOT, LINE * 0.5, sh=0)
     for i in range(5):
         a = ha + (i - 2) * 24
-        p1 = pt(h0, a, 10); p2 = pt(p1, a + (22 if st != 2 else -22), 8)
+        p1 = pt(h0, a, 10); p2 = pt(p1, a + (22 if st not in (2, 5) else -22), 8)
         tube([h0, p1, p2], 5.5, 1.2, ROOT, LINE * 0.7, sh=0)
     fx, fy, fs = 34, 150, 1.3
     with T(fx, fy, fs):
@@ -325,7 +333,7 @@ def vij(pose):
                     stroke([(x, ey + 30), (x + (k - 3) * 0.8, ey + 36)], LINE * 0.9)
     eyes = [(fx + ex * fs, fy + ey * fs) for ex, ey in ((-12, 4), (14, 3))]
     if st != 3:
-        sway = {0: 0, 1: -8, 2: 8}[st]
+        sway = {0: 0, 1: -8, 2: 8, 4: 6, 5: -4}[st]
         for (ex, ey), foot, pool in zip(eyes, (24, 56), (10, 14)):
             lid_down((ex, ey + 9), foot + sway, 30, sway * 0.6, pool)
         with T(fx, fy, fs):

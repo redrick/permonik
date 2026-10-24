@@ -595,7 +595,7 @@
   "blocks": true,
   "light": null,
   "breakable": false,
-  "interact": "quest"
+  "interact": null
  },
  "socha_permonika": {
   "footprint": [

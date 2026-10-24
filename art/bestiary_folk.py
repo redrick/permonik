@@ -10,6 +10,8 @@ GOLD = Col(0.85, "#f0c64a")
 STP = {
     "idle": dict(hip=(0, 13), lean=-14, ff=(-4, 1.5), nf=(4, 1.5), fh=(-2, 12.5), nh=(8, 2), head=-4, swipe=False),
     "walk": dict(hip=(0, 12.2), lean=-28, ff=(6, 3.2), nf=(-6, 1.5), fh=(-2, 12.5), nh=(9, 6), head=12, swipe=False),
+    "walk2": dict(hip=(0, 12.5), lean=-25, ff=(-6, 1.5), nf=(6, 3.2), fh=(2, 9), nh=(3, 4), head=10, swipe=False),
+    "windup": dict(hip=(1, 12.4), lean=-6, ff=(-6, 1.5), nf=(5, 1.5), fh=(-2, 12.5), nh=(-5, 19), head=6, swipe=False),
     "attack": dict(hip=(-3, 17), lean=-38, ff=(-11, 5), nf=(1, 9), fh=(-2, 12.5), nh=(15, 13), head=26, swipe=True),
 }
 
@@ -42,7 +44,7 @@ def sotek(pose):
     leg((hip[0]+0.8, hip[1]), q["nf"], SOT)
     with T(hip[0], hip[1], 1, rot=lean):
         with T(2.5, 15, 1, rot=q["head"]):
-            _imp_head(pose == "attack")
+            _imp_head(pose in ("attack", "windup"))
         a, e, h = limb((1.5, 10), q["nh"], 6.5, 6.5, 2.6, 2.0, SOT, -1)
         ang = math.degrees(math.atan2(h[1]-e[1], h[0]-e[0]))
         shape(ell(h[0], h[1], 1.4, 1.2, 10), SOT, LINE*0.6)
@@ -79,6 +81,8 @@ PM_BOOT = Col(0.32, "#5a4234")
 PMP = {
     "idle": dict(x=0, lean=-3, ff=(-2.5, 1.2), nf=(2.5, 1.2), nh=(7, 8), ka=-20, cap=0, swipe=False),
     "walk": dict(x=0, lean=-10, ff=(3.5, 2.2), nf=(-3, 1.2), nh=(8, 9), ka=0, cap=4, swipe=False),
+    "walk2": dict(x=0, lean=-8, ff=(-3, 1.2), nf=(3.5, 2.2), nh=(5, 7), ka=-12, cap=2, swipe=False),
+    "windup": dict(x=1, lean=5, ff=(-3, 1.2), nf=(3, 1.2), nh=(-1, 15), ka=70, cap=-3, swipe=False),
     "attack": dict(x=-2, lean=-20, ff=(-6, 1.2), nf=(5, 1.2), nh=(13, 11), ka=-5, cap=10, swipe=True),
 }
 
@@ -143,6 +147,8 @@ HEJ_FACE = Col(0.5, "#86705a")
 HJP = {
     "idle": dict(hip=(-6, 40), lean=-20, ff=(-10, 2), nf=(9, 2), fh=(20, -6), nh=(26, -2), head=-8, mouth=0.3),
     "walk": dict(hip=(-6, 39), lean=-28, ff=(12, 4), nf=(-16, 2), fh=(8, -4), nh=(34, 6), head=-4, mouth=0.3),
+    "walk2": dict(hip=(-6, 39.5), lean=-26, ff=(-16, 2), nf=(12, 4), fh=(32, 6), nh=(10, -4), head=-6, mouth=0.3),
+    "windup": dict(hip=(-5, 40), lean=-4, ff=(-14, 2), nf=(10, 2), fh=(-14, 58), nh=(-8, 70), head=16, mouth=0.7),
     "attack": dict(hip=(-8, 39), lean=-14, ff=(-22, 2), nf=(14, 2), fh=(14, 66), nh=(46, 52), head=26, mouth=1.0),
 }
 
@@ -227,6 +233,8 @@ ROCK = Col(0.55, "#8a8c8e")
 DZP = {
     "idle": dict(hip=(0, 38), lean=-4, ff=(-6, 1.8), nf=(6, 1.8), fh=(4, 2), nh=(12, 6), head=-4, sway=0, stone=False),
     "walk": dict(hip=(0, 37), lean=-10, ff=(9, 3), nf=(-9, 1.8), fh=(-6, 6), nh=(14, 8), head=0, sway=6, stone=False),
+    "walk2": dict(hip=(0, 37.3), lean=-9, ff=(-9, 1.8), nf=(9, 3), fh=(14, 8), nh=(-4, 6), head=-2, sway=2, stone=False),
+    "windup": dict(hip=(1, 37), lean=12, ff=(-10, 1.8), nf=(9, 1.8), fh=(18, 20), nh=(-16, 24), head=8, sway=9, stone="hold"),
     "attack": dict(hip=(-2, 37), lean=6, ff=(-12, 1.8), nf=(10, 1.8), fh=(26, 22), nh=(-14, 38), head=6, sway=-4, stone=True),
 }
 
@@ -261,7 +269,7 @@ def diva_zena(pose):
         if q["stone"]:
             shape(notch(ell(h[0], h[1]+2.5, 3.8, 3.2, 18), 0.6, 3), ROCK, LINE*0.9)
             stroke([(h[0]-1, h[1]+3.5), (h[0]+1.5, h[1]+2)], LINE*0.5)
-            for i in range(3):
+            for i in range(3 if q["stone"] is True else 0):
                 stroke([(h[0]+6+i*2, h[1]+6-i*3), (h[0]+10+i*2, h[1]+7-i*3)], LINE*0.6, g=WHITE, alpha=0.6)
 
 
@@ -311,6 +319,8 @@ HOOF = Col(0.25, "#3e3436")
 CTP = {
     "idle": dict(hip=(-2, 37), lean=-10, ff=(-7, 1.8), nf=(6, 1.8), fh=(6, 6), nh=(13, 8), head=-6, tail=0),
     "walk": dict(hip=(-2, 36), lean=-16, ff=(10, 3), nf=(-10, 1.8), fh=(-4, 6), nh=(15, 10), head=-2, tail=8),
+    "walk2": dict(hip=(-2, 36.3), lean=-14, ff=(-10, 1.8), nf=(10, 3), fh=(14, 9), nh=(5, 7), head=-4, tail=-4),
+    "windup": dict(hip=(-1, 37), lean=-2, ff=(-12, 1.8), nf=(8, 1.8), fh=(12, 14), nh=(-5, 38), head=8, tail=-14),
     "attack": dict(hip=(-8, 35), lean=-20, ff=(-20, 1.8), nf=(6, 1.8), fh=(-8, 24), nh=(24, 26), head=4, tail=-8),
 }
 
@@ -354,7 +364,11 @@ def cert(pose):
         chain(path, 2.6)
         _hook(path[-1], -70)
         swoosh(bez((hw[0]-2, hw[1]+16), (hw[0]+10, hw[1]+24), (hw[0]+22, hw[1]+18), (hw[0]+27, hw[1]+6)), 2, WHITE, 0.35)
-    elif pose == "walk":
+    elif pose == "windup":
+        path = bez(hw, (hw[0]-4, hw[1]+12), (hw[0]-18, hw[1]+12), (hw[0]-24, hw[1]+1))
+        chain(path, 2.6)
+        _hook(path[-1], -120)
+    elif pose in ("walk", "walk2"):
         path = bez(hw, (hw[0]+1, hw[1]-12), (hw[0]-8, 4), (hw[0]-34, 2.2))
         chain(path, 2.6)
         _hook((hw[0]-36, 2.8), 190)

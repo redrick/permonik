@@ -156,6 +156,7 @@ func _menu() -> void:
 		"inn":
 			buttons.add_child(UiTheme.button(L.t("trade"), func(): ui.open_vendor(npc), 220))
 			buttons.add_child(UiTheme.button(L.t({"cs": "Kostky", "en": "Dice"}), func(): ui.open_vendor(npc, true), 220))
+			buttons.add_child(UiTheme.button(L.t({"cs": "Pomocník", "en": "Hireling"}), func(): ui.open_hireling(), 220))
 			buttons.add_child(UiTheme.button(L.t("gossip"), _gossip, 220))
 		"chronicler":
 			buttons.add_child(UiTheme.button(L.t("identify"), _identify_all, 240))

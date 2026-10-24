@@ -13,13 +13,16 @@ Code: `tools/audio_dsp.py` (filters, Karplus-Strong cimbál, bells, formant voic
 `tools/audio_sfx.py` (one `sfx_<id>` function per effect), `tools/audio_music.py` (one `t_<id>` per track).
 
 - **SFX**: `game/assets/audio/sfx/<id>.ogg`, mono 44.1 kHz, peak normalised to -3 dBFS, short tails.
+  Exceptions are the ambient loops `loot_beam` (-18 dBFS) and `ember_crackle` (-6 dBFS), set in `PEAK_DB`.
+  Those two are rendered circularly (no trim or fade) and seam-checked; import leaves Loop off, so set
+  `stream.loop = true` in code and play them on their own player, not through the one-shot pool.
 - **Music**: `game/assets/audio/music/<id>.ogg`, stereo 44.1 kHz, ~-14 to -17 LUFS (ungated estimate),
   peak below -1.5 dBFS. Loops are rendered circularly (event tails and reverb wrap into the head), so
   the last sample flows into the first; enable **Loop** on import for every track except the two
   `*_sting` files. Each loop is rotated by 60 ms so the seam sits in a quiet tail and the first downbeat
   lands at 0.06 s.
 
-## SFX (59)
+## SFX (71)
 
 | id | what it is |
 |---|---|
@@ -82,6 +85,18 @@ Code: `tools/audio_dsp.py` (filters, Karplus-Strong cimbál, bells, formant voic
 | trap_snap | Spring-trap snap: click, clang, boing. |
 | smoke | Smoke puff with hiss. |
 | footstep_water | Footstep in shallow water. |
+| swing_light | Fast, bright whoosh for daggers and axes. |
+| footstep_rock | Soft step on rock: hard tick and gravel crunch. |
+| footstep_wood | Soft step on boards: hollow wooden knock. |
+| footstep_dirt | Soft muffled step on packed earth. |
+| footstep_grass | Soft step in grass: short rustle over a dull thump. |
+| crit_hit | Critical hit: saturated sub thump, bone crack and heavy squelch. |
+| kill_thump | Final blow / body falling: low thud, cloth and a second smaller thump. |
+| drop_magic | Magic item drop: thump and a small E6 chime. |
+| drop_rare | Rare item drop: thump and a brighter A5 to E6 two-note bell with air. |
+| drop_unique | Unique item drop: D-major bell stack, rising sparkle run and shimmer (~1.3 s). |
+| loot_beam | Very quiet sustained high shimmer, 1.5 s loop, while a unique lies on the floor. |
+| ember_crackle | Tiny quiet ember crackle with soft pops, 1.2 s loop, for chimneys and torches. |
 
 ## Music (13)
 

@@ -1,0 +1,20 @@
+{
+  "tovarys": {
+    "name": {"cs": "Havířský tovaryš", "en": "Miner's Journeyman"},
+    "desc": {"cs": "Chodí v první řadě a bere rány za tebe. Unese krumpáč, sekeru, palcát i meč.", "en": "Walks in front and takes the blows for you. Wields picks, axes, maces and swords."},
+    "gender": "m", "look": "havir", "ai": "melee", "range": 62,
+    "weapons": ["pick", "axe", "mace", "club", "flail", "sword"],
+    "hp": [70, 11], "armor": [6, 2.2], "dmg": [3, 8], "to_hit": [20, 7],
+    "cost": [120, 45],
+    "names": ["Vavřinec", "Matouš", "Ondřej", "Kuba Hrbek", "Šimon", "Bartoloměj", "Prokop Kadlec", "Jíra"]
+  },
+  "strelkyne": {
+    "name": {"cs": "Střelkyně", "en": "Markswoman"},
+    "desc": {"cs": "Drží se za tebou a střílí z luku nebo kuše. Méně vydrží, ale nepřítele uvidí dřív.", "en": "Keeps behind you and shoots a bow or crossbow. Frailer, but she sees the enemy first."},
+    "gender": "f", "look": "zbojnice", "ai": "ranged", "range": 420,
+    "weapons": ["bow", "crossbow"],
+    "hp": [50, 8], "armor": [3, 1.4], "dmg": [2, 7], "to_hit": [25, 8],
+    "cost": [140, 50],
+    "names": ["Kačka", "Bětka", "Johanka", "Markyta", "Lidka Sokolová", "Dorla", "Majdalena", "Ráchel"]
+  }
+}

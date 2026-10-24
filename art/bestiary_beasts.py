@@ -11,6 +11,8 @@ DOG_L = Col(0.42, "#6e6878")
 QP = {
     "idle": dict(tilt=0, hipy=29, hipx=-19, ff=(0, 0), fn=(4, 0), hf=(-3, 0), hn=(1, 0), lift=(0, 0, 0, 0), head=-4, jaw=0, tail=-30, crouch=0),
     "walk": dict(tilt=-2, hipy=28.5, hipx=-19, ff=(-6, 0), fn=(10, 2), hf=(6, 3), hn=(-7, 0), lift=(0, 3, 3, 0), head=-8, jaw=0, tail=-20, crouch=0),
+    "walk2": dict(tilt=-1, hipy=28.8, hipx=-19, ff=(10, 2), fn=(-6, 0), hf=(-7, 0), hn=(6, 3), lift=(3, 0, 0, 3), head=-6, jaw=0, tail=-26, crouch=0),
+    "windup": dict(tilt=-7, hipy=26, hipx=-15, ff=(6, 0), fn=(9, 0), hf=(-6, 0), hn=(-2, 0), lift=(0, 0, 0, 0), head=-14, jaw=14, tail=-40, crouch=1),
     "attack": dict(tilt=14, hipy=24, hipx=-23, ff=(18, 10), fn=(22, 6), hf=(-12, 0), hn=(-8, 0), lift=(10, 6, 0, 0), head=8, jaw=34, tail=10, crouch=1),
 }
 
@@ -119,6 +121,8 @@ RAT_TAIL = Col(0.6, "#b88d88")
 RP = {
     "idle": dict(tilt=0, y=3, ff=(0, 0), fn=(2, 0), hf=(0, 0), hn=(2, 0), lf=(0, 0, 0, 0), head=-6, jaw=0, tail=0),
     "walk": dict(tilt=-3, y=3.4, ff=(-3, 1.5), fn=(4, 0), hf=(3, 0), hn=(-3, 1.5), lf=(1.5, 0, 0, 1.5), head=-2, jaw=0, tail=4),
+    "walk2": dict(tilt=-1, y=3.4, ff=(4, 0), fn=(-3, 1.5), hf=(-3, 1.5), hn=(3, 0), lf=(0, 1.5, 1.5, 0), head=-5, jaw=0, tail=-3),
+    "windup": dict(tilt=-8, y=2.6, ff=(1, 0), fn=(3, 0), hf=(-3, 0), hn=(-1, 0), lf=(0, 0, 0, 0), head=-14, jaw=16, tail=6),
     "attack": dict(tilt=22, y=4, ff=(5, 6), fn=(7, 4), hf=(-2, 0), hn=(0, 0), lf=(6, 4, 0, 0), head=10, jaw=30, tail=-4),
 }
 
@@ -179,6 +183,8 @@ BAT_WING = Col(0.38, "#6e5560")
 BTP = {
     "idle": dict(w=(0, 8), tilt=0, jaw=0, head=0),
     "walk": dict(w=(-9, -6), tilt=4, jaw=0, head=0),
+    "walk2": dict(w=(11, 17), tilt=-2, jaw=0, head=2),
+    "windup": dict(w=(14, 20), tilt=16, jaw=16, head=10),
     "attack": dict(w=(6, 14), tilt=-24, jaw=34, head=-10),
 }
 
@@ -243,6 +249,8 @@ SPIT = Col(0.7, "#a8d65a")
 SNP = {
     "idle": dict(sp=[(-44, 3.5), (-36, 4), (-26, 10), (-14, 5)], up=[(-14, 5), (2, 0), (10, 8), (8, 22), (4, 34), (12, 42)], head=-8, jaw=0),
     "walk": dict(sp=[(-46, 6), (-38, 9), (-28, 3), (-16, 8)], up=[(-16, 8), (-2, 13), (10, 2), (14, 16), (12, 28), (20, 34)], head=-14, jaw=0),
+    "walk2": dict(sp=[(-45, 4), (-37, 2.5), (-27, 8), (-15, 3.5)], up=[(-15, 3.5), (0, 1), (12, 11), (10, 22), (6, 32), (14, 40)], head=-10, jaw=0),
+    "windup": dict(sp=[(-44, 3.5), (-36, 4), (-26, 10), (-14, 5)], up=[(-14, 5), (2, 0), (6, 10), (0, 22), (-6, 34), (0, 44)], head=-22, jaw=14),
     "attack": dict(sp=[(-44, 3.5), (-36, 4), (-26, 10), (-14, 5)], up=[(-14, 5), (0, 0), (8, 6), (10, 20), (18, 30), (30, 32)], head=-2, jaw=38),
 }
 
@@ -303,7 +311,7 @@ def _kamenny_had(pose):
         fill(ell(5.2, 2.6, 2.2, 1.5, 14), SOCKET)
         eye(5.4, 2.6, 1.0, EYE_Y, 2.4)
         dot(12, 0.2, 0.6, SOCKET)
-        if jaw:
+        if pose == "attack":
             for i, (dx, dy, r) in enumerate(((19, -1, 2.6), (25, -2, 1.8), (29.5, -2.5, 1.2))):
                 glow(dx, dy, r*2, SPIT, 0.18, 3)
                 shape(ell(dx, dy, r, r*0.8, 14), SPIT, LINE*0.6)
@@ -317,6 +325,8 @@ WERE_L = Col(0.62, "#a39280")
 WWP = {
     "idle": dict(hip=(-8, 46), lean=-24, ff=(-14, 0), nf=(6, 0), fh=(24, 4), nh=(30, 10), head=-4, jaw=10),
     "walk": dict(hip=(-8, 45), lean=-30, ff=(8, 3), nf=(-18, 0), fh=(14, 2), nh=(36, 18), head=0, jaw=10),
+    "walk2": dict(hip=(-8, 45), lean=-28, ff=(-18, 0), nf=(8, 3), fh=(34, 18), nh=(16, 4), head=-2, jaw=10),
+    "windup": dict(hip=(-6, 46), lean=2, ff=(-20, 0), nf=(10, 0), fh=(-4, 26), nh=(-22, 68), head=22, jaw=26),
     "attack": dict(hip=(-10, 48), lean=-10, ff=(-24, 0), nf=(8, 0), fh=(44, 30), nh=(-8, 74), head=14, jaw=40),
 }
 

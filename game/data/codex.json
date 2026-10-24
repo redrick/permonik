@@ -409,7 +409,6 @@
     "upir"
    ],
    "book": [
-    "kniha_svatebni_kosile",
     "kniha_upir"
    ]
   },
@@ -582,9 +581,6 @@
    ],
    "unique": [
     "klekanicina_rouska"
-   ],
-   "book": [
-    "kniha_polednice"
    ]
   },
   "see": [
@@ -603,11 +599,7 @@
    "cs": "Polednice obchází v poledne pole a trestá ty, kdo v tu svatou hodinu odpočinku pracují; umí zamotat hlavu, uštvat hádankami k smrti nebo odnést dítě. Poledne bylo v lidové víře hodinou duchů stejně jako půlnoc. Nejznámější je Erbenova balada Polednice ze sbírky Kytice, podle níž Antonín Dvořák složil symfonickou báseň.",
    "en": "The polednice (PO-led-nyi-tseh) walks the fields at noon and punishes anyone working in that sacred hour of rest; she can addle a mind, torment a victim to death with riddles, or carry off a child. Noon, like midnight, was an hour of spirits. Best known is Erben's ballad 'The Noon Witch' from Kytice, which Antonín Dvořák set as a symphonic poem."
   },
-  "refs": {
-   "book": [
-    "kniha_polednice"
-   ]
-  },
+  "refs": {},
   "see": [
    "e_klekanice",
    "e_erben"
@@ -699,9 +691,6 @@
    ],
    "unique": [
     "hastrmanuv_hrnek"
-   ],
-   "book": [
-    "kniha_vodnik"
    ]
   },
   "see": [
@@ -2661,11 +2650,6 @@
   },
   "refs": {
    "book": [
-    "kniha_poklad",
-    "kniha_polednice",
-    "kniha_svatebni_kosile",
-    "kniha_vodnik",
-    "kniha_zlaty_kolovrat",
     "kniha_ptak_ohnivak",
     "kniha_baba_jaga",
     "kniha_kostej"

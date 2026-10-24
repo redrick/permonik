@@ -622,6 +622,144 @@ def sfx_smoke(r):
     return room(y, r, 0.2)
 
 
+def sfx_swing_light(r):
+    y = whoosh(r, 0.2, 600, 4200, 2.2, 0.45, 2.5)
+    n = len(y)
+    y += 0.25 * ffilt(r.standard_normal(n), hp(5000)) * swell(n, 0.06, 0.1, 2)
+    return y
+
+
+def sfx_footstep_rock(r):
+    y = buf(0.14)
+    place(y, 0.8 * thud(125, 80, N(0.09), 0.024), 0)
+    place(y, 0.5 * ffilt(r.standard_normal(N(0.006)), hp(2500)) * expenv(N(0.006), 0.0015), 0)
+    place(y, 0.8 * grit(r, N(0.12), 900, bp(3000, 1.4), 0.03), 0.003)
+    place(y, 0.35 * grit(r, N(0.08), 120, bp(1500, 2), 0.03), 0.02)
+    return room(y, r, 0.12, 0.3)
+
+
+def sfx_footstep_wood(r):
+    y = buf(0.16)
+    place(y, 0.8 * thud(150, 105, N(0.08), 0.02), 0)
+    place(y, 0.6 * wood_knock(r, 240, 0.025), 0.001)
+    place(y, 0.25 * wood_knock(r, 610, 0.012), 0.003)
+    place(y, 0.2 * ffilt(r.standard_normal(N(0.03)), bp(1200, 1)) * expenv(N(0.03), 0.008), 0)
+    return room(y, r, 0.15, 0.35, 2500)
+
+
+def sfx_footstep_dirt(r):
+    y = buf(0.15)
+    place(y, thud(95, 55, N(0.09), 0.025), 0)
+    n = N(0.1)
+    place(y, 0.6 * ffilt(r.standard_normal(n), chain(lp(900), hp(150))) * expenv(n, 0.025, 0.004), 0)
+    place(y, 0.3 * grit(r, N(0.08), 400, chain(bp(1400, 1), lp(2500)), 0.02), 0.005)
+    return room(y, r, 0.08, 0.25, 2000)
+
+
+def sfx_footstep_grass(r):
+    y = buf(0.18)
+    n = N(0.13)
+    rustle = tvfilt(r.standard_normal(n), lambda t, f: bp(1, 1.3)(f / (4200 - 9000 * np.clip(t, 0, 0.2))), 512)
+    place(y, 0.25 * rustle * swell(n, 0.015, 0.09, 1.5), 0)
+    place(y, 0.22 * grit(r, N(0.12), 900, chain(hp(2500), lp(8000)), 0.04), 0.004)
+    place(y, 0.5 * thud(85, 55, N(0.07), 0.02, 0.004), 0)
+    return room(y, r, 0.06, 0.25, 2500)
+
+
+def sfx_crit_hit(r):
+    y = buf(0.6)
+    place(y, 1.2 * thud(190, 38, N(0.35), 0.11), 0)
+    place(y, 0.7 * sine(sweep(70, 40, N(0.4))) * expenv(N(0.4), 0.16, 0.004), 0)
+    place(y, 1.0 * ffilt(r.standard_normal(N(0.02)), hp(1800)) * expenv(N(0.02), 0.004), 0)
+    place(y, 0.6 * modal([540, 1180, 1960, 2900], [1, 0.7, 0.5, 0.3], [0.04, 0.03, 0.02, 0.012], N(0.2), r), 0.002)
+    n = N(0.3)
+    sq = tvfilt(r.standard_normal(n), lambda t, f: bp(1, 2.2)(f / (1600 * np.exp(-t / 0.06) + 250)), 1024) * expenv(n, 0.06)
+    place(y, 1.2 * sq, 0.004)
+    place(y, 0.7 * grit(r, N(0.15), 900, bp(2400, 1), 0.04), 0.008)
+    place(y, 0.5 * thud(140, 60, N(0.12), 0.04), 0.05)
+    return room(softclip(1.8 * y / np.abs(y).max(), 0.35, 0.95), r, 0.12)
+
+
+def sfx_kill_thump(r):
+    y = buf(0.5)
+    place(y, thud(100, 36, N(0.3), 0.09, 0.004), 0)
+    n = N(0.2)
+    place(y, 0.6 * ffilt(r.standard_normal(n), chain(lp(600), hp(60))) * expenv(n, 0.05, 0.006), 0)
+    place(y, 0.45 * thud(130, 60, N(0.12), 0.035), 0.11)
+    place(y, 0.3 * grit(r, N(0.2), 250, bp(1600, 1.2), 0.05), 0.01)
+    return room(y, r, 0.1, 0.4)
+
+
+def sfx_drop_magic(r):
+    y = buf(0.8)
+    place(y, 0.35 * thud(150, 90, N(0.08), 0.025), 0)
+    place(y, 0.5 * bell(mtof(nm("E6")), 0.45, r, 0.5, 0.1), 0.01)
+    return room(y, r, 0.15, 0.4)
+
+
+def sfx_drop_rare(r):
+    y = buf(1.1)
+    place(y, 0.35 * thud(150, 90, N(0.08), 0.025), 0)
+    place(y, 0.5 * bell(mtof(nm("A5")), 0.55, r, 0.9, 0.12), 0.01)
+    place(y, 0.55 * bell(mtof(nm("E6")), 0.65, r, 1.0, 0.12), 0.11)
+    n = N(0.6)
+    place(y, 0.12 * ffilt(r.standard_normal(n), hp(6000)) * swell(n, 0.05, 0.5, 1.5), 0.1)
+    return room(y, r, 0.2, 0.5)
+
+
+def sfx_drop_unique(r):
+    y = buf(1.4)
+    place(y, 0.6 * thud(120, 45, N(0.25), 0.08), 0)
+    place(y, 0.6 * bell(mtof(nm("D5")), 1.0, r, 0.8, 0.25), 0.005)
+    place(y, 0.35 * bell(mtof(nm("A5")), 0.85, r, 0.9, 0.1), 0.06)
+    place(y, 0.3 * bell(mtof(nm("D6")), 0.8, r, 1.0, 0.1), 0.14)
+    for i, s in enumerate(("F#6", "A6", "D7", "F#7", "A7")):
+        place(y, 0.25 * tink(r, mtof(nm(s)), N(0.5), 0.12), 0.18 + 0.055 * i, 1 - 0.1 * i)
+    n = N(0.9)
+    place(y, 0.18 * ffilt(r.standard_normal(n), hp(5500)) * swell(n, 0.25, 0.6, 1.5) * (1 + 0.5 * np.sin(TAU * 9 * tt(n))), 0.08)
+    return room(y, r, 0.25, 0.6, 2500)
+
+
+def loopable(x, f):
+    return round(f * len(x) / SR) * SR / len(x)
+
+
+def place_wrap(dst, src, t0, g=1.0):
+    s = N(t0) % len(dst)
+    idx = (s + np.arange(len(src))) % len(dst)
+    np.add.at(dst, idx, g * src)
+
+
+def room_loop(x, rng, mix, dur, dark):
+    return x + mix * conv(x, make_ir(rng, dur, 0.005, 6000, dark, 4, stereo=False)[0], circular=True) * 0.5
+
+
+def sfx_loot_beam(r):
+    y = buf(1.5)
+    n = len(y)
+    t = tt(n)
+    for i, (s, a) in enumerate((("D6", 0.5), ("A6", 0.4), ("D7", 0.3), ("A7", 0.15))):
+        f = loopable(y, mtof(nm(s)))
+        trem = 1 + 0.35 * np.sin(TAU * loopable(y, 2.0 + 0.7 * i) * t + r.uniform(0, TAU))
+        y += a * np.sin(TAU * f * t + r.uniform(0, TAU)) * trem
+    air = ffilt(r.standard_normal(n), chain(hp(5000), lp(11000)), circular=True)
+    y += 0.25 * air * (1 + 0.6 * np.sin(TAU * loopable(y, 1.33) * t))
+    for i in range(10):
+        place_wrap(y, tink(r, r.uniform(3500, 6500), N(0.3), 0.06), i * 0.15 + r.uniform(0, 0.08), r.uniform(0.15, 0.35))
+    return room_loop(y, r, 0.3, 1.2, 4000)
+
+
+def sfx_ember_crackle(r):
+    n = N(1.2)
+    imp = (r.random(n) < 160 / SR) * r.standard_normal(n) * r.random(n) ** 2
+    y = ffilt(imp, chain(hp(1800), lp(9000)), circular=True)
+    k = np.abs(y).max()
+    for t0 in (np.arange(6) + r.uniform(0.1, 0.9, 6)) * 0.2:
+        place_wrap(y, modal([r.uniform(700, 1400)], [1], [0.004], N(0.03), r), t0, r.uniform(0.15, 0.3) * k)
+    y += 0.08 * k * ffilt(r.standard_normal(n), chain(lp(900, 1), hp(80)), circular=True)
+    return room_loop(y, r, 0.1, 0.3, 3000)
+
+
 SFX = [
     "swing", "swing_heavy", "hit_flesh", "hit_bone", "hit_metal", "hit_stone", "block", "player_hurt",
     "player_death", "monster_death", "death_bone", "death_beast", "death_ghost", "boss_roar", "boss_death",
@@ -631,12 +769,21 @@ SFX = [
     "ui_click", "ui_open", "ui_close", "no_mana", "step_stone_1", "step_stone_2", "step_stone_3",
     "water_splash", "coin_bounce", "laugh_permonik", "ghost_wail", "wolf_howl", "cauldron_bubble", "chains",
     "petrify", "heal", "buff", "trap_snap", "smoke", "footstep_water",
+    "swing_light", "footstep_rock", "footstep_wood", "footstep_dirt", "footstep_grass", "crit_hit", "kill_thump",
+    "drop_magic", "drop_rare", "drop_unique", "loot_beam", "ember_crackle",
 ]
+SFX_LOOPS = {"loot_beam", "ember_crackle"}
+PEAK_DB = {"loot_beam": -18, "ember_crackle": -6}
 
 
 def render_sfx(name):
     r = rng_for(name)
     y = globals()["sfx_" + name](r)
+    peak = 10 ** (PEAK_DB.get(name, -3) / 20)
+    if name in SFX_LOOPS:
+        y = ffilt(y, hp(30, 2), circular=True)
+        y -= y.mean()
+        return y / np.abs(y).max() * peak
     y = ffilt(y, hp(30, 2))
     y -= y.mean()
     a = np.abs(y)
@@ -644,4 +791,4 @@ def render_sfx(name):
     nz_ = np.nonzero(a > th)[0]
     y = y[: nz_[-1] + 1] if len(nz_) else y
     y = fade(y, 0.001, min(0.03, len(y) / SR * 0.2))
-    return y / np.abs(y).max() * 10 ** (-3 / 20)
+    return y / np.abs(y).max() * peak

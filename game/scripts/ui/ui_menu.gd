@@ -31,6 +31,12 @@ func _ready() -> void:
 	UiScreens.vignette(self, Color(0, 0, 0, 0.85), 0.3)
 	_drift()
 	_show("main")
+	Game.storage_changed.connect(_on_storage_changed)
+
+
+func _on_storage_changed() -> void:
+	if page in ["main", "saves"]:
+		_show(page)
 
 
 func _drift() -> void:
@@ -137,7 +143,8 @@ func _main() -> void:
 	lb.disabled = saves.is_empty()
 	_btn(vb, L.t("menu_new_game"), func(): _show("new"))
 	_btn(vb, L.t("menu_options"), func(): _show("options"))
-	_btn(vb, L.t("menu_quit"), func(): get_tree().quit())
+	if not OS.has_feature("web"):
+		_btn(vb, L.t("menu_quit"), func(): get_tree().quit())
 	var foot := UiTheme.label("Zdař Bůh!", 22, Color(UiTheme.DIM, 0.6))
 	foot.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
 	foot.grow_horizontal = Control.GROW_DIRECTION_BEGIN

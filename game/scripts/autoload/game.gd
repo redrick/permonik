@@ -2,8 +2,15 @@ extends Node
 
 signal message(text: String, color: Color)
 signal quests_changed
+signal storage_changed
 
-const SHARED_STASH := "user://saves/_shared_stash.json"
+const DEFAULT_SAVE_DIR := "user://saves"
+const STORAGE_PERMISSION := "android.permission.MANAGE_EXTERNAL_STORAGE"
+const STASH_FILE := "_shared_stash.json"
+# Heroes and the shared stash live here; settings.cfg can point it at a synced folder shared by several devices.
+var save_dir := DEFAULT_SAVE_DIR
+# Write token of the hero file as this device last loaded or wrote it; a different one on disk = another device played.
+var _hero_w := ""
 var shared_stash := Inventory.new(12, 10)
 signal location_changed
 signal boss_bar(name: String, ratio: float, visible: bool)
@@ -31,7 +38,7 @@ var play_time := 0.0
 var session_seed := randi()
 var _autosave_t := 30.0
 # A release APK can't be started with command-line args; tools/android.sh run <args> writes them here.
-const DEVICE_ARGS := "/storage/emulated/0/Android/data/cz.antas.permonik/files/args.txt"
+const DEVICE_ARGS := "/storage/emulated/0/Android/data/cz.antas.permonik/files/dev/args.txt"
 var args := PackedStringArray()
 
 
@@ -39,11 +46,16 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	args = OS.get_cmdline_user_args()
 	if OS.has_feature("android") and FileAccess.file_exists(DEVICE_ARGS):
-		args.append_array(FileAccess.get_file_as_string(DEVICE_ARGS).split(" ", false))
+		args.append_array(FileAccess.get_file_as_string(DEVICE_ARGS).strip_edges().split(" ", false))
 	if args.has("--seed"):
 		session_seed = int(args[args.find("--seed") + 1])
 	_setup_input()
 	quests_changed.connect(save)
+	var cfg := ConfigFile.new()
+	cfg.load("user://settings.cfg")
+	save_dir = str(cfg.get_value("main", "save_dir", DEFAULT_SAVE_DIR))
+	if needs_storage_permission():
+		OS.request_permission(STORAGE_PERMISSION)
 	load_shared_stash()
 
 
@@ -69,6 +81,9 @@ func _process(delta: float) -> void:
 func _notification(what: int) -> void:
 	if what in [NOTIFICATION_WM_CLOSE_REQUEST, NOTIFICATION_APPLICATION_PAUSED] and level:
 		save()
+	elif what in [NOTIFICATION_APPLICATION_RESUMED, NOTIFICATION_APPLICATION_FOCUS_IN] and not level:
+		load_shared_stash()
+		storage_changed.emit()
 
 
 func _setup_input() -> void:
@@ -503,6 +518,8 @@ func new_game(cid: String, nm: String, persist := true) -> void:
 	play_time = 0.0
 	known = {}
 	save_slot = "%s_%d" % [cid, Time.get_unix_time_from_system()] if persist else ""
+	_hero_w = ""
+	load_shared_stash()
 	learn("class", cid)
 	save()
 
@@ -510,42 +527,137 @@ func new_game(cid: String, nm: String, persist := true) -> void:
 func save() -> void:
 	if save_slot == "":
 		return
+	var path := _hero_path(save_slot)
+	if FileAccess.file_exists(path):
+		var disk = JSON.parse_string(FileAccess.get_file_as_string(path))
+		if disk is Dictionary and str(disk.get("w", "")) != _hero_w:
+			save_slot = ""
+			message.emit(UiTheme.t("save_newer_elsewhere"), UiTheme.RED)
+			if level and main:
+				main.save_and_menu.call_deferred()
+			return
 	if level and is_instance_valid(level):
 		level.stash_loot()
-	DirAccess.make_dir_recursive_absolute("user://saves")
-	var data := {"v": 1, "char": ch.to_dict(), "difficulty": difficulty, "act": act, "quests": quests,
+	DirAccess.make_dir_recursive_absolute(save_dir)
+	_hero_w = "%x%x" % [Time.get_ticks_usec(), randi()]
+	var data := {"v": 1, "w": _hero_w, "char": ch.to_dict(), "difficulty": difficulty, "act": act, "quests": quests,
 		"flags": flags, "waypoints": waypoints, "known": known, "unlocked": unlocked_difficulty, "time": play_time, "floor_loot": floor_loot,
 		"saved_at": Time.get_datetime_string_from_system()}
-	var f := FileAccess.open("user://saves/%s.json" % save_slot, FileAccess.WRITE)
-	if f:
-		f.store_string(JSON.stringify(data))
+	_write(path, JSON.stringify(data))
 	save_shared_stash()
+
+
+# Write to a temp file and swap it in, so a sync client never picks up half a save.
+func _write(path: String, text: String) -> bool:
+	var f := FileAccess.open(path + ".tmp", FileAccess.WRITE)
+	if f == null:
+		return false
+	f.store_string(text)
+	f.close()
+	return DirAccess.rename_absolute(path + ".tmp", path) == OK
+
+
+func _hero_path(slot: String) -> String:
+	return save_dir.path_join(slot + ".json")
 
 
 # One stash every hero can reach, kept beside the hero files.
 func save_shared_stash() -> void:
-	DirAccess.make_dir_recursive_absolute("user://saves")
-	var f := FileAccess.open(SHARED_STASH, FileAccess.WRITE)
-	if f:
-		f.store_string(JSON.stringify(shared_stash.to_array()))
+	DirAccess.make_dir_recursive_absolute(save_dir)
+	_write(save_dir.path_join(STASH_FILE), JSON.stringify(shared_stash.to_array()))
 
 
 func load_shared_stash() -> void:
-	if not FileAccess.file_exists(SHARED_STASH):
-		return
-	var d = JSON.parse_string(FileAccess.get_file_as_string(SHARED_STASH))
-	if d is Array:
-		shared_stash.load_array(d)
+	var d = _read_json(save_dir.path_join(STASH_FILE))
+	shared_stash.load_array(d if d is Array else [])
+
+
+func _read_json(path: String) -> Variant:
+	if not FileAccess.file_exists(path):
+		return null
+	return JSON.parse_string(FileAccess.get_file_as_string(path))
+
+
+func needs_storage_permission(dir := save_dir) -> bool:
+	return OS.has_feature("android") and not dir.begins_with("user://") \
+		and not OS.get_granted_permissions().has(STORAGE_PERMISSION)
+
+
+# Moves every hero and the shared stash into dir and saves there from now on. A hero already in dir
+# (synced from another device) keeps whichever copy was saved later; two shared stashes are merged.
+# Returns the number of files moved, or -1 when dir can't be written.
+func set_save_dir(dir: String) -> int:
+	if dir != DEFAULT_SAVE_DIR:
+		dir = dir.trim_suffix("/")
+	if dir == save_dir:
+		return 0
+	DirAccess.make_dir_recursive_absolute(dir)
+	var probe := dir.path_join(".permonik_probe")
+	var pf := FileAccess.open(probe, FileAccess.WRITE)
+	if pf == null:
+		return -1
+	pf.close()
+	DirAccess.remove_absolute(probe)
+	if level:
+		save()
+	var moved := 0
+	var da := DirAccess.open(save_dir)
+	if da:
+		for fn in da.get_files():
+			if not fn.ends_with(".json"):
+				continue
+			var src := save_dir.path_join(fn)
+			var dst := dir.path_join(fn)
+			var ok := true
+			if fn == STASH_FILE:
+				ok = _merge_stash(src, dst)
+			elif not FileAccess.file_exists(dst) or _saved_at(src) > _saved_at(dst):
+				ok = DirAccess.copy_absolute(src, dst) == OK
+			if ok:
+				DirAccess.remove_absolute(src)
+				moved += 1
+	save_dir = dir
+	var cfg := ConfigFile.new()
+	cfg.load("user://settings.cfg")
+	cfg.set_value("main", "save_dir", dir)
+	cfg.save("user://settings.cfg")
+	load_shared_stash()
+	storage_changed.emit()
+	return moved
+
+
+func _saved_at(path: String) -> String:
+	var d = _read_json(path)
+	return str(d.get("saved_at", "")) if d is Dictionary else ""
+
+
+func _merge_stash(src: String, dst: String) -> bool:
+	var ours = _read_json(src)
+	var theirs = _read_json(dst)
+	if not theirs is Array:
+		return DirAccess.copy_absolute(src, dst) == OK
+	var inv := Inventory.new(shared_stash.w, shared_stash.h)
+	inv.load_array(theirs)
+	var left := []
+	for d in ours if ours is Array else []:
+		var it := Item.from_dict(d)
+		if not inv.add(it):
+			left.append(d)
+	if not left.is_empty():
+		_write(dst.get_basename() + "_left_%d.json" % Time.get_unix_time_from_system(), JSON.stringify(left))
+	return _write(dst, JSON.stringify(inv.to_array()))
 
 
 func load_game(slot: String) -> bool:
-	var path := "user://saves/%s.json" % slot
+	var path := _hero_path(slot)
 	if not FileAccess.file_exists(path):
 		return false
 	var data = JSON.parse_string(FileAccess.get_file_as_string(path))
 	if not data is Dictionary:
 		return false
 	save_slot = slot
+	_hero_w = str(data.get("w", ""))
+	load_shared_stash()
 	ch = CharData.new()
 	difficulty = int(data.get("difficulty", 0))
 	act = int(data.get("act", 1))
@@ -565,13 +677,13 @@ func load_game(slot: String) -> bool:
 
 func list_saves() -> Array:
 	var out := []
-	var da := DirAccess.open("user://saves")
+	var da := DirAccess.open(save_dir)
 	if da == null:
 		return out
 	for fn in da.get_files():
 		if not fn.ends_with(".json") or fn.begins_with("_"):
 			continue
-		var data = JSON.parse_string(FileAccess.get_file_as_string("user://saves/" + fn))
+		var data = _read_json(save_dir.path_join(fn))
 		if data is Dictionary:
 			var c: Dictionary = data.get("char", {})
 			out.append({"slot": fn.get_basename(), "name": c.get("name", "?"), "class": c.get("class", ""),
@@ -582,4 +694,4 @@ func list_saves() -> Array:
 
 
 func delete_save(slot: String) -> void:
-	DirAccess.remove_absolute("user://saves/%s.json" % slot)
+	DirAccess.remove_absolute(_hero_path(slot))

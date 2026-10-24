@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Build Permoník for Android and drive it on a device that other apps are developed on too.
 #
-#   tools/android.sh build            export build/permonik.apk (release, signed with the debug keystore)
+#   tools/android.sh build            export build/permonik.apk (release; signed with ~/.config/permonik/release.env
+#                                     when present, else with the debug keystore)
 #   tools/android.sh install          install it (only cz.antas.permonik, data kept)
 #   tools/android.sh run [args]       start it (stops the old instance first); args reach the game as user args
 #   tools/android.sh stop             stop it
@@ -21,7 +22,8 @@ PKG=cz.antas.permonik
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 GODOT=${GODOT:-$HOME/apps/godot-4.6/Godot_v4.6.3-stable_linux.x86_64}
 APK=$ROOT/build/permonik.apk
-ARGS_FILE=/storage/emulated/0/Android/data/$PKG/files/args.txt
+RELEASE_ENV=${RELEASE_ENV:-$HOME/.config/permonik/release.env}
+ARGS_FILE=/storage/emulated/0/Android/data/$PKG/files/dev/args.txt
 
 serial() {
 	if [[ -n ${ANDROID_SERIAL:-} ]]; then echo "$ANDROID_SERIAL"; return; fi
@@ -63,6 +65,9 @@ shift || true
 case $cmd in
 	build)
 		mkdir -p "$ROOT/build"
+		if [[ -f $RELEASE_ENV ]]; then
+			set -a; source "$RELEASE_ENV"; set +a
+		fi
 		export GODOT_ANDROID_KEYSTORE_RELEASE_PATH=${GODOT_ANDROID_KEYSTORE_RELEASE_PATH:-$HOME/.local/share/godot/keystores/debug.keystore}
 		export GODOT_ANDROID_KEYSTORE_RELEASE_USER=${GODOT_ANDROID_KEYSTORE_RELEASE_USER:-androiddebugkey}
 		export GODOT_ANDROID_KEYSTORE_RELEASE_PASSWORD=${GODOT_ANDROID_KEYSTORE_RELEASE_PASSWORD:-android}
@@ -77,7 +82,8 @@ case $cmd in
 		device_cmd
 		"${ADB[@]}" shell am force-stop "$PKG"
 		act=$("${ADB[@]}" shell cmd package resolve-activity --brief "$PKG" | tail -1 | tr -d '\r')
-		"${ADB[@]}" shell "mkdir -p $(dirname $ARGS_FILE) && echo '$*' > $ARGS_FILE"
+		# The game can't read a file shell writes into a folder the app created, so dev/ is always made by shell.
+		"${ADB[@]}" shell "rm -rf $(dirname $ARGS_FILE) && mkdir -p $(dirname $ARGS_FILE) && echo '$*' > $ARGS_FILE"
 		"${ADB[@]}" shell am start -n "$act"
 		;;
 	stop)
@@ -117,7 +123,7 @@ case $cmd in
 		"$0" run
 		;;
 	*)
-		sed -n '2,15p' "$0"
+		sed -n '2,16p' "$0"
 		exit 1
 		;;
 esac

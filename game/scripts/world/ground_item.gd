@@ -44,12 +44,87 @@ func _build() -> void:
 	add_child(lbl)
 	lbl.reset_size()
 	lbl.position = Vector2(-lbl.size.x / 2, -54)
-	var tw := create_tween()
-	position.y -= 30
-	tw.tween_property(self, "position:y", position.y + 30, 0.35).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
-	if item.rarity == Item.UNIQUE or item.slot() == "quest":
-		var l := Fx.make_light(item.color(), 80.0, 0.8)
+	if item.rarity in [Item.UNIQUE, Item.SET] or item.slot() == "quest":
+		var l := Fx.make_light(item.color(), 90.0, 0.9)
+		l.position = Vector2(0, -10)
 		add_child(l)
+		_beam()
+	elif item.rarity == Item.RARE:
+		var l := Fx.make_light(item.color(), 60.0, 0.6)
+		add_child(l)
+
+
+static var _beam_tex: Texture2D
+
+
+# A pillar of light over the best loot, so it reads across the room even in the dark.
+func _beam() -> void:
+	if _beam_tex == null:
+		var g := Gradient.new()
+		g.offsets = PackedFloat32Array([0.0, 0.7, 1.0])
+		g.colors = PackedColorArray([Color(1, 1, 1, 0), Color(1, 1, 1, 0.5), Color(1, 1, 1, 0.9)])
+		var t := GradientTexture2D.new()
+		t.gradient = g
+		t.fill_from = Vector2(0, 0)
+		t.fill_to = Vector2(0, 1)
+		t.width = 16
+		t.height = 128
+		_beam_tex = t
+	var mat := CanvasItemMaterial.new()
+	mat.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
+	mat.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+	for i in 2:
+		var b := Sprite2D.new()
+		b.texture = _beam_tex
+		b.material = mat
+		b.centered = false
+		b.scale = Vector2(3.0 if i == 0 else 0.8, 2.4)
+		b.position = Vector2(-8.0 * b.scale.x, -128.0 * b.scale.y - 4.0)
+		var c := item.color()
+		b.modulate = Color(c.r, c.g, c.b, 0.3 if i == 0 else 0.75)
+		b.z_index = 2
+		add_child(b)
+		var tw := b.create_tween().set_loops()
+		tw.tween_property(b, "modulate:a", b.modulate.a * 0.45, 1.1).set_trans(Tween.TRANS_SINE)
+		tw.tween_property(b, "modulate:a", b.modulate.a, 1.1).set_trans(Tween.TRANS_SINE)
+	var st = load("res://assets/audio/sfx/loot_beam.ogg")
+	if st:
+		st = st.duplicate()
+		st.loop = true
+		var ap := AudioStreamPlayer2D.new()
+		ap.stream = st
+		ap.max_distance = 700.0
+		ap.volume_db = linear_to_db(maxf(Sfx.volume * 0.8, 0.001))
+		ap.autoplay = true
+		add_child(ap)
+
+
+# Flung out of the kill in an arc, spinning, with a small bounce where it lands.
+func toss() -> void:
+	var land := position
+	var from := land + Vector2(randf_range(-36, 36), randf_range(-24, 0))
+	position = from
+	var base_rot := sprite.rotation
+	var h := randf_range(55.0, 85.0)
+	var dur := 0.45
+	var tw := create_tween().set_parallel(true)
+	tw.tween_property(self, "position", land, dur)
+	tw.tween_method(func(t: float): sprite.position.y = -10.0 - h * 4.0 * t * (1.0 - t), 0.0, 1.0, dur)
+	tw.tween_property(sprite, "rotation", base_rot, dur).from(base_rot + randf_range(-1, 1) * TAU)
+	tw.chain().tween_property(sprite, "position:y", -18.0, 0.08).set_ease(Tween.EASE_OUT)
+	tw.chain().tween_property(sprite, "position:y", -10.0, 0.1).set_ease(Tween.EASE_IN)
+	lbl.visible = false
+	var snd := "drop_item"
+	match item.rarity:
+		Item.UNIQUE, Item.SET:
+			snd = "drop_unique"
+		Item.RARE:
+			snd = "drop_rare"
+		Item.MAGIC:
+			snd = "drop_magic"
+	get_tree().create_timer(dur).timeout.connect(func():
+		if is_instance_valid(self):
+			Sfx.play_at(snd, global_position, {"drop_unique": 0.9, "drop_rare": 0.6, "drop_magic": 0.45}.get(snd, 0.5)))
 
 
 func show_label(on: bool) -> void:

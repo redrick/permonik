@@ -61,6 +61,7 @@ hit_recovery dmg_reduce_pct`
   "base_hp": 40, "hp_per_vit": 2.0, "hp_per_level": 2.0,
   "base_mana": 10, "mana_per_mag": 1.0, "mana_per_level": 1.0,
   "start_items": ["krumpac","kytel","lojovy_kahan","ziva_voda","ziva_voda","svitek_brana"],
+  "loot": {"weapons": ["pick","axe","mace","club","flail","sword"], "offhand": ["shield"]},
   "trees": [{"id":"krumpac","name":{...},"skills":["uder_do_zily","rozrazka","otres","zurivost_hory"]}, …],
   "default_rmb": "uder_do_zily"
 }}
@@ -152,6 +153,21 @@ Special effects: `{"heal":1}`, `{"random":1}` (Triglav), `{"curse":{"stat":"hp_p
 `{ "names": [{"cs":"Lamač kostí","en":"Bonebreaker"}, …], "mods": {"rychly":{"name":{...},"mods":[{"stat":"move_speed","value":50},{"stat":"attack_speed","value":30}]}, …} }`
 Mod names are nouns (*Rychlost, Kamenná kůže, Oheň*) so they need no gender.
 
+## superuniques.json
+Named monsters with fixed powers, one place each (D2 superuniques). They spawn every visit with minions,
+count as champions, give ×5 XP and drop one extra guaranteed-magic item usable by the hero.
+`{ "stary_farar": {"monster": "kostlivy_havir", "where": "act1_floor1", "name": {...}, "title": {...},
+"mods": ["silny","kamenny"] (champion mod ids), "minions": ["kostlivy_havir", 3, 4], "hp": 1.6, "line": {...}} }`
+`line` is shouted when it wakes.
+
+## hirelings.json
+Companions hired at the innkeeper (`Pomocník`), one at a time, saved in the hero's `merc`. Level = hero
+level; `hp`, `armor`, `dmg`, `to_hit`, `cost` are `[base, per level]`. `look` is the hero class whose
+layered drawings (with the hireling's gear) it wears. Slots weapon/head/body; `weapons` = allowed kinds.
+Revive at the inn for half the hire cost; a new hire returns the old one's gear to the pack.
+`{ "tovarys": {"name", "desc", "gender", "look": "havir", "ai": "melee"|"ranged", "range": 62,
+"weapons": [...], "hp": [70, 11], "armor": [6, 2.2], "dmg": [3, 8], "to_hit": [20, 7], "cost": [120, 45], "names": [...]} }`
+
 ## acts.json
 ```json
 [ { "id": 1, "name": {...}, "subtitle": {...}, "goal": {...},   // goal = the act's main thread in one line (tracker, quest log)
@@ -221,6 +237,9 @@ floor keeps its plan, but its monsters are drawn again on every visit. What stay
   tier upgrades, potions, and the four tithe seals into *Permoníkův desátek*.
 - **Stash** 12×10 per hero plus a shared 12×10 chest (`user://saves/_shared_stash.json`). **Gambling** at
   the innkeeper: you buy a base blind; 3 % unique, 4 % set, 18 % rare, the rest magic.
+- **Smart drops**: 35 % of a normal monster's equipment drops (champions 50 %, bosses 60 %, half the smith's
+  stock) draw only bases the hero can use soon: the class's `loot` weapon/offhand kinds, no other class's
+  items, required level ≤ hero level + 3.
 - **Tithes** (endgame): on Noční můra (30 %) and Nav (45 %) the four seal guardians drop their key; the
   ferryman in Nav takes a key to an `uber` floor (act 4, n 11–14, `"uber": {"hp", "dmg", "key", "seal"}`):
   the same fight at ×3 life ×1.6 damage, dropping its seal and three rich items. `uber` floors are not
@@ -281,7 +300,7 @@ always open. Ref kinds and when they fire: `monster` (it notices you), `npc` (ta
 ## books.json
 Readable public-domain legends, one lectern (`kniha` prop) each, re-readable in the Kronika's Books tab.
 ```json
-{ "kniha_vodnik": { "title": {...}, "author": {...}, "source": "url", "licence": "public domain — …",
+{ "kniha_vij": { "title": {...}, "author": {...}, "source": "url", "licence": "public domain — …",
   "pages": {"cs": ["…", "…"], "en": ["…"]}, "codex": ["e_vodnik"], "where": "act1_floor4" } }
 ```
 `where`: a floor (`act1_floor4`, lectern in a random open spot) or a town id (`hora`, lectern beside

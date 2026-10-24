@@ -26,11 +26,13 @@ def foot_claws(p, ang=0, n=3, ln=5, colr=None):
 
 # ------------------------------------------------------------------ Strzyga
 def strzyga(pose):
-    lean = {"idle": 0, "walk": 5, "attack": 9}[pose]
-    sway = {"idle": 0, "walk": -6, "attack": -4}[pose]
+    lean = {"idle": 0, "walk": 5, "walk2": 5, "windup": -3, "attack": 9}[pose]
+    sway = {"idle": 0, "walk": -6, "walk2": 6, "windup": 5, "attack": -4}[pose]
     shadow(0, 36)
     legs = {"idle": [((-6, 26), (-7, 12), (-9, 3)), ((8, 26), (10, 12), (12, 3))],
             "walk": [((-6, 26), (-14, 14), (-22, 3)), ((8, 26), (18, 14), (22, 3))],
+            "walk2": [((-6, 26), (4, 14), (12, 3)), ((8, 26), (0, 14), (-10, 3))],
+            "windup": [((-6, 26), (-14, 13), (-18, 3)), ((8, 26), (17, 13), (20, 3))],
             "attack": [((-6, 26), (-16, 12), (-24, 3)), ((8, 26), (20, 15), (26, 3))]}[pose]
     for hip, kn, ft in legs:
         tube([hip, kn], 5, 4, HAG_DK); tube([kn, ft], 4, 3.2, HAG_DK)
@@ -41,6 +43,10 @@ def strzyga(pose):
         e1 = (20 + lean, 118); h1 = (40 + lean, 126); a1 = 15
     elif pose == "walk":
         e1 = (-12, 84); h1 = (-34, 76); a1 = 200
+    elif pose == "walk2":
+        e1 = (8, 78); h1 = (22, 64); a1 = -40
+    elif pose == "windup":
+        e1 = (-14, 110); h1 = (-26, 128); a1 = 120
     else:
         e1 = (-6, 80); h1 = (-16, 62); a1 = 240
     tube([sh0, e1], 5.5, 4.4, HAG_DK); tube([e1, h1], 4.4, 3.4, HAG_DK)
@@ -79,7 +85,7 @@ def strzyga(pose):
         bez((hx + 4, hy - 13), (hx, hy - 10), (hx - 0.5, hy - 2), (hx + 1, hy + 9))
     form(ff, HAG, sdx=-1.5, sdy=0, sh=0.22)
     m = bez((hx + 6, hy - 7), (hx + 9, hy - 6), (hx + 12, hy - 6.5), (hx + 13.5, hy - 8)) + \
-        bez((hx + 13.5, hy - 8), (hx + 11, hy - (12 if pose == "attack" else 10)), (hx + 8, hy - 11), (hx + 6, hy - 7))
+        bez((hx + 13.5, hy - 8), (hx + 11, hy - (12 if pose in ("attack", "windup") else 10)), (hx + 8, hy - 11), (hx + 6, hy - 7))
     shape(m, MOUTH_DK, LINE * 0.6)
     for tx in (hx + 8.5, hx + 11):
         shape([(tx - 0.5, hy - 6.6), (tx + 0.6, hy - 6.6), (tx, hy - 9)], BONE, LINE * 0.3)
@@ -118,6 +124,10 @@ def strzyga(pose):
         e0 = (32 + lean, 86); h0 = (50 + lean, 80); ca = -15
     elif pose == "walk":
         e0 = (26 + lean, 74); h0 = (42 + lean, 66); ca = -30
+    elif pose == "walk2":
+        e0 = (16 + lean, 74); h0 = (8 + lean, 58); ca = -110
+    elif pose == "windup":
+        e0 = (-2, 82); h0 = (-18, 92); ca = 160
     else:
         e0 = (24, 72); h0 = (34, 54); ca = -65
     tube([s0, e0], 6, 4.8, HAG); tube([e0, h0], 4.8, 3.6, HAG)
@@ -164,13 +174,17 @@ def _ohn_arm(pose):
         el, hd = (36, 124), (22, 142); hang = 175
     elif pose == "walk":
         el, hd = (36, 80), (42, 62); hang = -60
+    elif pose == "walk2":
+        el, hd = (30, 80), (24, 60); hang = -118
+    elif pose == "windup":
+        el, hd = (34, 120), (12, 134); hang = 215
     else:
         el, hd = (34, 78), (40, 58); hang = -86
-    if pose == "attack":
+    if pose in ("attack", "windup"):
         hammer(hd, hang, 40)
     tube([sp, el], 14, 11, FUR_DEVIL, sh=0.15); tube([el, hd], 11, 9, FUR_DEVIL, sh=0.15)
-    if pose != "attack":
-        hammer(hd, hang, 40 if pose == "walk" else 50)
+    if pose not in ("attack", "windup"):
+        hammer(hd, hang, 40 if pose in ("walk", "walk2") else 50)
     shape(ell(hd[0], hd[1], 5.5, 5, 14), FUR_DEVIL_DK, LINE * 0.8)
     claws(pt(hd, hang + 90, 3), hang + 90, 3, 4, 1.2, 8, BONE_DK, curl=-60)
     if pose == "attack":
@@ -185,7 +199,9 @@ def ohnivec(pose):
         coin(x, y, r, sq)
     if pose == "walk":
         legs = [((-14, 42), (-26, 22), (-32, 6)), ((12, 40), (28, 24), (30, 7))]
-    elif pose == "attack":
+    elif pose == "walk2":
+        legs = [((-14, 42), (-4, 24), (2, 6)), ((12, 40), (6, 22), (-6, 7))]
+    elif pose in ("attack", "windup"):
         legs = [((-14, 42), (-26, 22), (-30, 6)), ((12, 40), (24, 22), (26, 7))]
     else:
         legs = [((-14, 42), (-20, 22), (-20, 6)), ((12, 40), (20, 22), (18, 7))]
@@ -210,10 +226,12 @@ def ohnivec(pose):
             fur = ragged((ft[0] - 8, ft[1] + 4), (ft[0] + 8, ft[1] + 4), 4, 3, 0.4)
             shape(fur + [(ft[0] + 6, ft[1] + 9), (ft[0] - 6, ft[1] + 9)], g, LINE * 0.7)
     sp = (-22, 102)
-    if pose == "attack":
+    if pose in ("attack", "windup"):
         el, hd = (-40, 86), (-50, 70)
     elif pose == "walk":
         el, hd = (-38, 82), (-30, 62)
+    elif pose == "walk2":
+        el, hd = (-38, 82), (-48, 64)
     else:
         el, hd = (-36, 80), (-40, 60)
     tube([sp, el], 13, 10, FUR_DEVIL_DK, sh=0.15); tube([el, hd], 10, 8, FUR_DEVIL_DK, sh=0.15)
@@ -253,7 +271,7 @@ def ohnivec(pose):
         stroke(ell(0, 0, 4.2, 4.2, 16), LINE * 0.4, closed=True, g=GOLD_DK)
         stroke([(-2, -2), (0, 2), (2, -2)], LINE * 0.5, g=GOLD_DK)
         glow(0, 0, 10, FIRE, 0.25, 5)
-    if pose == "attack":
+    if pose in ("attack", "windup"):
         _ohn_arm(pose)
     hx, hy = 24, 118
     for s, gcol in ((-1, HORN), (1, HORN)):
@@ -293,7 +311,7 @@ def ohnivec(pose):
     stroke([(hx + 4, hy + 7), (hx + 15, hy + 4)], LINE * 1.3)
     eye(hx + 11, hy + 1.5, 2.3, EYE_ORANGE, slit=True, halo=3.0)
     eye(hx + 3, hy + 2.5, 1.8, EYE_ORANGE, slit=True, halo=2.6)
-    if pose != "attack":
+    if pose not in ("attack", "windup"):
         _ohn_arm(pose)
 
 
@@ -317,16 +335,22 @@ def shovel(base, ang, ln=86, embers=False):
 
 
 def jezibaba(pose):
-    lean = {"idle": 0, "walk": 4, "attack": 7}[pose]
+    lean = {"idle": 0, "walk": 4, "walk2": 4, "windup": -3, "attack": 7}[pose]
     cast_shadow(2, 0, 34, 2.6)
     if pose == "walk":
         sb, sa = (52, 4), 100
+    elif pose == "walk2":
+        sb, sa = (36, 4), 83
     elif pose == "idle":
         sb, sa = (44, 4), 94
-    if pose != "attack":
+    if pose not in ("attack", "windup"):
         shovel(sb, sa, 104)
     if pose == "walk":
         lf, ln_ = ((-8, 26), (-18, 4)), ((8, 26), (18, 4))
+    elif pose == "walk2":
+        lf, ln_ = ((-8, 26), (4, 4)), ((8, 26), (-4, 4))
+    elif pose == "windup":
+        lf, ln_ = ((-8, 26), (-16, 4)), ((8, 26), (14, 4))
     elif pose == "attack":
         lf, ln_ = ((-8, 26), (-20, 4)), ((8, 26), (20, 4))
     else:
@@ -368,8 +392,8 @@ def jezibaba(pose):
     for k in range(4):
         stroke(bez((-24 + k * 8, 110), (-20 + k * 8, 96), (-16 + k * 7, 86), (-14 + k * 7, 76)), LINE * 0.45, g=col("#4c3858"))
     C.restoreState()
-    if pose == "attack":
-        fs, fe, fh = (-6, 94), (6, 84), (14 + lean, 90)
+    if pose in ("attack", "windup"):
+        fs, fe, fh = ((-6, 94), (6, 84), (14 + lean, 90)) if pose == "attack" else ((-6, 94), (-2, 82), (5, 95))
         tube([fs, fe], 6, 5, SHAWL); tube([fe, fh], 5, 4, HAG)
     nose = bez((hx + 4, hy + 4), (hx + 12, hy + 2), (hx + 18, hy - 4), (hx + 20, hy - 14)) + \
         bez((hx + 20, hy - 14), (hx + 17, hy - 12), (hx + 14, hy - 8), (hx + 9, hy - 4))
@@ -407,15 +431,21 @@ def jezibaba(pose):
     form(knot, SCARF, sh=0.15)
     if pose == "attack":
         sh0, el, hd = (8 + lean, 96), (22 + lean, 86), (28 + lean, 93)
-    elif pose == "walk":
+    elif pose in ("walk", "walk2"):
         sh0, el, hd = (8 + lean, 96), (20 + lean, 78), (44, 74)
+    elif pose == "windup":
+        sh0, el, hd = (8 + lean, 96), (22, 80), (14, 89)
     else:
         sh0, el, hd = (8, 96), (18, 76), (40, 70)
     if pose == "attack":
         shovel((-8, 84), 12, 46, embers=True)
+    elif pose == "windup":
+        shovel((21, 84), 145, 52, embers=True)
     tube([sh0, el], 7, 6, SHAWL); tube([el, hd], 6, 4.6, HAG)
     shape(ell(hd[0], hd[1], 3.8, 3.2, 12), HAG, LINE * 0.8)
     claws(pt(hd, 90, 1), 100, 3, 5, 1.3, 10, HAG_DK, curl=-70)
+    if pose == "windup":
+        shape(ell(fh[0], fh[1], 3.4, 3.0, 12), HAG, LINE * 0.8)
     if pose == "attack":
         shape(ell(fh[0], fh[1], 3.4, 3.0, 12), HAG, LINE * 0.8)
         motion([bez((-10, 120), (14, 128), (36, 128), (56, 120)), bez((-6, 70), (16, 66), (36, 70), (52, 80))])
@@ -519,10 +549,16 @@ def chaloupka(pose):
     elif pose == "walk":
         hip, jt, ft, tilt = (0, 82), (-26, 50), (22, 9), -6
         spread = (0, 12, -8, 182)
+    elif pose == "walk2":
+        hip, jt, ft, tilt = (8, 90), (-8, 56), (-22, 10), 4
+        spread = (-14, 2, -24, 168)
+    elif pose == "windup":
+        hip, jt, ft, tilt = (-4, 72), (-32, 42), (8, 9), -10
+        spread = (4, 14, -6, 184)
     else:
         hip, jt, ft, tilt = (0, 88), (-18, 52), (6, 9), 0
         spread = (2, 12, -6, 182)
-    shadow(ft[0] if pose != "attack" else -4, 46)
+    shadow({"attack": -4, "walk2": 0}.get(pose, ft[0]), 46)
     if pose != "attack":
         for (x, s) in ((-22, 1), (18, -1)):
             stroke([(ft[0] + x, 2), (ft[0] + x + s * 6, 6)], LINE * 0.5, alpha=0.5)
@@ -534,7 +570,7 @@ def chaloupka(pose):
         stroke(ell(m[0], m[1], 6.4, 2.2, 12, 180, 360, rot=a + 90), LINE * 0.45, g=CHICKEN_DK)
     sp = pt(jt, a, L * 0.78)
     form([pt(sp, a + 90, 3), pt(pt(sp, a + 150, 9), a + 90, 0), pt(sp, a + 90, 1) if False else pt(sp, a, 3)], BONE_DK, sh=0)
-    chicken_foot(ft, spread, lift=pose == "attack")
+    chicken_foot(ft, spread, lift=pose in ("attack", "walk2"))
     shape(ell(jt[0], jt[1], 7.5, 7, 16), CHICKEN, LINE * 0.9)
     thigh = [pt(hip, 0, 16), pt(hip, 180, 16)]
     tb = math.degrees(math.atan2(jt[1] - hip[1], jt[0] - hip[0]))

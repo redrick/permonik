@@ -29,8 +29,9 @@ static func soft() -> Texture2D:
 static func light_tex() -> Texture2D:
 	if _light == null:
 		var g := Gradient.new()
-		g.offsets = PackedFloat32Array([0.0, 0.55, 1.0])
-		g.colors = PackedColorArray([Color(1, 1, 1, 1), Color(0.8, 0.8, 0.8, 0.55), Color(0, 0, 0, 0)])
+		g.offsets = PackedFloat32Array([0.0, 0.3, 0.62, 0.85, 1.0])
+		g.colors = PackedColorArray([Color(1, 1, 1, 1), Color(0.9, 0.9, 0.9, 0.85), Color(0.6, 0.6, 0.6, 0.45),
+			Color(0.25, 0.25, 0.25, 0.15), Color(0, 0, 0, 0)])
 		var t := GradientTexture2D.new()
 		t.gradient = g
 		t.fill = GradientTexture2D.FILL_RADIAL
@@ -62,6 +63,7 @@ static func make_light(color: Color, radius_px: float, energy := 1.0, shadows :=
 	l.texture_scale = radius_px * 2.0 / 256.0
 	l.shadow_enabled = shadows
 	if shadows:
+		l.shadow_item_cull_mask = Level.SHADOW_MASK
 		l.shadow_filter = Light2D.SHADOW_FILTER_PCF5
 		l.shadow_filter_smooth = 2.0
 	return l
@@ -212,3 +214,83 @@ static func impact(level: Node, target: Actor, element: String, crit: bool) -> v
 	if big:
 		hitstop(level, 0.06)
 	level.shake(4.0 if big else 1.5)
+	debris(level, pos, str(target.get("matter")) if target.get("matter") != null else "flesh", big)
+
+
+const MATTER := {"flesh": [Color("6e0f0c"), Color("9a1d14")], "bone": [Color("d9d2bc"), Color("a89f86")],
+	"stone": [Color("8a8478"), Color("5e5a52")], "ghost": [Color("bfe8d0"), Color("e6fff0")]}
+
+
+# Bits that fly off what was hit: blood, bone chips, grit with sparks, or ghost wisps.
+static func debris(level: Node, pos: Vector2, matter: String, big: bool) -> void:
+	var cols: Array = MATTER.get(matter, MATTER.flesh)
+	var p := CPUParticles2D.new()
+	p.texture = soft()
+	p.one_shot = true
+	p.emitting = false
+	p.amount = 12 if big else 6
+	p.lifetime = 0.5
+	p.explosiveness = 1.0
+	p.spread = 70.0
+	p.direction = Vector2.UP
+	p.initial_velocity_min = 90.0
+	p.initial_velocity_max = 260.0 if big else 170.0
+	p.gravity = Vector2(0, -40) if matter == "ghost" else Vector2(0, 700)
+	p.scale_amount_min = 0.05
+	p.scale_amount_max = 0.13 if matter == "flesh" else 0.09
+	p.color = cols[0]
+	p.color_initial_ramp = _ramp(cols[0], cols[1])
+	if matter == "ghost":
+		p.material = _add_mat()
+	p.global_position = pos
+	level.fx_root.add_child(p)
+	p.emitting = true
+	level.get_tree().create_timer(0.8).timeout.connect(p.queue_free)
+	if matter == "stone" or matter == "bone":
+		burst(level, pos, Color("ffd890") if matter == "stone" else Color("fff4dc"), 6 if big else 3, 320.0, 0.18, 0.06)
+	elif matter == "flesh" and (big or randf() < 0.35):
+		blood_pool(level, pos + Vector2(randf_range(-20, 20), 40.0 + randf_range(0, 16)), 7.0 if big else 4.0)
+
+
+static func _ramp(a: Color, b: Color) -> Gradient:
+	var g := Gradient.new()
+	g.set_color(0, a)
+	g.set_color(1, b)
+	return g
+
+
+static var _pool_tex: Texture2D
+
+
+static func pool_tex() -> Texture2D:
+	if _pool_tex == null:
+		var img := Image.create(64, 64, false, Image.FORMAT_RGBA8)
+		var rng := RandomNumberGenerator.new()
+		rng.seed = 7
+		var blobs := []
+		for i in 7:
+			blobs.append([Vector2(rng.randf_range(18, 46), rng.randf_range(20, 44)), rng.randf_range(6, 14)])
+		for y in 64:
+			for x in 64:
+				var v := 0.0
+				for bl in blobs:
+					v += pow(bl[1], 2) / maxf(1.0, (Vector2(x, y) - bl[0]).length_squared())
+				var a := clampf((v - 0.9) * 3.0, 0.0, 1.0)
+				img.set_pixel(x, y, Color(1, 1, 1, a))
+		_pool_tex = ImageTexture.create_from_image(img)
+	return _pool_tex
+
+
+static func blood_pool(level: Node, pos: Vector2, size: float) -> void:
+	var s := Sprite2D.new()
+	s.texture = pool_tex()
+	s.modulate = Color(0.32, 0.02, 0.02, 0.85)
+	s.rotation = randf() * TAU
+	s.global_position = pos
+	s.z_index = -6
+	var sc := size / 22.0
+	s.scale = Vector2.ONE * sc * 0.3
+	level.items_root.add_child(s)
+	level.add_decal(s)
+	var tw := s.create_tween()
+	tw.tween_property(s, "scale", Vector2(sc, sc * 0.6), 0.6).set_ease(Tween.EASE_OUT)

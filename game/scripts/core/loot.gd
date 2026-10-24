@@ -27,7 +27,25 @@ static func _slot_ok(it: Item, slots: Array) -> bool:
 	return false
 
 
-static func random_base(ilvl: int, filter := "") -> String:
+# Smart drops only draw bases the hero can wield soon: their class's weapon and offhand kinds,
+# no other class's items, nothing far above their level.
+static func usable(b: Dictionary) -> bool:
+	var ch := Game.ch
+	var only := str(b.get("class", ""))
+	if only != "" and only != ch.class_id:
+		return false
+	if int(b.get("req", {}).get("level", 1)) > ch.level + 3:
+		return false
+	var pref: Dictionary = DB.classes.get(ch.class_id, {}).get("loot", {})
+	match str(b.get("slot", "")):
+		"weapon":
+			return str(b.get("kind", "")) in pref.get("weapons", [])
+		"offhand":
+			return str(b.get("kind", "")) in pref.get("offhand", [])
+	return true
+
+
+static func random_base(ilvl: int, filter := "", smart := false) -> String:
 	var pool := []
 	var weights := []
 	for id in DB.items:
@@ -45,6 +63,8 @@ static func random_base(ilvl: int, filter := "") -> String:
 			continue
 		var q := int(b.get("qlvl", 1))
 		if q > ilvl:
+			continue
+		if smart and not usable(b):
 			continue
 		pool.append(id)
 		weights.append(1.0 + q * 0.15 if sl != "consumable" else 6.0)
@@ -264,8 +284,10 @@ static func unique_item(uid: String, ilvl: int) -> Item:
 	return it
 
 
-static func roll_item(ilvl: int, mf := 0.0, magic_bonus := 0.0, filter := "") -> Item:
-	var id := random_base(ilvl, filter)
+static func roll_item(ilvl: int, mf := 0.0, magic_bonus := 0.0, filter := "", smart := false) -> Item:
+	var id := random_base(ilvl, filter, smart)
+	if id == "" and smart:
+		id = random_base(ilvl, filter)
 	if id == "":
 		return null
 	var it := Item.create(id, ilvl)
@@ -331,6 +353,9 @@ static func gold(ilvl: int, gf := 0.0) -> Item:
 	return it
 
 
+const SMART_SHARE := {"normal": 0.35, "champion": 0.5, "boss": 0.6}
+
+
 static func monster_drops(mlvl: int, kind: String, mf: float, gf: float) -> Array:
 	var out := []
 	var rolls := 1
@@ -345,7 +370,7 @@ static func monster_drops(mlvl: int, kind: String, mf: float, gf: float) -> Arra
 	for i in rolls:
 		var r := randf()
 		if kind == "boss" or r < 0.14:
-			var it := roll_item(mlvl, mf, magic_bonus, "equipment")
+			var it := roll_item(mlvl, mf, magic_bonus, "equipment", randf() < SMART_SHARE.get(kind, 0.35))
 			if it:
 				out.append(it)
 		elif r < 0.32:
@@ -421,7 +446,7 @@ static func vendor_stock(role: String, level: int) -> Array:
 	match role:
 		"smith":
 			for i in 14:
-				var it := roll_item(level + 2, 0, 0.0, "equipment")
+				var it := roll_item(level + 2, 0, 0.0, "equipment", i < 7)
 				if it and it.slot() in ["weapon", "offhand", "head", "body", "belt"]:
 					if randf() < 0.3:
 						make_magic(it)

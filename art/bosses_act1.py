@@ -23,8 +23,8 @@ BRONZE_DK = col("#7a5a2a")
 
 
 def klekanice(pose):
-    lean = {"idle": 0, "walk": 6, "attack": 7}[pose]
-    sway = {"idle": 0, "walk": -8, "attack": -5}[pose]
+    lean = {"idle": 0, "walk": 6, "walk2": 2, "windup": -5, "attack": 7}[pose]
+    sway = {"idle": 0, "walk": -8, "walk2": 5, "windup": 6, "attack": -5}[pose]
     shadow(2, 38)
     glow_ell(-2, 8, 40, 8, "#bfe0ff", 0.22)
     if pose == "attack":
@@ -32,6 +32,11 @@ def klekanice(pose):
         tube([fs, fe], 5.5, 4.4, HAG); tube([fe, fh], 4.4, 3.4, HAG)
         shape(ell(fh[0], fh[1], 3.4, 2.6, 12, rot=-10), HAG, LINE * 0.8)
         claws(fh, -5, 4, 11, 1.5, 16, HAG_DK, curl=-35)
+    elif pose == "windup":
+        fs = (26 + lean, 88); fe = (34 + lean, 80); fh = (41 + lean, 88)
+        tube([fs, fe], 5.5, 4.4, HAG); tube([fe, fh], 4.4, 3.4, HAG)
+        shape(ell(fh[0], fh[1], 3.2, 2.6, 12, rot=60), HAG, LINE * 0.8)
+        claws(fh, 70, 4, 6, 1.5, 16, HAG_DK, curl=-60)
     body = ragged((-34 + sway, 16), (26 + sway * 0.2, 15), 7, 10, 1.3) + \
         bez((26 + sway * 0.2, 15), (32, 34), (22 + lean * 0.3, 62), (26 + lean, 86)) + \
         bez((26 + lean, 86), (38 + lean, 92), (48 + lean, 104), (46 + lean, 118)) + \
@@ -77,14 +82,18 @@ def klekanice(pose):
     s0 = (14 + lean, 98)
     if pose == "attack":
         e0 = (22 + lean, 120); h0 = (14 + lean, 142); ca = 100
+    elif pose == "windup":
+        e0 = (10 + lean, 126); h0 = (0 + lean, 146); ca = 115
     elif pose == "walk":
         e0 = (30 + lean, 78); h0 = (46 + lean, 66); ca = -35
+    elif pose == "walk2":
+        e0 = (26 + lean, 76); h0 = (34 + lean, 58); ca = -75
     else:
         e0 = (28, 74); h0 = (40, 56); ca = -60
     tube([s0, e0], 6.0, 4.8, HAG); tube([e0, h0], 4.8, 3.6, HAG)
     shape(ell(h0[0], h0[1], 3.4, 2.8, 12, rot=ca), HAG, LINE * 0.8)
     claws(h0, ca + 150, 3, 5, 1.2, 10, HAG_DK, curl=-60)
-    bell(h0[0], h0[1] - 1, 1.3, rot=(-25 if pose == "attack" else 18 if pose == "walk" else 4), ringing=pose == "attack")
+    bell(h0[0], h0[1] - 1, 1.3, rot={"attack": -25, "walk": 18, "walk2": -12, "windup": 32}.get(pose, 4), ringing=pose == "attack")
     sleeve = [(s0[0] - 8, s0[1] + 8)] + bez((s0[0] - 8, s0[1] + 8), (s0[0] + 6, s0[1] + 12), (e0[0] + 4, e0[1] + 6), (e0[0] + 3, e0[1] - 1)) + \
         ragged((e0[0] + 3, e0[1] - 1), (e0[0] - 6, e0[1] - 4), 3, 4, 2) + \
         bez((e0[0] - 6, e0[1] - 4), (s0[0] - 2, s0[1] - 14), (s0[0] - 12, s0[1] - 8), (s0[0] - 8, s0[1] + 8))
@@ -142,7 +151,7 @@ def chandelier(x, y, s=1.0, rot=0):
 
 
 def kostnik(pose):
-    lean = {"idle": 0, "walk": 4, "attack": 8}[pose]
+    lean = {"idle": 0, "walk": 4, "walk2": 4, "windup": -4, "attack": 8}[pose]
     shadow(-2, 50)
     cape = [(-20 + lean, 138)] + bez((-20 + lean, 138), (-46, 120), (-56, 70), (-62, 20)) + \
         ragged((-62, 20), (6, 18), 8, 8, 0.4) + bez((6, 18), (8, 60), (12, 100), (18 + lean, 134))
@@ -157,6 +166,10 @@ def kostnik(pose):
         skull(b1[0], b1[1] + 2, 3.6, BONE_SH)
     if pose == "walk":
         fl = ((-4, 62), (-20, 36), (-30, 8)); nl = ((8, 62), (22, 38), (28, 8))
+    elif pose == "walk2":
+        fl = ((-4, 62), (8, 38), (14, 8)); nl = ((8, 62), (-4, 36), (-16, 8))
+    elif pose == "windup":
+        fl = ((-4, 62), (-14, 34), (-20, 8)); nl = ((8, 62), (18, 36), (22, 8))
     elif pose == "attack":
         fl = ((-4, 62), (-16, 36), (-24, 8)); nl = ((8, 62), (24, 40), (30, 8))
     else:
@@ -165,6 +178,10 @@ def kostnik(pose):
     fsh = (-16 + lean, 126)
     if pose == "attack":
         fe = (-30 + lean, 104); fh = (-30 + lean, 80)
+    elif pose == "walk2":
+        fe = (-16 + lean, 100); fh = (-6 + lean, 78)
+    elif pose == "windup":
+        fe = (-34 + lean, 108); fh = (-40 + lean, 90)
     else:
         fe = (-26 + lean, 100); fh = (-22 + lean, 76)
     bundle(fsh, fe, 8, BONE_SH); bundle(fe, fh, 7, BONE_SH)
@@ -204,7 +221,7 @@ def kostnik(pose):
                 skull(cx + dx * sc, cy + dy * sc, r_ * sc, BONE if cx > 0 else BONE_SH)
         hx, hy = 12, 152
         tube([(4, 132), (8, 140)], 7, 6, BONE_SH, LINE * 0.7, sh=0)
-        skull(hx, hy, 17, BONE, eyes=EYE_ORANGE, jaw_open=0.25 if pose == "attack" else 0.0, side=0.8, lw=LINE)
+        skull(hx, hy, 17, BONE, eyes=EYE_ORANGE, jaw_open={"attack": 0.25, "windup": 0.12}.get(pose, 0.0), side=0.8, lw=LINE)
         band = [(hx - 15, hy + 9), (hx + 16, hy + 10), (hx + 16, hy + 15), (hx - 15, hy + 14)]
         form(band, IRON, sh=0.2)
         for i in range(6):
@@ -217,11 +234,15 @@ def kostnik(pose):
         sh0 = (26 + lean, 128); el = (38 + lean, 132); H = (40 + lean * 0.5, 116); sa = -15
     elif pose == "walk":
         sh0 = (26 + lean, 128); el = (36 + lean, 104); H = (48 + lean, 90); sa = 80
+    elif pose == "walk2":
+        sh0 = (26 + lean, 128); el = (30 + lean, 102); H = (38 + lean, 86); sa = 96
+    elif pose == "windup":
+        sh0 = (26 + lean, 128); el = (40 + lean, 110); H = (46 + lean, 124); sa = 102
     else:
         sh0 = (26, 128); el = (34, 102); H = (44, 86); sa = 88
     bundle(sh0, el, 8.5, BONE); bundle(el, H, 7.5, BONE)
     base = pt(H, sa + 180, 52 if pose != "attack" else 30)
-    top = pt(H, sa, 42 if pose != "attack" else 14)
+    top = pt(H, sa, {"attack": 14, "windup": 24}.get(pose, 42))
     bone(base, top, 4.2, BONE_SH)
     chandelier(*pt(top, sa, 4), 1.0 if pose != "attack" else 0.85, rot=(sa - 90) * 0.4)
     shape(ell(H[0], H[1], 4.5, 3.8, 12), BONE, LINE * 0.8)
@@ -265,7 +286,7 @@ def _frog_foot(a, colr):
 
 
 def vodnik(pose):
-    lean = {"idle": 0, "walk": 4, "attack": 6}[pose]
+    lean = {"idle": 0, "walk": 4, "walk2": 4, "windup": -2, "attack": 6}[pose]
     shadow(2, 44)
     flat(ell(4, 1, 46, 3.2, 30), "#7fb3c9", 0.3)
     tails = [(-6 + lean, 78)] + bez((-6 + lean, 78), (-30, 66), (-40, 40), (-48 + lean * -1.5, 18)) + \
@@ -277,7 +298,9 @@ def vodnik(pose):
     drips([(-47 + lean * -1.5, 16), (-36, 18), (-24, 22)], WATER, 5)
     if pose == "walk":
         fl = ((-6, 44), (-16, 26), (-20, 8)); nl = ((12, 44), (24, 28), (28, 8))
-    elif pose == "attack":
+    elif pose == "walk2":
+        fl = ((-6, 44), (4, 28), (8, 8)); nl = ((12, 44), (6, 26), (-2, 8))
+    elif pose in ("attack", "windup"):
         fl = ((-6, 44), (-14, 26), (-18, 8)); nl = ((12, 44), (26, 30), (32, 8))
     else:
         fl = ((-6, 44), (-12, 26), (-10, 8)); nl = ((12, 44), (20, 26), (18, 8))
@@ -290,6 +313,10 @@ def vodnik(pose):
     fsh = (-8 + lean, 92)
     if pose == "attack":
         fe = (-22 + lean, 80); fh = (-26 + lean, 62)
+    elif pose == "windup":
+        fe = (-24 + lean, 84); fh = (-30 + lean, 68)
+    elif pose == "walk2":
+        fe = (-14 + lean, 74); fh = (-4 + lean, 58)
     else:
         fe = (-20 + lean, 74); fh = (-16 + lean, 56)
     tube([fsh, fe], 10, 8, COAT_GREEN_DK); tube([fe, fh], 8, 6.5, COAT_GREEN_DK)
@@ -330,7 +357,7 @@ def vodnik(pose):
         clip_fill(head, ell(hx + 6, hy - 14, 18, 8, 20), FROG_BELLY)
         for (sx, sy, r_) in ((-8, 10, 2.2), (-12, 2, 1.6), (0, 16, 1.4), (-4, 4, 1.2)):
             shape(ell(hx + sx, hy + sy, r_, r_ * 0.8, 10), FROG_DK, 0)
-        mo = 5 if pose == "attack" else 0
+        mo = {"attack": 5, "windup": 2}.get(pose, 0)
         mouth = bez((hx - 8, hy - 2), (hx + 4, hy - 6 - mo), (hx + 16, hy - 6 - mo), (hx + 25, hy - 2))
         if mo:
             m2 = mouth + bez((hx + 25, hy - 2), (hx + 16, hy - 4), (hx + 4, hy - 4), (hx - 8, hy - 2))
@@ -367,6 +394,10 @@ def vodnik(pose):
         el = (36 + lean, 112); hd = (40 + lean, 134); ha = 80
     elif pose == "walk":
         el = (34 + lean, 76); hd = (46 + lean, 66); ha = -30
+    elif pose == "walk2":
+        el = (28 + lean, 74); hd = (30 + lean, 57); ha = -95
+    elif pose == "windup":
+        el = (38 + lean, 84); hd = (34 + lean, 102); ha = 95
     else:
         el = (32, 74); hd = (38, 58); ha = -70
     tube([sh0, el], 11, 9, COAT_GREEN); tube([el, hd], 9, 7.5, COAT_GREEN)
@@ -386,6 +417,11 @@ def vodnik(pose):
         for k in range(3):
             stroke(ell(ox, oy, 10 - k * 3, 9 - k * 2.6, 20, 30 + k * 40, 250 + k * 40), LINE * 0.6, g=WATER_LT)
         drips([(ox - 6, oy - 8), (ox + 5, oy - 9)], WATER, 5)
+    elif pose == "windup":
+        ox, oy = hd[0] + 1, hd[1] + 10
+        glow(ox, oy, 9, "#7fd0ff", 0.35)
+        form(ell(ox, oy, 4.5, 4, 20), WATER, sh=0.15)
+        stroke(ell(ox, oy, 3, 2.6, 14, 40, 290), LINE * 0.5, g=WATER_LT)
     else:
         drips([(hd[0] + 2, hd[1] - 9)], WATER, 6)
 

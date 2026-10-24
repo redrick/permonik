@@ -82,6 +82,22 @@ func _update_lamp() -> void:
 	lamp.texture_scale = lerpf(lamp.texture_scale, target * 2.0 / 256.0, 0.2)
 
 
+# Leads a little in the walking direction; leans in when a boss fight is on.
+func _update_cam(delta: float) -> void:
+	if cam == null or level == null:
+		return
+	var lead := move_dir * 70.0 if moving else Vector2.ZERO
+	cam.position = cam.position.lerp(lead, minf(1.0, delta * (1.6 if moving else 0.8)))
+	var b = level.boss
+	var fight: bool = b != null and is_instance_valid(b) and not b.dead and b.aggro and b.global_position.distance_to(global_position) < 700.0
+	var z := 1.1 if fight else 1.0
+	cam.zoom = cam.zoom.lerp(Vector2(z, z), minf(1.0, delta * 1.5))
+
+
+func top_pos() -> Vector2:
+	return global_position + Vector2(0, -122 - float_h)
+
+
 func light_radius_px() -> float:
 	return lamp.texture_scale * 128.0
 
@@ -299,7 +315,15 @@ func _ai(delta: float) -> void:
 		step_t -= delta
 		if step_t <= 0.0:
 			step_t = 0.36
-			Sfx.play("footstep_water" if level.is_water(global_position) else "step_stone_%d" % randi_range(1, 3), 0.25)
+			Sfx.play(_step_sfx(), 0.22, 0.12)
+
+
+func _step_sfx() -> String:
+	if level.is_water(global_position):
+		return "footstep_water"
+	if level.is_town:
+		return "footstep_grass" if randf() < 0.25 else "footstep_dirt"
+	return "footstep_rock" if randf() < 0.4 else "step_stone_%d" % randi_range(1, 3)
 
 
 var _repath := 0.0
@@ -332,7 +356,7 @@ func basic_attack(target: Actor, pos: Vector2) -> void:
 		start_action("attack", dur, 0.5, func(): Skills.fire_weapon(self, pos, 100.0), "shoot")
 		return
 	start_action("attack", dur, 0.55, func():
-		Sfx.play_at("swing", global_position, 0.7)
+		Sfx.play_at("swing_heavy" if dur > 0.85 else "swing_light", global_position, 0.6)
 		if target and is_instance_valid(target) and not target.dead:
 			Combat.player_strike(self, target)
 		else:
@@ -493,6 +517,7 @@ func _use_portal_scroll() -> void:
 
 func _animate(delta: float) -> void:
 	super._animate(delta)
+	_update_cam(delta)
 	if petrify > 0.0:
 		mat_set("stone", clampf(petrify, 0.0, 1.0))
 
@@ -504,13 +529,13 @@ func _apply_form() -> void:
 		_refresh_look()
 		return
 	var tx := {}
-	for p in ["idle", "walk", "attack"]:
+	for p in ["idle", "walk", "walk2", "attack"]:
 		var t := DB.tex("sprites/monsters/%s_%s" % [form, p])
 		if t:
 			tx[p] = t
 	if not tx.has("idle"):
 		return
-	tex = {"idle": tx.idle, "walk1": tx.get("walk", tx.idle), "walk2": tx.idle, "attack": tx.get("attack", tx.idle),
+	tex = {"idle": tx.idle, "walk1": tx.get("walk", tx.idle), "walk2": tx.get("walk2", tx.idle), "attack": tx.get("attack", tx.idle),
 		"cast": tx.get("attack", tx.idle), "hit": tx.idle, "dead": tx.idle}
 	var t: Texture2D = tex.get(pose, tex.idle)
 	sprite.texture = t

@@ -30,7 +30,7 @@ Same pencil line, crayon fills, faces and paper grain as the comics, but darker:
 | `sprites/heroes/` | in layers (`heroes_gear.py`), so worn gear shows: `<class>/<pose>/<layer>[.<look>].png`, pose ∈ idle, walk1, walk2, attack, cast, hit, dead. Layers back to front: headgear_back, back, body_far, weapon_far, lamp_far, hand_far, offhand, legs, body, belt, lamp, weapon_belt, body_near, weapon, hand, head, headgear. Look = the base item's `icon`; `default` = what the class wears with the slot empty (a `kytel` counts as empty). The game stacks them per gear (`scripts/core/hero_look.gd`). `sprites/heroes_big/<class>/idle/` = the same at 600×600 for the hero list | 240×240 each, figure ~130 px tall, feet at FEET, centred. `dead` lies on the ground in the same canvas. |
 | `sprites/npcs/` | `<npc>.png` + `<npc>_talk.png` | 200×240, figure ~130 px (children / small folk smaller) |
 | `portraits/` | `<npc>.png` (also heroes: `hero_<class>.png`, bosses: `boss_<id>.png`) | 256×256, head and shoulders, dark vignette background filling the square |
-| `sprites/monsters/` | `<id>_idle.png`, `<id>_walk.png`, `<id>_attack.png` (walk optional) | per creature, all poses of one creature **same canvas**, feet at FEET, centred. Small 96–128, medium 192–224, large 256–320, bosses 320–512 |
+| `sprites/monsters/` | `<id>_idle.png`, `<id>_walk.png`, `<id>_walk2.png`, `<id>_windup.png`, `<id>_attack.png` (walk optional). `walk2` = the opposite stride of `walk` (2-frame walk cycle; floaters: other flutter/undulation phase), `windup` = attack anticipation (pulled back, arm/jaw raised, no attack effects) | per creature, all poses of one creature **same canvas**, feet at FEET, centred. Small 96–128, medium 192–224, large 256–320, bosses 320–512 |
 | `sprites/fx/` | projectiles and effects (see list) | small, centred, pointing right |
 | `tiles/<set>/` | `floor_0..3.png` 64×64 · `wall_0..2.png` 64×96 (top 64 px = rock top seen from above, bottom 32 px = front face) · `floor_deco_0..3.png` 64×64 transparent overlays (cracks, rubble, rails, puddles, bones) · towns also `path_0..2.png` 128×128 soft footpath decals drawn centred on a 64 px cell so neighbours overlap | |
 | `props/` | `<id>.png`, base (ground contact) at bottom-centre with FEET margin | see list |
@@ -71,7 +71,7 @@ vedma (f, Šumava wise woman: shawl, herbs at belt, staff with antlers, red thre
 | anicka | IV | drowned miner's daughter (ghost girl, ~10 yrs), wet hair, holds a teacup |
 | prevoznik | IV | ferryman of the Smorodina, hooded, pole |
 
-### Monsters (`sprites/monsters/<id>_{idle,walk,attack}.png`)
+### Monsters (`sprites/monsters/<id>_{idle,walk,walk2,windup,attack}.png`)
 Regular: krysa (rat, 96), sotek (imp, 128), kostlivy_havir (skeleton miner with pick, 192),
 kostlivy_kusinik (skeleton crossbowman, 192), bludicka (will-o'-wisp: glowing pale woman-shaped
 flame, floats, 128), utopenec (drowned man, green-grey, weed, 224), netopyr (bat, 96),

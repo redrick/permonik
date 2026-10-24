@@ -27,6 +27,8 @@ var belt: Array = []
 var buffs: Array = []
 var rmb := "utok"
 var hotkeys := ["", "", "", ""]
+# The hireling: {"type", "name", "dead", "hp" (share of max), "equip": {slot: Item}}; empty = none hired.
+var merc := {}
 var d := {}
 var _charm_sig := ""
 var set_worn := {}
@@ -396,7 +398,18 @@ func to_dict() -> Dictionary:
 	return {"class": class_id, "name": hero_name, "level": level, "xp": xp, "alloc": alloc,
 		"sp": stat_points, "kp": skill_points, "skills": skills, "hp": hp, "mana": mana, "gold": gold,
 		"inv": inv.to_array(), "stash": stash.to_array(), "equip": eq,
-		"belt": belt.map(func(i): return i.to_dict() if i else null), "rmb": rmb, "hotkeys": hotkeys}
+		"belt": belt.map(func(i): return i.to_dict() if i else null), "rmb": rmb, "hotkeys": hotkeys,
+		"merc": _merc_dict()}
+
+
+func _merc_dict() -> Dictionary:
+	if merc.is_empty():
+		return {}
+	var eq := {}
+	for k in merc.get("equip", {}):
+		if merc.equip[k]:
+			eq[k] = merc.equip[k].to_dict()
+	return {"type": merc.type, "name": merc.name, "dead": merc.get("dead", false), "hp": merc.get("hp", 1.0), "equip": eq}
 
 
 func from_dict(s: Dictionary) -> void:
@@ -425,6 +438,13 @@ func from_dict(s: Dictionary) -> void:
 		belt[i] = Item.from_dict(bl[i]) if bl[i] else null
 	rmb = s.get("rmb", "utok")
 	hotkeys = s.get("hotkeys", ["", "", "", ""])
+	merc = {}
+	var mc: Dictionary = s.get("merc", {})
+	if DB.hirelings.has(str(mc.get("type", ""))):
+		var meq := {}
+		for k in mc.get("equip", {}):
+			meq[k] = Item.from_dict(mc.equip[k])
+		merc = {"type": str(mc.type), "name": str(mc.get("name", "")), "dead": bool(mc.get("dead", false)), "hp": float(mc.get("hp", 1.0)), "equip": meq}
 	recalc()
 	hp = clampf(float(s.get("hp", d.hp_max)), 1.0, d.hp_max)
 	mana = clampf(float(s.get("mana", d.mana_max)), 0.0, d.mana_max)

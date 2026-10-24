@@ -206,6 +206,9 @@ func toggle_panel(what: String) -> void:
 			left = UiQuests.new()
 		"kronika":
 			left = UiKronika.new()
+		"hireling":
+			left = UiHireling.new()
+			_open_inventory()
 		_:
 			left = null
 			return
@@ -269,6 +272,17 @@ func open_vendor(npc: Npc, gamble := false) -> void:
 	v.npc = npc
 	v.gamble = gamble
 	left = v
+	_place(left, "left")
+	_open_inventory()
+	_sync_pause()
+
+
+func open_hireling() -> void:
+	close_all()
+	var h := UiHireling.new()
+	h.at_inn = true
+	h.set_meta("kind", "hireling")
+	left = h
 	_place(left, "left")
 	_open_inventory()
 	_sync_pause()
@@ -474,6 +488,34 @@ func equip_click(sl: String) -> void:
 	ch.equip[sl] = held
 	held = old
 	after_equip()
+
+
+func merc_equip_click(sl: String) -> void:
+	var m: Dictionary = Game.ch.merc
+	if m.is_empty() or m.get("dead", false):
+		return
+	var eq: Dictionary = m.equip
+	if held == null:
+		var cur: Item = eq.get(sl, null)
+		if cur:
+			eq.erase(sl)
+			held = cur
+			merc_changed()
+		return
+	if not Hireling.slot_ok(m, held, sl):
+		Game.msg(L.t("cant_use"), UiTheme.DIM)
+		return
+	var old: Item = eq.get(sl, null)
+	eq[sl] = held
+	held = old
+	merc_changed()
+
+
+func merc_changed() -> void:
+	Sfx.play("equip", 0.7)
+	if Game.level and is_instance_valid(Game.level.hireling):
+		Game.level.hireling.refresh()
+	changed()
 
 
 func quick_equip(it: Item) -> void:

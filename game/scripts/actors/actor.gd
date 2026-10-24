@@ -102,8 +102,28 @@ func set_pose(p: String, hold := 0.0) -> void:
 	pose_t = hold
 	if sprite.texture != t:
 		sprite.texture = t
-		sprite_h = t.get_height()
+		sprite_h = drawn_h(t)
 		sprite.offset = Vector2(0, -t.get_height() / 2.0 + 8.0)
+
+
+static var _drawn := {}
+
+
+# Canvases leave room for weapons and wings; labels and hit boxes want the height of the ink.
+static func drawn_h(t: Texture2D) -> float:
+	var k = t.resource_path if t.resource_path != "" else t.get_rid()
+	if _drawn.has(k):
+		return _drawn[k]
+	var h := float(t.get_height())
+	var img := t.get_image()
+	if img:
+		if img.is_compressed():
+			img.decompress()
+		var r := img.get_used_rect()
+		if r.size.y > 0:
+			h = maxf(32.0, float(t.get_height() - r.position.y))
+	_drawn[k] = h
+	return h
 
 
 func mat_set(k: String, v) -> void:
@@ -200,8 +220,7 @@ func take_damage(amount: float, element := "physical", source: Node = null, opts
 	if not opts.get("dot", false):
 		flash_t = 0.12
 		if level:
-			level.float_text(top_pos() + Vector2(randf_range(-14, 14), 0), str(maxi(1, int(round(amount)))),
-				Color("ffdd55") if opts.get("crit", false) else ELEMENT_COLORS.get(element, Color.WHITE), team == 0)
+			level.damage_number(self, amount, ELEMENT_COLORS.get(element, Color.WHITE), opts.get("crit", false), team == 0)
 		recoil = maxf(recoil, clampf(amount / hp_max * 6.0, 0.45, 1.0))
 		if source is Node2D:
 			var dx: float = global_position.x - (source as Node2D).global_position.x
@@ -210,8 +229,8 @@ func take_damage(amount: float, element := "physical", source: Node = null, opts
 			stun_t = maxf(stun_t, hit_recovery_time())
 			swing_t = -1.0
 			_on_hit_recover()
-		if opts.has("knock") and source:
-			knock = (global_position - source.global_position).normalized() * float(opts.knock)
+		if float(opts.get("knock", 0.0)) > 0.0 and source:
+			knock = (global_position - source.global_position).normalized() * float(opts.knock) * knock_mult()
 	_on_damaged(amount, element, source)
 	if hp <= 0.0:
 		hp = 0.0
@@ -222,6 +241,14 @@ func take_damage(amount: float, element := "physical", source: Node = null, opts
 # D2 hit recovery: a blow worth more than 1/12 of a hero's life (1/8 of a monster's) staggers.
 func hit_divisor() -> float:
 	return 8.0
+
+
+func knock_mult() -> float:
+	return clampf(18.0 / maxf(radius, 1.0), 0.3, 1.2)
+
+
+func leaves_corpse() -> bool:
+	return false
 
 
 func hit_recovery_time() -> float:
@@ -258,9 +285,24 @@ func die(_killer: Node) -> void:
 	if shadow:
 		create_tween().tween_property(shadow, "modulate:a", 0.0, 0.6)
 	var tw := create_tween()
+	if leaves_corpse():
+		var dir := recoil_dir if recoil_dir != 0.0 else float(-facing)
+		tw.tween_property(sprite, "rotation", deg_to_rad(84.0 * dir), 0.32).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
+		tw.parallel().tween_property(sprite, "position", Vector2(dir * (14.0 - sprite_h * 0.12), -4), 0.32).set_ease(Tween.EASE_OUT)
+		tw.parallel().tween_property(self, "position", position + Vector2(dir * 18.0, 0), 0.25).set_ease(Tween.EASE_OUT)
+		tw.tween_property(sprite, "position:y", -1.0, 0.08)
+		tw.tween_property(sprite, "self_modulate", Color(0.55, 0.5, 0.5, 1.0), 1.2)
+		tw.tween_callback(func(): z_index = -4)
+		return
 	tw.tween_property(sprite, "rotation", deg_to_rad(80.0 * facing), 0.35).set_ease(Tween.EASE_IN)
 	tw.parallel().tween_property(sprite, "position", Vector2(facing * sprite_h * 0.25, -6), 0.35)
 	tw.tween_method(func(v): mat_set("dissolve", v), 0.0, 1.0, 0.9).set_delay(0.4)
+	tw.tween_callback(queue_free)
+
+
+func remove_corpse() -> void:
+	var tw := create_tween()
+	tw.tween_method(func(v): mat_set("dissolve", v), 0.0, 1.0, 1.2)
 	tw.tween_callback(queue_free)
 
 
@@ -340,7 +382,7 @@ func play_swing(dur: float, hit_at: float, strike_pose := "attack", style := "me
 	swing_hit = maxf(hit_at, 0.0)
 	swing_pose = strike_pose
 	swing_style = style
-	set_pose("idle", swing_hit)
+	set_pose("windup" if tex.has("windup") else "idle", swing_hit)
 	if swing_hit <= 0.0:
 		set_pose(strike_pose, swing_dur)
 		swing_pose = ""
@@ -365,7 +407,9 @@ func _animate(delta: float) -> void:
 		var step := int(stride) % 2
 		bob = -sin(fmod(stride, 1.0) * PI) * 3.0
 		rot = 0.035
-		if tex.has("walk"):
+		if tex.has("walk") and tex.has("walk2"):
+			set_pose("walk" if step == 0 else "walk2")
+		elif tex.has("walk"):
 			set_pose("walk" if step == 0 else "idle")
 		elif tex.has("walk1"):
 			set_pose("walk1" if step == 0 else "walk2")

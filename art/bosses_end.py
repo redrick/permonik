@@ -32,7 +32,7 @@ def sword(H, ang, below=10, above=60):
 
 
 def kostej(pose):
-    lean = {"idle": 0, "walk": 4, "attack": 6}[pose]
+    lean = {"idle": 0, "walk": 4, "walk2": 3, "windup": -3, "attack": 6}[pose]
     shadow(0, 34)
     cape = [(-14 + lean, 132)] + bez((-14 + lean, 132), (-34, 110), (-44, 60), (-52 - lean, 10)) + \
         ragged((-52 - lean, 10), (4, 9), 7, 7, 2.2) + bez((4, 9), (2, 50), (6, 100), (14 + lean, 130))
@@ -42,7 +42,9 @@ def kostej(pose):
         stroke(bez((x0 + 12, 120), (x0 + 2, 90), (x0 - 4, 50), (x0 - 8, 14)), LINE * 0.6, g=col("#3a2f48"))
     if pose == "walk":
         fs = (-8, 10); ns = (22, 8)
-    elif pose == "attack":
+    elif pose == "walk2":
+        fs = (16, 8); ns = (-4, 10)
+    elif pose in ("attack", "windup"):
         fs = (-10, 10); ns = (24, 8)
     else:
         fs = (-4, 8); ns = (12, 8)
@@ -56,6 +58,11 @@ def kostej(pose):
         glow(fh[0] + 6, fh[1] + 2, 12, "#7dffa0", 0.45)
         for k in range(5):
             stroke(bez(pt(fh, 10 + k * 25, 4), pt(fh, 20 + k * 25, 9), pt(fh, 0 + k * 25, 13), pt(fh, 12 + k * 25, 16)), LINE * 0.6, g=GEM, alpha=0.8)
+    elif pose == "windup":
+        fe = (-6 + lean, 98); fh = (6 + lean, 108)
+        glow(fh[0] + 3, fh[1], 7, "#7dffa0", 0.3)
+    elif pose == "walk2":
+        fe = (-14 + lean, 96); fh = (-6 + lean, 76)
     else:
         fe = (-20 + lean, 96); fh = (-20 + lean, 74)
     tube([fsh, fe], 7, 6, ROBE_DK); tube([fe, fh], 6, 5, ROBE_DK)
@@ -136,12 +143,16 @@ def kostej(pose):
         el = (4 + lean, 140); H = (-8 + lean, 156); sa = 25
     elif pose == "walk":
         el = (26 + lean, 98); H = (36 + lean, 84); sa = 60
+    elif pose == "walk2":
+        el = (18 + lean, 98); H = (20 + lean, 80); sa = 72
+    elif pose == "windup":
+        el = (2 + lean, 132); H = (-10 + lean, 142); sa = 150
     else:
         el = (24, 96); H = (32, 78); sa = -88
     tube([sh0, el], 8, 7, ROBE); tube([el, H], 7, 5.5, ROBE)
     if pose == "attack":
         sword(H, sa, 10, 64)
-    elif pose == "walk":
+    elif pose in ("walk", "walk2", "windup"):
         sword(H, sa, 10, 60)
     else:
         sword(H, sa, 10, 66)
@@ -280,10 +291,12 @@ def obr_head(pose):
 
 
 def permonik_obr(pose):
-    lean = {"idle": 0, "walk": 6, "attack": 4}[pose]
+    lean = {"idle": 0, "walk": 6, "walk2": 3, "windup": -4, "attack": 4}[pose]
     if pose == "walk":
         fl = ((-22, 88), (-36, 52), (-46, 18)); nl = ((22, 88), (40, 54), (46, 18))
-    elif pose == "attack":
+    elif pose == "walk2":
+        fl = ((-22, 88), (-26, 50), (-24, 18)); nl = ((22, 88), (34, 60), (26, 30))
+    elif pose in ("attack", "windup"):
         fl = ((-22, 88), (-34, 52), (-42, 18)); nl = ((22, 88), (36, 54), (40, 18))
     else:
         fl = ((-22, 88), (-30, 50), (-32, 18)); nl = ((22, 88), (30, 50), (32, 18))
@@ -296,7 +309,7 @@ def permonik_obr(pose):
         for dx in (-14, -2, 12, 22):
             root(bez((x + dx, y - 8), (x + dx * 1.3, y - 9), (x + dx * 1.6 + 6, y - 9), (x + dx * 2 + (8 if dx > 0 else -8), y - 10)), 3.2, 0.8)
     fsh = (-46 + lean, 182)
-    if pose == "attack":
+    if pose in ("attack", "windup"):
         fe = (-74 + lean, 136); fh = (-70 + lean, 80)
     else:
         fe = (-70 + lean, 132); fh = (-66 + lean, 66)
@@ -337,13 +350,17 @@ def permonik_obr(pose):
         glow(H[0], H[1], 24, LAMP, 0.3, 6)
     elif pose == "walk":
         el = (80 + lean, 132); H = (92 + lean, 72)
+    elif pose == "walk2":
+        el = (70 + lean, 132); H = (66 + lean, 70)
+    elif pose == "windup":
+        el = (94 + lean, 150); H = (76 + lean, 196)
     else:
         el = (76, 130); H = (80, 66)
     rock_seg(sh0, el, 38, 32, ROCK); rock_seg(el, H, 32, 28, ROCK)
     root(bez(sh0, (sh0[0] + 16, sh0[1] - 6), (el[0] + 12, el[1] + 8), el), 4.5, 2)
     root(bez(el, (el[0] + 8, el[1] - 10), (H[0] + 10, H[1] + 10), H), 3.5, 1.5)
     crystal(pt(el, 10, 10), 30, 18, 3.5)
-    fist(H, 19, raised=pose == "attack")
+    fist(H, 19, raised=pose in ("attack", "windup"))
     with T(lean + 24 * (1 - 1.22), 200 * (1 - 1.22), 1.22):
         obr_head(pose)
     if pose == "attack":

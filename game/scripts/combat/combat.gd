@@ -32,7 +32,7 @@ static func player_strike(player: Actor, target: Actor, pct := 100.0, opts := {}
 	var ar := (float(d.to_hit) + float(opts.get("to_hit", 0))) * (1.0 + float(opts.get("ar_pct", 0.0)) / 100.0)
 	var hc := hit_chance(Game.ch.level, target.mlvl, ar, float(target.armor))
 	if not opts.get("always_hit", false) and randf() > hc:
-		player.level.float_text(target.top_pos(), L.t({"cs": "vedle", "en": "miss"}), Color("9a948a"))
+		player.level.miss_text(target.top_pos(), L.t({"cs": "vedle", "en": "miss"}))
 		Sfx.play_at("swing", player.global_position, 0.5)
 		return false
 	var dm := player_weapon_damage(pct)
@@ -42,7 +42,10 @@ static func player_strike(player: Actor, target: Actor, pct := 100.0, opts := {}
 	if elem == "physical" and randf() * 100.0 < float(d.get("crushing_blow", 0.0)):
 		amt += _crushing(target, opts.get("ranged", false))
 		crit = true
-	var total := target.take_damage(amt, elem, player, {"crit": crit, "knock": opts.get("knock", 0.0)})
+	var kn := float(opts.get("knock", 0.0))
+	if kn <= 0.0 and not opts.get("ranged", false):
+		kn = 190.0 if crit else 80.0
+	var total := target.take_damage(amt, elem, player, {"crit": crit, "knock": kn})
 	for e in dm.extra:
 		total += target.take_damage(randf_range(e.min, e.max), e.element, player, {"no_stun": true})
 		_elem_status(target, e.element, randf_range(e.min, e.max), player)
@@ -53,6 +56,8 @@ static func player_strike(player: Actor, target: Actor, pct := 100.0, opts := {}
 		_leech(total)
 		Fx.impact(player.level, target, elem, crit)
 		Sfx.play_at(target.get_meta("hit_sfx", "hit_flesh"), target.global_position, 0.8)
+		if crit:
+			Sfx.play_at("crit_hit", target.global_position, 0.9)
 		wear_item("weapon", 0.08)
 	return true
 
@@ -109,16 +114,18 @@ static func player_spell_hit(player: Actor, target: Actor, amount: float, elemen
 static func monster_hit_player(m: Actor, p: Actor, dmg: Vector2, element := "physical", opts := {}) -> bool:
 	if p == null or p.dead:
 		return false
+	if not (p is Player):
+		return _hit_ally(m, p, dmg, element, opts)
 	var ch := Game.ch
 	var ar := float(6 + m.mlvl * 6 + int(opts.get("to_hit", 0)))
 	if not opts.get("always_hit", false) and randf() > hit_chance(m.mlvl, ch.level, ar, float(ch.d.armor), 0.05, 0.85):
-		p.level.float_text(p.top_pos(), L.t({"cs": "uhnul", "en": "dodge"}), Color("9a948a"), true)
+		p.level.miss_text(p.top_pos(), L.t({"cs": "uhnul", "en": "dodge"}))
 		return false
 	var blk := float(ch.d.get("block", 0))
 	if p.moving:
 		blk = minf(25.0, blk / 3.0)
 	if element == "physical" and randf() * 100.0 < blk:
-		p.level.float_text(p.top_pos(), L.t({"cs": "vykryto", "en": "block"}), Color("d8d0b8"), true)
+		p.level.miss_text(p.top_pos(), L.t({"cs": "vykryto", "en": "block"}))
 		Sfx.play_at("block", p.global_position)
 		p.set_pose("attack", 0.15)
 		wear_item("offhand", 0.3)
@@ -136,6 +143,15 @@ static func monster_hit_player(m: Actor, p: Actor, dmg: Vector2, element := "phy
 		for sl in ["body", "head", "offhand"]:
 			wear_item(sl, 0.05)
 	return dealt > 0.0
+
+
+# The hireling has no block, dodge or worn-item wear; just a hit roll against its armour.
+static func _hit_ally(m: Actor, a: Actor, dmg: Vector2, element: String, opts: Dictionary) -> bool:
+	var ar := float(6 + m.mlvl * 6 + int(opts.get("to_hit", 0)))
+	if not opts.get("always_hit", false) and randf() > hit_chance(m.mlvl, a.mlvl, ar, float(a.armor), 0.05, 0.85):
+		a.level.miss_text(a.top_pos(), L.t({"cs": "uhnul", "en": "dodge"}))
+		return false
+	return a.take_damage(randf_range(dmg.x, dmg.y), element, m, opts) > 0.0
 
 
 static func wear_item(slot: String, chance: float) -> void:

@@ -13,7 +13,7 @@ import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from audio_dsp import SR, lufs  # noqa: E402
-from audio_sfx import SFX, render_sfx  # noqa: E402
+from audio_sfx import SFX, SFX_LOOPS, render_sfx  # noqa: E402
 from audio_music import TRACKS, render_track  # noqa: E402
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -83,14 +83,14 @@ def verify():
             dc = np.abs(x.mean(axis=1)).max()
             dur = x.shape[1] / SR
             seam = ""
-            if name in LOOPS:
+            if name in LOOPS or name in SFX_LOOPS:
                 jump = np.abs(x[:, 0] - x[:, -1]).max()
                 typ = np.percentile(np.abs(np.diff(x, axis=1)), 99.9)
                 w = 2048
                 e0 = db(np.sqrt(np.mean(x[:, :w] ** 2)))
                 e1 = db(np.sqrt(np.mean(x[:, -w:] ** 2)))
                 seam = f"jump {jump:.3f}/p99.9 {typ:.3f} edgeRMS {e1:+.1f}->{e0:+.1f}dB"
-                if jump > 1.5 * typ or abs(e0 - e1) > 6 or not 60 <= dur <= 120:
+                if jump > 1.5 * typ or abs(e0 - e1) > 6 or (kind == "music" and not 60 <= dur <= 120):
                     bad.append(name)
             ok = (info["codec_name"] == "vorbis" and info["sample_rate"] == str(SR) and pk < 0.999 and dc < 2e-3
                   and ch == (1 if kind == "sfx" else 2))

@@ -32,6 +32,11 @@ var light: PointLight2D
 var summoner: Monster = null
 var no_drops := false
 var minion_of: Monster = null
+var sight := 0.0
+var matter := "flesh"
+var su_id := ""
+var su_title := ""
+var su_line := ""
 
 
 # Tuned with debug/probe.gd so a pack of same-level monsters is a fight, not a wipe. Keyed by monster level:
@@ -91,7 +96,7 @@ func setup(mid: String, level_n: int, lv: Node, champion := false) -> void:
 	collision_layer = 4
 	collision_mask = 2 | 4 | (0 if phase_walls else 1)
 	var textures := {}
-	for p in ["idle", "walk", "attack"]:
+	for p in ["idle", "walk", "walk2", "windup", "attack"]:
 		var t := DB.tex("sprites/monsters/%s_%s" % [mid, p])
 		if t:
 			textures[p] = t
@@ -100,7 +105,8 @@ func setup(mid: String, level_n: int, lv: Node, champion := false) -> void:
 		textures["idle"] = DB.placeholder(mid, Vector2i(sz, sz), Color.from_hsv(float(hash(mid) % 360) / 360.0, 0.4, 0.6))
 	var no_shadow := mid.begins_with("permonik") or bool(data.get("no_shadow", false)) or "no_shadow" in abilities
 	var flying := ai in ["flyer", "phaser"] or "fly" in abilities
-	set_meta("hit_sfx", "hit_bone" if mid.begins_with("kost") else ("hit_stone" if mid in ["kamenny_had", "smolak", "bazilisek", "permonik_obr"] else "hit_flesh"))
+	matter = "bone" if mid.begins_with("kost") else ("stone" if mid in ["kamenny_had", "smolak", "bazilisek", "permonik_obr"] else ("ghost" if ai == "phaser" or mid in ["bludicka", "navka", "mura", "svetlonos"] else "flesh"))
+	set_meta("hit_sfx", {"bone": "hit_bone", "stone": "hit_stone"}.get(matter, "hit_flesh"))
 	setup_visual(textures, not no_shadow, radius * 3.0 * (0.7 if flying else 1.0))
 	if flying:
 		float_h = 18.0
@@ -129,6 +135,26 @@ func _make_champion() -> void:
 			_champ_stat(str(m.get("stat", "")), float(m.get("value", m.get("max", 0))))
 	sprite.scale = Vector2.ONE * 1.15
 	mat_set("outline_color", Color(0.85, 0.65, 0.25, 1))
+
+
+# A named monster with its own fixed powers, name and cry, in place of a random champion's.
+func make_superunique(sid: String) -> void:
+	var d: Dictionary = DB.superuniques.get(sid, {})
+	su_id = sid
+	champ_name = L.t(d.get("name", sid))
+	su_title = L.t(d.get("title", ""))
+	su_line = L.t(d.get("line", ""))
+	kind = "champion"
+	var mods: Dictionary = DB.champions.get("mods", {})
+	for k in d.get("mods", []):
+		champ_mods.append(k)
+		for m in mods.get(k, {}).get("mods", []):
+			_champ_stat(str(m.get("stat", "")), float(m.get("value", m.get("max", 0))))
+	hp_max *= float(d.get("hp", 1.5))
+	hp = hp_max
+	xp_value *= 5
+	sprite.scale = Vector2.ONE * 1.3
+	mat_set("outline_color", Color(0.75, 0.45, 0.95, 1))
 
 
 func _champ_stat(stat: String, v: float) -> void:
@@ -171,14 +197,32 @@ func label_name() -> String:
 func label_sub() -> String:
 	if kind == "boss":
 		return L.t(data.get("title", ""))
+	if su_id != "":
+		return su_title
 	if champ_mods.is_empty():
 		return ""
 	var mods: Dictionary = DB.champions.get("mods", {})
 	return ", ".join(champ_mods.map(func(k): return L.t(mods.get(k, {}).get("name", k)))) + " · " + display_name
 
 
+var _tgt: Actor = null
+var _tgt_ms := 0
+
+
+# Whom this monster goes for: the hero, or the hireling when it stands clearly closer. Re-chosen once a second.
 func player() -> Actor:
-	return Game.player if Game.player and not Game.player.dead else null
+	var p: Actor = Game.player if Game.player and not Game.player.dead else null
+	var h: Actor = level.hireling if level and is_instance_valid(level.hireling) and not level.hireling.dead else null
+	if h == null or p == null:
+		return p
+	var now := Time.get_ticks_msec()
+	if now - _tgt_ms < 1000 and (_tgt == p or _tgt == h):
+		return _tgt
+	_tgt_ms = now
+	var dp := p.global_position.distance_to(global_position)
+	var dh := h.global_position.distance_to(global_position)
+	_tgt = h if dh < dp * 0.8 else p
+	return _tgt
 
 
 func dist_to_player() -> float:
@@ -244,6 +288,8 @@ func wake() -> void:
 	if aggro:
 		return
 	aggro = true
+	if su_line != "":
+		level.float_text(top_pos() + Vector2(0, -24), su_line, Color("d9b8ff"), false, 30)
 	for m in level.actors_of_team(1):
 		if m != self and not m.aggro and m.global_position.distance_to(global_position) < 260:
 			m.aggro = true
@@ -493,7 +539,41 @@ func _use_ability(p: Actor, d: float) -> bool:
 	return false
 
 
+var hpbar: Node2D
+var bar_t := 0.0
+
+
+# Small life bar over the head: always for champions and uniques in sight, briefly for others after a hit.
+func update_bar(delta: float) -> void:
+	bar_t = maxf(0.0, bar_t - delta)
+	var show := not dead and sight > 0.5 and kind != "boss" and (kind != "normal" or bar_t > 0.0)
+	if not show:
+		if hpbar:
+			hpbar.visible = false
+		return
+	if hpbar == null:
+		hpbar = Node2D.new()
+		hpbar.z_index = 35
+		var mat := CanvasItemMaterial.new()
+		mat.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
+		hpbar.material = mat
+		hpbar.draw.connect(_draw_bar)
+		add_child(hpbar)
+	hpbar.visible = true
+	hpbar.position = top_pos() - global_position + Vector2(0, -6)
+	hpbar.modulate.a = 1.0 if kind != "normal" else clampf(bar_t / 0.4, 0.0, 1.0)
+	hpbar.queue_redraw()
+
+
+func _draw_bar() -> void:
+	var w := clampf(radius * 3.0, 40.0, 90.0)
+	var r := Rect2(-w / 2.0, 0, w, 6)
+	hpbar.draw_rect(r.grow(1.5), Color(0.05, 0.03, 0.03, 0.85))
+	hpbar.draw_rect(Rect2(r.position, Vector2(w * clampf(hp / hp_max, 0.0, 1.0), 6)), Color("b8241c") if kind == "normal" else Color("d6a63a"))
+
+
 func _on_damaged(_amount: float, _element: String, _source: Node) -> void:
+	bar_t = 2.5
 	if not aggro:
 		wake()
 	if kind == "boss":
@@ -521,6 +601,14 @@ func die(killer: Node) -> void:
 		_revive_later()
 		return
 	super.die(killer)
+	if hpbar:
+		hpbar.visible = false
+	if leaves_corpse():
+		float_h = 0.0
+		level.add_corpse(self)
+		Sfx.play_at("kill_thump", global_position, 0.6)
+		if matter == "flesh":
+			Fx.blood_pool(level, global_position, radius)
 	if light:
 		create_tween().tween_property(light, "energy", 0.0, 0.5)
 	level.on_monster_died(self)
@@ -540,6 +628,14 @@ func _revive_later() -> void:
 			collision_layer = 4
 			level.float_text(top_pos(), L.t({"cs": "Vstává!", "en": "Rises!"}), Color("cfe8ff")))
 	stun_t = 5.0
+
+
+func leaves_corpse() -> bool:
+	return kind != "boss" and matter != "ghost" and summoner == null and minion_of == null
+
+
+func knock_mult() -> float:
+	return 0.12 if kind == "boss" else (0.6 if kind != "normal" else super.knock_mult())
 
 
 func hit_divisor() -> float:

@@ -10,6 +10,7 @@
     "base_hp": 45, "hp_per_vit": 2.5, "hp_per_level": 2.5,
     "base_mana": 10, "mana_per_mag": 1.0, "mana_per_level": 1.0,
     "start_items": ["krumpac", "kytel", "lojovy_kahan", "ziva_voda", "ziva_voda", "svitek_brana"],
+    "loot": {"weapons": ["pick", "axe", "mace", "club", "flail", "sword"], "offhand": ["shield"]},
     "trees": [
       {"id": "krumpac", "name": {"cs": "Krumpáč", "en": "Pickaxe"},
        "skills": ["uder_do_zily", "rozrazka", "otres", "zurivost_hory"]},
@@ -31,6 +32,7 @@
     "base_hp": 40, "hp_per_vit": 2.0, "hp_per_level": 2.0,
     "base_mana": 15, "mana_per_mag": 1.5, "mana_per_level": 1.5,
     "start_items": ["valaska", "kozeny_kabatec", "lojovy_kahan", "ziva_voda", "ziva_voda", "svitek_brana"],
+    "loot": {"weapons": ["axe", "bow", "crossbow", "sword", "dagger"], "offhand": ["shield"]},
     "trees": [
       {"id": "valaska", "name": {"cs": "Valaška", "en": "Shepherd's Axe"},
        "skills": ["sek_valaskou", "hod_valaskou", "zbojnicky_skok", "vir"]},
@@ -52,6 +54,7 @@
     "base_hp": 30, "hp_per_vit": 1.5, "hp_per_level": 1.5,
     "base_mana": 30, "mana_per_mag": 2.0, "mana_per_level": 2.0,
     "start_items": ["hul", "kytel", "lojovy_kahan", "ziva_voda", "svatojanska_rosa", "svitek_brana"],
+    "loot": {"weapons": ["staff", "dagger", "scepter"], "offhand": ["book"]},
     "trees": [
       {"id": "perun", "name": {"cs": "Perun", "en": "Perun"},
        "skills": ["jiskra", "hromova_koule", "retezovy_blesk", "peruniv_hnev"]},
@@ -73,6 +76,7 @@
     "base_hp": 50, "hp_per_vit": 2.5, "hp_per_level": 2.5,
     "base_mana": 8, "mana_per_mag": 1.0, "mana_per_level": 0.8,
     "start_items": ["palcat", "kytel", "lojovy_kahan", "ziva_voda", "ziva_voda", "svitek_brana"],
+    "loot": {"weapons": ["mace", "flail", "club", "axe", "pick"], "offhand": ["shield"]},
     "trees": [
       {"id": "kladivo", "name": {"cs": "Kladivo", "en": "Hammer"},
        "skills": ["uder_kladivem", "rozkovat", "hod_kladivem", "kovadlina"]},
@@ -94,6 +98,7 @@
     "base_hp": 40, "hp_per_vit": 2.0, "hp_per_level": 2.0,
     "base_mana": 15, "mana_per_mag": 1.5, "mana_per_level": 1.5,
     "start_items": ["berla", "kytel", "lojovy_kahan", "ziva_voda", "svatojanska_rosa", "svitek_brana"],
+    "loot": {"weapons": ["scepter", "dagger", "staff"], "offhand": ["book", "shield"]},
     "trees": [
       {"id": "modly", "name": {"cs": "Modly", "en": "Idols"},
        "skills": ["svantovituv_zrak", "triglavova_zastita", "hnev_modly", "perunova_prizen"]},
@@ -115,6 +120,7 @@
     "base_hp": 45, "hp_per_vit": 2.4, "hp_per_level": 2.4,
     "base_mana": 8, "mana_per_mag": 1.0, "mana_per_level": 1.0,
     "start_items": ["nuz", "kozeny_kabatec", "lojovy_kahan", "ziva_voda", "ziva_voda", "svitek_brana"],
+    "loot": {"weapons": ["dagger", "axe", "sword", "club"], "offhand": ["shield"]},
     "trees": [
       {"id": "promena", "name": {"cs": "Proměna", "en": "The Change"},
        "skills": ["vlci_kuze", "kousnuti", "vyti", "besneni"]},
@@ -136,6 +142,7 @@
     "base_hp": 35, "hp_per_vit": 2.0, "hp_per_level": 2.0,
     "base_mana": 15, "mana_per_mag": 1.6, "mana_per_level": 1.5,
     "start_items": ["nuz", "kytel", "lojovy_kahan", "ziva_voda", "svatojanska_rosa", "svitek_brana"],
+    "loot": {"weapons": ["dagger", "crossbow", "staff"], "offhand": ["book"]},
     "trees": [
       {"id": "lucavka", "name": {"cs": "Lučavka", "en": "Aqua Regia"},
        "skills": ["lucavka", "jedovaty_dym", "kyselina", "kralovska_lucavka"]},
@@ -157,6 +164,7 @@
     "base_hp": 38, "hp_per_vit": 2.0, "hp_per_level": 2.0,
     "base_mana": 14, "mana_per_mag": 1.5, "mana_per_level": 1.4,
     "start_items": ["hul", "kytel", "lojovy_kahan", "ziva_voda", "svatojanska_rosa", "svitek_brana"],
+    "loot": {"weapons": ["staff", "dagger", "bow"], "offhand": ["book"]},
     "trees": [
       {"id": "marionety", "name": {"cs": "Marionety", "en": "Marionettes"},
        "skills": ["kasparek", "cert_na_niti", "loutkove_divadlo", "obri_marioneta"]},

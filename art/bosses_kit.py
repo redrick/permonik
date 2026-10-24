@@ -209,6 +209,6 @@ def portrait(fn, hx, hy, zoom, tint="#3a3040", pose="idle", cx=64, cy=60):
 
 
 def boss_items(name, fn, px, s=1.0, extra=()):
-    out = [(f"{name}_{p}", px, px, sprite(fn, p, s)) for p in ("idle", "walk", "attack")]
+    out = [(f"{name}_{p}", px, px, sprite(fn, p, s)) for p in ("idle", "walk", "walk2", "windup", "attack")]
     out += [(f"{name}_{p}", px, px, sprite(fn, p, s)) for p in extra]
     return out

@@ -94,6 +94,8 @@ static func options(rebuild: Callable) -> VBoxContainer:
 		if is_equal_approx(val, cur):
 			b.add_theme_color_override("font_color", UiTheme.GOLD)
 		sr.add_child(b)
+	if not OS.has_feature("web"):
+		vb.add_child(_save_dir_row(rebuild))
 	if OS.has_feature("mobile"):
 		return vb
 	var fs := CheckBox.new()
@@ -109,6 +111,67 @@ static func options(rebuild: Callable) -> VBoxContainer:
 		cfg.save("user://settings.cfg"))
 	vb.add_child(fs)
 	return vb
+
+
+static func _save_dir_row(rebuild: Callable) -> VBoxContainer:
+	var box := VBoxContainer.new()
+	box.add_theme_constant_override("separation", 6)
+	var hb := HBoxContainer.new()
+	hb.add_theme_constant_override("separation", 8)
+	box.add_child(hb)
+	var l := UiTheme.label(UiTheme.t("menu_save_dir"), 28)
+	l.custom_minimum_size = Vector2(200, 0)
+	hb.add_child(l)
+	var status := UiTheme.label(_dir_text(Game.save_dir), 20, UiTheme.DIM, true)
+	status.custom_minimum_size = Vector2(560, 0)
+	status.autowrap_mode = TextServer.AUTOWRAP_ARBITRARY
+	var move := func(dir: String):
+		var n := Game.set_save_dir(dir)
+		if n < 0:
+			status.text = UiTheme.t("save_dir_failed", {"v": dir})
+			status.add_theme_color_override("font_color", UiTheme.RED)
+			return
+		rebuild.call()
+	hb.add_child(UiTheme.button(UiTheme.t("save_dir_pick"), func():
+		if Game.needs_storage_permission("/storage"):
+			OS.request_permission(Game.STORAGE_PERMISSION)
+			status.text = UiTheme.t("save_dir_permission")
+			status.add_theme_color_override("font_color", UiTheme.GOLD)
+			return
+		_pick_dir(move), 200, 22))
+	if Game.save_dir != Game.DEFAULT_SAVE_DIR:
+		hb.add_child(UiTheme.button(UiTheme.t("menu_ui_default"), func(): move.call(Game.DEFAULT_SAVE_DIR), 140, 22))
+	box.add_child(status)
+	return box
+
+
+static func _dir_text(dir: String) -> String:
+	return UiTheme.t("save_dir_default") if dir == Game.DEFAULT_SAVE_DIR else dir
+
+
+# Desktop gets the system folder picker. Android's own picker hands back content:// URIs that plain
+# file access can't use, so there the built-in dialog browses shared storage (needs all-files access).
+static func _pick_dir(on_pick: Callable) -> void:
+	var fd := FileDialog.new()
+	fd.file_mode = FileDialog.FILE_MODE_OPEN_DIR
+	fd.access = FileDialog.ACCESS_FILESYSTEM
+	fd.title = UiTheme.t("save_dir_pick")
+	fd.process_mode = Node.PROCESS_MODE_ALWAYS
+	fd.use_native_dialog = not OS.has_feature("android")
+	if Game.save_dir != Game.DEFAULT_SAVE_DIR:
+		fd.current_dir = Game.save_dir
+	elif OS.has_feature("android"):
+		fd.current_dir = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS).get_base_dir()
+	else:
+		fd.current_dir = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS)
+	if OS.has_feature("android"):
+		fd.content_scale_factor = Game.main.ui_scale
+	fd.dir_selected.connect(func(dir: String):
+		fd.queue_free()
+		on_pick.call(dir))
+	fd.canceled.connect(fd.queue_free)
+	Game.main.add_child(fd)
+	fd.popup_centered_ratio(0.85)
 
 
 static func _slider(text: String, v: float, cb: Callable) -> HBoxContainer:

@@ -43,7 +43,7 @@ func _draw() -> void:
 				draw_rect(Rect2(0, 64 * (1.0 - fr), 64, 64 * fr), Color(0, 0, 0, 0.6))
 			if id != "utok" and Game.ch.mana < Game.ch.skill_mana(id):
 				draw_rect(Rect2(Vector2.ZERO, size), Color(0.1, 0.1, 0.5, 0.45))
-		draw_string(hud.font, Vector2(4, 62), key, HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color(1, 0.9, 0.7, 0.9))
+		draw_string(hud.font, Vector2(4, 62), key, HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color(1, 0.9, 0.7, 0.9 if id != "" else 0.35))
 
 
 func _gui_input(event: InputEvent) -> void:
