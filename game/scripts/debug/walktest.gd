@@ -58,7 +58,7 @@ func _physics_process(delta: float) -> void:
 		still_t = 0.0
 		travelled = 0.0
 		last_pos = p.global_position
-	if walk_t > 40.0:
+	if walk_t > 150.0:
 		_next(p, lv)
 	elif still_t > 1.2:
 		var dir: Vector2 = (p.path[0] - p.global_position) if not p.path.is_empty() else Vector2.ZERO

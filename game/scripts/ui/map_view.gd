@@ -212,7 +212,7 @@ const GOAL := Color(0.95, 0.72, 0.2)
 const GOAL_SIDE := Color(0.82, 0.86, 0.9)
 
 
-# The tracked quests' targets, seen or not; on the round map a target off the disc becomes an arrow on its rim.
+# The tracked quests' targets (below ground only once seen); on the round map a target off the disc becomes an arrow on its rim.
 func _draw_objectives(lv: Level, o: Vector2, mid: Vector2) -> void:
 	var pulse := 0.75 + 0.25 * sin(Time.get_ticks_msec() / 260.0)
 	var obs := lv.objective_points()

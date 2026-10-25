@@ -165,6 +165,10 @@ Special effects: `{"heal":1}`, `{"random":1}` (Triglav), `{"curse":{"stat":"hp_p
 ## champions.json
 `{ "names": [{"cs":"Lamač kostí","en":"Bonebreaker"}, …], "mods": {"rychly":{"name":{...},"mods":[{"stat":"move_speed","value":50},{"stat":"attack_speed","value":30}]}, …} }`
 Mod names are nouns (*Rychlost, Kamenná kůže, Oheň*) so they need no gender.
+`Monster.apply_champ_mod` applies `mods` (stats: speed, attack speed, armour, life, damage, element
+resists, `dmg_reduce` flat physical, `thorns` back at a hero within melee reach, `life_steal`, `mana_steal`),
+`aura` (`res_all` → the curse ability, `light_radius` → the light drain on hit) and `special`
+(`invisible`, `drain_mana`). flowtest checks every mod changes something.
 
 ## superuniques.json
 Named monsters with fixed powers, one place each (D2 superuniques). They spawn every visit with minions,
@@ -198,8 +202,8 @@ Revive at the inn for half the hire cost; a new hire returns the old one's gear 
     "quests": ["klekani","kostnice","dusicky","srdce_zvonu"],
     "intro": null } ]
 ```
-`style` ∈ gallery (straight timbered tunnels + chambers), cave (cellular caves), mixed, lair
-(one big boss arena + approach). `water` 0–1 = how much of the floor floods (slows, Vodník).
+`style` ∈ gallery (built rooms, timbered runs with alcoves), cave (cellular caverns joined by winding
+passages), mixed (both, roughened), lair (one big boss arena above a long approach). `water` 0–1 = how much of the floor floods (slows, Vodník).
 `intro` = film or slides played when `next_act` enters the act; act endings are `slide:<id>` actions in dialog.json.
 
 Vendor roles come from `npcs.json`.
@@ -214,10 +218,15 @@ loot on the ground in `floor_loot` (saved). A quest item lies on its floor only 
 act still has to pick it up (`Game.quest_item_wanted`) and this floor's copy wasn't taken
 (`flags.took:<act>:<floor>:<id>`). What stays fixed across sessions are the rules:
 
-- **Layout**: one of `styles` (`gallery` rooms and tunnels, `mixed` roughened galleries, `cave` cellular
-  caves, `lair` arena with side caves), size ±10 %, water ±30 %. A draw that breaks the rules is thrown
-  away (up to 12 tries): the stairs down must be at least `rules.min_path` steps away (default
-  0.35 × (w+h)), the boss room at least 60 % of the longest walk.
+- **Layout** (`scripts/world/dungeon_gen.gd`): one of `styles`, size ±8 %, water ±30 %. The floor is cut
+  into sectors of ~19 cells. A long self-avoiding walk through 55–70 % of them is the way from the stairs
+  to the exit or boss, one room per sector, each room joined only to the next, so the way winds over the
+  map. Room shapes: hall, pillared hall, cross, ring round a rock core, long gallery, cluster of
+  chambers, blob, cellular cavern. Sectors beside the way grow dead-end branches up to two deep
+  (`side_rooms`, where chests and shrines prefer to sit); up to two loops cut back 3–4 rooms; the rest
+  stays rock. A draw that breaks the rules is thrown away (up to 12 tries): the stairs down must be at
+  least `rules.min_path` steps away (default 0.9 × (w+h)), the boss room at least 60 % of the longest
+  walk. `--genstats` prints size, walk and XP per floor (`--real` builds them, `--png <dir>` draws them).
 - **Boss floors**: the boss gets its own room (`rules.arena` = radii in cells, default 7×5) at the far
   end, and the stairs down are behind it.
 - **Story first**: `quest_props` are placed before anything random. Defaults: an item to pick up lies
@@ -225,9 +234,11 @@ act still has to pick it up (`Game.quest_item_wanted`) and this floor's copy was
   around the boss room; any other prop past 45 %. `rules.place.<id>` overrides it with `far` (share of the
   longest walk), `from_boss` (cells), `spacing` (cells from others of its kind), `next_to` (an id placed
   earlier on this floor).
-- **The rest**: shrines ≥ 12 cells apart, chests ≥ 8, books past 30 %, monster packs ≥ 6 cells apart,
+- **The rest**: shrines ≥ 12 cells apart, chests ≥ 8 (both side rooms first), books past 30 %, monster packs ≥ 6 cells apart (one per 85 open cells × `density`),
   never within 9 cells of the stairs or inside the boss room. Each visit uses all but one of the floor's
   monster types (15 % of packs may still pick from the whole pool) and ±15 % density, drawn per session.
+- **Map markers**: below ground a tracked quest's target shows on the map only once its spot has been
+  seen. Monsters not yet woken sleep (no physics, no animation) farther than 1 700 px from the hero.
 - **Towns** (`scripts/world/town_layout.gd`): shaft on the north edge with the cage beside it, the well
   (camp fire) square in the middle with arrival point and stash, the chronicler's lectern on the square,
   smith, inn and healer each with its keeper at the door 7–16 cells from the square, the landmark

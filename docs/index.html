@@ -230,6 +230,109 @@
   dialog::backdrop { background: rgba(0, 0, 0, .85); }
   dialog img { width: 100%; }
 
+  /* section nav */
+  .secnav { position: sticky; top: 0; z-index: 20; background: #0b0a0def; backdrop-filter: blur(6px); border-bottom: 1px solid #2b241d; }
+  .secnav .wrap { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; padding: 6px 0; align-items: center; }
+  .secnav .wrap::-webkit-scrollbar { display: none; }
+  .secnav a { flex: none; font-family: "Patrick Hand"; font-size: 1.05rem; color: var(--muted); text-decoration: none; padding: 3px 11px; border-radius: 8px; white-space: nowrap; }
+  .secnav a:hover { color: var(--bone); background: #2a231c; }
+  .secnav a.on { color: var(--night); background: var(--flame); }
+  section[id] { scroll-margin-top: 44px; }
+
+  /* skill tree explorer */
+  .tabs { display: flex; flex-wrap: wrap; gap: 10px; margin: 26px 0 22px; }
+  .tab { all: unset; cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 6px 16px 6px 6px; border-radius: 12px; border: 1px solid var(--line);
+    background: var(--rock-2); font: 1.35rem "Pirata One"; color: var(--muted); transition: border-color .15s, color .15s; }
+  .tab img { width: 44px; height: 44px; border-radius: 8px; object-fit: cover; }
+  .tab[aria-selected="true"] { color: var(--bone); border-color: var(--flame); box-shadow: 0 0 18px #ff9a3a33; }
+  .tab:focus-visible { outline: 2px solid var(--flame); outline-offset: 2px; }
+  .sk { display: grid; grid-template-columns: 1fr 380px; gap: 24px; align-items: start; }
+  .sk-trees { display: grid; grid-template-columns: 40px repeat(3, 1fr); gap: 0 12px; background: #120f0dcc; border: 1px solid #2f2820; border-radius: var(--radius); padding: 16px 16px 8px; }
+  .sk-trees h5 { margin: 0 0 6px; font: 1.35rem "Pirata One"; color: var(--bone); text-align: center; }
+  .sk-tier { font-family: "Patrick Hand"; color: var(--dim); font-size: .95rem; text-align: center; align-self: center; line-height: 1.1; }
+  .sk-tier b { display: block; color: var(--muted); font-size: 1.2rem; font-weight: 400; }
+  .node { all: unset; box-sizing: border-box; cursor: pointer; position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 4px 12px; text-align: center; }
+  .node::before { content: ""; position: absolute; left: 50%; top: -6px; height: 18px; border-left: 2px dashed #4a3a28; }
+  .node.first::before { display: none; }
+  .node img { width: 58px; height: 58px; border-radius: 10px; border: 2px solid #3a2f24; background: #0b0a0d; transition: border-color .15s, box-shadow .15s, translate .15s; }
+  .node span { font-family: "Patrick Hand"; font-size: 1rem; line-height: 1.15; color: var(--muted); }
+  .node:hover img { translate: 0 -2px; border-color: #8a6a44; }
+  .node[aria-pressed="true"] img { border-color: var(--flame); box-shadow: 0 0 16px #ff9a3a77; }
+  .node[aria-pressed="true"] span { color: var(--bone); }
+  .node:focus-visible img { outline: 2px solid var(--flame); outline-offset: 2px; }
+  .sk-detail { position: sticky; top: 64px; background: linear-gradient(#1b1714, #120f0d); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; }
+  .sk-detail .head { display: grid; grid-template-columns: 72px 1fr; gap: 14px; align-items: center; }
+  .sk-detail .head img { width: 72px; height: 72px; border-radius: 12px; border: 2px solid var(--flame); }
+  .sk-detail h3 { margin: 0; font-size: 1.7rem; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .tags span { font-family: "Patrick Hand"; font-size: .95rem; padding: 0 9px; border-radius: 999px; border: 1px solid #3a2f24; color: var(--muted); }
+  .tags .el-fire { color: #ffa25a; border-color: #6a3a1a; } .tags .el-cold { color: var(--cold-2); border-color: #2a3e66; }
+  .tags .el-lightning { color: #dfe8ff; border-color: #4a5a7a; } .tags .el-poison { color: #8fd36a; border-color: #2c4a2c; }
+  .rank { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; margin: 16px 0 6px; font-family: "Patrick Hand"; color: var(--muted); }
+  .rank output { font: 1.6rem "Pirata One"; color: var(--flame); min-width: 2.2ch; text-align: right; }
+  input[type=range] { accent-color: var(--ember); width: 100%; }
+  .sk-detail .desc { font-size: 1.05rem; line-height: 1.45; margin: 8px 0 12px; }
+  .stat-row { display: flex; flex-wrap: wrap; gap: 8px 18px; font-family: "Patrick Hand"; color: var(--muted); font-size: 1.05rem; }
+  .stat-row b { color: var(--cold); font-weight: 400; }
+  .syn { margin-top: 12px; padding-top: 10px; border-top: 1px dashed #3a2f24; font-size: .98rem; color: var(--muted); }
+  .syn b { color: var(--set); font-weight: 600; }
+  .sk-foot { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+  .sk-foot .citem { flex: 1 1 260px; }
+
+  /* item finder */
+  .ff { display: grid; grid-template-columns: 1fr auto auto; gap: 12px; margin-top: 26px; align-items: center; }
+  .ff input[type=search], .ff select { font: 1.1rem "Alegreya", serif; color: var(--bone); background: #0f0c0b; border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; min-width: 0; }
+  .ff input[type=search]:focus, .ff select:focus { outline: 2px solid var(--flame); outline-offset: 1px; }
+  .kinds { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
+  .kind { all: unset; cursor: pointer; font-family: "Patrick Hand"; font-size: 1.05rem; padding: 2px 14px; border-radius: 999px; border: 1px solid #3a2f24; color: var(--muted); background: #120f0d; }
+  .kind[aria-pressed="true"] { color: var(--night); background: var(--flame); border-color: var(--flame); }
+  .kind:focus-visible { outline: 2px solid var(--flame); outline-offset: 2px; }
+  .kind i { font-style: normal; opacity: .7; margin-left: 4px; }
+  .lvlbox { display: flex; gap: 10px; align-items: center; font-family: "Patrick Hand"; color: var(--muted); margin-top: 12px; max-width: 520px; }
+  .lvlbox output { color: var(--flame); font: 1.3rem "Pirata One"; min-width: 2.5ch; }
+  .fcount { font-family: "Patrick Hand"; color: var(--dim); margin: 16px 0 8px; }
+  .fgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 12px; }
+  .it { background: #14110e; border: 1px solid #2f2820; border-radius: 12px; padding: 12px 14px; font-size: .95rem; line-height: 1.35; color: var(--muted); }
+  .it .top { display: grid; grid-template-columns: 52px 1fr; gap: 10px; align-items: center; margin-bottom: 6px; }
+  .it .top img { width: 52px; height: 52px; object-fit: contain; background: #0b0908; border: 1px solid #2f2820; border-radius: 8px; padding: 3px; }
+  .it .top .gl { width: 52px; height: 52px; display: grid; place-items: center; font: 2rem "Noto Sans Glagolitic", serif; color: var(--gold); background: #0b0908; border: 1px solid #2f2820; border-radius: 8px; }
+  .it b.n { display: block; font-size: 1.08rem; font-weight: 600; line-height: 1.2; }
+  .it .sub { font-family: "Patrick Hand"; color: var(--dim); font-size: .95rem; }
+  .it .st { color: var(--bone); }
+  .it .md { color: var(--magic); }
+  .it .fl { font-style: italic; color: var(--dim); margin-top: 6px; }
+  .it .sock { margin-top: 4px; }
+  .it .sock i { font-style: normal; font-family: "Patrick Hand"; color: var(--dim); }
+  .k-unique b.n { color: var(--gold); } .k-set b.n { color: var(--set); } .k-word b.n { color: var(--flame); }
+  .k-gem b.n { color: var(--magic); } .k-letter b.n { color: var(--gold); } .k-charm b.n { color: var(--cold); } .k-base b.n { color: var(--bone); }
+  .k-unique { border-color: #4a3c20; } .k-set { border-color: #2c4a2c; } .k-word { border-color: #5a3a1c; }
+  .more-btn { all: unset; cursor: pointer; display: block; margin: 18px auto 0; font: 1.3rem "Pirata One"; color: var(--bone); border: 1px solid var(--line); border-radius: 10px; padding: 6px 22px; background: var(--rock-2); }
+  .more-btn:focus-visible { outline: 2px solid var(--flame); }
+
+  /* systems */
+  .sys { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 30px; }
+  .sys .card ul { margin: .4em 0 0; padding-left: 1.1em; color: var(--muted); font-size: .98rem; }
+  .sys .card li { margin-bottom: .25em; }
+  .sys .card li b { color: var(--bone); font-weight: 600; }
+  .sys .wide { grid-column: span 2; }
+  .chipz { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .chipz span { font-family: "Patrick Hand"; font-size: .98rem; padding: 0 10px; border-radius: 999px; background: #120f0d; border: 1px solid #3a2f24; color: var(--muted); cursor: help; }
+  .shrines { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 16px; margin-top: 8px; font-size: .95rem; color: var(--muted); }
+  .shrines b { color: var(--gold); font-weight: 600; display: block; }
+  .diffs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; text-align: center; }
+  .diffs div { background: #120f0d; border: 1px solid #2f2820; border-radius: 10px; padding: 8px 6px; font-size: .92rem; color: var(--muted); }
+  .diffs b { display: block; font: 1.3rem "Pirata One"; color: var(--bone); }
+
+  @media (max-width: 900px) {
+    .sk, .ff, .sys { grid-template-columns: 1fr; }
+    .sys .wide { grid-column: auto; }
+    .sk-detail { position: static; }
+    .sk-trees { grid-template-columns: 26px repeat(3, 1fr); gap: 0 6px; padding: 12px 8px 4px; }
+    .node img { width: 48px; height: 48px; }
+    .node span { font-size: .9rem; }
+    .sk-trees h5 { font-size: 1.1rem; }
+    .shrines { grid-template-columns: 1fr; }
+  }
   @media (max-width: 900px) {
     .split, .act, .act:nth-child(even), footer .cols, .trees3, .cards, .shared .sets, .sheet-top { grid-template-columns: 1fr; }
     .classes, .tithes { grid-template-columns: 1fr 1fr; }
@@ -270,7 +373,7 @@
       <li>🇨🇿 Čeština · 🇬🇧 English</li>
       <li><span lang="en">hand-drawn</span><span lang="cs">kresleno ručně</span></li>
       <li><span lang="en">4 heroes · 4 acts · level 100</span><span lang="cs">4 hrdinové · 4 dějství · úroveň 100</span></li>
-      <li>Linux · Windows</li>
+      <li><span lang="en">PC · Android with touch controls</span><span lang="cs">PC · Android s dotykovým ovládáním</span></li>
     </ul>
     <div class="ctas">
       <a class="btn" href="#play"><span lang="en">Descend</span><span lang="cs">Sestoupit</span> ▾</a>
@@ -279,6 +382,22 @@
   </div>
   <div class="guide"><img src="img/permonik.png" alt="Permoník, the little mine spirit with a cold blue lamp"><span lang="en">no shadow?</span><span lang="cs">žádný stín?</span></div>
 </header>
+
+<nav class="secnav" aria-label="Sections">
+  <div class="wrap">
+    <a href="#story"><span lang="en">Story</span><span lang="cs">Příběh</span></a>
+    <a href="#heroes"><span lang="en">Heroes</span><span lang="cs">Hrdinové</span></a>
+    <a href="#skills"><span lang="en">Skill trees</span><span lang="cs">Dovednosti</span></a>
+    <a href="#acts"><span lang="en">Acts</span><span lang="cs">Dějství</span></a>
+    <a href="#world"><span lang="en">The mines</span><span lang="cs">Doly</span></a>
+    <a href="#bestiary"><span lang="en">Bestiary</span><span lang="cs">Bestiář</span></a>
+    <a href="#loot"><span lang="en">Loot</span><span lang="cs">Kořist</span></a>
+    <a href="#finder"><span lang="en">Item finder</span><span lang="cs">Hledač předmětů</span></a>
+    <a href="#systems"><span lang="en">Systems</span><span lang="cs">Mechaniky</span></a>
+    <a href="#gallery"><span lang="en">Gallery</span><span lang="cs">Galerie</span></a>
+    <a href="#play"><span lang="en">Play</span><span lang="cs">Hrát</span></a>
+  </div>
+</nav>
 
 <main>
 
@@ -304,12 +423,12 @@
 <section class="rock" id="heroes">
   <div class="wrap">
     <h2><span lang="en">Four who went down</span><span lang="cs">Čtyři, kteří sestoupili</span></h2>
-    <p class="lead"><span lang="en">Each with three skill trees of four skills, twenty ranks each, a class item only they can wear and three sets of their own. Five attribute points and a skill point every level, up to level 100. Click a hero for the full sheet. Four more are waiting for two expansions.</span><span lang="cs">Každý má tři stromy po čtyřech dovednostech, každá dvacet stupňů, vlastní třídní předmět a tři vlastní sady. Pět bodů vlastností a bod dovednosti za každou úroveň, až do stovky. Klikni na hrdinu a uvidíš celý list. Další čtyři čekají na dvě rozšíření.</span></p>
+    <p class="lead"><span lang="en">Each with three skill trees of four skills, twenty ranks each, a class item only they can wear and three sets of their own. Five attribute points and a skill point every level, up to level 100. Click a hero for the full sheet, or walk every tree rank by rank just below. Four more heroes are waiting for two expansions.</span><span lang="cs">Každý má tři stromy po čtyřech dovednostech, každá dvacet stupňů, vlastní třídní předmět a tři vlastní sady. Pět bodů vlastností a bod dovednosti za každou úroveň, až do stovky. Klikni na hrdinu a uvidíš celý list, nebo si hned níž projdi každý strom stupeň po stupni. Další čtyři hrdinové čekají na dvě rozšíření.</span></p>
     <div class="classes" id="classes"></div>
 
     <div class="shared">
       <h3><span lang="en">Sets anyone can wear</span><span lang="cs">Sady pro každého</span></h3>
-      <p style="color:var(--muted)"><span lang="en">Twenty-six sets in all, 112 green pieces. Three belong to each hero; these two are for everyone.</span><span lang="cs">Celkem dvacet šest sad, 112 zelených kusů. Tři patří každému hrdinovi, tyhle dvě všem.</span></p>
+      <p style="color:var(--muted)" id="sets-note"></p>
       <div class="sets" id="shared-sets"></div>
     </div>
 
@@ -325,6 +444,18 @@
 </section>
 
 <dialog id="classbox" aria-label="Hero"><button class="x" type="button" aria-label="Close">×</button><div class="sheet"></div></dialog>
+
+<section id="skills">
+  <div class="wrap">
+    <h2><span lang="en">Skill trees, rank by rank</span><span lang="cs">Stromy dovedností, stupeň po stupni</span></h2>
+    <p class="lead"><span lang="en">One skill point every level, twenty ranks in every skill. The second row opens at level 6, the third at 12, the last at 18. Many skills feed each other: points in one make another hit harder. Pick a hero, pick a skill, drag the rank and read the numbers the game uses.</span><span lang="cs">Bod dovednosti za každou úroveň, dvacet stupňů v každé dovednosti. Druhá řada se otevře na úrovni 6, třetí na 12, poslední na 18. Mnohé dovednosti se navzájem posilují: body v jedné zesílí jinou. Vyber hrdinu, vyber dovednost, posuň stupeň a čti čísla, se kterými počítá hra.</span></p>
+    <div class="tabs" role="tablist" id="sk-tabs"></div>
+    <div class="sk">
+      <div class="sk-trees" id="sk-trees"></div>
+      <aside class="sk-detail" id="sk-detail" aria-live="polite"></aside>
+    </div>
+  </div>
+</section>
 
 <section id="acts">
   <div class="wrap">
@@ -354,7 +485,7 @@
         </div>
       </article>
       <article class="act">
-        <img src="screenshots/jachymov.jpg" alt="The mines under Jáchymov" loading="lazy">
+        <img src="img/town_jachymov.jpg" alt="Jáchymov at night, the green-lit mint behind the square" loading="lazy">
         <div>
           <div class="num">III</div>
           <h3>Jáchymovské peklo</h3>
@@ -382,20 +513,24 @@
 <section class="rock" id="world">
   <div class="wrap">
     <h2><span lang="en">Never the same mine twice</span><span lang="cs">Nikdy stejný důl</span></h2>
-    <p class="lead"><span lang="en">Every new game draws the mines and the towns again. The layout, the creatures and the treasure are random; what the story needs is placed by rules.</span><span lang="cs">Každá nová hra nakreslí doly i města znovu. Půdorys, stvoření i poklady jsou náhodné; co potřebuje příběh, rozmístí pravidla.</span></p>
+    <p class="lead"><span lang="en">Every time you load a hero, the mountain draws its mines and towns anew. The layout, the creatures and the treasure are random; what the story needs is placed by rules.</span><span lang="cs">Pokaždé, když nahraješ hrdinu, hora nakreslí doly i města znovu. Půdorys, stvoření i poklady jsou náhodné; co potřebuje příběh, rozmístí pravidla.</span></p>
     <div class="split" style="margin-top:30px">
       <div>
         <ul class="bul" lang="en">
+          <li><b>Mines worth the walk.</b> Each floor is a long, winding way through twenty-odd rooms: pillared halls, timbered galleries with niches, caverns round a rock core, flooded pockets. Dead-end branches hide chests and idols, and the elite packs that guard them. By the time you reach the guardian, you are ready for it.</li>
+          <li><b>They stay as you left them.</b> Go up by portal or the cage and come back: the same tunnels, the same dead, the chests still open, the map you uncovered still uncovered.</li>
           <li><b>Rules, not maps.</b> The guardian's lair is at the far end, a story item lies well away from the stairs and the boss, books and shrines keep their distance, and the props a boss fights with ring its room.</li>
           <li><b>Towns are drawn too.</b> The shaft stays on the north edge and you arrive by the well, but houses, paths and lamps move, each trader stands at their own door, and every door can still be reached.</li>
           <li><b>A hand-drawn map.</b> Tab opens the sheet of paper you have mapped so far; a small round map sits in the corner. Unexplored rock stays blank.</li>
-          <li><b>You always know where to go.</b> The main quest is tracked on screen, with a ring on the map and an arrow at its edge. People with something for you wear a “!”, those waiting for an answer a “?”.</li>
+          <li><b>Find it yourself.</b> The quest log says which floor; the map rings a target only once you have seen it. People with something for you wear a “!”, those waiting for an answer a “?”.</li>
         </ul>
         <ul class="bul" lang="cs">
+          <li><b>Doly, které stojí za tu cestu.</b> Každé patro je dlouhá, klikatá cesta přes dvacítku síní: síně s pilíři, vyztužené štoly s výklenky, jeskyně kolem skalního jádra, zatopené kapsy. Slepé odbočky skrývají truhly a modly a elitní smečky, které je hlídají. Než dojdeš ke strážci, jsi na něj připravený.</li>
+          <li><b>Zůstanou, jak jsi je nechal.</b> Odejdi branou nebo klecí a vrať se: tytéž chodby, tytéž mrtvoly, truhly pořád otevřené a prošlá mapa pořád prošlá.</li>
           <li><b>Pravidla, ne mapy.</b> Doupě strážce je na druhém konci, předmět pro příběh leží daleko od schodů i od bosse, knihy a svatyně drží odstup a rekvizity, se kterými boss bojuje, obklopí jeho síň.</li>
           <li><b>I města se kreslí znovu.</b> Šachta zůstává na severu a přicházíš u studny, ale domy, cesty i lucerny se přeskládají, každý obchodník stojí u svých dveří a ke všem se dojde.</li>
           <li><b>Ručně kreslená mapa.</b> Tabulátor otevře list papíru s tím, co máš prošlé; v rohu je malá kulatá mapka. Neprozkoumaná skála zůstane prázdná.</li>
-          <li><b>Vždycky víš, kam jít.</b> Hlavní úkol vidíš na obrazovce, na mapě je kroužek a na jejím okraji šipka. Kdo pro tebe něco má, nese „!“, kdo čeká na odpověď, „?“.</li>
+          <li><b>Najdi si to sám.</b> Deník úkolů řekne, na kterém patře; na mapě se cíl objeví, až ho uvidíš. Kdo pro tebe něco má, nese „!“, kdo čeká na odpověď, „?“.</li>
         </ul>
       </div>
       <img class="shot" src="screenshots/map.jpg" alt="The hand-drawn map of a mine level" loading="lazy">
@@ -414,23 +549,8 @@
 <section id="bestiary">
   <div class="wrap">
     <h2><span lang="en">Out of the old tales</span><span lang="cs">Ze starých pověstí</span></h2>
-    <p class="lead"><span lang="en">Twenty-four kinds of creature, every one from Czech and Slavic folklore, plus elite packs with names like Bonebreaker.</span><span lang="cs">Čtyřiadvacet druhů stvoření, všechna z českých a slovanských pověstí, a k tomu elitní smečky se jmény jako Lamač kostí.</span></p>
-    <div class="strip">
-      <div class="beast"><img src="img/m_sotek.png" alt=""><b>Šotek</b><span lang="en">steals your groschen</span><span lang="cs">krade groše</span></div>
-      <div class="beast"><img src="img/m_kostlivy_havir.png" alt=""><b>Kostlivý havíř</b><span lang="en">the miners who stayed</span><span lang="cs">havíři, co zůstali</span></div>
-      <div class="beast"><img src="img/m_bludicka.png" alt=""><b>Bludička</b><span lang="en">will-o'-the-wisp</span><span lang="cs">svede tě z cesty</span></div>
-      <div class="beast"><img src="img/m_utopenec.png" alt=""><b>Utopenec</b><span lang="en">the drowned</span><span lang="cs">ze zatopených štol</span></div>
-      <div class="beast"><img src="img/m_hejkal.png" alt=""><b>Hejkal</b><span lang="en">shouts, then charges</span><span lang="cs">zahouká a vyrazí</span></div>
-      <div class="beast"><img src="img/m_vlkodlak.png" alt=""><b>Vlkodlak</b><span lang="en">werewolf</span><span lang="cs">zuří, když krvácí</span></div>
-      <div class="beast"><img src="img/m_mura.png" alt=""><b>Můra</b><span lang="en">drinks your mana</span><span lang="cs">vysaje manu</span></div>
-      <div class="beast"><img src="img/m_cert.png" alt=""><b>Čert</b><span lang="en">chain hook</span><span lang="cs">přitáhne řetězem</span></div>
-      <div class="beast"><img src="img/m_ohnivy_muzik.png" alt=""><b>Ohnivý mužík</b><span lang="en">runs in and explodes</span><span lang="cs">přiběhne a vybuchne</span></div>
-      <div class="beast"><img src="img/m_svetlonos.png" alt=""><b>Světlonoš</b><span lang="en">eats your light</span><span lang="cs">sní ti světlo</span></div>
-      <div class="beast"><img src="img/m_upir.png" alt=""><b>Upír</b><span lang="en">life steal</span><span lang="cs">pije život</span></div>
-      <div class="beast"><img src="img/m_navka.png" alt=""><b>Navka</b><span lang="en">dead maiden of Nav</span><span lang="cs">mrtvá dívka z Navi</span></div>
-      <div class="beast"><img src="img/m_cerny_pes.png" alt=""><b>Černý pes</b><span lang="en">the crossroads dog</span><span lang="cs">pes z rozcestí</span></div>
-      <div class="beast"><img src="img/m_permonicek.png" alt=""><b>Permoníček</b><span lang="en">so cute. so many knives.</span><span lang="cs">roztomilý. a s nožem.</span></div>
-    </div>
+    <p class="lead" id="beast-lead"></p>
+    <div class="strip" id="beasts"></div>
 
     <h2 style="margin-top:70px"><span lang="en">Guardians of the seals</span><span lang="cs">Strážci pečetí</span></h2>
     <p class="lead"><span lang="en">Twelve guardians, each with its own trick. And one more, at the very bottom.</span><span lang="cs">Dvanáct strážců, každý s vlastní fintou. A ještě jeden, úplně na dně.</span></p>
@@ -531,19 +651,86 @@
       <p lang="cs">Recepty jsou napsané přímo na výhni, wiki nepotřebuješ.</p>
     </div>
   </div>
-  <div class="wrap facts">
-    <div class="fact"><b>8</b><span lang="en">heroes</span><span lang="cs">hrdinů</span></div>
-    <div class="fact"><b>96</b><span lang="en">skills</span><span lang="cs">dovedností</span></div>
-    <div class="fact"><b>26</b><span lang="en">sets</span><span lang="cs">sad</span></div>
-    <div class="fact"><b>48</b><span lang="en">uniques</span><span lang="cs">jedinečných</span></div>
-    <div class="fact"><b>14</b><span lang="en">words of power</span><span lang="cs">slov moci</span></div>
-    <div class="fact"><b>16 + 4</b><span lang="en">mine levels + tithes</span><span lang="cs">pater + desátky</span></div>
-    <div class="fact"><b>4</b><span lang="en">acts</span><span lang="cs">dějství</span></div>
-    <div class="fact"><b>12</b><span lang="en">guardians</span><span lang="cs">strážců</span></div>
-    <div class="fact"><b>148</b><span lang="en">codex entries</span><span lang="cs">hesel kodexu</span></div>
-    <div class="fact"><b>21</b><span lang="en">books</span><span lang="cs">knih</span></div>
-    <div class="fact"><b>100</b><span lang="en">levels</span><span lang="cs">úrovní</span></div>
-    <div class="fact"><b>3</b><span lang="en">difficulties</span><span lang="cs">obtížnosti</span></div>
+  <div class="wrap facts" id="facts"></div>
+</section>
+
+<section id="finder">
+  <div class="wrap">
+    <h2><span lang="en">Item finder</span><span lang="cs">Hledač předmětů</span></h2>
+    <p class="lead"><span lang="en">Every base, unique, set piece, word of power, gem, letter and thunderstone in the game, straight from its data. Search by name or by what it does: try “fire”, “life”, “Perun” or “+1”.</span><span lang="cs">Každý základní předmět, jedinečný kus, sadový kus, slovo moci, drahokam, písmeno i hromový kámen ve hře, rovnou z jejích dat. Hledej podle jména nebo podle toho, co umí: zkus „oheň“, „život“, „Perun“ nebo „+1“.</span></p>
+    <div class="ff">
+      <input type="search" id="f-q" aria-label="Search" autocomplete="off">
+      <select id="f-slot" aria-label="Slot"></select>
+      <select id="f-cls" aria-label="Hero"></select>
+    </div>
+    <div class="kinds" id="f-kinds" role="group" aria-label="Kind"></div>
+    <label class="lvlbox"><span lang="en">item level up to</span><span lang="cs">úroveň předmětu do</span> <input type="range" id="f-lvl" min="1" max="99" value="99"> <output id="f-lvl-o">99</output></label>
+    <div class="fcount" id="f-count" aria-live="polite"></div>
+    <div class="fgrid" id="f-grid"></div>
+    <button class="more-btn" type="button" id="f-more"><span lang="en">show more</span><span lang="cs">ukázat další</span></button>
+  </div>
+</section>
+
+<section class="rock" id="systems">
+  <div class="wrap">
+    <h2><span lang="en">Under the hood</span><span lang="cs">Co všechno hora umí</span></h2>
+    <p class="lead"><span lang="en">The rest of what makes a run: elite packs and named foes, idols of the old gods, hired help, three difficulties and a long tail after the story.</span><span lang="cs">Všechno ostatní, z čeho je výprava: elitní smečky a pojmenovaní nepřátelé, modly starých bohů, najatí pomocníci, tři obtížnosti a dlouhý ocas po příběhu.</span></p>
+    <div class="sys">
+      <div class="card wide">
+        <h3><span lang="en">The lamp is your eyes</span><span lang="cs">Kahan jsou tvé oči</span></h3>
+        <p lang="en">Light comes only from your lamp, and the lamp is a slot of its own: tallow, miner's, brass, carbide. Monsters outside its circle are shadows; some eat light, one can only be hurt inside it, and elite packs of Darkness shrink it.</p>
+        <p lang="cs">Světlo dává jen tvůj kahan a kahan má vlastní slot: lojový, havířský, mosazný, karbidka. Nestvůry mimo jeho kruh jsou jen stíny; některé světlo žerou, jednu zraníš jen v něm a elitní smečky Tmy ho zmenšují.</p>
+      </div>
+      <div class="card">
+        <h3><span lang="en">Elite packs</span><span lang="cs">Elitní smečky</span></h3>
+        <p lang="en">Champions come with a name, a gold outline, minions and one or two of these. Hover for what they do.</p>
+        <p lang="cs">Šampioni mají jméno, zlatý obrys, doprovod a jednu či dvě z těchto vlastností. Najeď myší a uvidíš, co dělají.</p>
+        <div class="chipz" id="sys-champs"></div>
+      </div>
+      <div class="card">
+        <h3><span lang="en">Named foes</span><span lang="cs">Pojmenovaní nepřátelé</span></h3>
+        <p lang="en">Each waits on its own floor with its own gang, and never quite where you expect.</p>
+        <p lang="cs">Každý čeká na svém patře se svou bandou, a nikdy úplně tam, kde bys ho čekal.</p>
+        <ul id="sys-su"></ul>
+      </div>
+      <div class="card wide">
+        <h3><span lang="en">Idols of the old gods</span><span lang="cs">Modly starých bohů</span></h3>
+        <p lang="en">One or two stand on every floor, usually off the main way. Touch one and its god lends you something for a while.</p>
+        <p lang="cs">Na každém patře stojí jedna či dvě, většinou mimo hlavní cestu. Dotkni se a jejich bůh ti na chvíli něco půjčí.</p>
+        <div class="shrines" id="sys-shrines"></div>
+      </div>
+      <div class="card">
+        <h3><span lang="en">Hired help</span><span lang="cs">Najatá pomoc</span></h3>
+        <ul id="sys-hire"></ul>
+        <p lang="en" style="margin-top:.6em">They level with you, wear what you give them and walk through townsfolk.</p>
+        <p lang="cs" style="margin-top:.6em">Rostou s tebou, nosí, co jim dáš, a projdou mezi měšťany.</p>
+      </div>
+      <div class="card">
+        <h3><span lang="en">Getting around</span><span lang="cs">Jak se pohybovat</span></h3>
+        <ul lang="en"><li><b>The cage</b> at every floor's stairs takes you to any floor you have reached.</li><li><b>Scrolls of the Way Home</b> open a portal to town and back to the very spot.</li><li><b>Die</b> and a portal waits for you back to where you fell.</li><li><b>Autosave</b> waits until the fight is over.</li></ul>
+        <ul lang="cs"><li><b>Klec</b> u schodů každého patra tě sveze na kterékoli patro, kam jsi došel.</li><li><b>Svitky brány domů</b> otevřou bránu do města a zpátky na stejné místo.</li><li><b>Zemřeš</b> a brána tě čeká zpátky tam, kde jsi padl.</li><li><b>Ukládání</b> počká, až dobojuješ.</li></ul>
+      </div>
+      <div class="card">
+        <h3><span lang="en">Three descents</span><span lang="cs">Tři sestupy</span></h3>
+        <div class="diffs">
+          <div><b>Normal</b><span lang="en">the story</span><span lang="cs">příběh</span></div>
+          <div><b>Noční můra</b><span lang="en">monsters +30 levels, resist −30</span><span lang="cs">nestvůry +30 úrovní, odolnost −30</span></div>
+          <div><b>Nav</b><span lang="en">monsters +60 levels</span><span lang="cs">nestvůry +60 úrovní</span></div>
+        </div>
+        <p lang="en" style="margin-top:.8em">Up to level 100, with the four tithes waiting behind the ferryman.</p>
+        <p lang="cs" style="margin-top:.8em">Až do úrovně 100 a za převozníkem čtyři desátky.</p>
+      </div>
+      <div class="card">
+        <h3><span lang="en">Stories everywhere</span><span lang="cs">Příběhy všude</span></h3>
+        <ul lang="en" id="sys-story-en"></ul>
+        <ul lang="cs" id="sys-story-cs"></ul>
+      </div>
+      <div class="card wide">
+        <h3><span lang="en">Play your way</span><span lang="cs">Hraj po svém</span></h3>
+        <ul lang="en"><li><b>Czech and English</b>, text and menus, switchable any time.</li><li><b>Touch controls</b> on Android: a stick, skill buttons, hold to repeat.</li><li><b>Hold a skill</b> and it keeps firing; press it mid-swing and it waits for you.</li><li><b>Shift-click</b> a potion at a trader to fill the belt.</li></ul>
+        <ul lang="cs"><li><b>Čeština a angličtina</b>, texty i nabídky, kdykoli přepnout.</li><li><b>Dotykové ovládání</b> na Androidu: páčka, tlačítka dovedností, držením opakuješ.</li><li><b>Drž dovednost</b> a sesílá se dál; stiskni ji uprostřed rány a počká na tebe.</li><li><b>Shift a klik</b> na lektvar u obchodníka naplní opasek.</li></ul>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -711,6 +898,216 @@ godot --path permonik/game</pre>
   if (D) {
     const c = D.classes.find(c => '#' + c.id === location.hash);
     if (c) openClass(c);
+  }
+
+  const L = () => root.dataset.lang === 'cs' ? 'cs' : 'en';
+  const tx = o => o && typeof o === 'object' ? (o[L()] ?? o.en ?? '') : String(o ?? '');
+
+  // numbers band and counts, from the data so they never go stale
+  if (D) {
+    const f = D.facts;
+    document.getElementById('sets-note').innerHTML = two(
+      `Celkem ${f.sets} sad, ${f.set_pieces} zelených kusů. Tři patří každému hrdinovi, ${D.shared_sets.length === 2 ? 'tyhle dvě' : 'tyhle'} všem.`,
+      `${f.sets} sets in all, ${f.set_pieces} green pieces. Three belong to each hero; these ${D.shared_sets.length} are for everyone.`);
+    const facts = [[f.classes, 'hrdinové', 'heroes'], [f.skills, 'dovedností', 'skills'], [f.sets, 'sad', 'sets'], [f.uniques, 'jedinečných', 'uniques'],
+      [f.words, 'slov moci', 'words of power'], [`${f.floors} + ${f.tithes}`, 'pater + desátky', 'mine levels + tithes'], [f.acts, 'dějství', 'acts'],
+      [f.bosses, 'strážců', 'guardians'], [f.quests, 'úkolů', 'quests'], [f.codex, 'hesel kodexu', 'codex entries'], [f.books, 'knih', 'books'],
+      [f.levels, 'úrovní', 'levels']];
+    document.getElementById('facts').innerHTML = facts.map(([n, cs, en]) => `<div class="fact"><b>${esc(n)}</b>${two(cs, en)}</div>`).join('');
+  }
+
+  // bestiary: every creature the game spawns, drawn from its own sprites
+  const BEAST = {
+    krysa: ['v hejnech z puklin', 'swarms out of the cracks'], sotek: ['krade groše', 'steals your groschen'],
+    kostlivy_havir: ['havíři, co zůstali', 'the miners who stayed'], kostlivy_kusinik: ['střílí ze tmy', 'shoots from the dark'],
+    netopyr: ['kličkuje vzduchem', 'zigzags through the air'], bludicka: ['svede tě z cesty', "will-o'-the-wisp"],
+    utopenec: ['ze zatopených štol', 'the drowned'], hejkal: ['zahouká a vyrazí', 'shouts, then charges'], vlk: ['loví ve smečce', 'hunts in packs'],
+    diva_zena: ['hází kamením, léčí své', 'throws stones, heals her own'], mura: ['vysaje manu', 'drinks your mana'],
+    bubak: ['objeví se ti za zády', 'appears behind you'], kamenny_had: ['plive kámen', 'spits stone'], vlkodlak: ['zuří, když krvácí', 'frenzies when hurt'],
+    cert: ['přitáhne řetězem', 'chain hook'], ohnivy_muzik: ['přiběhne a vybuchne', 'runs in and explodes'], svetlonos: ['sní ti světlo', 'eats your light'],
+    upir: ['pije život', 'life steal'], smolak: ['nechává jedovatou smůlu', 'leaves poison pitch'], chaloupka: ['chodí a kope', 'walks, and kicks'],
+    navka: ['mrtvá dívka z Navi', 'dead maiden of Nav'], cerny_pes: ['pes z rozcestí', 'the crossroads dog'],
+    permonicek: ['roztomilý. a s nožem.', 'so cute. so many knives.'], bes: ['proklíná', 'curses you'], kostejuv_nesmrtelny: ['vstane znovu', 'gets back up'],
+  };
+  if (D) {
+    const n = D.bestiary.length;
+    document.getElementById('beast-lead').innerHTML = two(
+      `${n} druhů stvoření, všechna z českých a slovanských pověstí, a k tomu elitní smečky se jmény jako Lamač kostí.`,
+      `${n} kinds of creature, every one from Czech and Slavic folklore, plus elite packs with names like Bonebreaker.`);
+    const ACT = ['', 'I', 'II', 'III', 'IV'];
+    document.getElementById('beasts').innerHTML = D.bestiary.map(b => {
+      const c = BEAST[b.id] || ['', ''];
+      return `<div class="beast"><img src="img/monsters/${b.id}.webp" alt="" loading="lazy"><b>${T(b.name)}</b><span>${two(c[0], c[1])}</span><span style="color:var(--ember)">${ACT[b.act] || ''}</span></div>`;
+    }).join('');
+  }
+
+  // skill trees: the numbers at any rank, worked out the way the game does
+  const TYPE = { melee: ['úder', 'melee'], melee_arc: ['máchnutí', 'sweep'], projectile: ['střela', 'projectile'], area: ['plocha', 'area'],
+    nova: ['kruh kolem', 'nova'], stomp: ['dupnutí', 'stomp'], buff: ['posílení', 'buff'], passive: ['trvalá', 'passive'], summon: ['vyvolání', 'summon'],
+    wall: ['stěna', 'wall'], trap: ['past', 'trap'], chain: ['řetěz', 'chain'], cone: ['kužel', 'cone'], cloud: ['mrak', 'cloud'], leap: ['skok', 'leap'], spin: ['vír', 'spin'] };
+  const ELEM = { physical: ['fyzické', 'physical'], fire: ['oheň', 'fire'], cold: ['mráz', 'cold'], lightning: ['blesk', 'lightning'], poison: ['jed', 'poison'] };
+  const pval = (v, r) => Array.isArray(v) && v.length === 2 && Array.isArray(v[0]) ? [v[0][0] + v[1][0] * (r - 1), v[0][1] + v[1][1] * (r - 1)]
+    : Array.isArray(v) && v.length >= 2 ? v[0] + v[1] * (r - 1) : v;
+  const fnum = v => Array.isArray(v) ? `${Math.round(v[0])}–${Math.round(v[1])}`
+    : typeof v === 'number' ? (Math.abs(v - Math.round(v)) >= 0.05 ? v.toFixed(1) : String(Math.round(v))) : String(v);
+  const fillAt = (s, r) => ({ cs: (s.tpl.cs || '').replace(/\{(\w+)\}/g, (m, p) => p in s.params ? fnum(pval(s.params[p], r)) : m),
+    en: (s.tpl.en || '').replace(/\{(\w+)\}/g, (m, p) => p in s.params ? fnum(pval(s.params[p], r)) : m) });
+  let skCls = null, skSel = null, skRank = 1;
+  function skDetail() {
+    const s = skSel, r = Math.min(skRank, s.max);
+    const mana = Array.isArray(s.mana) ? s.mana[0] + s.mana[1] * (r - 1) : s.mana;
+    const t = TYPE[s.type] || [s.type, s.type], e = ELEM[s.element] || [s.element, s.element];
+    const syn = s.syn.length ? `<div class="syn">${two('Posilují ji:', 'Boosted by:')} ${s.syn.map(y => `<b>${T(y.name)}</b> ${two(`+${y.pct} % poškození za stupeň`, `+${y.pct}% damage per rank`)}`).join(' · ')}</div>` : '';
+    const feeds = skCls.trees.flatMap(t2 => t2.skills).filter(o => o.syn.some(y => y.id === s.id));
+    const feed = feeds.length ? `<div class="syn">${two('Sama posiluje:', 'Boosts:')} ${feeds.map(o => `<b>${T(o.name)}</b>`).join(' · ')}</div>` : '';
+    document.getElementById('sk-detail').innerHTML = `
+      <div class="head"><img src="img/skills/${s.id}.webp" alt=""><div><h3>${T(s.name)}</h3>
+        <div class="tags"><span>${two(t[0], t[1])}</span><span class="el-${s.element}">${two(e[0], e[1])}</span><span>${two('úroveň ' + s.req, 'level ' + s.req)}</span></div></div></div>
+      <label class="rank"><span>${two('stupeň', 'rank')}</span><input type="range" id="sk-r" min="1" max="${s.max}" value="${r}"><output>${r}</output></label>
+      <p class="desc">${T(fillAt(s, r))}</p>
+      <div class="stat-row">${s.type === 'passive' ? two('Trvalá, bez many.', 'Always on, no mana.') : `<span>${two('Mana', 'Mana')} <b>${fnum(mana)}</b></span>`}${s.cd ? `<span>${two('Přebití', 'Cooldown')} <b>${fnum(s.cd)} s</b></span>` : ''}<span>${two('Max. stupeň', 'Max rank')} <b>${s.max}</b></span></div>
+      ${syn}${feed}`;
+    document.getElementById('sk-r').addEventListener('input', ev => { skRank = +ev.target.value; skDetail(); document.getElementById('sk-r').focus(); });
+  }
+  function skPick(s) {
+    skSel = s;
+    document.querySelectorAll('#sk-trees .node').forEach(n => n.setAttribute('aria-pressed', n.dataset.id === s.id));
+    skDetail();
+  }
+  function skShow(c) {
+    skCls = c;
+    document.querySelectorAll('#sk-tabs .tab').forEach(b => b.setAttribute('aria-selected', b.dataset.id === c.id));
+    const rows = [1, 2, 3, 4];
+    let h = '<div></div>' + c.trees.map(t => `<h5>${T(t.name)}</h5>`).join('');
+    rows.forEach((tier, ri) => {
+      const req = c.trees[0].skills.find(s => s.tier === tier)?.req ?? '';
+      h += `<div class="sk-tier"><b>${req}</b>${two('úr.', 'lvl')}</div>`;
+      c.trees.forEach(t => {
+        const s = t.skills.find(x => x.tier === tier);
+        h += s ? `<button class="node${ri === 0 ? ' first' : ''}" type="button" data-id="${s.id}" aria-pressed="false"><img src="img/skills/${s.id}.webp" alt=""><span>${T(s.name)}</span></button>` : '<div></div>';
+      });
+    });
+    const box = document.getElementById('sk-trees');
+    box.innerHTML = h;
+    box.querySelectorAll('.node').forEach(n => n.addEventListener('click', () => skPick(c.trees.flatMap(t => t.skills).find(s => s.id === n.dataset.id))));
+    skPick(c.trees[0].skills[0]);
+  }
+  if (D) {
+    const tabs = document.getElementById('sk-tabs');
+    tabs.innerHTML = D.classes.map(c => `<button class="tab" type="button" role="tab" data-id="${c.id}" aria-selected="false"><img src="img/class/hero_${c.id}.webp" alt="">${T(c.name)}</button>`).join('');
+    tabs.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => skShow(D.classes.find(c => c.id === b.dataset.id))));
+    skShow(D.classes[0]);
+  }
+
+  // item finder
+  const KIND = { all: ['vše', 'all'], unique: ['jedinečné', 'uniques'], set: ['sadové', 'set pieces'], word: ['slova moci', 'words'], base: ['základní', 'bases'],
+    gem: ['drahokamy', 'gems'], letter: ['písmena', 'letters'], charm: ['hromové kameny', 'thunderstones'] };
+  const SLOTN = { weapon: ['zbraň', 'weapon'], offhand: ['druhá ruka', 'off-hand'], body: ['zbroj', 'armour'], head: ['hlava', 'head'], belt: ['opasek', 'belt'],
+    ring: ['prsten', 'ring'], amulet: ['amulet', 'amulet'], lamp: ['kahan', 'lamp'], charm: ['hromový kámen', 'thunderstone'], gem: ['drahokam', 'gem'], letter: ['písmeno', 'letter'] };
+  const SOCK = { weapon: ['ve zbrani', 'in a weapon'], armor: ['ve zbroji', 'in armour'], shield: ['ve štítu', 'in a shield'], offhand: ['v levé ruce', 'in the off-hand'], helm: ['v přilbě', 'in a helm'] };
+  const SPEED = { slow: ['pomalá', 'slow'], normal: ['běžná', 'normal'], fast: ['rychlá', 'fast'] };
+  const fs = { q: '', kind: 'unique', slot: '', cls: '', lvl: 99, shown: 48 };
+  function itStats(e) {
+    const st = e.stats || {}, out = [];
+    if (st.dmg) out.push(two(`Poškození ${st.dmg[0]}–${st.dmg[1]}`, `Damage ${st.dmg[0]}–${st.dmg[1]}`));
+    if (st.armor) out.push(two(`Zbroj ${st.armor[0]}–${st.armor[1]}`, `Armour ${st.armor[0]}–${st.armor[1]}`));
+    if (st.block) out.push(two(`Vykrytí ${st.block} %`, `Block ${st.block}%`));
+    if (st.light) out.push(two(`Dosvit ${st.light}`, `Light radius ${st.light}`));
+    if (st.two) out.push(two('obouruční', 'two-handed'));
+    if (st.speed && SPEED[st.speed]) out.push(two(SPEED[st.speed][0], SPEED[st.speed][1]));
+    return out.length ? `<div class="st">${out.join(' · ')}</div>` : '';
+  }
+  function itHtml(e) {
+    const clsName = e.cls ? D.classes.find(c => c.id === e.cls)?.name : null;
+    const icon = e.k === 'letter' ? `<div class="gl">${esc(e.glyph)}</div>` : e.k === 'word' ? `<div class="gl" style="font-size:1.1rem">${esc(e.letters.join(''))}</div>` : `<img src="img/items/${e.icon}.webp" alt="" loading="lazy">`;
+    let sub = '';
+    if (e.k === 'word') sub = e.bases.map(b => BASES[b] || esc(b)).join(', ');
+    else if (e.base) sub = T(e.base);
+    else if (e.slot && SLOTN[e.slot]) sub = two(SLOTN[e.slot][0], SLOTN[e.slot][1]);
+    const lvl = two(`úr. ${e.qlvl}`, `ilvl ${e.qlvl}`) + (e.req && e.k === 'base' ? ' · ' + two(`potřeba úr. ${e.req}`, `needs lvl ${e.req}`) : '');
+    let body = itStats(e);
+    if (e.set) body += `<div style="color:var(--set)">${T(e.set)}</div>`;
+    if (e.mods) body += `<div class="md">${e.mods.map(T).join('<br>')}</div>`;
+    if (e.socket) body += Object.entries(e.socket).map(([k, v]) => `<div class="sock"><i>${SOCK[k] ? two(SOCK[k][0], SOCK[k][1]) : esc(k)}:</i> ${v.map(T).join(', ')}</div>`).join('');
+    if (e.k === 'letter') body += `<div class="sub">${esc(e.latin)}</div>`;
+    if (e.k === 'word') body = `<div class="sub">${T(e.meaning)}</div>` + body;
+    if (clsName) body += `<div style="color:var(--flame)">${two('Jen pro: ', 'Only for: ')}${T(clsName)}</div>`;
+    if (e.flavor) body += `<div class="fl">${T(e.flavor)}</div>`;
+    return `<div class="it k-${e.k}"><div class="top">${icon}<div><b class="n">${T(e.name)}</b><div class="sub">${sub} · ${lvl}</div></div></div>${body}</div>`;
+  }
+  const norm = x => x.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  function hay(e) {
+    if (!e._h) {
+      const parts = [e.name, e.base, e.set, e.meaning, ...(e.mods || []), ...Object.values(e.socket || {}).flat()].filter(Boolean);
+      e._h = norm(parts.map(p => typeof p === 'object' ? `${p.cs} ${p.en}` : p).join(' ') + ' ' + (e.latin || ''));
+    }
+    return e._h;
+  }
+  function finder() {
+    const q = norm(fs.q.trim());
+    const list = D.finder.filter(e => (fs.kind === 'all' || e.k === fs.kind) && (!fs.slot || e.slot === fs.slot || (e.k === 'word' && e.bases.some(b => b === fs.slot || (fs.slot === 'body' && b === 'armor'))))
+      && (!fs.cls || !e.cls || e.cls === fs.cls) && (e.qlvl || 1) <= fs.lvl && (!q || q.split(/\s+/).every(w => hay(e).includes(w))))
+      .sort((a, b) => (a.qlvl - b.qlvl) || tx(a.name).localeCompare(tx(b.name)));
+    document.getElementById('f-count').innerHTML = two(`${list.length} předmětů`, `${list.length} items`);
+    document.getElementById('f-grid').innerHTML = list.slice(0, fs.shown).map(itHtml).join('');
+    document.getElementById('f-more').hidden = list.length <= fs.shown;
+  }
+  if (D) {
+    const kinds = document.getElementById('f-kinds');
+    const cnt = k => k === 'all' ? D.finder.length : D.finder.filter(e => e.k === k).length;
+    kinds.innerHTML = Object.entries(KIND).map(([k, v]) => `<button class="kind" type="button" data-k="${k}" aria-pressed="${k === fs.kind}">${two(v[0], v[1])}<i>${cnt(k)}</i></button>`).join('');
+    kinds.querySelectorAll('.kind').forEach(b => b.addEventListener('click', () => {
+      fs.kind = b.dataset.k; fs.shown = 48;
+      kinds.querySelectorAll('.kind').forEach(x => x.setAttribute('aria-pressed', x === b));
+      finder();
+    }));
+    const slotSel = document.getElementById('f-slot'), clsSel = document.getElementById('f-cls'), q = document.getElementById('f-q');
+    const fillSelects = () => {
+      slotSel.innerHTML = `<option value="">${L() === 'cs' ? 'každý slot' : 'any slot'}</option>` + Object.entries(SLOTN).filter(([k]) => !['gem', 'letter', 'charm'].includes(k)).map(([k, v]) => `<option value="${k}"${fs.slot === k ? ' selected' : ''}>${v[L() === 'cs' ? 0 : 1]}</option>`).join('');
+      clsSel.innerHTML = `<option value="">${L() === 'cs' ? 'každý hrdina' : 'any hero'}</option>` + D.classes.map(c => `<option value="${c.id}"${fs.cls === c.id ? ' selected' : ''}>${esc(tx(c.name))}</option>`).join('');
+      q.placeholder = L() === 'cs' ? 'hledat… (třeba oheň, Perun, +1)' : 'search… (try fire, Perun, +1)';
+    };
+    fillSelects();
+    document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', fillSelects));
+    slotSel.addEventListener('change', () => { fs.slot = slotSel.value; fs.shown = 48; finder(); });
+    clsSel.addEventListener('change', () => { fs.cls = clsSel.value; fs.shown = 48; finder(); });
+    q.addEventListener('input', () => { fs.q = q.value; fs.shown = 48; finder(); });
+    const lv = document.getElementById('f-lvl');
+    lv.addEventListener('input', () => { fs.lvl = +lv.value; document.getElementById('f-lvl-o').textContent = lv.value; fs.shown = 48; finder(); });
+    document.getElementById('f-more').addEventListener('click', () => { fs.shown += 48; finder(); });
+    finder();
+  }
+
+  // systems, from the data
+  if (D) {
+    document.getElementById('sys-champs').innerHTML = D.champions.map(c => {
+      const what = c.mods.length ? c.mods.map(tx).join(', ') + (c.aura ? (L() === 'cs' ? ' (aura kolem)' : ' (aura around it)') : '')
+        : c.special === 'invisible' ? (L() === 'cs' ? 'neviditelný, dokud nezaútočí' : 'unseen until it strikes') : c.special === 'drain_mana' ? (L() === 'cs' ? 'každý zásah ti vezme manu' : 'every hit drains your mana') : '';
+      return `<span title="${esc(what)}">${T(c.name)}</span>`;
+    }).join('');
+    const ACT = ['', 'I', 'II', 'III', 'IV'];
+    document.getElementById('sys-su').innerHTML = D.superuniques.map(u => `<li><b>${T(u.name)}</b> <span class="hand" style="color:var(--dim)">${ACT[u.act]}·${u.floor}${u.monster ? ' · ' : ''}${u.monster ? T(u.monster) : ''}</span></li>`).join('');
+    document.getElementById('sys-shrines').innerHTML = D.shrines.map(s => `<div><b>${T(s.name)}</b>${s.mods.map(T).join(', ')} · ${two(Math.round(s.secs / 60) + ' min', Math.round(s.secs / 60) + ' min')}</div>`).join('');
+    document.getElementById('sys-hire').innerHTML = D.hirelings.map(h => `<li><b>${T(h.name)}</b>: ${T(h.desc)}</li>`).join('');
+    const f = D.facts;
+    document.getElementById('sys-story-en').innerHTML = `<li><b>${f.quests} quests</b>, main and side, from the old tales.</li><li><b>${f.books} books</b> to find and read in the mines.</li><li><b>${f.codex} codex entries</b> that fill in as you meet things.</li><li><b>Animated films</b> between the acts, drawn like the game.</li>`;
+    document.getElementById('sys-story-cs').innerHTML = `<li><b>${f.quests} úkolů</b>, hlavních i vedlejších, ze starých pověstí.</li><li><b>${f.books} knih</b> k nalezení a přečtení v dolech.</li><li><b>${f.codex} hesel kodexu</b>, která se plní, jak věci potkáváš.</li><li><b>Animované filmy</b> mezi dějstvími, kreslené jako hra.</li>`;
+    document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => {
+      document.querySelectorAll('#sys-champs span').forEach((el, i) => {
+        const c = D.champions[i];
+        el.title = c.mods.length ? c.mods.map(tx).join(', ') + (c.aura ? (L() === 'cs' ? ' (aura kolem)' : ' (aura around it)') : '')
+          : c.special === 'invisible' ? (L() === 'cs' ? 'neviditelný, dokud nezaútočí' : 'unseen until it strikes') : (L() === 'cs' ? 'každý zásah ti vezme manu' : 'every hit drains your mana');
+      });
+    }));
+  }
+
+  // the section you are in lights up in the bar
+  const navLinks = [...document.querySelectorAll('.secnav a')];
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) navLinks.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
+    }), { rootMargin: '-45% 0px -50% 0px' });
+    navLinks.forEach(a => { const s = document.querySelector(a.getAttribute('href')); if (s) io.observe(s); });
   }
 
   const box = document.getElementById('lightbox');

@@ -341,7 +341,8 @@ def mod_texts():
 
 def mod_line(m, classes, tpl):
     lo, hi = m.get("min", m.get("value", 0)), m.get("max", m.get("value", 0))
-    v = f"+{lo}" if lo == hi else f"+{lo}–{hi}"
+    sign = "" if lo < 0 else "+"
+    v = f"{sign}{lo}" if lo == hi else f"{sign}{lo}–{hi}"
     st = m["stat"]
     if st.startswith("class_"):
         cn = classes.get(st[6:], {}).get("name", {"cs": st, "en": st})
@@ -399,6 +400,85 @@ def icon(src, dst, size):
     im.save(dst, "WEBP", quality=88, method=6)
 
 
+# What the four seals forge into is left for the player to find.
+SPOILERS = {"permonikuv_desatek"}
+
+SLOT_NAMES = {
+    "weapon": {"cs": "Zbraň", "en": "Weapon"}, "offhand": {"cs": "Druhá ruka", "en": "Off-hand"},
+    "body": {"cs": "Zbroj", "en": "Armour"}, "head": {"cs": "Hlava", "en": "Head"}, "belt": {"cs": "Opasek", "en": "Belt"},
+    "ring": {"cs": "Prsten", "en": "Ring"}, "amulet": {"cs": "Amulet", "en": "Amulet"}, "lamp": {"cs": "Kahan", "en": "Lamp"},
+    "charm": {"cs": "Hromový kámen", "en": "Thunderstone"}, "gem": {"cs": "Drahokam", "en": "Gem"},
+    "letter": {"cs": "Písmeno", "en": "Letter"},
+}
+
+
+def finder_entries(items, uniques, sets, words, classes, later, tpl):
+    """Everything the item finder on the site can show: bases, uniques, set pieces, words, gems and letters."""
+    out = []
+
+    def ic(icon_id, size=96):
+        src = A / "items" / f"{icon_id}.png"
+        if src.exists():
+            icon(src, IMG / "items" / f"{icon_id}.webp", size)
+            return icon_id
+        return None
+
+    def base_stats(b):
+        st = {}
+        if b.get("dmg"):
+            st["dmg"] = b["dmg"]
+        if b.get("armor"):
+            st["armor"] = b["armor"]
+        if b.get("block"):
+            st["block"] = b["block"]
+        if b.get("light"):
+            st["light"] = b["light"]
+        if b.get("two_handed"):
+            st["two"] = True
+        if b.get("speed"):
+            st["speed"] = b["speed"]
+        return st
+
+    for bid, b in items.items():
+        slot = b.get("slot")
+        if slot not in SLOT_NAMES or b.get("class") in later or b.get("no_drop"):
+            continue
+        e = {"k": "base", "id": bid, "name": b["name"], "slot": slot, "qlvl": b.get("qlvl", 1),
+             "req": b.get("req", {}).get("level", 1), "icon": ic(b.get("icon", bid)), "tier": b.get("tier"),
+             "cls": b.get("class"), "stats": base_stats(b)}
+        if slot == "gem":
+            e["k"] = "gem"
+            e["socket"] = {k: [mod_line(m, classes, tpl) for m in v] for k, v in b.get("socket", {}).items()}
+        elif slot == "letter":
+            e["k"] = "letter"
+            e["glyph"] = b.get("glyph")
+            e["latin"] = b.get("latin")
+            e["socket"] = {k: [mod_line(m, classes, tpl) for m in v] for k, v in b.get("socket", {}).items()}
+        elif slot == "charm":
+            e["k"] = "charm"
+        out.append(e)
+    for uid, u in uniques.items():
+        b = items.get(u["base"], {})
+        if b.get("class") in later or u.get("class") in later or uid in SPOILERS:
+            continue
+        out.append({"k": "unique", "id": uid, "name": u["name"], "base": b.get("name"), "slot": b.get("slot"),
+                    "qlvl": u.get("qlvl", b.get("qlvl", 1)),
+                    "icon": ic(u.get("icon", b.get("icon", u["base"]))), "cls": b.get("class"), "stats": base_stats(b),
+                    "mods": [mod_line(m, classes, tpl) for m in u.get("mods", [])], "flavor": u.get("flavor")})
+    for sid, st in sets["sets"].items():
+        for pid in st["pieces"]:
+            pc = sets["items"][pid]
+            b = items.get(pc["base"], {})
+            out.append({"k": "set", "id": pid, "name": pc["name"], "set": st["name"], "base": b.get("name"), "slot": b.get("slot"),
+                        "qlvl": st.get("qlvl", 1), "icon": ic(b.get("icon", pc["base"])),
+                        "cls": st.get("class"), "stats": base_stats(b), "mods": [mod_line(m, classes, tpl) for m in pc.get("mods", [])]})
+    for wid, w in words.items():
+        out.append({"k": "word", "id": wid, "name": w["name"], "meaning": w["meaning"], "qlvl": w["qlvl"],
+                    "letters": [items[f"glag_{l}"]["glyph"] for l in w["letters"]], "bases": w["bases"],
+                    "mods": [mod_line(m, classes, tpl) for m in w["mods"]]})
+    return out
+
+
 def main():
     all_classes = load("classes")
     later = {c for e in load("expansions").values() if not e.get("released") for c in e["classes"]}
@@ -449,7 +529,12 @@ def main():
             for sid in t["skills"]:
                 s = skills[sid]
                 icon(A / "ui" / "skills" / f"{sid}.png", IMG / "skills" / f"{sid}.webp", 64)
-                sk.append({"id": sid, "name": s["name"], "desc": fill_desc(s), "type": s["type"], "element": s.get("element", "physical")})
+                tier = int(s.get("tier", 1))
+                sk.append({"id": sid, "name": s["name"], "desc": fill_desc(s), "type": s["type"], "element": s.get("element", "physical"),
+                           "tier": tier, "req": [1, 1, 6, 12, 18][max(0, min(4, tier))], "max": s.get("max_rank", 20),
+                           "mana": s.get("mana", 0), "cd": s.get("cooldown", 0), "tpl": s.get("desc", {}),
+                           "params": {k: v for k, v in s.get("params", {}).items() if isinstance(v, (int, float, list))},
+                           "syn": [{"id": k, "name": skills[k]["name"], "pct": v} for k, v in s.get("synergy", {}).items() if k in skills]})
             trees.append({"id": t["id"], "name": t["name"], "skills": sk})
         citem = next((b for k, b in items.items() if b.get("class") == cid and b.get("tier") == 1), None)
         if citem:
@@ -482,6 +567,42 @@ def main():
                   "klic_vody", "klic_kamene", "klic_ohne", "klic_smrti", "kniha", "strana_kroniky"):
         icon(A / "items" / f"{extra}.png", IMG / "items" / f"{extra}.webp", 96)
 
+    data["finder"] = finder_entries(items, uniques, sets, words, classes, later, tpl)
+    data["shrines"] = [{"name": v["name"], "msg": v.get("msg"), "secs": v.get("effect", {}).get("duration", 0),
+                        "mods": [mod_line(m, classes, tpl) for m in v.get("effect", {}).get("mods", [])]
+                        or ([{"cs": "dar jedné z ostatních model, náhodně", "en": "one of the other idols' gifts, at random"}] if v.get("effect", {}).get("random") else [])}
+                       for v in load("shrines").values()]
+    champ = load("champions")
+    data["champions"] = [{"name": v["name"], "special": v.get("special"), "aura": bool(v.get("aura")),
+                          "mods": [mod_line(m, classes, tpl) for m in v.get("mods", []) + v.get("aura", [])]}
+                         for v in champ.get("mods", {}).values()]
+    data["superuniques"] = []
+    for v in load("superuniques").values():
+        w = str(v.get("where", ""))
+        a, f = re.match(r"act(\d+)_floor(\d+)", w).groups() if re.match(r"act(\d+)_floor(\d+)", w) else (0, 0)
+        data["superuniques"].append({"name": v["name"], "act": int(a), "floor": int(f),
+                                     "monster": monsters.get(v.get("monster", ""), {}).get("name")})
+    data["hirelings"] = [{"name": v["name"], "desc": v["desc"]} for v in load("hirelings").values()]
+    data["bestiary"] = []
+    for mid, m in monsters.items():
+        if m.get("boss") or mid in ("permonik_obr", "zar_ptak") or int(m.get("act", 0)) < 1:
+            continue
+        p = A / "sprites" / "monsters" / f"{mid}_idle.png"
+        if not p.exists():
+            continue
+        dst = IMG / "monsters" / f"{mid}.webp"
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        im = rgba(p)
+        bb = im.getbbox()
+        if bb:
+            im = im.crop(bb)
+        im.thumbnail((160, 160), Image.LANCZOS)
+        im.save(dst, "WEBP", quality=88, method=6)
+        WROTE.add(dst)
+        data["bestiary"].append({"id": mid, "name": m["name"], "act": int(m.get("act", 1)), "ai": m.get("ai", "melee"),
+                                 "element": m.get("element", "physical"), "level": m.get("level", 1)})
+    data["bestiary"].sort(key=lambda b: (b["act"], b["level"]))
+
     floors = [f for a in acts for f in a["floors"] if not (a["id"] == 4 and f["n"] == 5)]
     regular = [f for f in floors if "uber" not in f]
     data["facts"] = {
@@ -495,7 +616,9 @@ def main():
 
     # pictures of classes, skills and sets that are no longer on the site (hidden for an expansion)
     page = (OUT / "index.html").read_text()
-    for d in ("anim", "class", "skills", "items"):
+    for d in ("anim", "class", "skills", "items", "monsters"):
+        if not (IMG / d).exists():
+            continue
         for f in sorted((IMG / d).iterdir()):
             if f not in WROTE and f"img/{d}/{f.name}" not in page:
                 print("removed", f.relative_to(OUT))

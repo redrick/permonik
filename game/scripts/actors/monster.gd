@@ -19,6 +19,8 @@ var think_t := 0.0
 var wander_t := 0.0
 var abilities: Array = []
 var champ_mods: Array = []
+var champ_reduce := 0.0
+var champ_thorns := 0.0
 var champ_name := ""
 var xp_value := 0
 var projectile_fx := ""
@@ -133,9 +135,7 @@ func _make_champion() -> void:
 	var keys := mods.keys()
 	keys.shuffle()
 	for k in keys.slice(0, randi_range(1, 2)):
-		champ_mods.append(k)
-		for m in mods[k].get("mods", []):
-			_champ_stat(str(m.get("stat", "")), float(m.get("value", m.get("max", 0))))
+		apply_champ_mod(k)
 	sprite.scale = Vector2.ONE * 1.15
 	mat_set("outline_color", Color(0.85, 0.65, 0.25, 1))
 
@@ -148,16 +148,24 @@ func make_superunique(sid: String) -> void:
 	su_title = L.t(d.get("title", ""))
 	su_line = L.t(d.get("line", ""))
 	kind = "champion"
-	var mods: Dictionary = DB.champions.get("mods", {})
 	for k in d.get("mods", []):
-		champ_mods.append(k)
-		for m in mods.get(k, {}).get("mods", []):
-			_champ_stat(str(m.get("stat", "")), float(m.get("value", m.get("max", 0))))
+		apply_champ_mod(k)
 	hp_max *= float(d.get("hp", 1.5))
 	hp = hp_max
 	xp_value *= 5
 	sprite.scale = Vector2.ONE * 1.3
 	mat_set("outline_color", Color(0.75, 0.45, 0.95, 1))
+
+
+func apply_champ_mod(k: String) -> void:
+	var md: Dictionary = DB.champions.get("mods", {}).get(k, {})
+	champ_mods.append(k)
+	for m in md.get("mods", []):
+		_champ_stat(str(m.get("stat", "")), float(m.get("value", m.get("max", 0))))
+	for m in md.get("aura", []):
+		_champ_stat("aura_" + str(m.get("stat", "")), float(m.get("value", 0)))
+	if md.has("special"):
+		_champ_stat(str(md.special), 0.0)
 
 
 func _champ_stat(stat: String, v: float) -> void:
@@ -187,10 +195,24 @@ func _champ_stat(stat: String, v: float) -> void:
 		"res_all":
 			for e in ["fire", "lightning", "cold", "poison"]:
 				resist[e] = mini(95, int(resist.get(e, 0)) + int(v))
+		"res_fire", "res_cold", "res_lightning", "res_poison":
+			var e := stat.substr(4)
+			resist[e] = mini(95, int(resist.get(e, 0)) + int(v))
+		"dmg_reduce":
+			champ_reduce += v
+		"thorns":
+			champ_thorns += v
+		"mana_steal", "drain_mana":
+			if not abilities.has("drain_mana"):
+				abilities = abilities + ["drain_mana"]
 		"invisible":
 			modulate.a = 0.35
-		"curse":
-			abilities = abilities + ["curse"]
+		"curse", "aura_res_all":
+			if not abilities.has("curse"):
+				abilities = abilities + ["curse"]
+		"aura_light_radius":
+			if not abilities.has("light_drain"):
+				abilities = abilities + ["light_drain"]
 
 
 func label_name() -> String:
@@ -579,8 +601,16 @@ func _draw_bar() -> void:
 	hpbar.draw_rect(Rect2(r.position, Vector2(w * clampf(hp / hp_max, 0.0, 1.0), 6)), Color("b8241c") if kind == "normal" else Color("d6a63a"))
 
 
-func _on_damaged(_amount: float, _element: String, _source: Node) -> void:
+func _modify_incoming(amount: float, element: String, _source: Node, _opts: Dictionary) -> float:
+	if champ_reduce > 0.0 and element == "physical":
+		return maxf(1.0, amount - champ_reduce)
+	return amount
+
+
+func _on_damaged(_amount: float, _element: String, source: Node) -> void:
 	bar_t = 2.5
+	if champ_thorns > 0.0 and source is Player and (source as Node2D).global_position.distance_to(global_position) < 140.0:
+		(source as Player).take_damage(champ_thorns, "physical", null, {"no_stun": true})
 	if not aggro:
 		wake()
 	if kind == "boss":

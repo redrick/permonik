@@ -65,6 +65,8 @@ func _ready() -> void:
 			add_child(load("res://scripts/debug/walktest.gd").new())
 		if args.has("--touchtest"):
 			add_child(load("res://scripts/debug/touchtest.gd").new())
+		if args.has("--genstats"):
+			add_child(load("res://scripts/debug/genstats.gd").new())
 		if args.has("--flowtest"):
 			add_child(load("res://scripts/debug/flowtest.gd").new())
 		if args.has("--loottest"):

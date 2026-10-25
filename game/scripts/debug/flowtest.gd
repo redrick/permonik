@@ -161,6 +161,7 @@ func _process(delta: float) -> void:
 			step = 12
 		12:
 			_ok(snap.skipped and Game.main.ui.slides == null, "tapping skip ends the slides")
+			_champ_check(lv)
 			snap.dir = Game.save_dir
 			Game.save_dir = OS.get_cache_dir().path_join("permonik_flowtest")
 			Game.save_slot = "flow"
@@ -233,3 +234,15 @@ func _skill_setup(lv: Level) -> void:
 
 func _skill_check(lv: Level) -> void:
 	_ok(Game.ch.mana < snap.mana, "queued skill fired after the swing (mana %d -> %d)" % [snap.mana, Game.ch.mana])
+
+
+# Every champion modifier must change something on the monster it lands on.
+func _champ_check(lv: Level) -> void:
+	for k in DB.champions.get("mods", {}):
+		var m := lv.spawn_monster("kostlivy_havir", lv.player.global_position + Vector2(400, 0), 5)
+		var before := [m.speed, m.attack_cd, m.armor, m.hp_max, m.dmg, m.resist.duplicate(), m.abilities.duplicate(), m.modulate.a]
+		m.apply_champ_mod(k)
+		var after := [m.speed, m.attack_cd, m.armor, m.hp_max, m.dmg, m.resist.duplicate(), m.abilities.duplicate(), m.modulate.a]
+		_ok(before != after or m.champ_reduce > 0.0 or m.champ_thorns > 0.0, "champion modifier %s has an effect" % k)
+		m.queue_free()
+		lv.monsters.erase(m)

@@ -2,6 +2,7 @@ class_name Level
 extends Node2D
 
 const CELL := 64
+const SLEEP_PX := 1700.0
 const SHADOW_MASK := 4
 const DARK := {1: Color(0.15, 0.135, 0.15), 2: Color(0.12, 0.145, 0.13), 3: Color(0.16, 0.13, 0.115), 4: Color(0.12, 0.11, 0.17)}
 const TOWN_DUSK := {1: Color(0.42, 0.4, 0.52), 2: Color(0.38, 0.42, 0.46), 3: Color(0.4, 0.36, 0.42), 4: Color(0.22, 0.22, 0.34)}
@@ -431,7 +432,7 @@ func find_path(from: Vector2, to: Vector2) -> Array:
 	var cur := from
 	var i := 0
 	while i < pts.size():
-		var j := pts.size() - 1
+		var j := mini(pts.size() - 1, i + 14)
 		while j > i and not _clear_wide(cur, pts[j]):
 			j -= 1
 		out.append(pts[j])
@@ -589,7 +590,7 @@ func _populate_dungeon() -> void:
 		var p := _place_prop(id, c)
 		p.interact = "break"
 	for i in n_chest:
-		var c := _rule_cell({"far": 0.2, "spacing": 8, "group": "chest"})
+		var c := _rule_cell({"far": 0.2, "spacing": 8, "group": "chest", "side": true})
 		if c.x < 0:
 			break
 		used[c] = true
@@ -597,7 +598,7 @@ func _populate_dungeon() -> void:
 	var gods := DB.shrines.keys()
 	gods.shuffle()
 	for i in mini(n_shrine, gods.size()):
-		var c := _rule_cell({"far": 0.15, "spacing": 12, "from_boss": 10, "min_start": 8, "group": "shrine"})
+		var c := _rule_cell({"far": 0.15, "spacing": 12, "from_boss": 10, "min_start": 8, "group": "shrine", "side": true})
 		if c.x < 0:
 			break
 		used[c] = true
@@ -692,6 +693,10 @@ func objective_points() -> Array:
 				if is_instance_valid(pr) and pr.interact == ("stairs_down" if down else "stairs_up"):
 					pts.append(pr.global_position)
 		for p in pts:
+			# below ground a target shows once its spot has been seen; finding it is the point
+			var c := to_cell(p)
+			if not is_town and explored[clampi(c.y, 0, h - 1) * w + clampi(c.x, 0, w - 1)] == 0:
+				continue
 			out.append({"pos": p, "main": tq.main})
 	return out
 
@@ -707,6 +712,15 @@ func _rule_cell(rule: Dictionary) -> Vector2i:
 	else:
 		cands = gen.dist.keys()
 		cands.shuffle()
+		# rewards for whoever looks round the corner: side-room cells are tried first
+		if rule.get("side", false) and not gen.side_rooms.is_empty():
+			var side := []
+			for c in cands:
+				for r in gen.side_rooms:
+					if r.has_point(c):
+						side.append(c)
+						break
+			cands = side + cands
 	var far := float(rule.get("far", 0.0)) * gen.max_dist
 	var from_boss := float(rule.get("from_boss", 0.0)) if gen.boss_spot.x >= 0 else 0.0
 	var spacing := float(rule.get("spacing", 0.0))
@@ -799,10 +813,11 @@ func _spawn_monsters(rng: RandomNumberGenerator, used: Dictionary) -> void:
 	var base_l := Game.mlvl_base(int(def.get("level", 1)))
 	if not pool.is_empty():
 		var area := gen.dist.size()
-		var packs := int(area / 75.0 * float(def.get("density", 1.0)) * rng.randf_range(0.85, 1.15))
+		var packs := int(area / 85.0 * float(def.get("density", 1.0)) * rng.randf_range(0.85, 1.15))
 		var champs := 1 + (1 if floor_n > 1 else 0) + Game.difficulty
 		for i in packs:
-			var c := _rule_cell({"spacing": 6, "from_boss": 10, "min_start": 9, "group": "pack"})
+			# champions guard the side rooms, where the chests wait
+			var c := _rule_cell({"spacing": 6, "from_boss": 10, "min_start": 9, "group": "pack", "side": i < champs})
 			if c.x < 0:
 				break
 			var mid: String = (mix if rng.randf() < 0.85 else pool).pick_random()
@@ -1485,6 +1500,13 @@ func _process(delta: float) -> void:
 		var lr := player.light_radius_px() * 1.15
 		for m in monsters:
 			var d: float = m.global_position.distance_to(player.global_position)
+			# far, unwoken monsters sleep; the floors are big enough that most of them are
+			var awake: bool = m.aggro or d < SLEEP_PX or m.kind == "boss"
+			if m.is_physics_processing() != awake:
+				m.set_physics_process(awake)
+				m.set_process(awake)
+			if not awake:
+				continue
 			m.revealed_t = maxf(0.0, m.revealed_t - delta)
 			var near: bool = m.kind == "boss" or m.revealed_t > 0.0 or (d < lr and (d < CELL * 1.6 or in_sight(m.global_position)))
 			m.sight = move_toward(m.sight, 1.0 if near else 0.0, delta * 5.0)
