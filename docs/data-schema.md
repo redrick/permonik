@@ -67,6 +67,16 @@ hit_recovery dmg_reduce_pct`
 }}
 ```
 
+## expansions.json
+```json
+{ "cernobog": { "n": 1, "name": {...}, "pitch": {...}, "released": false, "classes": ["zrec", "loutkarka"] } }
+```
+A class listed under an expansion that isn't `released` stays in classes.json but can't be picked for a
+new hero; its class items, sets and +skill affixes don't drop and its sets are left out of the
+collection (unless already found). `DB.classes` holds the playable classes, `DB.all_classes` all of them
+(heroes of a hidden class still load). `-- --all-classes` plays them anyway; `tools/site_build.py` skips
+them. Base game: havir, zbojnice, vedma, kovar.
+
 ## skills.json
 ```json
 { "rozrazka": {
@@ -124,7 +134,8 @@ the four act guardians. Boss mechanics are scripted per id in code; numbers stay
 `armor: [min,max]`; shields add `block` (%); lamps add `light` (radius in tiles, 2–6); belts add
 `belt_slots` (extra potion slots, 0–4); consumables have `use: {"heal_pct":40}`, `{"mana_pct":40}`,
 `{"rejuv":1}`, `{"portal":1}`, `{"identify":1}` and `stack: 1`. Ranged weapons: `kind` bow or
-crossbow, `projectile` fx.
+crossbow, `projectile` fx. Quest items may carry `"until": [quest ids]`: once all of those are done
+the item leaves the bag and stash (on quest done and on load).
 
 ## affixes.json
 ```json
@@ -144,6 +155,8 @@ armor (= head+body+shield+belt), jewelry (= ring+amulet), any.
   "mods": [{"stat":"sila","min":15,"max":20}, {"stat":"life_steal","min":5,"max":7}],
   "flavor": {"cs":"Dokud ho nosil, žádná kulka…","en":"…"} } }
 ```
+Optional `"gender": "m"|"f"|"n"` when the name's noun differs from the base's (Czech engraved names agree
+with it). `rare_names.json` first words carry `"g"` for the same reason.
 
 ## shrines.json
 `{ "perun": {"name":{...}, "prop":"modla_perun", "effect":{"mods":[{"stat":"lightning_dmg","value":20}], "duration":120}, "msg":{...}} }`
@@ -183,17 +196,23 @@ Revive at the inn for half the hire cost; a new hire returns the old one's gear 
                   "rules": {"arena":[7,5], "min_path":40,
                             "place": {"dub": {"far":0.5, "from_boss":12}, "truhla_kostej": {"next_to":"dub"}}} } ],
     "quests": ["klekani","kostnice","dusicky","srdce_zvonu"],
-    "intro": "act1_intro", "outro": "act1_end" } ]
+    "intro": null } ]
 ```
 `style` ∈ gallery (straight timbered tunnels + chambers), cave (cellular caves), mixed, lair
 (one big boss arena + approach). `water` 0–1 = how much of the floor floods (slows, Vodník).
+`intro` = film or slides played when `next_act` enters the act; act endings are `slide:<id>` actions in dialog.json.
 
 Vendor roles come from `npcs.json`.
 
 ### Floor generation
 
-Every floor and town is generated again on each game start (`Game.session_seed`); within one session a
-floor keeps its plan, but its monsters are drawn again on every visit. What stays fixed are the rules:
+Every floor and town is generated again each time a hero is loaded from the menu (`Game.new_session`
+rerolls `Game.session_seed`). Within one session a floor comes back as it was left: the same plan, props
+and packs (populating is seeded from the floor seed), with the explored cells, killed monsters (by spawn
+order) and opened chests, broken barrels and used shrines kept in `Game.floor_state` (not saved), and
+loot on the ground in `floor_loot` (saved). A quest item lies on its floor only while a quest of that
+act still has to pick it up (`Game.quest_item_wanted`) and this floor's copy wasn't taken
+(`flags.took:<act>:<floor>:<id>`). What stays fixed across sessions are the rules:
 
 - **Layout**: one of `styles` (`gallery` rooms and tunnels, `mixed` roughened galleries, `cave` cellular
   caves, `lair` arena with side caves), size ±10 %, water ±30 %. A draw that breaks the rules is thrown
@@ -208,7 +227,7 @@ floor keeps its plan, but its monsters are drawn again on every visit. What stay
   earlier on this floor).
 - **The rest**: shrines ≥ 12 cells apart, chests ≥ 8, books past 30 %, monster packs ≥ 6 cells apart,
   never within 9 cells of the stairs or inside the boss room. Each visit uses all but one of the floor's
-  monster types (15 % of packs may still pick from the whole pool) and ±15 % density.
+  monster types (15 % of packs may still pick from the whole pool) and ±15 % density, drawn per session.
 - **Towns** (`scripts/world/town_layout.gd`): shaft on the north edge with the cage beside it, the well
   (camp fire) square in the middle with arrival point and stash, the chronicler's lectern on the square,
   smith, inn and healer each with its keeper at the door 7–16 cells from the square, the landmark
@@ -244,6 +263,21 @@ floor keeps its plan, but its monsters are drawn again on every visit. What stay
   ferryman in Nav takes a key to an `uber` floor (act 4, n 11–14, `"uber": {"hp", "dmg", "key", "seal"}`):
   the same fight at ×3 life ×1.6 damage, dropping its seal and three rich items. `uber` floors are not
   counted, get no waypoint, and their stairs lead back to camp.
+- **Crafted** (orange, `Forge.CRAFTS`): magic item + letter (weapon *Slovo*, armour/shield *Našь*,
+  ring/amulet/belt/lamp *Dobro*) + a cut gem (grade 3+). The stone picks the recipe's fixed properties,
+  then 1–4 rare affixes; ilvl = hero level / 2 + item ilvl / 2, required level +5.
+- **Ethereal** (`eth`): weapons and armour drop ethereal at 3 / 5 / 8 % by difficulty: ×1.5 base damage
+  or armour, half durability, −10 Str/Dex requirement, never repaired.
+- **Smith favours**: a quest `"service": "imbue"|"socket"|"personalize"` sets `flags.svc_<kind>` (per
+  difficulty); any smith spends it once. Imbue = plain item → rare at hero level + 4 (best of three rolls);
+  socket = plain max / magic 2 / other 1; personalize = hero's name in the item name.
+- **Charm-speaking** (healers, D3 mystic): pay gold to reroll one affix of a magic/rare/crafted item; after
+  that only that affix can change (`locked`), each reroll costs ×1.4.
+- **Peddler** (třemšínský mužíček, D1 Wirt): one rare/set/unique item per hero level, a fee to look, ×3 price.
+- **Collection**: `known["grail:u|s|w:<id>"]` for every unique, set piece and word held identified; Kronika
+  tab *Sbírka*. **Upgrade arrow** and "if you wear it" deltas come from `CharData.preview`.
+- **Loot filter** (`settings.cfg` `loot_filter` 0–2) hides plain, then also magic weapons/armour on the
+  ground; Alt shows them dimmed. Alt also shows affix roll ranges in tooltips.
 
 ## npcs.json
 `{ "kovar_hnevek": {"name":{...}, "role":"smith", "portrait":"kovar_hnevek"} }`
@@ -275,6 +309,7 @@ The engine shows the **first** entry whose conditions all hold. Conditions:
              {"id":"report","text":{...},"goal":{"talk":"permonik"}} ],
   "reward": {"xp": 400, "gold": 200, "skill_points": 1} } }
 ```
+Reward keys: `xp`, `gold`, `skill_points`, `stat_points`, `item`/`items`, `service` (smith favour).
 Goals: `{"kill": monster}`, `{"pick": item}`, `{"talk": npc}`, `{"use": prop}`,
 `{"reach": "act1_floor3"}`.
 
@@ -308,3 +343,17 @@ the chronicler). Only public-domain texts or our own translations of them; recor
 
 ## slides.json
 `{ "intro": [ {"image":"intro_1","text":{...}}, … ], "act1_end": [ … ] }`
+Still pictures, now only the fallback for a sequence id that has no cinematic.
+
+## cinematics.json
+`{ "intro": { "title": {...}, "when": {...}, "music": "town_hora", "lines": { "a": {...}, "b": {...} } } }`
+One entry per animated cinematic, keyed by the same ids `slide:<id>` and acts' `intro` use;
+`Main.play_slides` plays the cinematic instead of the slides whenever `CinFilms` knows the id.
+`title`/`when` label the card on the main menu's Story page, `music` plays during it, `lines` are the
+narration keys the choreography in `scripts/ui/cin_films.gd` says. Films unlock on the Story page
+once seen (`settings.cfg` `[cinema] seen`) or once any save is past that point.
+
+## cinema_layers.json (generated)
+Written by `art/cinema.py`, never by hand: `{ "intro/bell": {"x","y","w","h","cw","ch","pts":{"pivot":[x,y]}} }`.
+Each layer is a crop of its shot canvas (`cw`×`ch` px, y down) saved as `assets/cinema/<name>.webp`;
+`pts` are named anchors (pivot, lamp flames, window lights…) the choreography hangs things on.

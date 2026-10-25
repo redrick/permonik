@@ -478,9 +478,8 @@ def check_narrative(monsters, items, npcs, skills, classes):
             for q in act.get("quests", []):
                 if quests is not None and q not in quest_ids:
                     warn(w, f"quest {q!r} not in quests.json")
-            for k in ("intro", "outro"):
-                if slides is not None and act.get(k) and act[k] not in slides:
-                    warn(w, f"{k} slide {act[k]!r} not in slides.json")
+            if slides is not None and act.get("intro") and act["intro"] not in slides:
+                warn(w, f"intro slide {act['intro']!r} not in slides.json")
 
     if isinstance(quests, dict):
         for qid, q in quests.items():
@@ -527,6 +526,22 @@ def check_narrative(monsters, items, npcs, skills, classes):
     _ = lore
 
 
+def check_expansions(exps, classes):
+    seen = {}
+    for eid, e in exps.items():
+        w = f"expansions.{eid}"
+        need(w, e, ("n", "name", "released", "classes"))
+        text(w + ".name", e.get("name"))
+        for c in e.get("classes", []):
+            if c not in classes:
+                err(w, f"unknown class {c!r}")
+            if c in seen:
+                err(w, f"class {c!r} already in {seen[c]}")
+            seen[c] = eid
+    if classes and len(seen) >= len(classes):
+        err("expansions", "no class left in the base game")
+
+
 # ---------------------------------------------------------------- main
 MONSTERS, UNIQUES = {}, {}
 
@@ -556,6 +571,12 @@ def main():
     check_npcs(npcs, assets)
 
     check_narrative(monsters, items, npcs, skills, classes)
+    check_expansions(load("expansions.json") or {}, classes)
+    quests = load("quests.json") or {}
+    for iid, b in items.items():
+        for q in b.get("until", []):
+            if q not in quests:
+                err(f"items_base.{iid}.until", f"unknown quest {q!r}")
 
     print(f"classes {len(classes)}, skills {len(skills)}, monsters {len(monsters)} "
           f"({sum(1 for m in monsters.values() if m.get('boss'))} bosses), items {len(items)}, "

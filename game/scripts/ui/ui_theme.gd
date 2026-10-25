@@ -82,10 +82,14 @@ const TXT := {
 	"descend_again": {"cs": "Sestoupit znovu: {v}", "en": "Descend again: {v}"},
 	"back_to_menu": {"cs": "Do hlavní nabídky", "en": "To main menu"},
 	"skip_all": {"cs": "Esc: přeskočit", "en": "Esc: skip"},
-	"skip_all_touch": {"cs": "Zpět: přeskočit", "en": "Back: skip"},
+	"skip_all_touch": {"cs": "Přeskočit ›", "en": "Skip ›"},
+	"menu_story": {"cs": "Příběh", "en": "Story"},
+	"story_hint": {"cs": "Filmy, které už znáš. Pusť si je znovu, ať do sebe příběh zapadne.", "en": "The films you have already seen. Watch them again and let the story fall into place."},
+	"story_locked": {"cs": "Zatím neviděno", "en": "Not seen yet"},
+	"story_all": {"cs": "Přehrát vše", "en": "Play all"},
 	"inv_short": {"cs": "Výbava", "en": "Inventory"},
 	"sold": {"cs": "Prodáno za {v} grošů.", "en": "Sold for {v} groschen."},
-	"vendor_hint": {"cs": "Klikni na zboží: koupit · Polož svou věc sem nebo na ni klikni pravým: prodat", "en": "Click wares to buy · Drop your item here or right-click it: sell"},
+	"vendor_hint": {"cs": "Klikni na zboží: koupit · Shift+klik na lektvar: naplnit opasek · Polož svou věc sem nebo na ni klikni pravým: prodat", "en": "Click wares to buy · Shift-click a potion: fill the belt · Drop your item here or right-click it: sell"},
 	"seals": {"cs": "Zlomené pečeti", "en": "Broken seals"},
 	"play_time": {"cs": "Čas ve hře", "en": "Time played"},
 }
@@ -247,6 +251,24 @@ static func label(text: String, sz := 24, color := INK, dense := false) -> Label
 	return l
 
 
+static func skip_label(parent: Control) -> Label:
+	var touch := TouchPad.active
+	var l := label(t("skip_all_touch") if touch else t("skip_all"), 26 if touch else 18, Color(1, 1, 1, 0.55 if touch else 0.3), true)
+	l.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	l.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	l.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	l.custom_minimum_size = Vector2(120 if touch else 0, 64 if touch else 0)
+	l.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	l.position += Vector2(-20, 4 if touch else 12)
+	l.mouse_filter = Control.MOUSE_FILTER_STOP
+	l.gui_input.connect(func(e: InputEvent) -> void:
+		if e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_LEFT:
+			l.accept_event()
+			UiRoot.inst.skip_slides())
+	parent.add_child(l)
+	return l
+
+
 static func wrap_label(text: String, sz := 22, color := INK, width := 400.0, dense := true) -> Label:
 	var l := label(text, sz, color, dense)
 	l.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -326,6 +348,8 @@ static func draw_item(ci: CanvasItem, it: Item, r: Rect2, tint_bg := true) -> vo
 			bg = Color(0.2, 0.7, 0.3, 0.16)
 		elif it.rarity == Item.RARE:
 			bg = Color(0.85, 0.8, 0.25, 0.14)
+		elif it.rarity == Item.CRAFTED:
+			bg = Color(0.9, 0.55, 0.15, 0.16)
 		elif it.rarity == Item.MAGIC:
 			bg = Color(0.25, 0.35, 0.9, 0.16)
 		if bg.a > 0:
@@ -334,7 +358,7 @@ static func draw_item(ci: CanvasItem, it: Item, r: Rect2, tint_bg := true) -> vo
 	if t:
 		var s := minf(r.size.x / t.get_width(), r.size.y / t.get_height())
 		var sz := Vector2(t.get_width(), t.get_height()) * s
-		ci.draw_texture_rect(t, Rect2(r.position + (r.size - sz) / 2.0, sz), false)
+		ci.draw_texture_rect(t, Rect2(r.position + (r.size - sz) / 2.0, sz), false, Color(0.8, 0.9, 1.0, 0.55) if it.eth else Color.WHITE)
 	if it.sockets > 0:
 		var d := minf(22.0, (r.size.x - 8) / it.sockets)
 		var y := r.end.y - d - 4
@@ -352,6 +376,18 @@ static func draw_item(ci: CanvasItem, it: Item, r: Rect2, tint_bg := true) -> vo
 		ci.draw_string(small, r.position + Vector2(4, r.size.y - 5), str(it.qty), HORIZONTAL_ALIGNMENT_LEFT, -1, 18, INK)
 	if it.max_dur > 0 and it.dur < it.max_dur / 4 + 1:
 		ci.draw_rect(Rect2(r.position + Vector2(3, 3), Vector2(8, 8)), RED if it.dur <= 0 else Color("e0a040"))
+
+
+# D3's arrow in the corner: green when wearing it would make the hero stronger, red when weaker.
+static func draw_upgrade(ci: CanvasItem, it: Item, r: Rect2) -> void:
+	var s := Game.ch.upgrade_score(it)
+	if is_nan(s) or absf(s) < 1.5:
+		return
+	var up := s > 0.0
+	var c := r.position + Vector2(r.size.x - 13, 13)
+	var pts := PackedVector2Array([c + Vector2(0, -8), c + Vector2(8, 6), c + Vector2(-8, 6)]) if up else PackedVector2Array([c + Vector2(0, 8), c + Vector2(8, -6), c + Vector2(-8, -6)])
+	ci.draw_colored_polygon(pts, Color("5fd068") if up else RED)
+	ci.draw_polyline(pts + PackedVector2Array([pts[0]]), Color.BLACK, 1.5, true)
 
 
 static func draw_cell(ci: CanvasItem, r: Rect2, hover := false) -> void:

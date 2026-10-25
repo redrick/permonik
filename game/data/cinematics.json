@@ -1,0 +1,80 @@
+{
+  "intro": {
+    "title": {"cs": "Klekání", "en": "The Evening Bell"},
+    "when": {"cs": "Prolog", "en": "Prologue"},
+    "music": "town_hora",
+    "lines": {
+      "a": {"cs": "Za časů, kdy stříbro rostlo z Hory jako tráva, jednoho večera zmlkl zvon na věži. Nikdo nezazvonil klekání. Nikdo nešel domů.", "en": "In the years when silver grew out of the Mountain like grass, one evening the bell in the tower fell silent. No one rang the evening Angelus. No one went home."},
+      "b": {"cs": "Toho dne sjelo do Dolu Osel padesát havířů. Padesát kahanů se pohupovalo dolů do tmy, dvě stě padesát sáhů pod Kutnou Horou. Ani jeden se nevrátil.", "en": "That day fifty miners went down into the Osel Mine. Fifty lamps swayed down into the dark, two hundred and fifty fathoms beneath Kutná Hora. Not one came back."},
+      "c1": {"cs": "U šachty čekal malý vousatý havíř s kahanem, jehož plamen byl studený a modrý. „Zdař… zdař hlubina,“ řekl a nabídl ti světlo.", "en": "At the shaft head waited a small bearded miner with a lamp whose flame burned cold and blue. “Good luck… good luck to the deep,” he said, and held out the light to you."},
+      "c2": {"cs": "Nikdo si nevšiml, že pod ním na zemi nic neleží.", "en": "No one noticed that nothing lay on the ground beneath him."}
+    }
+  },
+  "act1_end": {
+    "title": {"cs": "Dušičky v hrníčcích", "en": "Souls in the Teacups"},
+    "when": {"cs": "Konec I. dějství", "en": "End of Act I"},
+    "music": "town_hora",
+    "lines": {
+      "a": {"cs": "Hrníčky se rozbily a z vody stoupaly dušičky jako bublinky, pomalu, jedna po druhé. Ve tvém kahanu přibyl plamínek, studený jako dno řeky.", "en": "The teacups broke, and from the water the little souls rose like bubbles, slowly, one after another. In your lamp a new flame kindled, cold as the bottom of a river."},
+      "b": {"cs": "Malá utopená Anička se ve dveřích ohlédla. „Mužíček nás prosil, ať otevřeme hrníčky,“ zašeptala. „Proč tolik chtěl, ať jsme venku?“", "en": "Little drowned Anička looked back from the doorway. “The little man begged us to open the cups,” she whispered. “Why did he want us out so badly?”"}
+    }
+  },
+  "act2_end": {
+    "title": {"cs": "Fabiánova dýmka", "en": "Fabián's Pipe"},
+    "when": {"cs": "Konec II. dějství", "en": "End of Act II"},
+    "music": "town_pribram",
+    "lines": {
+      "a": {"cs": "Na kraji Brd stál v mlze Fabián. Kouř z jeho dýmky se stáčel k tvému kahanu, jako by ho tam něco táhlo. „Už jsou jen dva,“ řekl lesu. Mužíček se neohlédl.", "en": "At the edge of Brdy, Fabián stood in the fog. The smoke from his pipe curled towards your lamp as if something drew it there. “Only two left,” he told the forest. The little man did not look back."},
+      "b": {"cs": "Hluboká cesta vedla na sever, pod Krušné hory. V kahanu teď svítily dva plamínky a mužíček si vedle tebe pobrukoval.", "en": "The deep road led north, beneath the Ore Mountains. Two flames burned in the lamp now, and the little man hummed to himself beside you."}
+    }
+  },
+  "act3_end": {
+    "title": {"cs": "Země se zavřela", "en": "The Earth Closes"},
+    "when": {"cs": "Konec III. dějství", "en": "End of Act III"},
+    "music": "mine_3",
+    "lines": {
+      "a": {"cs": "Země se zavřela kámen po kameni a cesta nahoru zmizela, jako by nikdy nebyla.", "en": "The earth closed, stone by stone, and the way up vanished as if it had never been."},
+      "k": {"cs": "Na poslední chvíli proklouzl škvírou starý Kosmas s knihou pod paží. „Kronikář, který nebyl u konce,“ funěl, „píše jen pověsti.“", "en": "At the last moment old Kosmas squeezed through the gap, book under his arm. “A chronicler who missed the end,” he panted, “writes only legends.”"},
+      "b": {"cs": "Zůstala jen tma, kahan se třemi plameny a malá ruka, která ti ukazovala dolů. Na stěně byl jen jeden stín. Tvůj.", "en": "All that remained was darkness, a lamp with three flames, and a small hand pointing down. There was only one shadow on the wall. Yours."}
+    }
+  },
+  "act4_intro": {
+    "title": {"cs": "Poslední šichta", "en": "The Last Shift"},
+    "when": {"cs": "Začátek IV. dějství", "en": "Start of Act IV"},
+    "music": "town_nav",
+    "lines": {
+      "a": {"cs": "Pod kořeny světového stromu teče Smorodina, hořká a pomalá.", "en": "Beneath the roots of the world tree flows the Smorodina, bitter and slow."},
+      "b": {"cs": "Na jejím břehu sedí padesát havířů z Osla, každý se zhaslým kahanem v klíně.", "en": "On its bank sit the fifty miners of Osel, each with a dead lamp in his lap."},
+      "c": {"cs": "Říkají tomu Poslední šichta. Mužíček si přisedne k jejich ohni, který nehřeje. Skoro nemluví. Jen se usmívá.", "en": "They call it the Last Shift. The little man sits down by their fire, which gives no warmth. He hardly speaks. He only smiles."}
+    }
+  },
+  "final": {
+    "title": {"cs": "Srdce hory", "en": "The Heart of the Mountain"},
+    "when": {"cs": "Konec IV. dějství", "en": "End of Act IV"},
+    "music": "final_boss",
+    "lines": {
+      "a": {"cs": "V Srdci hory natáhl mužíček ruku a kahan, který nešel sundat, mu sám vklouzl do dlaně. Tma se sevřela.", "en": "In the Heart of the Mountain the little man held out his hand, and the lamp that would never come off slid into his palm by itself. The dark closed in."},
+      "b": {"cs": "Mužíček rostl, až z něj byl obr z kamene, stříbra a kořenů. Nad ním visel tvůj kahan a hořely v něm čtyři pečeti.", "en": "The little man grew until he was a giant of stone, silver and roots. Above him hung your lamp, burning with four seals."},
+      "c": {"cs": "Kahan praskl. Voda, kámen, oheň a smrt se vrátily tam, kam patřily. Permoník umíral a smál se: „Já byl jen vrátný, havíři. Desátek jsem nosil dál. Dolů.“", "en": "The lamp cracked. Water, stone, fire and death went back to where they belonged. Permoník laughed as he died: “I was only the doorkeeper, miner. I carried the tithe on. Down.”"}
+    }
+  },
+  "epilogue": {
+    "title": {"cs": "Zvon zase zvoní", "en": "The Bell Rings Again"},
+    "when": {"cs": "Doslov", "en": "Epilogue"},
+    "music": "menu",
+    "lines": {
+      "a": {"cs": "Toho večera zvonilo na Hoře klekání a poprvé bylo slyšet až dolů do tmy. Děti doběhly domů a nikdo nezůstal venku.", "en": "That evening the Angelus rang over the Mountain, and for the first time it was heard all the way down in the dark. The children ran home; no one stayed outside."},
+      "b": {"cs": "Hluboko pod nimi, v Navu, se jeden po druhém rozsvítilo padesát kahanů z Osla. Chvíli svítily jako na šichtě. Pak pokojně zhasly.", "en": "Far beneath them, in Nav, the fifty lamps of Osel lit up one by one. For a while they shone as if on shift. Then, at peace, they went out."},
+      "c": {"cs": "Kronikář Kosmas namočil pero a začal psát šestou knihu. Nebyl v ní žádný král ani žádná smlouva. Jen jméno.", "en": "Kosmas the chronicler dipped his quill and began to write the sixth book. There was no king in it and no covenant. Only a name."}
+    }
+  },
+  "dlc_tease": {
+    "title": {"cs": "Pod Navem", "en": "Beneath Nav"},
+    "when": {"cs": "Po titulcích", "en": "After the credits"},
+    "music": "mine_4",
+    "lines": {
+      "a": {"cs": "A pod Navem, kam nevede žádný most a kam nevozí žádný převozník, se ve tmě pohnulo obrovské zavřené oko. Desátek přestal chodit.", "en": "And beneath Nav, where no bridge leads and no ferryman goes, a vast closed eye stirred in the dark. The tithe had stopped coming."},
+      "b": {"cs": "Černobog se probouzí.", "en": "Černobog wakes."}
+    }
+  }
+}

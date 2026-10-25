@@ -215,19 +215,15 @@ def cathedral(x, y, s, wall="#2b2840", roof="#1f1c2e", edge="#c98a5a", win="#141
         tent_roof(0, 96, 64, 150, roof, edge, 1.5)
 
 
-def belfry(x, y, s, wall="#2a2a3c", roof="#1b1a28", edge="#c98a5a", bell="#6a5232", swing=0.0):
+def belfry(x, y, s, wall="#2a2a3c", roof="#1b1a28", edge="#c98a5a", bell="#6a5232", swing=0.0, draw_bell=True):
     with T(x, y, s):
         body = rect(-20, 0, 20, 150)
         form(body, K(wall), 1.2, sdx=-7, sdy=0, sh=0.32)
         for yy in range(12, 150, 11): stroke([(-20, yy), (20, yy)], 0.35, g=K("#4a4a60"), alpha=0.5)
         op = [(-12, 112), (12, 112), (12, 132)] + bez((12, 132), (12, 141), (-12, 141), (-12, 132))
         shape(op, K("#0c0b14"), 1.0)
-        with T(0, 136, 1, rot=swing):
-            stroke([(0, 0), (0, -3)], 1.2)
-            b = bez((-3, -4), (-4, -9), (-8, -14), (-9, -17)) + [(9, -17)] + bez((9, -17), (8, -14), (4, -9), (3, -4))
-            shape(b, K(bell), 1.0)
-            S.fill([(-2, -6), (-1, -6), (-5, -15), (-7, -15)], K("#d9b27a"), 0.6)
-            S.dot(0, -18.5, 1.6, K("#3a2a1a"))
+        if draw_bell:
+            bell_shape(0, 136, swing, bell)
         for wx in (-8, 8): gothic_window(wx, 70, 6, 18, "#0e0d16", 0.6)
         shape(rect(-24, 148, 24, 154), K(roof), 1.0)
         rf = [(-25, 154), (25, 154), (0, 214)]
@@ -235,6 +231,15 @@ def belfry(x, y, s, wall="#2a2a3c", roof="#1b1a28", edge="#c98a5a", bell="#6a523
         offset_shadow(rf, 9, 0, 0.35)
         stroke([(-25, 154), (0, 214)], 1.2, g=K(edge), alpha=0.8)
         stroke([(0, 214), (0, 226)], 1.0); stroke([(-4, 221), (4, 221)], 1.0)
+
+
+def bell_shape(x, y, swing=0.0, bell="#6a5232"):
+    with T(x, y, 1, rot=swing):
+        stroke([(0, 0), (0, -3)], 1.2)
+        b = bez((-3, -4), (-4, -9), (-8, -14), (-9, -17)) + [(9, -17)] + bez((9, -17), (8, -14), (4, -9), (3, -4))
+        shape(b, K(bell), 1.0)
+        S.fill([(-2, -6), (-1, -6), (-5, -15), (-7, -15)], K("#d9b27a"), 0.6)
+        S.dot(0, -18.5, 1.6, K("#3a2a1a"))
 
 
 def town_row(x0, x1, y, seed, col, roof, hmin=40, hmax=70, lit=0.3, win="#ffd27a", edge=None, wmin=28, wmax=46, lw=1.1):

@@ -31,8 +31,7 @@
        "boss": "vodnik", "quest_props": ["hrnek_dusicka", "strana_kroniky"]}
     ],
     "quests": ["klekani", "kostnice", "dusicky", "srdce_zvonu"],
-    "intro": "intro",
-    "outro": "act1_end"
+    "intro": "intro"
   },
   {
     "id": 2,
@@ -66,8 +65,7 @@
        "boss": "bazilisek", "quest_props": ["zrcadlo", "strana_kroniky"]}
     ],
     "quests": ["medulinin_odkaz", "valdecky_jezdec", "zrcadla_v_sevcine", "tremsinske_siny"],
-    "intro": null,
-    "outro": "act2_end"
+    "intro": null
   },
   {
     "id": 3,
@@ -101,8 +99,7 @@
        "boss": "jezibaba", "quest_props": ["pec", "kbelik", "mrtva_voda", "strana_kroniky"]}
     ],
     "quests": ["dve_srdce", "proklete_tolary", "pec", "ziva_a_mrtva_voda"],
-    "intro": null,
-    "outro": "act3_end"
+    "intro": null
   },
   {
     "id": 4,
@@ -145,7 +142,6 @@
       {"n": 14, "level": 88, "name": {"cs": "Desátek smrti", "en": "The Tithe of Death"}, "styles": ["mixed", "cave"], "size": [52, 52], "water": 0.0, "monsters": ["kostejuv_nesmrtelny", "bes", "cerny_pes"], "density": 1.3, "boss": "kostej", "quest_props": ["dub", "truhla_kostej"], "uber": {"hp": 3.0, "dmg": 1.6, "key": "klic_smrti", "seal": "pecet_smrti"}, "rules": {"place": {"dub": {"far": 0.5, "from_boss": 12}, "truhla_kostej": {"next_to": "dub"}}}}
     ],
     "quests": ["kalinov_most", "vijova_vicka", "kostejova_smrt", "posledni_sichta", "permonik_final"],
-    "intro": "act4_intro",
-    "outro": "final"
+    "intro": "act4_intro"
   }
 ]

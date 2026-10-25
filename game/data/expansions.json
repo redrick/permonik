@@ -1,0 +1,6 @@
+{
+  "cernobog": {"n": 1, "name": {"cs": "Černobohova noc", "en": "Chernobog's Night"}, "released": false, "classes": ["zrec", "loutkarka"],
+    "pitch": {"cs": "Co spí pod Navem: bůh, kterému Permoník nosil desátek. Žrec zná jména starých bohů, loutkářka vodí čerty na drátech.", "en": "What sleeps beneath Nav: the god Permoník carried the tithe to. The priest knows the old gods' names; the puppeteer leads devils on strings."}},
+  "fabian": {"n": 2, "name": {"cs": "Fabiánova kletba", "en": "Fabián's Curse"}, "released": false, "classes": ["vlkodlak", "alchymistka"],
+    "pitch": {"cs": "Zpátky do Brd: zlomit kletbu, kterou Megera uvrhla na Fabiána. Vlkodlak nese stejnou kletbu v krvi, alchymistka hledá, z čeho je třemšínské zlato.", "en": "Back to Brdy, to break the curse Megera laid on Fabián. The werewolf carries the same curse in his blood; the alchemist wants to know what the Třemšín gold is made of."}}
+}

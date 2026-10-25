@@ -14,10 +14,11 @@ books, only darker. All music and sound is synthesised.
 
 ## Features
 
-- Eight heroes: **Havíř** (miner), **Zbojnice** (brigand), **Vědma** (wise woman), **Kovář** (smith),
-  **Žrec** (priest of the old gods), **Vlkodlak** (werewolf huntsman), **Alchymistka** (alchemist) and
-  **Loutkářka** (puppeteer). Each has three skill trees of four skills with up to 20 ranks; what they wear
-  shows on them.
+- Four heroes: **Havíř** (miner), **Zbojnice** (brigand), **Vědma** (wise woman) and **Kovář** (smith).
+  Each has three skill trees of four skills with up to 20 ranks; what they wear shows on them. Four more
+  wait for two expansions (`game/data/expansions.json`): *Černobohova noc* brings **Žrec** (priest of the
+  old gods) and **Loutkářka** (puppeteer), *Fabiánova kletba* **Vlkodlak** (werewolf huntsman) and
+  **Alchymistka** (alchemist). `-- --all-classes` unlocks them for testing.
 - Four acts, four towns and 17 procedurally generated mine floors. Lighting comes only from your lamp,
   and the lamp is an equipment slot of its own.
 - Thirteen scripted boss fights from Czech and Slavic folklore, plus the final three-phase fight.

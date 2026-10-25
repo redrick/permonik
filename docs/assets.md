@@ -39,6 +39,7 @@ Same pencil line, crayon fills, faces and paper grain as the comics, but darker:
 | `ui/map_*`, `ui/minimap_*` | automap (`map_art.py`): `map_sheet` 1600×1000 paper, `minimap_disc` / `minimap_frame` 280×280 (map radius 118 px), seamless crayon swatches `map_floor`, `map_floor_town`, `map_water` 256×256, pencil symbols `map_stairs_down/up`, `map_cage`, `map_shrine`, `map_quest`, `map_book`, `map_npc`, `map_hero`, `map_portal`, `map_boss` 32×32 | |
 | `ui/skills/` | `<skill_id>.png` | 64×64, opaque square icon |
 | `slides/` | story illustrations | 1920×1080, `paper=True` |
+| `cinema/<film>/` | cut-out cinematic layers (`cinema.py`), WebP cropped to content, placement in `data/cinema_layers.json`; `cinema/thumbs/` Story-page cards 480×270 | shot canvas 1920×1080, wide 2400×1080 or tall ×1620/2160, `paper=True` |
 
 Tile sets: `hora`, `brdy`, `jachymov`, `nav` (mines), `town_hora`, `town_pribram`, `town_jachymov`,
 `town_nav` (towns: `floor_*` = ground, `wall_*` = cliff/house-wall block, `floor_deco_*` = path,

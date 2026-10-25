@@ -225,7 +225,7 @@ func take_damage(amount: float, element := "physical", source: Node = null, opts
 		if source is Node2D:
 			var dx: float = global_position.x - (source as Node2D).global_position.x
 			recoil_dir = signf(dx) if absf(dx) > 1.0 else float(-facing)
-		if amount > hp_max / hit_divisor() and not opts.get("no_stun", false):
+		if amount > hp_max / hit_divisor() and not opts.get("no_stun", false) and can_stagger():
 			stun_t = maxf(stun_t, hit_recovery_time())
 			swing_t = -1.0
 			_on_hit_recover()
@@ -346,6 +346,7 @@ func _physics_process(delta: float) -> void:
 		return
 	_tick_status(delta)
 	stun_t = maxf(0.0, stun_t - delta)
+	_tick(delta)
 	if knock.length() > 5.0:
 		velocity = knock
 		knock = knock.move_toward(Vector2.ZERO, 900.0 * delta)
@@ -357,6 +358,15 @@ func _physics_process(delta: float) -> void:
 
 func _ai(_delta: float) -> void:
 	pass
+
+
+# Timers that keep running while the actor is knocked back.
+func _tick(_delta: float) -> void:
+	pass
+
+
+func can_stagger() -> bool:
+	return true
 
 
 func _process(delta: float) -> void:

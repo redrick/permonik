@@ -56,12 +56,13 @@ func _ready() -> void:
 	text_lbl.anchor_top = 0.78
 	text_lbl.anchor_bottom = 0.96
 	add_child(text_lbl)
-	var hint := UiTheme.label("%s  ·  %s" % [L.t("press_any_touch"), UiTheme.t("skip_all_touch")] if TouchPad.active else "%s  ·  %s" % [L.t("press_any"), UiTheme.t("skip_all")], 20, Color(1, 1, 1, 0.35), true)
+	var hint := UiTheme.label(L.t("press_any_touch") if TouchPad.active else L.t("press_any"), 20, Color(1, 1, 1, 0.35), true)
 	hint.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
 	hint.grow_horizontal = Control.GROW_DIRECTION_BEGIN
 	hint.grow_vertical = Control.GROW_DIRECTION_BEGIN
 	hint.position += Vector2(-24, -16)
 	add_child(hint)
+	UiTheme.skip_label(self)
 	fade = ColorRect.new()
 	fade.color = Color(0, 0, 0, 1)
 	fade.set_anchors_preset(Control.PRESET_FULL_RECT)

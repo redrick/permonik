@@ -300,6 +300,7 @@
   "codex_tab_god": {"cs": "Bohové", "en": "Gods"},
   "codex_tab_item": {"cs": "Věci", "en": "Things"},
   "codex_tab_term": {"cs": "Slovník", "en": "Glossary"},
+  "codex_tab_grail": {"cs": "Sbírka", "en": "Collection"},
   "codex_folklore": {"cs": "Z pověstí a dějin", "en": "From folklore and history"},
   "codex_game": {"cs": "Ve hře", "en": "In the game"},
   "codex_see": {"cs": "Viz také", "en": "See also"},

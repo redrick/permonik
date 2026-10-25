@@ -51,7 +51,7 @@ func _on_inv_changed() -> void:
 
 
 func cls() -> Dictionary:
-	return DB.classes.get(class_id, {})
+	return DB.class_def(class_id)
 
 
 static func xp_for(lv: int) -> int:
@@ -322,6 +322,145 @@ func recalc() -> void:
 	mana = minf(mana, d.mana_max)
 
 
+# ---------------------------------------------------------------- what an item would change
+# The hero's numbers with it worn in sl, everything else as it is now.
+func preview(it: Item, sl: String) -> Dictionary:
+	var keep := [equip.duplicate(), d, set_worn, hp, mana]
+	equip[sl] = it
+	if sl == "weapon" and it.two_handed():
+		equip.erase("offhand")
+	recalc()
+	var out := d
+	equip = keep[0]
+	d = keep[1]
+	set_worn = keep[2]
+	hp = keep[3]
+	mana = keep[4]
+	return out
+
+
+func caster() -> bool:
+	return "book" in cls().get("loot", {}).get("offhand", [])
+
+
+func _dps(dd: Dictionary) -> float:
+	var elem := 0.0
+	for e in ELEMENTS:
+		elem += float(dd.get(e + "_dmg", 0.0))
+	return ((float(dd.get("dmg_min", 0)) + float(dd.get("dmg_max", 0))) / 2.0 + elem) * float(dd.get("aps", 1.0)) * (1.0 + float(dd.get("crit", 0.0)) / 100.0)
+
+
+func _skill_bonus(dd: Dictionary) -> float:
+	var n := float(dd.get("skills", 0.0)) + float(dd.get("class_" + class_id, 0.0))
+	for t in cls().get("trees", []):
+		n += float(dd.get("tree_" + str(t.id), 0.0)) / 3.0
+	return n
+
+
+func _res(dd: Dictionary) -> float:
+	var n := 0.0
+	for e in ELEMENTS:
+		n += float(dd.get("res_" + e, 0))
+	return n / 4.0
+
+
+# How much better (+) or worse (-) the hero gets, roughly in percent.
+func _score(a: Dictionary, b: Dictionary) -> float:
+	var rel := func(k_a: float, k_b: float) -> float: return (k_b - k_a) / maxf(1.0, absf(k_a)) * 100.0
+	var s := 0.0
+	s += rel.call(_dps(a), _dps(b)) * (0.3 if caster() else 1.0)
+	s += rel.call(float(a.hp_max), float(b.hp_max)) * 0.8
+	s += rel.call(float(a.mana_max), float(b.mana_max)) * (0.4 if caster() else 0.1)
+	s += rel.call(float(a.armor), float(b.armor)) * 0.25
+	s += (_res(b) - _res(a)) * 0.6
+	s += (_skill_bonus(b) - _skill_bonus(a)) * (15.0 if caster() else 8.0)
+	s += (float(b.get("cast_speed", 1.0)) - float(a.get("cast_speed", 1.0))) * (60.0 if caster() else 5.0)
+	s += (float(b.get("life_steal", 0.0)) - float(a.get("life_steal", 0.0))) * 1.5
+	s += (float(b.get("magic_find", 0.0)) - float(a.get("magic_find", 0.0))) * 0.05
+	return s
+
+
+# The slot an item would go into: an empty one if any, else the one it beats by most.
+func best_slot(it: Item) -> String:
+	var slots := slot_for(it)
+	if slots.is_empty() or (it.slot() == "offhand" and weapon() and weapon().two_handed()):
+		return ""
+	var best := ""
+	var bs := -INF
+	for sl in slots:
+		if not equip.get(sl):
+			return sl
+		var s := _score(d, preview(it, sl))
+		if s > bs:
+			bs = s
+			best = sl
+	return best
+
+
+var _cmp_sig := ""
+var _cmp_cache := {}
+
+
+# NAN when there is nothing to judge (not wearable, unknown, already worn).
+func upgrade_score(it: Item) -> float:
+	if not it.is_equipment() or (it.rarity != Item.NORMAL and not it.identified) or not can_equip(it) or it in equip.values():
+		return NAN
+	var sig := "%d|%s|%s" % [level, str(alloc), ",".join(equip.values().map(func(e): return str(e.get_instance_id()) + ":" + str(e.socketed.size()) if e else "-"))]
+	if sig != _cmp_sig:
+		_cmp_sig = sig
+		_cmp_cache.clear()
+	var key := "%d:%d:%d" % [it.get_instance_id(), it.socketed.size(), it.mods.size()]
+	if not _cmp_cache.has(key):
+		var sl := best_slot(it)
+		_cmp_cache[key] = NAN if sl == "" else _score(d, preview(it, sl))
+	return _cmp_cache[key]
+
+
+const DELTA_KEYS := [
+	["dps", {"cs": "Poškození za sekundu", "en": "Damage per second"}],
+	["hp_max", {"cs": "Život", "en": "Life"}],
+	["mana_max", {"cs": "Mana", "en": "Mana"}],
+	["armor", {"cs": "Zbroj", "en": "Armour"}],
+	["to_hit", {"cs": "Útok", "en": "Attack rating"}],
+	["block", {"cs": "Vykrytí %", "en": "Block %"}],
+	["skillsum", {"cs": "Úrovně dovedností", "en": "Skill levels"}],
+	["res_fire", {"cs": "Odolnost: oheň", "en": "Fire resist"}],
+	["res_cold", {"cs": "Odolnost: mráz", "en": "Cold resist"}],
+	["res_lightning", {"cs": "Odolnost: blesk", "en": "Lightning resist"}],
+	["res_poison", {"cs": "Odolnost: jed", "en": "Poison resist"}],
+	["sila", {"cs": "Síla", "en": "Strength"}],
+	["obratnost", {"cs": "Obratnost", "en": "Dexterity"}],
+	["magie", {"cs": "Magie", "en": "Magic"}],
+	["vitalita", {"cs": "Vitalita", "en": "Vitality"}],
+	["life_steal", {"cs": "Krádež života %", "en": "Life stolen %"}],
+	["mana_steal", {"cs": "Krádež many %", "en": "Mana stolen %"}],
+	["move_speed", {"cs": "Rychlost chůze %", "en": "Movement speed %"}],
+	["magic_find", {"cs": "Šance na kouzelné věci %", "en": "Magic find %"}],
+	["gold_find", {"cs": "Groše %", "en": "Gold find %"}],
+	["light_radius", {"cs": "Dosvit", "en": "Light radius"}],
+]
+
+
+# [text, good?] per number that changes if the item were worn.
+func delta_lines(it: Item) -> Array:
+	var sl := best_slot(it)
+	if sl == "":
+		return []
+	var a := d.duplicate()
+	var b := preview(it, sl).duplicate()
+	a["dps"] = _dps(a)
+	b["dps"] = _dps(b)
+	a["skillsum"] = _skill_bonus(a)
+	b["skillsum"] = _skill_bonus(b)
+	var out := []
+	for kv in DELTA_KEYS:
+		var dv := float(b.get(kv[0], 0.0)) - float(a.get(kv[0], 0.0))
+		if absf(dv) < 0.5:
+			continue
+		out.append(["%s %s%d" % [L.t(kv[1]), "+" if dv > 0 else "−", absi(roundi(dv))], dv > 0])
+	return out
+
+
 const SPEED := {"fast": 1.6, "normal": 1.25, "slow": 0.95, "very_slow": 0.75}
 const STAT_KEYS := ["sila", "obratnost", "magie", "vitalita", "vse_staty", "hp", "mana", "hp_pct", "mana_pct",
 	"dmg_pct", "dmg_min", "dmg_max", "to_hit", "armor", "armor_pct", "block", "fire_dmg", "lightning_dmg",
@@ -367,8 +506,21 @@ func start_new(cid: String, nm: String) -> void:
 	mana = d.mana_max
 
 
+func belt_free_for(it: Item) -> bool:
+	if not _belt_kind(it):
+		return false
+	for i in belt_size():
+		if belt[i] == null:
+			return true
+	return false
+
+
+func _belt_kind(it: Item) -> bool:
+	return str(it.base().get("use", {}).keys()).contains("pct") or it.base().get("use", {}).has("rejuv")
+
+
 func _belt_put(it: Item) -> bool:
-	if not str(it.base().get("use", {}).keys()).contains("pct") and not it.base().get("use", {}).has("rejuv"):
+	if not _belt_kind(it):
 		return false
 	for i in belt_size():
 		if belt[i] == null:
@@ -386,6 +538,8 @@ func pickup(it: Item) -> bool:
 		changed.emit()
 		return true
 	var ok := inv.add(it)
+	if ok:
+		Game.note_found(it)
 	changed.emit()
 	return ok
 

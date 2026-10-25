@@ -11,6 +11,7 @@ const STASH_FILE := "_shared_stash.json"
 var save_dir := DEFAULT_SAVE_DIR
 # Write token of the hero file as this device last loaded or wrote it; a different one on disk = another device played.
 var _hero_w := ""
+var _stash_text := ""
 var shared_stash := Inventory.new(12, 10)
 signal location_changed
 signal boss_bar(name: String, ratio: float, visible: bool)
@@ -33,10 +34,15 @@ var player: Node = null
 var level: Node = null
 var portal := {}
 var floor_loot := {}   # "difficulty:act:floor" -> {"seed": session_seed, "items": [[item dict, x, y], ...]}
+# What the hero changed on each floor this session (explored cells, killed monsters, opened props). Not saved:
+# the floors are drawn anew when a hero is loaded from the menu.
+var floor_state := {}
 var paused_ui := false
 var play_time := 0.0
 var session_seed := randi()
+var _fixed_seed := false
 var _autosave_t := 30.0
+var _autosave_wait := 0.0
 # A release APK can't be started with command-line args; tools/android.sh run <args> writes them here.
 const DEVICE_ARGS := "/storage/emulated/0/Android/data/cz.antas.permonik/files/dev/args.txt"
 var args := PackedStringArray()
@@ -49,8 +55,9 @@ func _ready() -> void:
 		args.append_array(FileAccess.get_file_as_string(DEVICE_ARGS).strip_edges().split(" ", false))
 	if args.has("--seed"):
 		session_seed = int(args[args.find("--seed") + 1])
+		_fixed_seed = true
 	_setup_input()
-	quests_changed.connect(save)
+	quests_changed.connect(func(): _autosave_t = minf(_autosave_t, 1.0))
 	var cfg := ConfigFile.new()
 	cfg.load("user://settings.cfg")
 	save_dir = str(cfg.get_value("main", "save_dir", DEFAULT_SAVE_DIR))
@@ -72,8 +79,23 @@ func _process(delta: float) -> void:
 		play_time += delta
 		_autosave_t -= delta
 		if _autosave_t <= 0.0:
+			# a save reads and writes whole files; not in the middle of a fight unless it has waited long
+			_autosave_wait += 1.0
+			if _autosave_wait < 30.0 and _in_fight():
+				_autosave_t = 1.0
+				return
 			_autosave_t = 30.0
+			_autosave_wait = 0.0
 			save()
+
+
+func _in_fight() -> bool:
+	if player == null or not is_instance_valid(player) or level.is_town:
+		return false
+	for m in level.monsters:
+		if m.aggro and not m.dead and m.global_position.distance_to(player.global_position) < 700.0:
+			return true
+	return false
 
 
 # Heroes save themselves (D2 style): every 30 s, on quest changes, on leaving and on closing the window.
@@ -120,6 +142,44 @@ func learn(kind: String, id: String) -> void:
 			if _codex_news.is_empty():
 				_flush_codex_news.call_deferred()
 			_codex_news.append(eid)
+
+
+# The collection (D2's holy grail): every unique, set piece and word ever held, kept across difficulties.
+func note_found(it: Item) -> void:
+	if it == null or not it.identified:
+		return
+	var keys := []
+	if it.rarity == Item.UNIQUE and it.unique_id != "":
+		keys.append("grail:u:" + it.unique_id)
+	elif it.rarity == Item.SET and it.set_id != "":
+		keys.append("grail:s:" + it.set_id)
+	if it.word != "":
+		keys.append("grail:w:" + it.word)
+	for k in keys:
+		if not known.has(k):
+			known[k] = true
+			msg(L.t({"cs": "Nový kus do sbírky: %s  (K)", "en": "New for your collection: %s  (K)"}) % it.display_name(), Item.COL_UNIQUE)
+
+
+# The peddler's one item: a new one each hero level, gone once bought.
+func peddler_item() -> Item:
+	var p: Dictionary = flags.get("peddler", {})
+	if int(p.get("lvl", -1)) != ch.level:
+		p = {"lvl": ch.level, "item": Loot.peddler_item(ch.level).to_dict(), "seen": false}
+		flags["peddler"] = p
+	return Item.from_dict(p.item) if p.has("item") else null
+
+
+func peddler_seen() -> bool:
+	peddler_item()
+	return bool(flags.peddler.get("seen", false))
+
+
+func note_found_all() -> void:
+	for it in ch.inv.items:
+		note_found(it)
+	for sl in ch.equip:
+		note_found(ch.equip[sl])
 
 
 func _flush_codex_news() -> void:
@@ -215,6 +275,10 @@ func quest_done(qid: String) -> void:
 	for id in r.get("items", []):
 		give_item(str(id))
 	msg("%s: %s" % [L.t("quest_done"), L.t(q.get("name", qid))], Color("e9c46a"))
+	if r.has("service") and Forge.SERVICES.has(str(r.service)):
+		flags[Forge.service_flag(str(r.service))] = true
+		msg(L.t({"cs": "Kovář ti teď jednou udělá: %s", "en": "A smith will now do this for you once: %s"}) % L.t(Forge.SERVICES[str(r.service)].name), Item.COL_UNIQUE)
+	drop_spent_quest_items()
 	Sfx.play("quest_done")
 	quests_changed.emit()
 	ch.changed.emit()
@@ -358,6 +422,51 @@ func _check_pick_goals(qid: String) -> void:
 		quest_advance(qid)
 
 
+# Whether a floor still lays out its quest item: a quest of that act has yet to pick it up, and this
+# floor's copy hasn't been taken already. Quests that are done or past that step don't want it.
+func quest_item_wanted(id: String, a: int, f: int) -> bool:
+	if flags.has("took:%d:%d:%s" % [a, f, id]):
+		return false
+	var own := []
+	var other := []
+	for qid in DB.quests:
+		var q: Dictionary = DB.quests[qid]
+		var steps: Array = q.get("steps", [])
+		for i in steps.size():
+			if str(steps[i].get("goal", {}).get("pick", "")) == id:
+				(own if int(q.get("act", a)) == a else other).append([qid, i, int(steps[i].goal.get("count", 1))])
+	for e in own if not own.is_empty() else other:
+		var st := quest_state(e[0])
+		if st == "done":
+			continue
+		if st == "active":
+			var cur := -1
+			var steps: Array = DB.quests[e[0]].get("steps", [])
+			for i in steps.size():
+				if steps[i].id == quest_step(e[0]):
+					cur = i
+			if cur > e[1]:
+				continue
+		if ch.inv.count(id) < e[2]:
+			return true
+	return false
+
+
+# Quest items marked "until" leave the bags once all those quests are done; nothing else uses them then.
+func drop_spent_quest_items() -> void:
+	for inv in [ch.inv, ch.stash]:
+		for it in inv.items.duplicate():
+			var until: Array = it.base().get("until", [])
+			if until.is_empty():
+				continue
+			var spent := true
+			for qid in until:
+				if quest_state(str(qid)) != "done":
+					spent = false
+			if spent:
+				inv.remove(it)
+
+
 func give_item(id: String) -> void:
 	var it: Item = null
 	if DB.uniques.has(id):
@@ -441,7 +550,8 @@ func action(a: String) -> void:
 		"slide":
 			if main:
 				if p[1] == "dlc_tease":
-					main.play_slides(p[1], func(): main.show_credits())
+					main.play_slides("credits")
+					main.play_slides(p[1], func(): main.show_menu())
 				else:
 					main.play_slides(p[1])
 		"next_act":
@@ -486,7 +596,7 @@ func finish_game() -> void:
 	unlocked_difficulty = maxi(unlocked_difficulty, mini(difficulty + 1, 2))
 	flags["game_finished"] = true
 	save()
-	if main:
+	if main and level:
 		main.play_slides("final", func(): goto(act, 0, "start"))
 
 
@@ -496,6 +606,7 @@ func start_next_difficulty() -> void:
 	flags = {}
 	waypoints = {}
 	floor_loot = {}
+	floor_state = {}
 	act = 1
 	ch.recalc()
 	save()
@@ -503,6 +614,13 @@ func start_next_difficulty() -> void:
 
 
 # ---------------------------------------------------------------- save / load
+# Each time a hero is taken from the menu the mines are drawn anew; within one sitting they stay put.
+func new_session() -> void:
+	if not _fixed_seed:
+		session_seed = randi()
+	floor_state = {}
+
+
 func new_game(cid: String, nm: String, persist := true) -> void:
 	ch = CharData.new()
 	ch.start_new(cid, nm)
@@ -515,6 +633,7 @@ func new_game(cid: String, nm: String, persist := true) -> void:
 	waypoints = {}
 	portal = {}
 	floor_loot = {}
+	new_session()
 	play_time = 0.0
 	known = {}
 	save_slot = "%s_%d" % [cid, Time.get_unix_time_from_system()] if persist else ""
@@ -528,9 +647,7 @@ func save() -> void:
 	if save_slot == "":
 		return
 	var path := _hero_path(save_slot)
-	if FileAccess.file_exists(path):
-		var disk = JSON.parse_string(FileAccess.get_file_as_string(path))
-		if disk is Dictionary and str(disk.get("w", "")) != _hero_w:
+	if FileAccess.file_exists(path) and _written_by(path) != _hero_w:
 			save_slot = ""
 			message.emit(UiTheme.t("save_newer_elsewhere"), UiTheme.RED)
 			if level and main:
@@ -543,11 +660,24 @@ func save() -> void:
 	var data := {"v": 1, "w": _hero_w, "char": ch.to_dict(), "difficulty": difficulty, "act": act, "quests": quests,
 		"flags": flags, "waypoints": waypoints, "known": known, "unlocked": unlocked_difficulty, "time": play_time, "floor_loot": floor_loot,
 		"saved_at": Time.get_datetime_string_from_system()}
-	_write(path, JSON.stringify(data))
+	_write(path, JSON.stringify(data, "", false))
 	save_shared_stash()
 
 
 # Write to a temp file and swap it in, so a sync client never picks up half a save.
+# The write token sits at the start of every save, so reading a few bytes is enough.
+func _written_by(path: String) -> String:
+	var f := FileAccess.open(path, FileAccess.READ)
+	if f == null:
+		return ""
+	var head := f.get_buffer(64).get_string_from_utf8()
+	var i := head.find("\"w\":\"")
+	if i >= 0 and head.find("\"", i + 5) > 0:
+		return head.substr(i + 5, head.find("\"", i + 5) - i - 5)
+	var disk = JSON.parse_string(FileAccess.get_file_as_string(path))
+	return str(disk.get("w", "")) if disk is Dictionary else _hero_w
+
+
 func _write(path: String, text: String) -> bool:
 	var f := FileAccess.open(path + ".tmp", FileAccess.WRITE)
 	if f == null:
@@ -563,11 +693,17 @@ func _hero_path(slot: String) -> String:
 
 # One stash every hero can reach, kept beside the hero files.
 func save_shared_stash() -> void:
+	var text := JSON.stringify(shared_stash.to_array())
+	var path := save_dir.path_join(STASH_FILE)
+	if text == _stash_text and FileAccess.file_exists(path):
+		return
 	DirAccess.make_dir_recursive_absolute(save_dir)
-	_write(save_dir.path_join(STASH_FILE), JSON.stringify(shared_stash.to_array()))
+	if _write(path, text):
+		_stash_text = text
 
 
 func load_shared_stash() -> void:
+	_stash_text = ""
 	var d = _read_json(save_dir.path_join(STASH_FILE))
 	shared_stash.load_array(d if d is Array else [])
 
@@ -669,9 +805,11 @@ func load_game(slot: String) -> bool:
 	unlocked_difficulty = int(data.get("unlocked", 0))
 	play_time = float(data.get("time", 0.0))
 	ch.from_dict(data.get("char", {}))
+	drop_spent_quest_items()
 	learn("class", ch.class_id)
 	floor_n = 0
 	portal = {}
+	new_session()
 	return true
 
 

@@ -10,6 +10,7 @@ the style data, scans and handwriting fonts are CC BY-NC-ND 4.0 / all rights res
 ```sh
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python heroes.py            # npcs bestiary bosses world props items skills_icons ui fx slides
+.venv/bin/python cinema.py            # cinematic layers (cinema.py intro/ for one film)
 .venv/bin/python ui.py map_marker     # one asset;  --only <folder> for one group
 ```
 

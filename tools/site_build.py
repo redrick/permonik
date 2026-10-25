@@ -388,7 +388,11 @@ def fill_desc(s, rank=1):
     return out
 
 
+WROTE = set()
+
+
 def icon(src, dst, size):
+    WROTE.add(dst)
     dst.parent.mkdir(parents=True, exist_ok=True)
     im = rgba(src)
     im.thumbnail((size, size), Image.LANCZOS)
@@ -396,10 +400,13 @@ def icon(src, dst, size):
 
 
 def main():
-    classes = load("classes")
+    all_classes = load("classes")
+    later = {c for e in load("expansions").values() if not e.get("released") for c in e["classes"]}
+    classes = {k: v for k, v in all_classes.items() if k not in later}
     skills = load("skills")
     items = load("items_base")
     sets = load("sets")
+    sets["sets"] = {k: s for k, s in sets["sets"].items() if s.get("class") not in later}
     words = load("words")
     acts = load("acts")
     uniques = load("uniques")
@@ -433,6 +440,7 @@ def main():
         poses = {p: hero(cid, p, gear) for p in ("idle", "attack", "cast")}
         sheet = animate(cid, poses, skills)
         sheet.save(IMG / "anim" / f"{cid}.webp", "WEBP", quality=82, method=6)
+        WROTE.add(IMG / "anim" / f"{cid}.webp")
         icon(A / "ui" / f"class_{cid}.png", IMG / "class" / f"{cid}.webp", 420)
         icon(A / "portraits" / f"hero_{cid}.png", IMG / "class" / f"hero_{cid}.webp", 200)
         trees = []
@@ -479,11 +487,19 @@ def main():
     data["facts"] = {
         "classes": len(classes), "skills": sum(len(t["skills"]) for c in classes.values() for t in c["trees"]),
         "acts": len(acts), "floors": len(regular), "bosses": len({f["boss"] for f in regular if f.get("boss")}),
-        "tithes": len(floors) - len(regular), "sets": len(sets["sets"]), "set_pieces": len(sets["items"]),
+        "tithes": len(floors) - len(regular), "sets": len(sets["sets"]), "set_pieces": sum(len(s["pieces"]) for s in sets["sets"].values()),
         "uniques": len(uniques), "words": len(words), "letters": sum(1 for k in items if k.startswith("glag_")),
         "gems": sum(1 for b in items.values() if b.get("slot") == "gem"), "monsters": len(monsters),
         "codex": len(codex), "books": len(books), "quests": len(quests), "levels": 100, "difficulties": 3,
     }
+
+    # pictures of classes, skills and sets that are no longer on the site (hidden for an expansion)
+    page = (OUT / "index.html").read_text()
+    for d in ("anim", "class", "skills", "items"):
+        for f in sorted((IMG / d).iterdir()):
+            if f not in WROTE and f"img/{d}/{f.name}" not in page:
+                print("removed", f.relative_to(OUT))
+                f.unlink()
 
     js = "window.PERMONIK = " + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";\n"
     (OUT / "data.js").write_text(js)

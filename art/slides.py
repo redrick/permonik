@@ -1025,7 +1025,7 @@ def menu_bg(b):
     vignette(b, 0.55)
 
 
-def fg_roof(x, y, s, col="#0f0d14", rim="#c27a52"):
+def fg_roof(x, y, s, col="#0f0d14", rim="#c27a52", with_crow=True):
     with T(x, y, s):
         rf = [(0, 0), (0, 250), (40, 262), (230, 120), (250, 0)]
         shape(rf, K(col), 1.6)
@@ -1037,7 +1037,7 @@ def fg_roof(x, y, s, col="#0f0d14", rim="#c27a52"):
         shape(ch, K("#17131c"), 1.3)
         shape(rect(146, 212, 176, 220), K("#17131c"), 1.2)
         stroke([(146, 220), (176, 220)], 1.2, g=K(rim), alpha=0.7)
-        crow(166, 220, 1.4)
+        if with_crow: crow(166, 220, 1.4)
 
 
 def crow(x, y, s=1.0, col="#0b0a10"):

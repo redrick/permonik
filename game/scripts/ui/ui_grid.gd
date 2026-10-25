@@ -65,6 +65,8 @@ func _draw() -> void:
 		if it == under and ui.held == null:
 			draw_rect(r.grow(-1), Color(1, 0.85, 0.5, 0.12))
 		UiTheme.draw_item(self, it, r)
+		if not (mode == "vendor" and vendor.gamble):
+			UiTheme.draw_upgrade(self, it, r)
 		if ui.identify_mode and mode == "inv" and it.rarity != Item.NORMAL and not it.identified:
 			draw_rect(r.grow(-2), Color(UiTheme.GOLD, 0.5 + 0.3 * sin(Time.get_ticks_msec() / 150.0)), false, 2.0)
 
@@ -80,6 +82,8 @@ func _gui_input(event: InputEvent) -> void:
 		if mode == "vendor":
 			if ui.held:
 				vendor.sell(ui.held, true)
+			elif it and Input.is_key_pressed(KEY_SHIFT) and it.slot() == "consumable" and not vendor.gamble:
+				vendor.fill_belt(it)
 			elif it:
 				vendor.buy(it)
 			return
@@ -108,6 +112,10 @@ func _gui_input(event: InputEvent) -> void:
 					ui.changed()
 			elif ui.left is UiForge:
 				if (ui.left as UiForge).box.add(it):
+					i.remove(it)
+					ui.changed()
+			elif ui.left is UiService:
+				if (ui.left as UiService).box.add(it):
 					i.remove(it)
 					ui.changed()
 			else:

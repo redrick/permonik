@@ -1,6 +1,9 @@
 extends Node
 
+# classes = the ones a new hero can be; all_classes also holds those saved for an expansion not out yet.
 var classes := {}
+var all_classes := {}
+var expansions := {}
 var skills := {}
 var monsters := {}
 var items := {}
@@ -14,6 +17,7 @@ var quests := {}
 var dialog := {}
 var lore := {}
 var slides := {}
+var cinema := {}
 var props := {}
 var codex := {}
 var books := {}
@@ -35,7 +39,12 @@ func _ready() -> void:
 
 
 func reload() -> void:
-	classes = _j("classes", {})
+	all_classes = _j("classes", {})
+	expansions = _j("expansions", {})
+	classes = {}
+	for cid in all_classes:
+		if class_released(cid):
+			classes[cid] = all_classes[cid]
 	skills = _j("skills", {})
 	monsters = _j("monsters", {})
 	items = _j("items_base", {})
@@ -52,6 +61,7 @@ func reload() -> void:
 	dialog = _j("dialog", {})
 	lore = _j("lore", {})
 	slides = _j("slides", {})
+	cinema = _j("cinematics", {})
 	props = _j("props", {})
 	codex = _j("codex", {})
 	books = _j("books", {})
@@ -60,7 +70,41 @@ func reload() -> void:
 	sets = sd.get("sets", {})
 	set_items = sd.get("items", {})
 	words = _j("words", {})
+	for id in items:
+		if not class_released(str(items[id].get("class", ""))):
+			items[id]["no_drop"] = true
 	_index_codex()
+
+
+func class_def(cid: String) -> Dictionary:
+	return all_classes.get(cid, {})
+
+
+func class_expansion(cid: String) -> String:
+	for eid in expansions:
+		if cid in expansions[eid].get("classes", []):
+			return eid
+	return ""
+
+
+func class_released(cid: String) -> bool:
+	if cid == "" or not all_classes.has(cid):
+		return true
+	var eid := class_expansion(cid)
+	return eid == "" or bool(expansions[eid].get("released", false)) or OS.get_cmdline_user_args().has("--all-classes")
+
+
+# The class a "class_<id>" / "tree_<id>" stat belongs to, or "".
+func stat_class(stat: String) -> String:
+	if stat.begins_with("class_"):
+		return stat.substr(6)
+	if stat.begins_with("tree_"):
+		var tid := stat.substr(5)
+		for cid in all_classes:
+			for t in all_classes[cid].get("trees", []):
+				if t.id == tid:
+					return cid
+	return ""
 
 
 func _index_codex() -> void:

@@ -3,6 +3,7 @@ extends UiPanel
 
 var npc: Npc
 var gamble := false
+var peddler := false
 var stock_inv := Inventory.new(10, 10)
 var gold_lbl: Label
 var repair_btn: Button
@@ -11,7 +12,10 @@ var _sig := -1
 
 func _ready() -> void:
 	custom_minimum_size = Vector2(644, 0)
-	if npc.stock.is_empty():
+	if peddler:
+		var pi := Game.peddler_item()
+		npc.stock = [pi] if pi else []
+	elif npc.stock.is_empty():
 		npc.stock = Loot.vendor_stock(npc.role(), Game.ch.level)
 	if gamble and npc.gamble_stock.is_empty():
 		npc.gamble_stock = Loot.gamble_stock(Game.ch.level)
@@ -61,11 +65,13 @@ func refresh() -> void:
 func price_of(it: Item) -> int:
 	if gamble:
 		return Loot.gamble_price(it, Game.ch.level)
+	if peddler:
+		return maxi(1, int(it.price() * 3.0 * (1.0 + 0.5 * Game.difficulty)))
 	return maxi(1, int(it.price() * (1.0 + 0.5 * Game.difficulty)))
 
 
 func accepts(it: Item) -> bool:
-	if it.sell_price() <= 0:
+	if peddler or it.sell_price() <= 0:
 		return false
 	var s := it.slot()
 	match npc.role():
@@ -99,10 +105,30 @@ func buy(it: Item) -> void:
 		ok = ch.inv.add(it)
 		if ok:
 			npc.stock.erase(it)
+			if peddler:
+				Game.flags.peddler.erase("item")
 	if not ok:
 		Game.msg(L.t("inv_full"), UiTheme.DIM)
 		return
 	ch.gold -= p
+	Sfx.play("gold", 0.7)
+	_rebuild()
+	UiRoot.inst.changed()
+
+
+# Shift-click on a potion: buy until the belt slots that take it are full (D2's shift-buy).
+func fill_belt(it: Item) -> void:
+	var ch := Game.ch
+	var p := price_of(it)
+	var n := 0
+	while ch.gold >= p and n < 16 and ch.belt_free_for(it):
+		if not ch.pickup(Item.create(it.base_id, it.ilvl)):
+			break
+		ch.gold -= p
+		n += 1
+	if n == 0:
+		buy(it)
+		return
 	Sfx.play("gold", 0.7)
 	_rebuild()
 	UiRoot.inst.changed()
@@ -154,7 +180,8 @@ func _repair() -> void:
 		return
 	Game.ch.gold -= c
 	for it: Item in _repair_items():
-		it.dur = it.max_dur
+		if not it.eth:
+			it.dur = it.max_dur
 	Sfx.play("hit_metal", 0.6)
 	Game.msg(UiTheme.t("repaired"), UiTheme.GOLD)
 	UiRoot.inst.changed()

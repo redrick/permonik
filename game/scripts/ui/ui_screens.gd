@@ -94,6 +94,21 @@ static func options(rebuild: Callable) -> VBoxContainer:
 		if is_equal_approx(val, cur):
 			b.add_theme_color_override("font_color", UiTheme.GOLD)
 		sr.add_child(b)
+	var fr := HBoxContainer.new()
+	fr.add_theme_constant_override("separation", 8)
+	vb.add_child(fr)
+	var fl := UiTheme.label(L.t({"cs": "Filtr kořisti", "en": "Loot filter"}), 28)
+	fl.custom_minimum_size = Vector2(200, 0)
+	fr.add_child(fl)
+	var opts := [{"cs": "Vše", "en": "All"}, {"cs": "Bez obyčejných", "en": "No plain"}, {"cs": "Bez obyč. a modrých", "en": "No plain, no blue"}]
+	for i in opts.size():
+		var lvl := i
+		var fb := UiTheme.button(L.t(opts[i]), func():
+			GroundItem.set_filter(lvl)
+			rebuild.call(), 200 if i < 2 else 260, 22)
+		if GroundItem.get_filter() == i:
+			fb.add_theme_color_override("font_color", UiTheme.GOLD)
+		fr.add_child(fb)
 	if not OS.has_feature("web"):
 		vb.add_child(_save_dir_row(rebuild))
 	if OS.has_feature("mobile"):

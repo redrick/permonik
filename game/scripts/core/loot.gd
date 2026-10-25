@@ -116,6 +116,8 @@ static func roll_affix(group: String, it: Item) -> Dictionary:
 			continue
 		var w := float(a.get("weight", 10))
 		var owner := _skill_owner(a)
+		if not DB.classes.has(owner) and owner != "":
+			continue
 		var cls := str(it.base().get("class", ""))
 		if owner != "" and cls != "":
 			if owner != cls:
@@ -133,15 +135,9 @@ static func roll_affix(group: String, it: Item) -> Dictionary:
 # The class a +skill affix belongs to ("" for any other affix).
 static func _skill_owner(a: Dictionary) -> String:
 	for m in a.get("mods", []):
-		var st := str(m.get("stat", ""))
-		if st.begins_with("class_"):
-			return st.substr(6)
-		if st.begins_with("tree_"):
-			var tid := st.substr(5)
-			for cid in DB.classes:
-				for t in DB.classes[cid].get("trees", []):
-					if t.id == tid:
-						return cid
+		var cid := DB.stat_class(str(m.get("stat", "")))
+		if cid != "":
+			return cid
 	return ""
 
 
@@ -186,9 +182,38 @@ static func make_rare(it: Item) -> void:
 	it.suffix = ""
 	it.mods = []
 	it.affix_ids = []
-	var total := randi_range(3, 6) if it.ilvl >= 20 else randi_range(3, 4)
+	_add_rare_affixes(it, randi_range(3, 6) if it.ilvl >= 20 else randi_range(3, 4))
+	if it.mods.is_empty():
+		it.rarity = Item.NORMAL
+		it.identified = true
+		return
+	it.rare_name = [randi() % maxi(1, DB.rare_names.get("first", []).size()), randi() % maxi(1, DB.rare_names.get("second", []).size())]
+
+
+# D2 crafted: the recipe's own properties, then one to four rare affixes, under a rare's name.
+static func make_crafted(it: Item, fam: String) -> void:
+	it.rarity = Item.CRAFTED
+	it.prefix = ""
+	it.suffix = ""
+	it.mods = []
+	it.affix_ids = []
+	it.craft = fam
+	_apply_mods(it, Forge.CRAFTS.get(fam, {}).get("mods", []))
+	_add_rare_affixes(it, randi_range(1, 4))
+	it.rare_name = [randi() % maxi(1, DB.rare_names.get("first", []).size()), randi() % maxi(1, DB.rare_names.get("second", []).size())]
+	it.identified = true
+
+
+# Adds up to n more affixes, at most three of each kind, none of a family or stat the item already has.
+static func _add_rare_affixes(it: Item, n: int) -> void:
+	var total := it.affix_ids.size() + n
 	var counts := {"prefixes": 0, "suffixes": 0}
 	var families := {}
+	for m in it.mods:
+		families["stat:" + str(m.stat)] = true
+	for id in it.affix_ids:
+		families[str(id).rsplit("_", true, 1)[0]] = true
+		counts["prefixes" if not Item._affix("prefixes", id).is_empty() else "suffixes"] += 1
 	var tries := 0
 	while it.affix_ids.size() < total and tries < 40:
 		tries += 1
@@ -213,18 +238,59 @@ static func make_rare(it: Item) -> void:
 		counts[group] += 1
 		it.affix_ids.append(a.id)
 		_apply_mods(it, a.get("mods", []))
-	if it.mods.is_empty():
-		it.rarity = Item.NORMAL
-		it.identified = true
-		return
-	it.rare_name = [randi() % maxi(1, DB.rare_names.get("first", []).size()), randi() % maxi(1, DB.rare_names.get("second", []).size())]
+
+
+# D3's mystic: one affix rolled anew in its own place; the rest stay, and from then on only that one may change.
+static func reroll_affix(it: Item, idx: int) -> bool:
+	var slots := it.affix_slots()
+	if idx < 0 or idx >= slots.size() or (it.locked >= 0 and it.locked != idx):
+		return false
+	var sl: Dictionary = slots[idx]
+	var taken := {}
+	for i in it.mods.size():
+		if i < sl.start or i >= sl.start + sl.count:
+			taken["stat:" + str(it.mods[i].stat)] = true
+	for o in slots:
+		if o != sl:
+			taken[str(o.id).rsplit("_", true, 1)[0]] = true
+	var a := {}
+	for tries in 40:
+		var c := roll_affix(sl.group, it)
+		if c.is_empty() or c.id == sl.id or taken.has(str(c.id).rsplit("_", true, 1)[0]):
+			continue
+		if c.get("mods", []).any(func(m): return taken.has("stat:" + str(m.stat))):
+			continue
+		a = c
+		break
+	if a.is_empty():
+		return false
+	var head := it.mods.slice(0, sl.start)
+	var tail := it.mods.slice(sl.start + sl.count)
+	it.mods = head
+	_apply_mods(it, a.get("mods", []))
+	it.mods.append_array(tail)
+	if it.rarity == Item.MAGIC:
+		if sl.group == "prefixes":
+			it.prefix = a.id
+		else:
+			it.suffix = a.id
+	else:
+		it.affix_ids[it.affix_ids.find(sl.id)] = a.id
+	it.locked = idx
+	it.rerolls += 1
+	return true
+
+
+static func reroll_cost(it: Item) -> int:
+	return int((200 + it.ilvl * 40) * pow(1.4, it.rerolls) * (1.0 + 0.5 * Game.difficulty))
 
 
 static func make_set(it: Item) -> bool:
 	var cands := []
 	for iid in DB.set_items:
 		var si: Dictionary = DB.set_items[iid]
-		if si.get("base", "") == it.base_id and int(si.get("qlvl", 1)) <= it.ilvl + 3:
+		if si.get("base", "") == it.base_id and int(si.get("qlvl", 1)) <= it.ilvl + 3 \
+				and DB.class_released(str(DB.sets.get(str(si.get("set", "")), {}).get("class", ""))):
 			cands.append(iid)
 	if cands.is_empty():
 		return false
@@ -284,6 +350,9 @@ static func unique_item(uid: String, ilvl: int) -> Item:
 	return it
 
 
+const ETH_CHANCE := [0.03, 0.05, 0.08]
+
+
 static func roll_item(ilvl: int, mf := 0.0, magic_bonus := 0.0, filter := "", smart := false) -> Item:
 	var id := random_base(ilvl, filter, smart)
 	if id == "" and smart:
@@ -296,6 +365,8 @@ static func roll_item(ilvl: int, mf := 0.0, magic_bonus := 0.0, filter := "", sm
 		return it
 	if not it.is_equipment():
 		return it
+	if it.slot() in ["weapon", "offhand", "head", "body"] and it.max_dur > 0 and randf() < ETH_CHANCE[clampi(Game.difficulty, 0, 2)]:
+		it.make_ethereal()
 	var r := randf()
 	var uchance := 0.012 * (1.0 + mf / 100.0) * (1.0 + magic_bonus * 4.0)
 	var rchance := (0.05 if ilvl >= 6 else 0.0) * (1.0 + mf / 150.0) * (1.0 + magic_bonus * 2.0)
@@ -407,6 +478,24 @@ static func potion_for(mlvl: int) -> Item:
 	if not DB.items.has(id):
 		return null
 	return Item.create(id, mlvl)
+
+
+# D1's Wirt, here the little man of Třemšín: one strong thing from the mountain, for those who pay to look.
+static func peddler_item(level: int) -> Item:
+	for i in 40:
+		var it := roll_item(level + 5, 300, 1.0, "equipment", true)
+		if it and it.is_equipment() and it.rarity in [Item.RARE, Item.UNIQUE, Item.SET]:
+			it.identified = true
+			return it
+	var id := random_base(level + 5, "equipment", true)
+	var f := Item.create(id if id != "" else "krumpac", level + 5)
+	make_rare(f)
+	f.identified = true
+	return f
+
+
+static func peddler_fee(level: int) -> int:
+	return 50 * (1 + Game.difficulty) + level * 5
 
 
 # The innkeeper's dice: plain-looking things you pay for blind; the roll happens when you buy.

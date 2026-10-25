@@ -46,6 +46,7 @@ var font: Font
 var tileset_name := ""
 var used_cells := {}
 var placed := {}
+var floor_seed := 0
 
 
 func build(a: int, f: int, arrive: String) -> void:
@@ -56,12 +57,14 @@ func build(a: int, f: int, arrive: String) -> void:
 	var ad := DB.act(a)
 	if is_town:
 		tileset_name = str(ad.get("town", {}).get("tileset", "town_hora"))
-		gen = TownLayout.make(a, hash("town:%d:%d:%d" % [Game.difficulty, a, Game.session_seed]))
+		floor_seed = hash("town:%d:%d:%d" % [Game.difficulty, a, Game.session_seed])
+		gen = TownLayout.make(a, floor_seed)
 	else:
 		def = DB.floor_def(a, f)
 		tileset_name = str(ad.get("dungeon", {}).get("tileset", "hora"))
 		gen = DungeonGen.new()
-		gen.generate(def, hash("%d:%d:%d:%d" % [Game.difficulty, a, f, Game.session_seed]))
+		floor_seed = hash("%d:%d:%d:%d" % [Game.difficulty, a, f, Game.session_seed])
+		gen.generate(def, floor_seed)
 	w = gen.w
 	h = gen.h
 	solid = PackedByteArray()
@@ -84,12 +87,18 @@ func build(a: int, f: int, arrive: String) -> void:
 	add_child(cm)
 	if not is_town:
 		_make_fog()
+	# Seeded, so a floor visited again this session gets the same props and packs back.
+	seed(floor_seed)
 	if is_town:
 		_populate_town()
 	else:
 		_populate_dungeon()
+	randomize()
+	for i in monsters.size():
+		monsters[i].set_meta("spawn_i", i)
 	_build_collision()
 	_build_astar()
+	_restore_state()
 	_spawn_player(arrive)
 	spawn_hireling()
 	_restore_loot()
@@ -431,9 +440,15 @@ func find_path(from: Vector2, to: Vector2) -> Array:
 	return out
 
 
+# A shortcut must leave room for a body (radius 15) plus a margin, checked finely enough not to skip a corner.
 func _clear_wide(a: Vector2, b: Vector2) -> bool:
-	var perp := (b - a).normalized().orthogonal() * 16.0
-	return line_of_sight(a + perp, b + perp) and line_of_sight(a - perp, b - perp)
+	var perp := (b - a).normalized().orthogonal() * 21.0
+	var n := int(a.distance_to(b) / 10.0)
+	for i in range(1, n + 1):
+		var p := a.lerp(b, float(i) / n)
+		if is_solid(p + perp) or is_solid(p - perp) or is_solid(p):
+			return false
+	return true
 
 
 func random_open_near(p: Vector2, rmin: float, rmax: float) -> Vector2:
@@ -522,7 +537,7 @@ func _cell_free_area(c: Vector2i, r := 1) -> bool:
 
 func _populate_dungeon() -> void:
 	var rng := RandomNumberGenerator.new()
-	rng.randomize()
+	rng.seed = floor_seed
 	var up := _place_prop("schody_nahoru", gen.start + Vector2i(0, -1) if _cell_free_area(gen.start + Vector2i(0, -1), 0) else gen.start, false)
 	up.interact = "stairs_up"
 	arrive_points["stairs_down"] = cell_center(gen.start) + Vector2(0, 40)
@@ -739,13 +754,13 @@ func _place_quest_props() -> void:
 		var rule := _quest_rule(qid)
 		rule["group"] = qid
 		if DB.items.has(qid) and not DB.props.has(qid):
-			if Game.ch.inv.count(qid) > 0:
-				continue
 			var ic := _rule_cell(rule)
 			if ic.x < 0:
 				ic = _rule_cell({"group": qid})
-			if ic.x >= 0:
-				drop_item(Item.create(qid, 1), cell_center(ic))
+			var qi := Item.create(qid, 1)
+			if ic.x >= 0 and Game.quest_item_wanted(qid, act_n, floor_n):
+				drop_item(qi, cell_center(ic))
+				ground_items.back().set_meta("quest_spawn", true)
 			continue
 		var n := 1
 		match qid:
@@ -892,6 +907,8 @@ func on_monster_died(m: Monster) -> void:
 	monsters.erase(m)
 	if hover_obj == m:
 		hover_obj = null
+	if m.has_meta("spawn_i"):
+		_state().dead[int(m.get_meta("spawn_i"))] = true
 	Game.ch.add_xp(_xp_for(m))
 	Game.on_event("kill", m.id)
 	if m.kind == "boss":
@@ -972,13 +989,63 @@ func _loot_key() -> String:
 
 func _exit_tree() -> void:
 	stash_loot()
+	if not is_town and w > 0:
+		_state().explored = explored
+
+
+# This session's changes to the floor; dropped when the layout is a different one.
+func _state() -> Dictionary:
+	var st: Dictionary = Game.floor_state.get(_loot_key(), {})
+	if int(st.get("seed", -1)) != Game.session_seed:
+		st = {"seed": Game.session_seed, "dead": {}, "props": {}, "explored": PackedByteArray()}
+		Game.floor_state[_loot_key()] = st
+	return st
+
+
+func _prop_key(p: PropNode) -> String:
+	return "%s@%d,%d" % [p.id, p.cell.x, p.cell.y]
+
+
+func _note_prop(p: PropNode, how: String) -> void:
+	_state().props[_prop_key(p)] = how
+
+
+func _restore_state() -> void:
+	if is_town:
+		return
+	var st := _state()
+	var dead: Dictionary = st.dead
+	for m in monsters.duplicate():
+		if dead.has(int(m.get_meta("spawn_i", -1))):
+			monsters.erase(m)
+			if m == boss:
+				boss = null
+			m.queue_free()
+	var done: Dictionary = st.props
+	for p in props:
+		match str(done.get(_prop_key(p), "")):
+			"open":
+				p.used = true
+				p.set_texture("truhla_open")
+			"broken":
+				_set_broken(p)
+			"used":
+				_set_shrine_used(p)
+	var ex: PackedByteArray = st.explored
+	if ex.size() == explored.size() and fog_img:
+		explored = ex.duplicate()
+		for y in h:
+			for x in w:
+				if explored[y * w + x] == 1:
+					fog_img.set_pixel(x + 1, y + 1, Color(0, 0, 0, 0))
+		(fog.texture as ImageTexture).update(fog_img)
+		explored_rev += 1
 
 
 func stash_loot() -> void:
-	var quest_ids: Array = def.get("quest_props", [])
 	var kept := []
 	for g in ground_items:
-		if is_instance_valid(g) and g.item and not g.item.base_id in quest_ids:
+		if is_instance_valid(g) and g.item and not g.has_meta("quest_spawn"):
 			kept.append([g.item.to_dict(), g.position.x, g.position.y])
 	if kept.is_empty():
 		Game.floor_loot.erase(_loot_key())
@@ -1113,7 +1180,7 @@ func pick_at(pos: Vector2):
 		if n.hit_rect().has_point(pos):
 			return {"type": "npc", "node": n}
 	for g in ground_items:
-		if is_instance_valid(g) and g.hit_rect().has_point(pos):
+		if is_instance_valid(g) and g.visible and g.hit_rect().has_point(pos):
 			return {"type": "item", "node": g}
 	for p in props:
 		if is_instance_valid(p) and p.interact != "" and not p.used and p.hit_rect().has_point(pos):
@@ -1123,7 +1190,7 @@ func pick_at(pos: Vector2):
 
 # Aggro monsters stay clickable a bit past the lamp, so archers and casters at the edge of the light can be answered.
 func _targetable(m: Monster) -> bool:
-	if is_town or m.kind == "boss" or lit(m.global_position):
+	if is_town or m.kind == "boss" or m.revealed_t > 0.0 or lit(m.global_position):
 		return true
 	return m.aggro and player != null and player.global_position.distance_to(m.global_position) < player.light_radius_px() * 1.6 + 60.0
 
@@ -1155,6 +1222,8 @@ func _pickup(g: GroundItem) -> void:
 			float_text(g.global_position + Vector2(0, -30), "+%d" % g.item.qty, Color("e9c46a"))
 		ground_items.erase(g)
 		g.queue_free()
+		if g.has_meta("quest_spawn"):
+			Game.flags["took:%d:%d:%s" % [act_n, floor_n, g.item.base_id]] = true
 		Game.on_event("pick", g.item.base_id)
 		Game.learn("item", g.item.base_id)
 		Game.learn("unique", g.item.unique_id)
@@ -1196,6 +1265,7 @@ func _use_prop(pl: Player, p: PropNode) -> void:
 			p.used = true
 			p.set_hover(false)
 			p.set_texture("truhla_open")
+			_note_prop(p, "open")
 			Sfx.play_at("chest_open", p.global_position)
 			var n := randi_range(1, 3)
 			for i in n:
@@ -1220,22 +1290,10 @@ func _use_prop(pl: Player, p: PropNode) -> void:
 func _break_prop(p: PropNode) -> void:
 	if p.used:
 		return
-	p.used = true
-	p.set_hover(false)
-	p.set_texture(p.id + "_broken")
-	if not DB.has_tex("props/%s_broken" % p.id):
-		p.sprite.visible = false
+	_set_broken(p)
+	_note_prop(p, "broken")
 	Sfx.play_at("urn_break" if p.id == "urna" else "barrel_break", p.global_position)
 	Fx.burst(self, p.global_position + Vector2(0, -30), Color("8a7458"), 14, 140, 0.5, 0.2)
-	var body := p.get_node_or_null("Body")
-	if body:
-		body.queue_free()
-	var cells: Array = p.get_meta("cells", [p.cell, Vector2i.ONE])
-	for yy in range(cells[0].y, cells[0].y + cells[1].y):
-		for xx in range(cells[0].x, cells[0].x + cells[1].x):
-			if xx >= 0 and yy >= 0 and xx < w and yy < h and gen.at(xx, yy) != DungeonGen.WALL:
-				solid[yy * w + xx] = 0
-				astar.set_point_solid(Vector2i(xx, yy), false)
 	var r := randf()
 	var lvl := Game.mlvl_base(int(def.get("level", 1)))
 	if r < 0.12 and act_n >= 1 and p.id == "sud":
@@ -1259,16 +1317,38 @@ func _break_prop(p: PropNode) -> void:
 			drop_item(it2, p.global_position + Vector2(0, 20))
 
 
-func _use_shrine(p: PropNode) -> void:
-	var sid := str(p.data.get("shrine", ""))
-	var sd: Dictionary = DB.shrines.get(sid, {})
-	Game.learn("shrine", sid)
+func _set_broken(p: PropNode) -> void:
+	p.used = true
+	p.set_hover(false)
+	p.set_texture(p.id + "_broken")
+	if not DB.has_tex("props/%s_broken" % p.id):
+		p.sprite.visible = false
+	var body := p.get_node_or_null("Body")
+	if body:
+		body.queue_free()
+	var cells: Array = p.get_meta("cells", [p.cell, Vector2i.ONE])
+	for yy in range(cells[0].y, cells[0].y + cells[1].y):
+		for xx in range(cells[0].x, cells[0].x + cells[1].x):
+			if xx >= 0 and yy >= 0 and xx < w and yy < h and gen.at(xx, yy) != DungeonGen.WALL:
+				solid[yy * w + xx] = 0
+				astar.set_point_solid(Vector2i(xx, yy), false)
+
+
+func _set_shrine_used(p: PropNode) -> void:
 	p.used = true
 	p.set_hover(false)
 	if DB.has_tex("props/modla_used"):
 		p.set_texture("modla_used")
 	else:
 		p.sprite.modulate = Color(0.5, 0.5, 0.5)
+
+
+func _use_shrine(p: PropNode) -> void:
+	var sid := str(p.data.get("shrine", ""))
+	var sd: Dictionary = DB.shrines.get(sid, {})
+	Game.learn("shrine", sid)
+	_set_shrine_used(p)
+	_note_prop(p, "used")
 	Sfx.play_at("shrine", p.global_position)
 	var eff: Dictionary = sd.get("effect", {})
 	if eff.get("random", false):
@@ -1405,7 +1485,8 @@ func _process(delta: float) -> void:
 		var lr := player.light_radius_px() * 1.15
 		for m in monsters:
 			var d: float = m.global_position.distance_to(player.global_position)
-			var near: bool = m.kind == "boss" or (d < lr and (d < CELL * 1.6 or in_sight(m.global_position)))
+			m.revealed_t = maxf(0.0, m.revealed_t - delta)
+			var near: bool = m.kind == "boss" or m.revealed_t > 0.0 or (d < lr and (d < CELL * 1.6 or in_sight(m.global_position)))
 			m.sight = move_toward(m.sight, 1.0 if near else 0.0, delta * 5.0)
 			m.visible = m.sight > 0.01 or m.light != null
 			m.sprite.self_modulate.a = m.sight if m.light == null else maxf(m.sight, 0.25)

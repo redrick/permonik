@@ -48,7 +48,7 @@ static func use(pl: Player, id: String, target: Vector2) -> bool:
 				return false
 			tgt = hits[0]
 		if pl.global_position.distance_to(tgt.global_position) > 70.0 + tgt.radius:
-			pl.intent = {"type": "monster", "node": tgt}
+			pl.intent = {"type": "monster", "node": tgt, "skill": id}
 			pl.set_path_to(tgt.global_position)
 			return false
 	# some skills are paid in life (the priest's sacrifice) or in gold (the alchemist's great work)
@@ -113,7 +113,7 @@ static func use(pl: Player, id: String, target: Vector2) -> bool:
 			tw.tween_callback(func():
 				pl.global_position = dest
 				pl.float_h = 0.0
-				pl.collision_mask = 1 | 4 | 8
+				pl.collision_mask = 1 | 4
 				var r := float(p(id, "radius", 80.0))
 				Fx.ring(pl.level, dest, r, Color("e8d0a0"))
 				pl.level.shake(5.0)

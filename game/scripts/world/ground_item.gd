@@ -2,6 +2,8 @@ class_name GroundItem
 extends Node2D
 
 static var font: Font
+# Loot filter from the settings: 0 shows everything, 1 hides plain gear, 2 also magic weapons and armour.
+static var filter_level := -1
 
 var item: Item
 var sprite: Sprite2D
@@ -24,6 +26,8 @@ func _build() -> void:
 	sprite.scale = Vector2.ONE * s
 	sprite.rotation = randf_range(-0.6, 0.6)
 	sprite.position = Vector2(0, -10)
+	if item.eth:
+		sprite.self_modulate = Color(0.8, 0.9, 1.0, 0.6)
 	add_child(sprite)
 	lbl = Label.new()
 	if font == null:
@@ -49,7 +53,7 @@ func _build() -> void:
 		l.position = Vector2(0, -10)
 		add_child(l)
 		_beam()
-	elif item.rarity == Item.RARE:
+	elif item.rarity in [Item.RARE, Item.CRAFTED]:
 		var l := Fx.make_light(item.color(), 60.0, 0.6)
 		add_child(l)
 
@@ -118,7 +122,7 @@ func toss() -> void:
 	match item.rarity:
 		Item.UNIQUE, Item.SET:
 			snd = "drop_unique"
-		Item.RARE:
+		Item.RARE, Item.CRAFTED:
 			snd = "drop_rare"
 		Item.MAGIC:
 			snd = "drop_magic"
@@ -127,7 +131,36 @@ func toss() -> void:
 			Sfx.play_at(snd, global_position, {"drop_unique": 0.9, "drop_rare": 0.6, "drop_magic": 0.45}.get(snd, 0.5)))
 
 
+static func get_filter() -> int:
+	if filter_level < 0:
+		var cfg := ConfigFile.new()
+		cfg.load("user://settings.cfg")
+		filter_level = int(cfg.get_value("main", "loot_filter", 0))
+	return filter_level
+
+
+static func set_filter(v: int) -> void:
+	filter_level = v
+	var cfg := ConfigFile.new()
+	cfg.load("user://settings.cfg")
+	cfg.set_value("main", "loot_filter", v)
+	cfg.save("user://settings.cfg")
+
+
+static func hides(it: Item) -> bool:
+	var f := get_filter()
+	if f <= 0 or not it.is_equipment() or it.eth or it.sockets > 0 or it.word != "":
+		return false
+	if it.rarity == Item.NORMAL:
+		return true
+	return f >= 2 and it.rarity == Item.MAGIC and not it.slot() in ["ring", "amulet"]
+
+
+# Filtered loot stays on the ground, unseen until Alt shows it, dimmed.
 func show_label(on: bool) -> void:
+	var hidden := GroundItem.hides(item)
+	visible = on or not hidden
+	modulate.a = 0.55 if hidden else 1.0
 	lbl.visible = on or hover
 
 

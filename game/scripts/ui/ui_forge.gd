@@ -111,6 +111,7 @@ func _recipe_specs() -> Array:
 		[[[_gen("krumpac", Item.RARE, {"cs": "Jakýkoli vzácný (žlutý) předmět", "en": "Any rare (yellow) item"}),
 			_ex("vltavin_4", 4, {"cs": "Čtyři dokonalé drahokamy (4. stupeň)", "en": "Four perfect gems (grade 4)"})],
 			[_gen("krumpac", Item.RARE, {"cs": "Týž předmět s novými vlastnostmi", "en": "The same item with new properties"})]]],
+		_craft_rows(),
 		[[[_gen("krumpac", Item.NORMAL, {"cs": "Jakýkoli předmět", "en": "Any item"}), _ex("glag_r"),
 			_ex("granat_2", 1, {"cs": "Drahokam 2. stupně a výš", "en": "A gem of grade 2 or better"})],
 			[_gen("krumpac_kovany", Item.NORMAL, {"cs": "Kovaná verze, vše na ní zůstane", "en": "Its forged version, keeping all it carries"})]]],
@@ -120,6 +121,21 @@ func _recipe_specs() -> Array:
 		[[[_ex("pecet_vody"), _ex("pecet_kamene"), _ex("pecet_ohne"), _ex("pecet_smrti")],
 			[_unique("permonikuv_desatek")]]],
 	]
+
+
+func _craft_rows() -> Array:
+	var rows := []
+	var letter_note := {"cs": "Zbraň: Slovo · zbroj a štít: Našь · prsten, amulet, opasek, kahan: Dobro", "en": "Weapon: Slovo · armour and shield: Našь · ring, amulet, belt, lamp: Dobro"}
+	for stone in Forge.CRAFTS:
+		var cf: Dictionary = Forge.CRAFTS[stone]
+		var res := _gen("krumpac", Item.CRAFTED, cf.name)
+		res.lines[0][1] = Item.COL_CRAFTED
+		for m in cf.mods:
+			res.lines.append(["%s  [%d–%d]" % [Item.mod_text(m.stat, m.max), int(m.min), int(m.max)], Item.COL_MAGIC])
+		res.lines.append([L.t({"cs": "+ 1 až 4 náhodné vlastnosti", "en": "+ 1 to 4 random properties"}), Item.COL_INFO])
+		rows.append([[_gen("krumpac", Item.MAGIC, {"cs": "Jakýkoli kouzelný (modrý) předmět", "en": "Any magic (blue) item"}),
+			_ex("glag_s", 1, letter_note), _ex(stone + "_3", 1, {"cs": "Broušený drahokam (3. stupeň a výš)", "en": "A cut gem (grade 3 or better)"})], [res]])
+	return rows
 
 
 func _ex(id: String, n := 1, note_text = null) -> Dictionary:
@@ -167,6 +183,8 @@ class RecipeIcon extends Control:
 		var r := Rect2(Vector2.ZERO, size)
 		UiTheme.draw_cell(self, r, r.has_point(get_local_mouse_position()))
 		UiTheme.draw_item(self, spec.item, r.grow(-3))
+		if spec.get("dim", false):
+			draw_rect(r.grow(-3), Color(0.03, 0.025, 0.02, 0.72))
 		var n := int(spec.n)
 		if n > 1:
 			var s := "×%d" % n

@@ -42,6 +42,15 @@ func _ready() -> void:
 	var args := Game.args
 	if args.has("--shot"):
 		add_child(load("res://scripts/debug/shot.gd").new())
+	if args.has("--storyshot"):
+		show_menu()
+		add_child(load("res://scripts/debug/storyshot.gd").new())
+		return
+	if args.has("--cinema"):
+		var films: Array = Array(_arg(args, "--cinema", "intro").split(","))
+		for f in films:
+			play_slides(f, (func(): get_tree().quit()) if f == films[-1] else Callable())
+		return
 	if args.has("--quick"):
 		Game.new_game(_arg(args, "--class", "havir"), "Hrdina", false)
 		Game.flags["intro_seen"] = true
@@ -56,8 +65,12 @@ func _ready() -> void:
 			add_child(load("res://scripts/debug/walktest.gd").new())
 		if args.has("--touchtest"):
 			add_child(load("res://scripts/debug/touchtest.gd").new())
+		if args.has("--flowtest"):
+			add_child(load("res://scripts/debug/flowtest.gd").new())
 		if args.has("--loottest"):
 			add_child(load("res://scripts/debug/loottest.gd").new())
+		if args.has("--lootsys"):
+			add_child(load("res://scripts/debug/lootshot.gd" if args.has("--lootshot") else "res://scripts/debug/lootsys.gd").new())
 		if args.has("--autoplay"):
 			add_child(load("res://scripts/debug/autoplay.gd").new())
 		return
@@ -74,6 +87,9 @@ func apply_ui_scale() -> void:
 		want = float(Game.args[Game.args.find("--ui-scale") + 1])
 	ui_scale = want if want > 0.0 else auto_ui_scale()
 	var sz := get_viewport().get_visible_rect().size / ui_scale
+	# a window still being mapped reports no size yet; size_changed calls again once it has one
+	if not sz.is_finite() or sz.x <= 0.0 or sz.y <= 0.0:
+		return
 	for pair in [[hud, hud.root], [ui, ui.root], [pad, pad.view if pad else null]]:
 		if pair[0] == null:
 			continue
@@ -189,7 +205,11 @@ func _next_slides() -> void:
 		if done.is_valid():
 			done.call()
 		_next_slides()
-	if items.is_empty():
+	if e[0] == "credits":
+		ui.show_credits(after)
+	elif CinFilms.has(e[0]):
+		ui.play_cinema(e[0], after)
+	elif items.is_empty():
 		after.call()
 	else:
 		ui.play_slides(items, after)
@@ -238,7 +258,10 @@ func respawn() -> void:
 	Game.ch.gold -= lost
 	Game.ch.hp = Game.ch.d.hp_max
 	Game.ch.mana = Game.ch.d.mana_max
+	# a portal waits in town back to where the hero fell, as in D2
 	Game.portal = {}
+	if Game.floor_n > 0 and Game.player and is_instance_valid(Game.player):
+		Game.portal = {"act": Game.act, "floor": Game.floor_n, "pos": Game.player.global_position}
 	Game.goto(Game.act, 0, "start")
 
 

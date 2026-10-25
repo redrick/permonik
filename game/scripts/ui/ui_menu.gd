@@ -66,6 +66,8 @@ func _show(p: String) -> void:
 			_new()
 		"options":
 			_options()
+		"story":
+			_story()
 	content.modulate.a = 0.0
 	create_tween().tween_property(content, "modulate:a", 1.0, 0.25)
 
@@ -142,6 +144,7 @@ func _main() -> void:
 	var lb := _btn(vb, UiTheme.t("menu_saves"), func(): _show("saves"))
 	lb.disabled = saves.is_empty()
 	_btn(vb, L.t("menu_new_game"), func(): _show("new"))
+	_btn(vb, UiTheme.t("menu_story"), func(): _show("story"))
 	_btn(vb, L.t("menu_options"), func(): _show("options"))
 	if not OS.has_feature("web"):
 		_btn(vb, L.t("menu_quit"), func(): get_tree().quit())
@@ -229,7 +232,7 @@ func _hero_row(s: Dictionary) -> Control:
 	info.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hb.add_child(info)
 	info.add_child(UiTheme.label(str(s.get("name", "?")), 30, UiTheme.GOLD if on else UiTheme.INK))
-	var cls := L.t(DB.classes.get(str(s.get("class", "")), {}).get("name", s.get("class", "")))
+	var cls := L.t(DB.class_def(str(s.get("class", ""))).get("name", s.get("class", "")))
 	info.add_child(UiTheme.label("%s · %s %d" % [cls, L.t("level"), int(s.get("level", 1))], 22, UiTheme.INK, true))
 	info.add_child(UiTheme.label("%s %s · %s" % [L.t("act"), UiQuests._roman(int(s.get("act", 1))), L.t("diff_%d" % int(s.get("difficulty", 0)))], 18, UiTheme.FAINT, true))
 	for c in info.get_children():
@@ -278,7 +281,7 @@ func _hero_stage(s: Dictionary) -> void:
 	name_l.position = Vector2(0, 30)
 	name_l.size = Vector2(stage.size.x, 80)
 	stage.add_child(name_l)
-	var cls := L.t(DB.classes.get(str(s.get("class", "")), {}).get("name", s.get("class", "")))
+	var cls := L.t(DB.class_def(str(s.get("class", ""))).get("name", s.get("class", "")))
 	var act := DB.act(int(s.get("act", 1)))
 	var sub := UiTheme.label("%s · %s %d · %s" % [cls, L.t("level"), int(s.get("level", 1)), L.t(act.get("name", ""))], 28, UiTheme.INK)
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -324,7 +327,7 @@ func _new() -> void:
 	vb.add_theme_constant_override("separation", 10)
 	vb.add_child(UiTheme.title(UiTheme.t("menu_pick_class"), 50))
 	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 30 if DB.classes.size() <= 3 else 14)
+	row.add_theme_constant_override("separation", 30 if DB.classes.size() <= 4 else 14)
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
 	vb.add_child(row)
 	for cid in DB.classes:
@@ -380,7 +383,7 @@ func _card(cid: String) -> Control:
 	t.texture = DB.tex("ui/class_" + cid)
 	if t.texture == null:
 		t.texture = DB.tex("portraits/hero_" + cid)
-	var wide := DB.classes.size() <= 3
+	var wide := DB.classes.size() <= 4
 	t.custom_minimum_size = Vector2(300, 450) if wide else Vector2(196, 294)
 	t.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	t.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
@@ -442,3 +445,86 @@ func _options() -> void:
 	vb.add_child(p)
 	vb.add_child(UiTheme.sep(10))
 	_btn(vb, L.t("menu_back"), func(): _show("main"), 300)
+
+
+# ---------------------------------------------------------------- story
+# Every cinematic once seen (or passed with any hero), to watch again in order.
+static func film_unlocked(id: String, saves: Array) -> bool:
+	if UiCinema.seen().has(id):
+		return true
+	var need := {"intro": [1, 0], "act1_end": [2, 0], "act2_end": [3, 0], "act3_end": [4, 0], "act4_intro": [4, 0]}
+	for s in saves:
+		var act := int(s.act)
+		var diff := int(s.difficulty)
+		if diff > 0 or (need.has(id) and act >= need[id][0]):
+			return true
+	return false
+
+
+func _story() -> void:
+	UiScreens.dim(content, 0.7)
+	var vb := _column()
+	vb.add_theme_constant_override("separation", 18)
+	vb.add_child(UiTheme.title(UiTheme.t("menu_story"), 56))
+	var hint := UiTheme.label(UiTheme.t("story_hint"), 22, UiTheme.DIM)
+	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	vb.add_child(hint)
+	var grid := GridContainer.new()
+	grid.columns = 4
+	grid.add_theme_constant_override("h_separation", 18)
+	grid.add_theme_constant_override("v_separation", 18)
+	vb.add_child(grid)
+	var saves := Game.list_saves()
+	var open: Array = []
+	for id in CinFilms.ORDER:
+		var ok := film_unlocked(id, saves)
+		if ok:
+			open.append(id)
+		grid.add_child(_film_card(id, ok))
+	var row := HBoxContainer.new()
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.add_theme_constant_override("separation", 20)
+	vb.add_child(row)
+	var all := _btn(row, UiTheme.t("story_all"), func():
+		for id in open:
+			Game.main.play_slides(id), 300)
+	all.disabled = open.is_empty()
+	_btn(row, L.t("menu_back"), func(): _show("main"), 300)
+
+
+func _film_card(id: String, ok: bool) -> Button:
+	var info: Dictionary = DB.cinema.get(id, {})
+	var b := Button.new()
+	b.custom_minimum_size = Vector2(390, 300)
+	b.focus_mode = Control.FOCUS_NONE
+	b.add_theme_stylebox_override("normal", UiTheme.flat(Color(0.05, 0.04, 0.035, 0.9), Color("4a3a28"), 2, 10))
+	b.add_theme_stylebox_override("hover", UiTheme.flat(Color(0.08, 0.06, 0.045, 0.95), UiTheme.GOLD, 2, 10))
+	b.add_theme_stylebox_override("pressed", UiTheme.flat(Color(0.08, 0.06, 0.045, 0.95), UiTheme.GOLD, 2, 10))
+	b.add_theme_stylebox_override("disabled", UiTheme.flat(Color(0.03, 0.025, 0.02, 0.9), Color("2a2218"), 2, 10))
+	b.disabled = not ok
+	b.pressed.connect(func():
+		Sfx.play("ui_click")
+		UiRoot.inst.play_cinema(id, Callable()))
+	var col := VBoxContainer.new()
+	col.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	col.set_anchors_preset(Control.PRESET_FULL_RECT)
+	col.offset_left = 12
+	col.offset_top = 12
+	col.offset_right = -12
+	col.offset_bottom = -10
+	col.add_theme_constant_override("separation", 6)
+	b.add_child(col)
+	var pic := TextureRect.new()
+	pic.texture = UiCinema.tex("thumbs/" + id) if ok else null
+	pic.custom_minimum_size = Vector2(366, 206)
+	pic.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	pic.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	pic.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	col.add_child(pic)
+	var t := UiTheme.label(L.t(info.get("title", id)) if ok else "?", 26, UiTheme.GOLD if ok else UiTheme.DIM)
+	t.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	col.add_child(t)
+	var w := UiTheme.label(L.t(info.get("when", "")) if ok else UiTheme.t("story_locked"), 18, UiTheme.DIM, true)
+	w.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	col.add_child(w)
+	return b

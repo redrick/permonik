@@ -43,7 +43,7 @@
       {"id": "return", "text": {"cs": "Přines srdce zvonu Báře do krčmy.", "en": "Bring the clapper to Bára at the tavern."}, "goal": {"talk": "senkyrka_bara"}},
       {"id": "forge", "text": {"cs": "Zanes srdce kováři Hněvkovi, ať ho zase pověsí.", "en": "Take the clapper to Hněvek the smith so he can hang it again."}, "goal": {"talk": "kovar_hnevek"}}
     ],
-    "reward": {"xp": 1200, "gold": 300, "items": ["srdce_zvonu_cep"]}
+    "reward": {"xp": 1200, "gold": 300, "items": ["srdce_zvonu_cep"], "service": "imbue"}
   },
 
   "medulinin_odkaz": {
@@ -89,7 +89,7 @@
       {"id": "siny", "text": {"cs": "Najdi tři zlaté šíny v prvních třech patrech Vojtěšské šachty.", "en": "Find the three golden ingots on the first three levels of the Vojtěch shaft."}, "goal": {"pick": "zlaty_sin", "count": 3}},
       {"id": "return", "text": {"cs": "Vrať šíny třemšínskému mužíčkovi.", "en": "Return the ingots to the little man of Třemšín."}, "goal": {"talk": "tremsinsky_muzicek"}}
     ],
-    "reward": {"xp": 4000, "gold": 0, "items": ["tremsinsky_prsten"]}
+    "reward": {"xp": 4000, "gold": 0, "items": ["tremsinsky_prsten"], "service": "socket"}
   },
 
   "dve_srdce": {
@@ -183,7 +183,7 @@
       {"id": "navky", "text": {"cs": "Zabij navky, které drží jména havířů z Osla. Padesát jmen, padesát kahanů.", "en": "Kill the navky that hold the names of the Osel miners. Fifty names, fifty lamps."}, "goal": {"kill": "navka", "count": 50}},
       {"id": "return", "text": {"cs": "Vrať se k předákovi Matějovi a přečti mu jména.", "en": "Return to Matěj the foreman and read him the names."}, "goal": {"talk": "predak_matej"}}
     ],
-    "reward": {"xp": 30000, "gold": 0, "stat_points": 5, "skill_points": 1, "items": ["svatojanska_rosa_velka", "svatojanska_rosa_velka"]}
+    "reward": {"xp": 30000, "gold": 0, "stat_points": 5, "skill_points": 1, "items": ["svatojanska_rosa_velka", "svatojanska_rosa_velka"], "service": "personalize"}
   },
   "permonik_final": {
     "act": 4, "giver": "permonik", "main": true,

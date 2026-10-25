@@ -104,7 +104,7 @@ func _line_text(ln: Dictionary, who: String):
 	var own := "text_" + Game.ch.class_id
 	if ln.has(own):
 		return ln[own]
-	if who != "hero" and str(DB.classes.get(Game.ch.class_id, {}).get("gender", "m")) == "f":
+	if who != "hero" and str(DB.class_def(Game.ch.class_id).get("gender", "m")) == "f":
 		if ln.has("text_vedma") and ln.has("text_zbojnice") and str(ln.text_vedma) == str(ln.text_zbojnice):
 			return ln.text_vedma
 	return ln.get("text", "")
@@ -150,9 +150,13 @@ func _menu() -> void:
 		"smith":
 			buttons.add_child(UiTheme.button(L.t("trade"), func(): ui.open_vendor(npc), 220))
 			buttons.add_child(UiTheme.button(L.t({"cs": "Výheň", "en": "Forge"}), func(): ui.open_forge(), 220))
+			for kind in Forge.SERVICES:
+				if Game.flags.get(Forge.service_flag(kind), false):
+					buttons.add_child(UiTheme.button("★ " + L.t(Forge.SERVICES[kind].name), func(): ui.open_service(kind), 260))
 		"healer":
 			buttons.add_child(UiTheme.button(L.t("heal_me"), _heal, 220))
 			buttons.add_child(UiTheme.button(L.t("trade"), func(): ui.open_vendor(npc), 220))
+			buttons.add_child(UiTheme.button(L.t(UiService.REROLL.name), func(): ui.open_service("reroll"), 220))
 		"inn":
 			buttons.add_child(UiTheme.button(L.t("trade"), func(): ui.open_vendor(npc), 220))
 			buttons.add_child(UiTheme.button(L.t({"cs": "Kostky", "en": "Dice"}), func(): ui.open_vendor(npc, true), 220))
@@ -163,6 +167,8 @@ func _menu() -> void:
 			buttons.add_child(UiTheme.button(UiTheme.t("kronika"), func(): ui.open_kronika(), 220))
 	if npc_id == "prevoznik":
 		_ferry_buttons(ui)
+	if npc_id == "tremsinsky_muzicek":
+		_peddler_button(ui)
 	buttons.add_child(UiTheme.button(L.t("leave"), func(): ui.close_panel(self), 200))
 
 
@@ -179,6 +185,24 @@ func _ferry_buttons(ui: UiRoot) -> void:
 			Game.ch.inv.take(key, 1)
 			ui.close_panel(self)
 			Game.goto(4, fn, "start"), 360))
+
+
+# He shows his one thing from the mountain only to those who pay for the look.
+func _peddler_button(ui: UiRoot) -> void:
+	if Game.peddler_item() == null:
+		return
+	if Game.peddler_seen():
+		buttons.add_child(UiTheme.button(L.t({"cs": "Ukaž mi to znovu", "en": "Show it to me again"}), func(): ui.open_vendor(npc, false, true), 300))
+		return
+	var fee := Loot.peddler_fee(Game.ch.level)
+	buttons.add_child(UiTheme.button(L.t({"cs": "Co máš z hory? (%d grošů)", "en": "What has the mountain given you? (%d gold)"}) % fee, func():
+		if Game.ch.gold < fee:
+			_say(L.t({"cs": "Hm. Málo. Za málo nic.", "en": "Hm. Too little. Nothing for too little."}))
+			return
+		Game.ch.gold -= fee
+		Game.flags.peddler["seen"] = true
+		Sfx.play("gold", 0.7)
+		ui.open_vendor(npc, false, true), 420))
 
 
 func _heal() -> void:

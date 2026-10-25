@@ -148,6 +148,9 @@ func show_main_menu() -> void:
 func close_all() -> void:
 	_return_held()
 	identify_mode = false
+	if slides and Game.main:
+		Game.main.slide_queue.clear()
+		Game.main.slides_playing = false
 	for c in [left, right, modal, popup, screen, slides]:
 		_free(c)
 	left = null
@@ -264,13 +267,14 @@ func open_npc(npc: Npc) -> void:
 	_sync_pause()
 
 
-func open_vendor(npc: Npc, gamble := false) -> void:
+func open_vendor(npc: Npc, gamble := false, peddler := false) -> void:
 	if npc == null:
 		return
 	close_all()
 	var v := UiVendor.new()
 	v.npc = npc
 	v.gamble = gamble
+	v.peddler = peddler
 	left = v
 	_place(left, "left")
 	_open_inventory()
@@ -318,6 +322,16 @@ func open_waypoints() -> void:
 func open_forge() -> void:
 	close_all()
 	left = UiForge.new()
+	_place(left, "left")
+	_open_inventory()
+	_sync_pause()
+
+
+func open_service(kind: String) -> void:
+	close_all()
+	var s := UiService.new()
+	s.kind = kind
+	left = s
 	_place(left, "left")
 	_open_inventory()
 	_sync_pause()
@@ -384,6 +398,29 @@ func play_slides(items: Array, done: Callable) -> void:
 	_sync_pause()
 
 
+func play_cinema(film: String, done: Callable) -> void:
+	_free(slides)
+	var s := UiCinema.new()
+	s.film = film
+	s.done = done
+	slides = s
+	_place(slides, "full")
+	if Game.main and Game.main.fade:
+		var f: ColorRect = Game.main.fade
+		f.color.a = 0.0
+		f.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	get_tree().paused = Game.level != null
+	_sync_pause()
+
+
+func skip_slides() -> void:
+	if slides == null:
+		return
+	if Game.level == null and Game.main:
+		Game.main.slide_queue.clear()
+	slides.call("skip_all")
+
+
 func slides_finished(s: Control, done: Callable) -> void:
 	if slides == s:
 		slides = null
@@ -433,6 +470,7 @@ func vendor_panel() -> UiVendor:
 
 # ---------------------------------------------------------------- item handling
 func changed() -> void:
+	Game.note_found_all()
 	Game.ch.recalc()
 	Game.ch.changed.emit()
 
@@ -654,6 +692,13 @@ func _show_tip(tip: Dictionary, mp: Vector2) -> void:
 	var key := str(lines) + str(cmp)
 	if key != _tip_key:
 		_tip_key = key
+		if it and not is_nan(Game.ch.upgrade_score(it)):
+			var dl := Game.ch.delta_lines(it)
+			if not dl.is_empty():
+				lines = lines.duplicate()
+				lines.append([L.t({"cs": "Když si to nasadíš:", "en": "If you wear it:"}), UiTheme.FAINT])
+				for x in dl:
+					lines.append(["  " + x[0], Color("5fd068") if x[1] else UiTheme.RED])
 		_fill_tip(tip_box, lines, "")
 		if cmp:
 			_fill_tip(tip_cmp, cmp.tooltip(Game.ch), UiTheme.t("equipped"))
@@ -719,7 +764,7 @@ func _input(event: InputEvent) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.is_action("pause"):
 		if slides:
-			(slides as UiSlides).skip_all()
+			skip_slides()
 		elif screen:
 			if screen.has_method("on_escape"):
 				screen.call("on_escape")

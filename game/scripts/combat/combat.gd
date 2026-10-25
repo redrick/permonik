@@ -30,7 +30,7 @@ static func player_strike(player: Actor, target: Actor, pct := 100.0, opts := {}
 		return false
 	var d: Dictionary = Game.ch.d
 	var ar := (float(d.to_hit) + float(opts.get("to_hit", 0))) * (1.0 + float(opts.get("ar_pct", 0.0)) / 100.0)
-	var hc := hit_chance(Game.ch.level, target.mlvl, ar, float(target.armor))
+	var hc := hit_chance(Game.ch.level, target.mlvl, ar, float(target.armor), 0.2)
 	if not opts.get("always_hit", false) and randf() > hc:
 		player.level.miss_text(target.top_pos(), L.t({"cs": "vedle", "en": "miss"}))
 		Sfx.play_at("swing", player.global_position, 0.5)

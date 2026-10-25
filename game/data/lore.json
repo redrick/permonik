@@ -88,7 +88,7 @@
   "boss_permonik_obr": {
     "kind": "boss", "monster": "permonik_obr",
     "title": {"cs": "Permoník, pán žil", "en": "Permoník, Lord of the Veins"},
-    "text": {"cs": "„Já byl jen vrátný, havíři. Desátek jsem nosil dál. Dolů. Tomu, kdo spí pod Navem.“ Umřel smíchem. Nevrhal stín ani tehdy.", "en": "“I was only the doorkeeper, miner. I carried the tithe further. Down. To the one who sleeps beneath Nav.” He died laughing. Even then he cast no shadow."}
+    "text": {"cs": "„Já byl jen vrátný, havíři. Desátek jsem nosil dál. Dolů. Tomu, kdo spí pod Navem.“ Umíral a smál se. Nevrhal stín ani tehdy.", "en": "“I was only the doorkeeper, miner. I carried the tithe further. Down. To the one who sleeps beneath Nav.” He died laughing. Even then he cast no shadow."}
   },
 
   "bestiar_krysa": {"kind": "bestiar", "monster": "krysa",

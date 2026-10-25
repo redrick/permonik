@@ -1,13 +1,15 @@
 class_name Item
 extends RefCounted
 
-enum { NORMAL, MAGIC, UNIQUE, RARE, SET }
+enum { NORMAL, MAGIC, UNIQUE, RARE, SET, CRAFTED }
 
 const COL_NORMAL := Color("e8e2d4")
 const COL_MAGIC := Color("7f9bff")
 const COL_UNIQUE := Color("d6b25e")
 const COL_RARE := Color("efe06a")
 const COL_SET := Color("5fd068")
+const COL_CRAFTED := Color("f0a040")
+const COL_ETH := Color("a8c4e0")
 const COL_SOCKET := Color("a0a6ae")
 const COL_QUEST := Color("e98c3a")
 const COL_BAD := Color("e04b4b")
@@ -24,9 +26,15 @@ var mods: Array = []
 var affix_ids: Array = []      # rare: every prefix and suffix it rolled
 var rare_name: Array = []      # rare: [first word, second word] indices into rare_names.json
 var set_id := ""               # set piece id (sets.json)
+var craft := ""                # crafted: its recipe family (Forge.CRAFTS)
+var locked := -1               # re-enchanting: once one property was changed, only that one can be
+var rerolls := 0
+var eth := false               # ethereal (přízračný): stronger, half the durability, can't be repaired
 var sockets := 0
 var socketed: Array = []       # gem / letter items set into the sockets
 var word := ""                 # a finished word (words.json) when the letters spell one
+var personal := ""             # the hero's name the smith engraved on it
+var personal_g := "m"          # that hero's grammatical gender, for the Czech possessive
 var dmg := Vector2i.ZERO
 var armor := 0
 var dur := 0
@@ -51,6 +59,16 @@ static func create(id: String, level := 1) -> Item:
 	it.max_dur = int(b.get("durability", 0))
 	it.dur = it.max_dur
 	return it
+
+
+# D2 ethereal: half again the base damage or armour, half the durability.
+func make_ethereal() -> void:
+	eth = true
+	dmg = Vector2i(int(dmg.x * 1.5), int(dmg.y * 1.5))
+	armor = int(armor * 1.5)
+	if max_dur > 0:
+		max_dur = max_dur / 2 + 1
+		dur = mini(dur, max_dur)
 
 
 func base() -> Dictionary:
@@ -109,6 +127,8 @@ func color() -> Color:
 			return COL_RARE
 		SET:
 			return COL_SET
+		CRAFTED:
+			return COL_CRAFTED
 	if word != "":
 		return COL_UNIQUE
 	if sockets > 0:
@@ -121,12 +141,68 @@ func gender() -> String:
 
 
 func display_name() -> String:
+	var n := _plain_name()
+	if personal == "" or slot() == "gold":
+		return n
+	if L.lang != "cs":
+		return "%s's %s" % [personal, n]
+	var own := Item.possessive(personal, personal_g, name_gender())
+	if own == "":
+		return "%s – %s" % [n, personal]
+	if rarity in [NORMAL, MAGIC, RARE, CRAFTED] and word == "":
+		n = n.left(1).to_lower() + n.substr(1)
+	return "%s %s" % [own, n]
+
+
+# The gender of the noun the name stands on: a rare's first word, a unique's own noun, else the base's.
+func name_gender() -> String:
+	if rarity in [RARE, CRAFTED] and identified and rare_name.size() == 2:
+		var f: Array = DB.rare_names.get("first", [])
+		if int(rare_name[0]) < f.size():
+			return str(f[int(rare_name[0])].get("g", gender()))
+	if rarity == UNIQUE and identified:
+		return str(DB.uniques.get(unique_id, {}).get("gender", gender()))
+	return gender()
+
+
+# Czech possessive adjective from a first name: Ondra → Ondrův/Ondrova/Ondrovo, Hanka → Hančin/Hančina/Hančino.
+# "" when the name doesn't take the regular ending.
+static func possessive(nm: String, owner_g: String, noun_g: String) -> String:
+	var low := nm.to_lower()
+	var stem := ""
+	var ends: Array
+	if owner_g == "f":
+		ends = ["in", "ina", "ino"]
+		if low.ends_with("ie"):
+			stem = nm.left(-1)
+		elif low.ends_with("a") or low.ends_with("e"):
+			stem = nm.left(-1)
+			for pair in [["ch", "š"], ["k", "č"], ["h", "ž"], ["g", "ž"], ["r", "ř"]]:
+				if stem.to_lower().ends_with(pair[0]):
+					stem = stem.left(-pair[0].length()) + pair[1]
+					break
+	else:
+		ends = ["ův", "ova", "ovo"]
+		if low.ends_with("a") or low.ends_with("o"):
+			stem = nm.left(-1)
+		elif low in ["pavel", "karel"]:
+			stem = nm.left(-2) + "l"
+		elif low.ends_with("ek") and low.length() > 3:
+			stem = nm.left(-2) + "k"
+		elif not low.right(1) in ["e", "ě", "i", "í", "y", "ý", "u", "ů", "é", "á", "ó", "ú"]:
+			stem = nm
+	if stem == "":
+		return ""
+	return stem + str(ends[{"m": 0, "f": 1, "n": 2}.get(noun_g, 0)])
+
+
+func _plain_name() -> String:
 	if slot() == "gold":
 		return "%d %s" % [qty, L.t("gold")]
 	var bn := L.t(base().get("name", base_id))
 	if rarity == UNIQUE and identified:
 		return L.t(DB.uniques.get(unique_id, {}).get("name", bn))
-	if rarity == RARE and identified and rare_name.size() == 2:
+	if rarity in [RARE, CRAFTED] and identified and rare_name.size() == 2:
 		var f: Array = DB.rare_names.get("first", [])
 		var g: Array = DB.rare_names.get("second", [])
 		if int(rare_name[0]) < f.size() and int(rare_name[1]) < g.size():
@@ -153,6 +229,54 @@ static func _affix(group: String, id: String) -> Dictionary:
 		if a.get("id", "") == id:
 			return a
 	return {}
+
+
+# The rolled affixes in the order their mods sit in `mods`: [{"group", "id", "start", "count"}].
+# A crafted item's recipe properties come first and are not affixes.
+func affix_slots() -> Array:
+	var out := []
+	var at := 0
+	if rarity == MAGIC:
+		for pair in [["prefixes", prefix], ["suffixes", suffix]]:
+			if pair[1] != "":
+				var n: int = Item._affix(pair[0], pair[1]).get("mods", []).size()
+				out.append({"group": pair[0], "id": pair[1], "start": at, "count": n})
+				at += n
+	elif rarity == RARE or rarity == CRAFTED:
+		if rarity == CRAFTED:
+			at = Forge.CRAFTS.get(craft, {}).get("mods", []).size()
+		for id in affix_ids:
+			var g := "prefixes" if not Item._affix("prefixes", id).is_empty() else "suffixes"
+			var n: int = Item._affix(g, id).get("mods", []).size()
+			out.append({"group": g, "id": id, "start": at, "count": n})
+			at += n
+	return out
+
+
+# What each of `mods` could have rolled, as Vector2(min, max), null where it is fixed. Shown while Alt is held.
+func mod_ranges() -> Array:
+	var src := []
+	match rarity:
+		UNIQUE:
+			src = DB.uniques.get(unique_id, {}).get("mods", [])
+		SET:
+			src = DB.set_items.get(set_id, {}).get("mods", [])
+		MAGIC, RARE, CRAFTED:
+			if rarity == CRAFTED:
+				src = Forge.CRAFTS.get(craft, {}).get("mods", []).duplicate()
+			for sl in affix_slots():
+				src.append_array(Item._affix(sl.group, sl.id).get("mods", []))
+	var k := float(Loot.CHARM_SCALE.get(base_id, 1.0))
+	var out := []
+	for m in src:
+		if not m.has("min"):
+			out.append(null)
+			continue
+		var r := Vector2(float(m.min), float(m.get("max", m.min)))
+		if k < 1.0 and not str(m.stat).begins_with("tree_"):
+			r = Vector2(maxf(1.0, r.x * k) if r.x > 0 else r.x * k, maxf(1.0, r.y * k) if r.y > 0 else r.y * k)
+		out.append(Vector2(round(r.x), round(r.y)))
+	return out
 
 
 func stat_mods() -> Dictionary:
@@ -254,12 +378,16 @@ func broken() -> bool:
 
 func req() -> Dictionary:
 	var r: Dictionary = base().get("req", {}).duplicate()
+	if eth:
+		for k in ["sila", "obratnost"]:
+			if r.has(k):
+				r[k] = maxi(0, int(r[k]) - 10)
 	if rarity == UNIQUE:
 		var q := int(DB.uniques.get(unique_id, {}).get("qlvl", 0))
 		r["level"] = maxi(int(r.get("level", 0)), int(q * 0.8))
 	elif rarity == SET:
 		r["level"] = maxi(int(r.get("level", 0)), int(int(DB.set_items.get(set_id, {}).get("qlvl", 0)) * 0.8))
-	elif rarity == MAGIC or rarity == RARE:
+	elif rarity in [MAGIC, RARE, CRAFTED]:
 		var lv := 0
 		for id in [prefix, suffix] + affix_ids:
 			if id != "":
@@ -267,6 +395,8 @@ func req() -> Dictionary:
 				if a.is_empty():
 					a = _affix("suffixes", id)
 				lv = maxi(lv, int(int(a.get("qlvl", 0)) * 0.75))
+		if rarity == CRAFTED:
+			lv += 5
 		r["level"] = maxi(int(r.get("level", 0)), lv)
 	return r
 
@@ -277,7 +407,7 @@ func price() -> int:
 		p *= 2.0 + mods.size() * 1.5 + ilvl * 0.08
 	elif rarity == UNIQUE or rarity == SET:
 		p *= 6.0 + ilvl * 0.15
-	elif rarity == RARE:
+	elif rarity == RARE or rarity == CRAFTED:
 		p *= 3.0 + mods.size() * 1.8 + ilvl * 0.1
 	p *= 1.0 + sockets * 0.4
 	if max_dur > 0:
@@ -292,7 +422,7 @@ func sell_price() -> int:
 
 
 func repair_cost() -> int:
-	if max_dur <= 0 or dur >= max_dur:
+	if eth or max_dur <= 0 or dur >= max_dur:
 		return 0
 	return maxi(1, int(float(base().get("price", 10)) * 0.25 * (1.0 - float(dur) / max_dur) * (1 + rarity)))
 
@@ -313,6 +443,8 @@ func tooltip(ch = null) -> Array:
 	lines.append([display_name(), color()])
 	if rarity != NORMAL and identified and slot() != "gold":
 		lines.append([L.t(base().get("name", base_id)), COL_INFO])
+	if rarity == CRAFTED and Forge.CRAFTS.has(craft):
+		lines.append([L.t({"cs": "Ukováno ve výhni · %s", "en": "Forged · %s"}) % L.t(Forge.CRAFTS[craft].name), COL_CRAFTED])
 	var b := base()
 	if dmg != Vector2i.ZERO:
 		var r := damage_range()
@@ -351,11 +483,20 @@ func tooltip(ch = null) -> Array:
 		lines.append([L.t({"cs": "Pravým tlačítkem přečíst", "en": "Right-click to read"}), COL_INFO])
 	if max_dur > 0:
 		lines.append(["%s: %d / %d" % [L.t("durability"), dur, max_dur], COL_BAD if dur < max_dur / 5 else COL_INFO])
+	if eth:
+		lines.append([L.t({"cs": "Přízračné · nelze opravit", "en": "Ethereal · cannot be repaired"}), COL_ETH])
 	if rarity != NORMAL and not identified:
 		lines.append([L.t("unidentified"), COL_BAD])
 	elif rarity != NORMAL:
-		for m in mods:
-			lines.append([Item.mod_text(m.stat, m.value), COL_MAGIC])
+		var rng := mod_ranges() if Input.is_action_pressed("show_items") else []
+		for i in mods.size():
+			var m: Dictionary = mods[i]
+			var t := Item.mod_text(m.stat, m.value)
+			if i < rng.size() and rng[i] != null and rng[i].x != rng[i].y:
+				t += "  [%d–%d]" % [int(rng[i].x), int(rng[i].y)]
+			lines.append([t, COL_MAGIC])
+		if rng.is_empty() and identified and mod_ranges().any(func(r): return r != null and r.x != r.y):
+			lines.append([L.t({"cs": "Rozsahy hodnot: podrž Alt", "en": "Value ranges: hold Alt"}) if not OS.has_feature("mobile") else L.t({"cs": "Rozsahy hodnot: tlačítko popisků věcí", "en": "Value ranges: the item-labels button"}), Color(0.5, 0.48, 0.44)])
 	if rarity == SET and identified:
 		var si: Dictionary = DB.set_items.get(set_id, {})
 		var sid := str(si.get("set", ""))
@@ -402,7 +543,7 @@ func tooltip(ch = null) -> Array:
 	var only := str(b.get("class", ""))
 	if only != "":
 		var ok_cls: bool = ch == null or ch.class_id == only
-		lines.append([L.t({"cs": "Jen pro: %s", "en": "%s only"}) % L.t(DB.classes.get(only, {}).get("name", only)), COL_NORMAL if ok_cls else COL_BAD])
+		lines.append([L.t({"cs": "Jen pro: %s", "en": "%s only"}) % L.t(DB.class_def(only).get("name", only)), COL_NORMAL if ok_cls else COL_BAD])
 	var rq := req()
 	var parts := []
 	for k in ["level", "sila", "obratnost", "magie"]:
@@ -425,13 +566,13 @@ func tooltip(ch = null) -> Array:
 static func mod_text(stat: String, value: float) -> String:
 	var v := int(round(value))
 	if stat.begins_with("class_"):
-		var cn := L.t(DB.classes.get(stat.substr(6), {}).get("name", stat))
+		var cn := L.t(DB.class_def(stat.substr(6)).get("name", stat))
 		return L.t({"cs": "+%d ke všem dovednostem (%s)", "en": "+%d to %s skills"}) % [v, cn]
 	if stat.begins_with("tree_"):
 		var tid := stat.substr(5)
 		var tn := tid
-		for cid in DB.classes:
-			for t in DB.classes[cid].get("trees", []):
+		for cid in DB.all_classes:
+			for t in DB.all_classes[cid].get("trees", []):
 				if t.id == tid:
 					tn = L.t(t.name)
 		return L.t({"cs": "+%d k dovednostem: %s", "en": "+%d to %s skills"}) % [v, tn]
@@ -500,11 +641,19 @@ func to_dict() -> Dictionary:
 		out["rn"] = rare_name
 	if set_id != "":
 		out["set"] = set_id
+	if craft != "":
+		out["cf"] = craft
+	if eth:
+		out["e"] = true
+	if locked >= 0:
+		out["lk"] = [locked, rerolls]
 	if sockets > 0:
 		out["so"] = sockets
 		out["sg"] = socketed.map(func(g): return g.to_dict())
 	if word != "":
 		out["w"] = word
+	if personal != "":
+		out["pn"] = [personal, personal_g]
 	return out
 
 
@@ -528,8 +677,18 @@ static func from_dict(d: Dictionary) -> Item:
 	it.affix_ids = d.get("ax", [])
 	it.rare_name = d.get("rn", [])
 	it.set_id = d.get("set", "")
+	it.craft = d.get("cf", "")
+	it.eth = bool(d.get("e", false))
+	var lk: Array = d.get("lk", [])
+	if lk.size() == 2:
+		it.locked = int(lk[0])
+		it.rerolls = int(lk[1])
 	it.sockets = int(d.get("so", 0))
 	for g in d.get("sg", []):
 		it.socketed.append(Item.from_dict(g))
 	it.word = d.get("w", "")
+	var pn: Array = d.get("pn", [])
+	if pn.size() == 2:
+		it.personal = str(pn[0])
+		it.personal_g = str(pn[1])
 	return it

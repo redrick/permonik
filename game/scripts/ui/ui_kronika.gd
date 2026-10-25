@@ -1,7 +1,7 @@
 class_name UiKronika
 extends UiPanel
 
-const TABS := ["story", "book", "creature", "place", "person", "god", "item", "term"]
+const TABS := ["story", "book", "creature", "place", "person", "god", "item", "term", "grail"]
 
 var tab := "story"
 var tab_row: HBoxContainer
@@ -114,6 +114,13 @@ func _visible(key: String) -> bool:
 func _entries(t: String) -> Array:
 	if t == "story":
 		return _story()
+	if t == "grail":
+		var gs := ["grail:u"]
+		for sid in DB.sets:
+			if DB.class_released(str(DB.sets[sid].get("class", ""))) or Game.known.has("grail:s:" + sid):
+				gs.append("grail:s:" + sid)
+		gs.append("grail:w")
+		return gs
 	if t == "book":
 		var bs := []
 		for bid in DB.books:
@@ -162,7 +169,7 @@ func _open_tab(t: String) -> void:
 		b.focus_mode = Control.FOCUS_NONE
 		b.add_theme_font_override("font", UiTheme.small)
 		b.add_theme_font_size_override("font_size", 20)
-		b.custom_minimum_size = Vector2(108, 36)
+		b.custom_minimum_size = Vector2(100, 36)
 		if any_new:
 			b.add_theme_color_override("font_color", UiTheme.GOLD)
 		var tid: String = tt
@@ -183,6 +190,14 @@ func _fill() -> void:
 			continue
 		shown.append(k)
 	count_lbl.text = "" if tab == "story" else UiTheme.t("codex_count", {"v": shown.size(), "n": all.size()})
+	if tab == "grail":
+		var have := 0
+		var total := 0
+		for k in all:
+			var ks := _grail_keys(k)
+			total += ks.size()
+			have += ks.filter(func(x): return Game.known.has(x)).size()
+		count_lbl.text = L.t({"cs": "Nalezeno %d z %d", "en": "Found %d of %d"}) % [have, total]
 	var first := ""
 	for k in shown:
 		var b := Button.new()
@@ -208,6 +223,17 @@ func _fill() -> void:
 
 
 func _title(key: String) -> String:
+	if key.begins_with("grail:"):
+		var ks := _grail_keys(key)
+		var nm := ""
+		match key.get_slice(":", 1):
+			"u":
+				nm = L.t({"cs": "Jedinečné věci", "en": "Unique items"})
+			"w":
+				nm = L.t({"cs": "Slova", "en": "Words"})
+			_:
+				nm = L.t(DB.sets.get(key.get_slice(":", 2), {}).get("name", key))
+		return "%s  %d/%d" % [nm, ks.filter(func(x): return Game.known.has(x)).size(), ks.size()]
 	if key.begins_with("book:"):
 		return L.t(DB.books.get(key.substr(5), {}).get("title", key))
 	if key.begins_with("codex:"):
@@ -218,6 +244,9 @@ func _title(key: String) -> String:
 func _show(key: String) -> void:
 	current = key
 	Sfx.play("ui_click", 0.4, 0.0)
+	if key.begins_with("grail:"):
+		_show_grail(key)
+		return
 	if key.begins_with("book:"):
 		var bk: Dictionary = DB.books.get(key.substr(5), {})
 		var first: Array = bk.get("pages", {}).get(L.lang, [""])
@@ -309,6 +338,65 @@ func _page(title: String, blocks: Array, see := [], pics := {}) -> void:
 			b.pressed.connect(func(): _jump(eid))
 			flow.add_child(b)
 	text_scroll.scroll_vertical = 0
+
+
+# ---------------------------------------------------------------- the collection
+# The "known" keys a collection page counts (Game.note_found writes them).
+func _grail_keys(key: String) -> Array:
+	match key.get_slice(":", 1):
+		"u":
+			return DB.uniques.keys().map(func(u): return "grail:u:" + u)
+		"w":
+			return DB.words.keys().map(func(w): return "grail:w:" + w)
+	return DB.sets.get(key.get_slice(":", 2), {}).get("pieces", []).map(func(p): return "grail:s:" + p)
+
+
+const WORD_BASE := {"weapon": "krumpac", "armor": "kapuce", "body": "kozeny_kabatec", "shield": "stit"}
+
+
+func _grail_spec(gk: String) -> Dictionary:
+	var kind := gk.get_slice(":", 1)
+	var id := gk.get_slice(":", 2)
+	var found := Game.known.has(gk)
+	var it: Item = null
+	match kind:
+		"u":
+			it = Loot.unique_item(id, 1)
+		"s":
+			it = Loot.set_item(id, 1)
+		"w":
+			var wd: Dictionary = DB.words.get(id, {})
+			it = Item.create(WORD_BASE.get(str(wd.get("bases", ["weapon"])[0]), "krumpac"), 1)
+			it.sockets = wd.get("letters", []).size()
+			it.word = id
+	if it == null:
+		return {}
+	var lines: Array = it.tooltip(null)
+	if kind == "w":
+		lines[0] = ["%s  %s" % [it.glyphs(), L.t(DB.words[id].get("name", id)).to_upper()], Item.COL_UNIQUE]
+		lines.insert(1, [L.t({"cs": "Písmena: %s", "en": "Letters: %s"}) % " ".join(DB.words[id].get("letters", [])), Item.COL_INFO])
+	if not found:
+		lines = [[lines[0][0], Item.COL_INFO], [L.t({"cs": "Zatím nenalezeno", "en": "Not found yet"}), UiTheme.DIM]]
+	return {"item": it, "n": 1, "lines": lines, "dim": not found}
+
+
+func _show_grail(key: String) -> void:
+	var blocks := []
+	var kind := key.get_slice(":", 1)
+	if kind == "s":
+		var sd: Dictionary = DB.sets.get(key.get_slice(":", 2), {})
+		if sd.has("flavor"):
+			blocks.append(["„" + L.t(sd.flavor) + "“", UiTheme.DIM])
+	elif kind == "w":
+		blocks.append([L.t({"cs": "Slovo zazní, když písmena v zásuvkách obyčejné věci leží přesně v pořadí.", "en": "A word speaks when the letters in a plain item's sockets lie in exactly the right order."}), UiTheme.DIM])
+	else:
+		blocks.append([L.t({"cs": "Sbírka platí pro všechny obtížnosti.", "en": "The collection counts across all difficulties."}), UiTheme.DIM])
+	var icons := []
+	for gk in _grail_keys(key):
+		var spec := _grail_spec(gk)
+		if not spec.is_empty():
+			icons.append(spec)
+	_page(_title(key), blocks, [], {"icons": icons})
 
 
 func _jump(eid: String) -> void:

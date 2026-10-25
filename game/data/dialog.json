@@ -336,7 +336,7 @@
        "text_havir": {"cs": "Tak ji napiš, Kosmo. A napiš do ní padesát jmen.", "en": "Then write it, Kosmas. And put fifty names in it."},
        "text_zbojnice": {"cs": "Napiš ji. A mě tam dej hezčí, než jsem.", "en": "Write it. And make me prettier than I am."},
        "text_vedma": {"cs": "Napiš ji. Já už žádné sny nemám. Zvon přestal tonout.", "en": "Write it. I have no dreams any more. The bell has stopped drowning."}},
-      {"who": "kosmas", "text": {"cs": "Napíšu šestou knihu. Nebude v ní žádný král a žádná smlouva. Jen jméno toho, kdo sešel dolů s cizím kahanem a vrátil se bez něj. Převozník říká, že teď nás převeze. Nic neneseme.", "en": "I shall write the sixth book. There will be no king in it, and no covenant. Only the name of the one who went down with another's lamp and came back without it. The ferryman says he will take us across now. We carry nothing."}}
+      {"who": "kosmas", "text": {"cs": "Napíšu šestou knihu. Nebude v ní žádný král ani žádná smlouva. Jen jméno toho, kdo sešel dolů s cizím kahanem a vrátil se bez něj. Převozník říká, že teď nás převeze. Nic neneseme.", "en": "I shall write the sixth book. There will be no king in it, and no covenant. Only the name of the one who went down with another's lamp and came back without it. The ferryman says he will take us across now. We carry nothing."}}
      ],
      "do": ["quest_done:permonik_final", "flag:kronika_5", "slide:epilogue", "slide:dlc_tease"]},
     {"if": ["act:4", "quest:kostejova_smrt:step=kronika"],
@@ -352,7 +352,7 @@
      "do": ["take:strana_kroniky", "flag:kronika_4", "quest_step:kostejova_smrt:report"]},
     {"if": ["act:4", "!flag:kosmas_met_4"],
      "lines": [
-      {"who": "kosmas", "text": {"cs": "Ano, jsem tu. Skočil jsem za tebou, než se země zavřela. Kronikář, který nebyl u konce, píše jen pověsti.", "en": "Yes, I'm here. I jumped after you before the earth closed. A chronicler who wasn't there at the end writes only legends."}},
+      {"who": "kosmas", "text": {"cs": "Ano, jsem tu. Proklouzl jsem za tebou, než se země zavřela. Říkal jsem ti to: kronikář musí být u konce.", "en": "Yes, I'm here. I slipped through after you before the earth closed. I told you: a chronicler has to be there at the end."}},
       {"who": "kosmas", "text": {"cs": "A víš, co je zvláštní? Tady dole je mi lépe než nahoře. Mrtví poslouchají, když jim čtu.", "en": "And do you know what's strange? I feel better down here than I did above. The dead listen when I read to them."}}
      ],
      "do": ["flag:kosmas_met_4"]},

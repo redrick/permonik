@@ -13,11 +13,19 @@ var _pad_scan := 0.0
 var action_t := 0.0
 var action_hit_at := 0.0
 var action_cb: Callable
+var action_cancel := false
+# A skill pressed while busy (mid-swing, staggered, cooldown nearly over) fires as soon as the hero is free.
+var queued := {}
+var held_skill := ""
+var held_key := ""
+const QUEUE_TIME := 0.5
 var cooldowns := {}
 var step_t := 0.0
 var regen_acc := 0.0
 var summons: Array = []
 var invuln := 0.0
+# After a stagger the hero can't be staggered again for a moment, so a pack can't lock them in place.
+var stagger_guard := 0.0
 var hover_target = null
 var light_mult := 1.0
 
@@ -30,7 +38,7 @@ func setup(lv: Node) -> void:
 	radius = 15.0
 	stride_len = 40.0
 	collision_layer = 2
-	collision_mask = 1 | 4 | 8
+	collision_mask = 1 | 4
 	var cid := Game.ch.class_id
 	look_key = HeroLook.key(cid, HeroLook.gear_of(Game.ch))
 	var textures := HeroLook.textures(cid, HeroLook.gear_of(Game.ch))
@@ -155,6 +163,8 @@ func _unhandled_input(event: InputEvent) -> void:
 				get_viewport().set_input_as_handled()
 		elif event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 			use_skill(Game.ch.rmb)
+			held_skill = Game.ch.rmb
+			held_key = ""
 			get_viewport().set_input_as_handled()
 	elif event is InputEventKey and event.pressed and not event.echo:
 		for i in 8:
@@ -165,6 +175,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		for i in 4:
 			if event.is_action(keys[i]) and Game.ch.hotkeys[i] != "":
 				use_skill(Game.ch.hotkeys[i])
+				held_skill = Game.ch.hotkeys[i]
+				held_key = keys[i]
 				return
 		if event.is_action("town_portal"):
 			_use_portal_scroll()
@@ -197,9 +209,10 @@ func _in_attack_range(t: Node2D) -> bool:
 	return global_position.distance_to(t.global_position) <= 62.0 + (t.radius if t is Actor else 20.0)
 
 
-func _ai(delta: float) -> void:
+func _tick(delta: float) -> void:
 	var ch := Game.ch
 	invuln = maxf(0.0, invuln - delta)
+	stagger_guard = maxf(0.0, stagger_guard - delta)
 	ch.tick_buffs(delta)
 	if ch.active_form() != form:
 		form = ch.active_form()
@@ -220,6 +233,20 @@ func _ai(delta: float) -> void:
 	for e in ["fire", "lightning", "cold", "poison"]:
 		resist[e] = int(ch.d.get("res_" + e, 0)) - curse
 	_update_lamp()
+	# the press is kept while the hero is busy (up to a cap), and for a short moment once they're free
+	if not queued.is_empty():
+		queued.life -= delta
+		if action_t <= 0.0 and can_act():
+			queued.t -= delta
+		if queued.t <= 0.0 or queued.life <= 0.0:
+			queued = {}
+
+
+func _ai(delta: float) -> void:
+	var ch := Game.ch
+	# a basic swing that has already landed gives way to a skill
+	if action_t > 0.0 and action_cancel and not action_cb.is_valid() and not queued.is_empty() and queued.id != "utok":
+		action_t = 0.0
 	if action_t > 0.0:
 		var prev := action_t
 		swing_speed = 1.0 if not status.has("chill") else 1.0 / 1.4
@@ -239,12 +266,29 @@ func _ai(delta: float) -> void:
 	if _gold_t <= 0.0:
 		_gold_t = 0.15
 		level.collect_gold_near(global_position, 56.0)
+	if queued.is_empty():
+		_repeat_held()
+	if not queued.is_empty() and not cooldowns.has(queued.id):
+		var q := queued
+		queued = {}
+		var at: Vector2 = q.at
+		if q.node and is_instance_valid(q.node) and not q.node.dead:
+			at = q.node.center_pos()
+		_fire_skill(q.id, at)
+		if action_t > 0.0:
+			velocity = Vector2.ZERO
+			moving = false
+			return
+		# nothing started (no mana, nobody in reach): a held key tries again a little later
+		_repeat_wait = 0.4
 	if lmb_down and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		lmb_down = false
 	var spd := 210.0 * (1.0 + float(ch.d.get("move_speed", 0.0)) / 100.0) * speed_mult()
 	match intent.get("type", ""):
 		"move":
-			if lmb_down and int(anim_t * 10.0) % 2 == 0:
+			_hold_t -= delta
+			if lmb_down and _hold_t <= 0.0:
+				_hold_t = 0.12
 				var m := mouse_world()
 				if m.distance_to(global_position) > 24 and (path.is_empty() or path.back().distance_to(m) > 40):
 					set_path_to(m)
@@ -259,14 +303,25 @@ func _ai(delta: float) -> void:
 				intent.pos = mouse_world()
 		"monster":
 			var t: Actor = intent.node if is_instance_valid(intent.node) else null
+			if (t == null or t.dead) and lmb_down:
+				# still holding after a kill: carry on with whatever is under the cursor
+				var pk = level.pick_at(mouse_world())
+				t = pk.node if pk and pk.type == "monster" else null
+				intent = {"type": "monster", "node": t} if t else {"type": "_done"}
 			if t == null or t.dead:
-				intent = {}
+				if intent.get("type", "") != "_done":
+					intent = {}
 				velocity = Vector2.ZERO
 				moving = false
 				return
 			if _in_attack_range(t):
 				path.clear()
-				basic_attack(t, t.global_position)
+				if intent.has("skill"):
+					var sid: String = intent.skill
+					intent.erase("skill")
+					_fire_skill(sid, t.center_pos())
+				else:
+					basic_attack(t, t.global_position)
 				if not _held():
 					intent = {"type": "_done"}
 			else:
@@ -311,6 +366,14 @@ func _ai(delta: float) -> void:
 			moving = false
 	if velocity.length() > 1.0:
 		move_dir = velocity.normalized()
+	# pushing into a corner or a body without getting anywhere: find the way again
+	if moving and not path.is_empty() and get_real_velocity().length() < 25.0:
+		_stuck += delta
+		if _stuck > 0.3:
+			_stuck = 0.0
+			set_path_to(path.back())
+	else:
+		_stuck = 0.0
 	if moving:
 		step_t -= delta
 		if step_t <= 0.0:
@@ -327,6 +390,9 @@ func _step_sfx() -> String:
 
 
 var _repath := 0.0
+var _hold_t := 0.0
+var _stuck := 0.0
+var _repeat_wait := 0.0
 var _gold_t := 0.0
 
 
@@ -338,6 +404,7 @@ func repath_soon(target: Vector2) -> void:
 
 
 func start_action(pose_name: String, duration: float, hit_frac: float, cb: Callable, style := "") -> void:
+	action_cancel = false
 	action_t = duration
 	action_hit_at = duration * (1.0 - hit_frac)
 	action_cb = cb
@@ -354,6 +421,7 @@ func basic_attack(target: Actor, pos: Vector2) -> void:
 	var dur := 1.0 / float(Game.ch.d.get("aps", 1.2))
 	if w and w.is_ranged():
 		start_action("attack", dur, 0.5, func(): Skills.fire_weapon(self, pos, 100.0), "shoot")
+		action_cancel = true
 		return
 	start_action("attack", dur, 0.55, func():
 		Sfx.play_at("swing_heavy" if dur > 0.85 else "swing_light", global_position, 0.6)
@@ -363,16 +431,48 @@ func basic_attack(target: Actor, pos: Vector2) -> void:
 			var hits := Combat.targets_in_cone(level, global_position, (pos - global_position).normalized(), 80.0, 70.0, 1)
 			if hits.size() > 0:
 				Combat.player_strike(self, hits[0]))
+	action_cancel = true
 
 
 func use_skill(id: String, at := Vector2.INF) -> void:
-	if id == "" or action_t > 0.0 or not can_act():
+	if id == "" or dead:
 		return
 	if at == Vector2.INF:
 		at = mouse_world()
+	if action_t > 0.0 and action_cancel and not action_cb.is_valid() and id != "utok" and can_act():
+		action_t = 0.0
+	if action_t > 0.0 or not can_act() or float(cooldowns.get(id, 0.0)) > 0.0:
+		if float(cooldowns.get(id, 0.0)) <= QUEUE_TIME:
+			var pick = level.pick_at(at)
+			queued = {"id": id, "at": at, "node": pick.node if pick and pick.type == "monster" else null, "t": QUEUE_TIME, "life": 1.5}
+		return
+	queued = {}
+	_fire_skill(id, at)
+
+
+# Holding the right button or a skill key keeps using the skill, at the cursor.
+func _repeat_held() -> void:
+	_repeat_wait -= get_physics_process_delta_time()
+	if held_skill == "" or _repeat_wait > 0.0:
+		return
+	var still := Input.is_action_pressed(held_key) if held_key != "" else Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
+	if not still:
+		held_skill = ""
+		return
+	if intent.has("skill") or float(cooldowns.get(held_skill, 0.0)) > QUEUE_TIME:
+		return
+	queued = {"id": held_skill, "at": mouse_world(), "node": null, "t": QUEUE_TIME, "life": 1.5}
+
+
+func _fire_skill(id: String, at: Vector2) -> void:
 	if id == "utok":
 		var pick = level.pick_at(at)
-		basic_attack(pick.node if pick and pick.type == "monster" else null, at)
+		var t: Actor = pick.node if pick and pick.type == "monster" else null
+		if t and not _in_attack_range(t):
+			intent = {"type": "monster", "node": t}
+			set_path_to(t.global_position)
+			return
+		basic_attack(t, at)
 		return
 	Skills.use(self, id, at)
 
@@ -407,7 +507,7 @@ func nearest_interactable(reach := 240.0) -> Dictionary:
 	var bd := reach
 	for pair in [["npc", level.npcs], ["item", level.ground_items], ["prop", level.props]]:
 		for n in pair[1]:
-			if not is_instance_valid(n) or (pair[0] == "prop" and (n.interact == "" or n.used)):
+			if not is_instance_valid(n) or (pair[0] == "prop" and (n.interact == "" or n.used)) or (pair[0] == "item" and not n.visible):
 				continue
 			var d: float = n.global_position.distance_to(global_position)
 			if d < bd:
@@ -571,8 +671,14 @@ func hit_recovery_time() -> float:
 	return 0.4 / (1.0 + float(Game.ch.d.get("hit_recovery", 0.0)) / 100.0)
 
 
+func can_stagger() -> bool:
+	return stagger_guard <= 0.0
+
+
 # A staggering blow breaks off the swing or spell in progress, as in D2.
 func _on_hit_recover() -> void:
+	stagger_guard = stun_t + 0.8
 	action_t = 0.0
 	action_cb = Callable()
+	action_cancel = false
 	set_pose("hit", stun_t)

@@ -64,7 +64,7 @@ func setup(lv: Node) -> void:
 	radius = 14.0
 	stride_len = 40.0
 	collision_layer = 2
-	collision_mask = 1 | 4 | 8
+	collision_mask = 1 | 4
 	var m: Dictionary = Game.ch.merc
 	kind = str(m.type)
 	def = DB.hirelings.get(kind, {})

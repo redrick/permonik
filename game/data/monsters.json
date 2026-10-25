@@ -356,7 +356,7 @@
     "lines": {
       "aggro": {"cs": "Voda. Kámen. Oheň. Smrt. Všechno mi to vrátilo tvoje světlo.", "en": "Water. Stone. Fire. Death. Your light gave it all back to me."},
       "half": {"cs": "Desátek, havíři. Každá desátá rána je moje. Každý desátý kahan. Každé desáté srdce.", "en": "The tithe, miner. Every tenth blow is mine. Every tenth lamp. Every tenth heart."},
-      "death": {"cs": "Já byl jen vrátný, havíři. Desátek jsem nosil dál. Dolů. Tomu, kdo spí pod Navem.", "en": "I was only the gatekeeper, miner. I carried the tithe on. Down. To the one who sleeps beneath Nav."}
+      "death": {"cs": "Já byl jen vrátný, havíři. Desátek jsem nosil dál. Dolů. Tomu, kdo spí pod Navem.", "en": "I was only the doorkeeper, miner. I carried the tithe on. Down. To the one who sleeps beneath Nav."}
     },
     "drops": ["zdar_buh_kahan", "karbidka_svatobarborska"]
   },

@@ -29,12 +29,12 @@
     "mods": [{"stat": "light_radius", "min": 1, "max": 1}, {"stat": "armor_pct", "min": 40, "max": 50}, {"stat": "res_fire", "min": 15, "max": 20}, {"stat": "hp", "min": 10, "max": 15}],
     "flavor": {"cs": "Svatá Barbora chrání havíře před náhlou smrtí. Hora ji o to nikdy nežádala.", "en": "Saint Barbara guards miners against sudden death. The mountain never asked her to."}
   },
-  "hastrmanuv_hrnek": {
+  "hastrmanuv_hrnek": {"gender": "m", 
     "name": {"cs": "Hastrmanův hrnek", "en": "Hastrman's Teacup"}, "base": "kaptorga", "qlvl": 10,
     "mods": [{"stat": "mana", "min": 20, "max": 30}, {"stat": "res_cold", "min": 25, "max": 30}, {"stat": "mana_steal", "min": 3, "max": 5}, {"stat": "hp_regen", "min": 2, "max": 3}],
     "flavor": {"cs": "Vodník v něm choval dušičku, dokud mu ji nevzali. Na dně je pořád trochu vlhko a někdy z něj kape, i když nic neneseš.", "en": "The Vodník kept a soul in it until it was taken from him. The bottom is always a little damp, and sometimes it drips, though you carry nothing."}
   },
-  "srdce_zvonu_cep": {
+  "srdce_zvonu_cep": {"gender": "n", 
     "name": {"cs": "Srdce zvonu", "en": "Heart of the Bell"}, "base": "cep", "qlvl": 10,
     "mods": [{"stat": "dmg_pct", "min": 60, "max": 80}, {"stat": "to_hit", "min": 30, "max": 50}, {"stat": "res_all", "min": 10, "max": 10}, {"stat": "light_radius", "min": 1, "max": 1}],
     "flavor": {"cs": "Ukovali ho ze srdce zvonu, který už jednou zmlkl. Kam udeří, tam je slyšet klekání — a všechno, co se bojí soumraku, couvne.", "en": "Forged from the clapper of a bell that once fell silent. Where it strikes, the evening bell is heard — and everything that fears the dusk steps back."}
@@ -49,7 +49,7 @@
     "mods": [{"stat": "hp", "min": 20, "max": 30}, {"stat": "armor_pct", "min": 40, "max": 60}, {"stat": "res_poison", "min": 20, "max": 25}, {"stat": "life_steal", "min": 3, "max": 3}],
     "flavor": {"cs": "Koruna z lebek sedleckých mrtvých. Každá si pamatuje své jméno a kdo ji nosí, slyší je všechna najednou.", "en": "A crown of skulls from the dead of Sedlec. Each remembers its own name, and whoever wears it hears them all at once."}
   },
-  "semikova_podkova": {
+  "semikova_podkova": {"gender": "f", 
     "name": {"cs": "Šemíkova podkova", "en": "Šemík's Horseshoe"}, "base": "prsten", "qlvl": 12,
     "mods": [{"stat": "move_speed", "min": 10, "max": 15}, {"stat": "obratnost", "min": 5, "max": 8}, {"stat": "attack_speed", "min": 10, "max": 10}],
     "flavor": {"cs": "Když Šemík skákal z vyšehradské skály, ztratil podkovu. Kdo ji nosí, ten doskočí — ale za cenu, kterou zaplatil kůň.", "en": "When Šemík leapt from the Vyšehrad rock, he lost a shoe. Whoever wears it lands the leap — at the price the horse paid."}
@@ -104,7 +104,7 @@
     "mods": [{"stat": "armor_pct", "min": 70, "max": 90}, {"stat": "move_speed", "min": 10, "max": 10}, {"stat": "obratnost", "min": 8, "max": 12}, {"stat": "res_lightning", "min": 20, "max": 25}],
     "flavor": {"cs": "Spletli ji z kopřiv pro bratry zakleté v krkavce. Na jednom rukávu chybí kroužky — ten nestihli.", "en": "Woven from nettles for brothers cursed into ravens. One sleeve is missing its rings — there wasn't time."}
   },
-  "baziliskovo_oko": {
+  "baziliskovo_oko": {"gender": "n", 
     "name": {"cs": "Baziliškovo oko", "en": "The Basilisk's Eye"}, "base": "prsten", "qlvl": 20,
     "mods": [{"stat": "crit", "min": 6, "max": 8}, {"stat": "to_hit", "min": 60, "max": 90}, {"stat": "dmg_reduce", "min": 3, "max": 4}, {"stat": "res_poison", "min": 25, "max": 30}],
     "flavor": {"cs": "Oko, které zabíjelo pohledem, je teď zavřené. Většinou.", "en": "The eye that killed with a look is closed now. Mostly."}
@@ -159,7 +159,7 @@
     "mods": [{"stat": "dmg_pct", "min": 120, "max": 150}, {"stat": "attack_speed", "min": 20, "max": 20}, {"stat": "obratnost", "min": 15, "max": 20}, {"stat": "life_steal", "min": 4, "max": 5}],
     "flavor": {"cs": "Poznáš ji podle toho, že sama skáče do ruky. Kdo ji drží, nemá strach z pánů ani z hor.", "en": "You know it because it leaps into your hand by itself. Whoever holds it fears neither lords nor mountains."}
   },
-  "kostejova_jehla_unique": {
+  "kostejova_jehla_unique": {"gender": "f", 
     "name": {"cs": "Kostějova jehla", "en": "Koschei's Needle"}, "base": "nuz", "qlvl": 32,
     "mods": [{"stat": "crit", "min": 15, "max": 20}, {"stat": "cold_dmg", "min": 20, "max": 35}, {"stat": "life_steal", "min": 6, "max": 8}, {"stat": "obratnost", "min": 12, "max": 15}],
     "flavor": {"cs": "Kostějova smrt, zlomená vedví. Hrot je pořád dost ostrý, aby našel cizí.", "en": "Koschei's death, snapped in two. The point is still sharp enough to find someone else's."}
@@ -204,7 +204,7 @@
     "mods": [{"stat": "skills", "min": 1, "max": 1}, {"stat": "res_cold", "min": 35, "max": 40}, {"stat": "mana", "min": 40, "max": 60}, {"stat": "cold_dmg", "min": 15, "max": 25}],
     "flavor": {"cs": "Každé jaro ji topí v řece a každý podzim se vrací. Tahle lunice je studená i u srdce.", "en": "Every spring they drown her in the river, and every autumn she comes back. This lunula is cold even against the heart."}
   },
-  "stribrna_zila": {
+  "stribrna_zila": {"gender": "f", 
     "name": {"cs": "Stříbrná žíla", "en": "The Silver Vein"}, "base": "prsten_b", "qlvl": 50,
     "mods": [{"stat": "vse_staty", "min": 5, "max": 7}, {"stat": "gold_find", "min": 50, "max": 70}, {"stat": "magic_find", "min": 20, "max": 25}],
     "flavor": {"cs": "Hora dá stříbro tomu, kdo ví, kde kopat. A vezme si desátek od toho, kdo neví, kdy přestat.", "en": "The mountain gives silver to whoever knows where to dig. And takes its tithe from whoever doesn't know when to stop."}
@@ -229,7 +229,7 @@
     "mods": [{"stat": "lightning_dmg", "min": 60, "max": 100}, {"stat": "dmg_pct", "min": 150, "max": 200}, {"stat": "attack_speed", "min": 20, "max": 20}, {"stat": "res_lightning", "min": 25, "max": 30}],
     "flavor": {"cs": "Hromovládce ji hodil po hadovi, který se schoval pod kořeny světa. Netrefil a sekera padala sedm dní a sedm nocí.", "en": "The Thunderer hurled it at the serpent hiding beneath the roots of the world. He missed, and the axe fell for seven days and seven nights."}
   },
-  "zila_oslu": {
+  "zila_oslu": {"gender": "f", 
     "name": {"cs": "Žíla Oslu", "en": "Vein of the Osel"}, "base": "krumpac_hlubinny", "qlvl": 75,
     "mods": [{"stat": "dmg_pct", "min": 200, "max": 250}, {"stat": "sila", "min": 20, "max": 25}, {"stat": "crit", "min": 10, "max": 12}, {"stat": "hp_pct", "min": 10, "max": 10}, {"stat": "light_radius", "min": 1, "max": 1}],
     "flavor": {"cs": "Ukovaný ze stříbra, které se z Oslu nikdy nevytěžilo. Kope jen dolů a nikdy se neotupí.", "en": "Forged from silver that was never brought up out of the Osel. It digs only downward, and it never dulls."}

@@ -10,7 +10,12 @@ func _arg(k: String, d: String) -> String:
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	await get_tree().create_timer(float(_arg("--wait", "3"))).timeout
+	var wait := float(_arg("--wait", "3"))
+	if args.has("--lvl") or args.has("--near-boss"):
+		await get_tree().create_timer(0.5).timeout
+		wait -= 0.5
+		_hero(int(_arg("--lvl", "30")))
+	await get_tree().create_timer(wait).timeout
 	if args.has("--menu"):
 		Game.main.ui.screen._show(_arg("--menu", "main"))
 		await get_tree().create_timer(0.5).timeout
@@ -66,6 +71,9 @@ func _ready() -> void:
 	if args.has("--reveal") and Game.level:
 		Game.level.explored.fill(1)
 		Game.level.explored_rev += 1
+		if Game.level.fog_img:
+			Game.level.fog_img.fill(Color(0, 0, 0, 0))
+			(Game.level.fog.texture as ImageTexture).update(Game.level.fog_img)
 	if args.has("--map"):
 		Game.main.hud.toggle("automap")
 	if args.has("--hide-hud") and Game.main.hud:
@@ -75,3 +83,26 @@ func _ready() -> void:
 	var img := get_viewport().get_texture().get_image()
 	img.save_jpg(_arg("--shot", "user://shot.jpg"), 0.88)
 	get_tree().quit()
+
+
+# A hero of the given level with every skill at rank 5, next to the floor's boss (with --near-boss);
+# --autoplay then fights.
+func _hero(lvl: int) -> void:
+	var p: Player = Game.player
+	var lv: Level = Game.level
+	if p == null or lv == null:
+		return
+	Game.ch.level = lvl
+	for tr in DB.classes[Game.ch.class_id].trees:
+		for sid in tr.skills:
+			Game.ch.skills[sid] = 5
+	Game.ch.recalc()
+	Game.ch.hp = Game.ch.d.hp_max
+	Game.ch.mana = Game.ch.d.mana_max
+	p.hp = Game.ch.hp
+	p.invuln = 9999.0
+	if args.has("--near-boss") and lv.boss:
+		var tp := lv.random_open_near(lv.boss.global_position, 140, 220)
+		if tp != Vector2.INF:
+			p.global_position = tp
+			lv._explore()

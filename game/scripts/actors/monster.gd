@@ -33,6 +33,9 @@ var summoner: Monster = null
 var no_drops := false
 var minion_of: Monster = null
 var sight := 0.0
+# A monster that just attacked stays drawn (and clickable) for a while, even out in the dark.
+var revealed_t := 0.0
+var _flee := 0.0
 var matter := "flesh"
 var su_id := ""
 var su_title := ""
@@ -341,10 +344,12 @@ func _ai_melee(p: Actor, d: float, delta: float, spd := 1.0, erratic := false) -
 
 func _ai_ranged(p: Actor, d: float, delta: float) -> void:
 	var los : bool = level.line_of_sight(global_position, p.global_position)
-	if d < 170.0 and los:
+	# backs off for a moment, then stands and shoots, so a cornered archer still fights
+	if d < 170.0 and los and _flee < 1.0 and get_slide_collision_count() == 0:
 		var away := (global_position - p.global_position).normalized()
 		var tgt := global_position + away * 60.0
 		if not level.is_solid(tgt):
+			_flee += delta
 			path = [tgt]
 			follow_path(delta, speed * speed_mult())
 			return
@@ -353,6 +358,7 @@ func _ai_ranged(p: Actor, d: float, delta: float) -> void:
 		moving = false
 		face_to(p.global_position)
 		if cd <= 0.0:
+			_flee = 0.0
 			_begin_attack()
 		return
 	_chase(p, delta)
@@ -395,6 +401,7 @@ func _begin_attack() -> void:
 func _strike(p: Actor) -> void:
 	if p == null:
 		return
+	revealed_t = 2.0
 	face_to(p.global_position)
 	if ai in ["ranged", "caster", "summoner"]:
 		_shoot(p.global_position)
