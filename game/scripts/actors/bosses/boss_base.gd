@@ -132,15 +132,15 @@ func later(t: float, fn: Callable) -> void:
 func say(key: String, dur := 4.5) -> void:
 	var lines: Dictionary = data.get("lines", {})
 	if lines.has(key):
-		level.boss_say(self, L.t(lines[key]), dur)
+		level.boss_say(self, lines[key], dur)
 
 
 func say_t(cs: String, en: String, dur := 4.5) -> void:
-	level.boss_say(self, L.t({"cs": cs, "en": en}), dur)
+	level.boss_say(self, {"cs": cs, "en": en}, dur)
 
 
 func shout(cs: String, en: String, col := Color("e8d9a0")) -> void:
-	level.float_text(top_pos(), L.t({"cs": cs, "en": en}), col)
+	level.float_text(top_pos(), Sfx.cry(id, {"cs": cs, "en": en}), col)
 
 
 func note(text: String, col: Color) -> void:

@@ -42,7 +42,7 @@ func _always_tick(delta: float) -> void:
 			p.knock = (global_position - p.global_position).normalized() * 320.0
 			Sfx.play_at("water_splash", p.global_position, 0.7)
 			Fx.burst(level, p.global_position, WATER, 14, 120.0, 0.5, 0.25)
-			level.float_text(p.top_pos(), L.t({"cs": "Pod vodu!", "en": "Under you go!"}), WATER, true)
+			level.float_text(p.top_pos(), Sfx.cry("vodnik", {"cs": "Pod vodu!", "en": "Under you go!"}), WATER, true)
 
 
 func _drink_souls() -> void:

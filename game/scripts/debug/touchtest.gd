@@ -57,8 +57,8 @@ func _physics_process(delta: float) -> void:
 			_touch(0, Vector2(230, 700), true)
 			_next()
 		1:
-			_drag(0, Vector2(230 + minf(t, 0.3) * 400, 700))
-			if t > 1.2:
+			_drag(0, Vector2(230 + clampf(t - 0.5, 0.0, 0.3) * 400, 700))
+			if t > 1.7:
 				_touch(0, Vector2(350, 700), false)
 				_check("stick_moves_right", pl.global_position.x - p0.x > 80, str(pl.global_position - p0))
 				_next()

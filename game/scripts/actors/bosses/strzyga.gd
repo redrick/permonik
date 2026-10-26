@@ -48,7 +48,7 @@ func _first_death() -> void:
 	windup = 0.0
 	busy = 0.0
 	Sfx.play_at("death_ghost", global_position)
-	level.boss_say(self, L.t({"cs": "Jedno srdce… stojí… To druhé ještě bije.", "en": "One heart… has stopped… The other one still beats."}), 3.5)
+	say_t("Jedno srdce… stojí… To druhé ještě bije.", "One heart… has stopped… The other one still beats.", 3.5)
 	var tw := create_tween()
 	tw.tween_property(sprite, "rotation", deg_to_rad(80.0 * facing), 0.35).set_ease(Tween.EASE_IN)
 	tw.parallel().tween_property(sprite, "modulate", Color(0.6, 0.6, 0.7), 0.35)

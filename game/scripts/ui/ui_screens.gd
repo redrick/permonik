@@ -72,6 +72,24 @@ static func options(rebuild: Callable) -> VBoxContainer:
 	vb.add_child(_slider(UiTheme.t("menu_music"), Sfx.music_volume, func(v: float):
 		Sfx.music_volume = v
 		Sfx.save_settings()))
+	vb.add_child(_slider(L.t({"cs": "Hlasy", "en": "Voices"}), Sfx.voice_volume, func(v: float):
+		Sfx.voice_volume = v
+		Sfx.save_settings()))
+	var vr := HBoxContainer.new()
+	vr.add_theme_constant_override("separation", 8)
+	vb.add_child(vr)
+	var vl := UiTheme.label(L.t({"cs": "Mluví", "en": "Spoken in"}), 28)
+	vl.custom_minimum_size = Vector2(200, 0)
+	vr.add_child(vl)
+	for pair in [["", {"cs": "Jako text", "en": "As text"}], ["cs", "Čeština"], ["en", "English"], ["off", {"cs": "Vypnuto", "en": "Off"}]]:
+		var code: String = pair[0]
+		var vb2 := UiTheme.button(L.t(pair[1]) if pair[1] is Dictionary else str(pair[1]), func():
+			Sfx.voice_lang = code
+			Sfx.save_settings()
+			rebuild.call(), 150, 22)
+		if Sfx.voice_lang == code:
+			vb2.add_theme_color_override("font_color", UiTheme.GOLD)
+		vr.add_child(vb2)
 	var sr := HBoxContainer.new()
 	sr.add_theme_constant_override("separation", 8)
 	vb.add_child(sr)

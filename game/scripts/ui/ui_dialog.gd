@@ -54,6 +54,10 @@ func _ready() -> void:
 		_next()
 
 
+func _exit_tree() -> void:
+	Sfx.stop_voice()
+
+
 func _pick_entry() -> Dictionary:
 	return Game.dialog_entry(npc_id)
 
@@ -74,7 +78,14 @@ func _speaker(who: String) -> void:
 	portrait.texture = tex if tex else DB.placeholder("portrait_" + who, Vector2i(128, 128), Color("6a5a48"))
 
 
-func _say(text: String) -> void:
+# text is a line from the data ({cs, en}) or an already translated string; a line from the data is also
+# spoken by the speaker's generated voice when there is one.
+func _say(text, speaker := "", args := {}) -> void:
+	if text is Dictionary:
+		Sfx.voice(speaker, text)
+	else:
+		Sfx.stop_voice()
+	text = L.t(text, args) if text is Dictionary else str(text)
 	text_lbl.text = text.replace("{name}", Game.ch.hero_name)
 	text_lbl.visible_ratio = 0.0
 	var tw := create_tween()
@@ -93,7 +104,7 @@ func _next() -> void:
 	var ln: Dictionary = lines[idx]
 	var who := str(ln.get("who", npc_id))
 	_speaker(who)
-	_say(L.t(_line_text(ln, who)))
+	_say(_line_text(ln, who), "hero_" + Game.ch.class_id if who == "hero" else who)
 	_clear_buttons()
 	buttons.add_child(UiTheme.button(UiTheme.t("next"), _next, 200))
 
@@ -131,14 +142,14 @@ func _finish_lines() -> void:
 		return
 	_speaker(npc_id)
 	if lines.is_empty():
-		_say(_greeting())
+		_say(_greeting(), npc_id)
 	_menu()
 
 
-func _greeting() -> String:
+func _greeting():
 	var g: Array = DB.dialog.get("_gossip", {}).get(npc_id, [])
 	if npc and npc.role() == "inn" and not g.is_empty():
-		return L.t(g.pick_random())
+		return g.pick_random()
 	return "…"
 
 
@@ -197,7 +208,7 @@ func _peddler_button(ui: UiRoot) -> void:
 	var fee := Loot.peddler_fee(Game.ch.level)
 	buttons.add_child(UiTheme.button(L.t({"cs": "Co máš z hory? (%d grošů)", "en": "What has the mountain given you? (%d gold)"}) % fee, func():
 		if Game.ch.gold < fee:
-			_say(L.t({"cs": "Hm. Málo. Za málo nic.", "en": "Hm. Too little. Nothing for too little."}))
+			_service_say("peddler_poor")
 			return
 		Game.ch.gold -= fee
 		Game.flags.peddler["seen"] = true
@@ -210,7 +221,13 @@ func _heal() -> void:
 	if Game.player:
 		Game.player.hp = Game.ch.hp
 		Game.player.status.clear()
-	_say(UiTheme.t("healed"))
+	_service_say("heal")
+
+
+# What a townsperson says when doing their trade; the line's spoken part leaves out the {v} sentence.
+func _service_say(k: String, args := {}) -> void:
+	var t: Dictionary = DB.dialog.get("_service", {}).get(k, {})
+	_say({"cs": t.get("cs", ""), "en": t.get("en", "")}, npc_id, args)
 
 
 func _gossip() -> void:
@@ -218,7 +235,7 @@ func _gossip() -> void:
 	if g.is_empty():
 		_say("…")
 		return
-	_say(L.t(g.pick_random()))
+	_say(g.pick_random(), npc_id)
 
 
 func _identify_all() -> void:
@@ -235,9 +252,9 @@ func _identify_all() -> void:
 	if n > 0:
 		Sfx.play("buff", 0.6)
 		UiRoot.inst.changed()
-		_say(UiTheme.t("identified_all", {"v": n}))
+		_service_say("identify", {"v": n})
 	else:
-		_say(UiTheme.t("nothing_to_identify"))
+		_service_say("identify_none")
 
 
 func _gui_input(event: InputEvent) -> void:

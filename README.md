@@ -113,6 +113,21 @@ python3 -m venv .venv && .venv/bin/pip install numpy
 python3 tools/check_data.py --strict
 ```
 
+### Voices
+
+Every spoken line is generated; nothing is recorded. The cast is `game/data/voices.json`.
+
+```sh
+tools/voice_setup.sh                     # once: venv + models in ~/.local/share/permonik-voice (~3 GB)
+python3 tools/voice_build.py --list      # what has no voice yet
+python3 tools/voice_build.py             # build what is missing, English and Czech (hours: leave it overnight)
+python3 tools/voice_build.py --prune     # drop files of lines that changed or went away
+```
+
+Characters, bosses and the narrator are voiced, and so are books, Kronika lore and codex entries (the
+`reader` speaker, read on the ▶ button). The reading is most of the audio; `game/assets/voice/*/reader/`
+can be left out of a build that must stay small.
+
 ### Adding content
 
 Classes, skills, monsters, items, affixes, uniques, shrines, acts, quests, dialogue and slides all live in
@@ -128,6 +143,9 @@ Andrej's scanned pencil drawings; the crayon textures were scanned from his daug
 Third-party:
 - [Godot Engine](https://godotengine.org), MIT licence.
 - Fonts Bangers and Patrick Hand, SIL Open Font License 1.1 (see `game/assets/fonts/`).
+- Voices generated with [Kokoro](https://huggingface.co/hexgrad/Kokoro-82M) (Apache 2.0) and
+  [Pocket TTS Czech](https://huggingface.co/vvolhejn/pocket-tts-czech) (CC BY 4.0), trained on the
+  ParCzech4Speech corpus by ÚFAL, Charles University.
 
 The folklore (Permoník, Vodník, Klekánice, Ježibaba, Kostěj, Vij and the rest) is public domain.
 

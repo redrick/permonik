@@ -8,6 +8,9 @@ All images (`sprites/`, `portraits/`, `tiles/`, `props/`, `items/`, `ui/`, `slid
 (`audio/`) are © 2026 Andrej Antas and licensed under the
 [Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International licence](https://creativecommons.org/licenses/by-nc-nd/4.0/).
 
+The spoken lines in `voice/` were generated with Kokoro (Apache 2.0) and Pocket TTS Czech (CC BY 4.0,
+trained on ParCzech4Speech by ÚFAL, Charles University); no person was recorded or imitated.
+
 In short: you may play the game and share these files unchanged, non-commercially, with credit. You may
 not modify them, build new art from them, or use them commercially.
 

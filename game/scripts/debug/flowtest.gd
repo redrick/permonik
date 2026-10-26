@@ -162,6 +162,7 @@ func _process(delta: float) -> void:
 		12:
 			_ok(snap.skipped and Game.main.ui.slides == null, "tapping skip ends the slides")
 			_champ_check(lv)
+			_voice_check()
 			snap.dir = Game.save_dir
 			Game.save_dir = OS.get_cache_dir().path_join("permonik_flowtest")
 			Game.save_slot = "flow"
@@ -246,3 +247,18 @@ func _champ_check(lv: Level) -> void:
 		_ok(before != after or m.champ_reduce > 0.0 or m.champ_thorns > 0.0, "champion modifier %s has an effect" % k)
 		m.queue_free()
 		lv.monsters.erase(m)
+
+
+# A line with a generated file is found by speaker and text; voice "off" finds nothing; a line without a
+# file stays silent.
+func _voice_check() -> void:
+	var keep := Sfx.voice_lang
+	var line: Dictionary = DB.cinema.intro.lines.a
+	Sfx.voice_lang = "en"
+	var st := Sfx.voice_stream("narrator", line)
+	_ok(st != null and st.get_length() > 3.0, "the narrator's English line is found")
+	_ok(Sfx.voice_stream("kosmas", line) == null, "another speaker's line is not")
+	Sfx.voice_lang = "off"
+	_ok(Sfx.voice_stream("narrator", line) == null, "voices off finds nothing")
+	Sfx.voice_lang = keep
+	_ok(not Sfx.read_aloud([{"cs": "nic", "en": "nothing"}]) and not Sfx.voice_playing(), "reading a text without a recording stays silent")

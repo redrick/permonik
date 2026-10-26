@@ -936,7 +936,7 @@ func on_monster_died(m: Monster) -> void:
 		Game.boss_bar.emit("", 0.0, false)
 		var lines: Dictionary = m.data.get("lines", {})
 		if lines.has("death"):
-			boss_say(m, L.t(lines.death), 6.0)
+			boss_say(m, lines.death, 6.0)
 		Game.save()
 		_tithe_drops(m)
 	if m.no_drops:
@@ -1470,9 +1470,13 @@ func _float_label(text: String, color: Color, size: int) -> Label:
 	return l
 
 
-func boss_say(m: Monster, text: String, dur := 4.5) -> void:
+# text is the line from the data ({cs, en}), spoken in the boss's own generated voice, or a plain string.
+func boss_say(m: Monster, text, dur := 4.5) -> void:
+	if text is Dictionary:
+		dur = maxf(dur, Sfx.voice(m.id, text) + 0.8)
+		text = L.t(text)
 	if Game.main:
-		Game.main.boss_line(m.label_name(), text, m.id, dur)
+		Game.main.boss_line(m.label_name(), str(text), m.id, dur)
 
 
 func shake(amt: float) -> void:

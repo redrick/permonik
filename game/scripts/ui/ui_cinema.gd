@@ -36,6 +36,7 @@ var _t := 0.0
 var _boil_t := 0.0
 var _step_t := 0.0
 var _text_end := 0.0
+var _voice_free := 0.0
 var _music_before := ""
 
 
@@ -222,6 +223,7 @@ func _start(i: int) -> void:
 	shake_amp = 0.0
 	_t = 0.0
 	_text_end = 0.0
+	_voice_free = 0.0
 	var s: Array = shots[i]
 	s[1].call(self)
 	var dur := maxf(float(s[0]), _text_end + 1.0)
@@ -269,6 +271,7 @@ func advance() -> void:
 func skip_all() -> void:
 	if finished:
 		return
+	Sfx.stop_voice()
 	_shot += 1
 	idx = shots.size()
 	busy = true
@@ -281,6 +284,7 @@ func _finish() -> void:
 	if finished:
 		return
 	finished = true
+	Sfx.stop_voice()
 	_clear()
 	_texs.clear()
 	# in a game whatever comes next (a new place, the next film) picks its own music
@@ -462,12 +466,25 @@ func line(key: String) -> String:
 
 
 # Narration in the bottom bar; returns when it is gone so the next line can follow.
+# A narrated line starts no earlier than the one before it has finished speaking, and the shot lasts
+# until the voice is done (see _start).
 func say(key: String, t: float, dur := 0.0) -> float:
 	var text := line(key)
+	var raw = DB.cinema.get(film, {}).get("lines", {}).get(key, null)
+	var vs: AudioStream = Sfx.voice_stream("narrator", raw) if raw is Dictionary else null
+	var vlen := vs.get_length() if vs else 0.0
 	if dur <= 0.0:
 		dur = clampf(text.length() / 15.0 + 1.4, 3.5, 14.0)
+	if vlen > 0.0:
+		t = maxf(t, _voice_free)
+		dur = maxf(dur, vlen + 0.8)
+		_voice_free = t + vlen + 0.4
 	_text_end = maxf(_text_end, t + dur)
 	at(t, func():
+		if vlen > 0.0:
+			Sfx.voice("narrator", raw)
+		if Game.args.has("--cine-log"):
+			print("CINE_SAY %s %s %d" % [film, key, Engine.get_frames_drawn()])
 		sub.text = text
 		sub.visible_ratio = 0.0
 		sub.modulate.a = 1.0

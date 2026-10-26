@@ -25,7 +25,7 @@ func _ai(delta: float) -> void:
 	var tgt := master.global_position + spot
 	if global_position.distance_to(tgt) < 24.0:
 		holding = true
-		level.float_text(top_pos(), L.t({"cs": "Zvedáme víčka!", "en": "Lifting the eyelids!"}), Color("d8c8a0"))
+		level.float_text(top_pos(), Sfx.cry("vij_lifter", {"cs": "Zvedáme víčka!", "en": "Lifting the eyelids!"}), Color("d8c8a0"))
 		return
 	repath_t -= delta
 	if repath_t <= 0.0 or path.is_empty():

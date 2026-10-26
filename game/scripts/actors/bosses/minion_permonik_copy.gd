@@ -53,7 +53,7 @@ func poof(punish := true) -> void:
 	gone = true
 	Fx.burst(level, global_position + Vector2(0, -40), Color("cfe8ff"), 22, 140.0, 0.6, 0.3, true)
 	Sfx.play_at("laugh_permonik", global_position, 0.7)
-	level.float_text(top_pos(), L.t({"cs": "Hihi! Vedle!", "en": "Hee hee! Wrong one!"}), Color("cfe8ff"))
+	level.float_text(top_pos(), Sfx.cry("permonik", {"cs": "Hihi! Vedle!", "en": "Hee hee! Wrong one!"}), Color("cfe8ff"))
 	if punish:
 		var p := player()
 		if p and p.global_position.distance_to(global_position) < 110.0:

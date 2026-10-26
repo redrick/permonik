@@ -8,7 +8,7 @@ Godot's own mouse-from-touch emulation is off. The pad sorts every finger by whe
 
 | Where the finger lands | What it does |
 |---|---|
-| Left 45 % of the screen | Floating stick: drag to walk in that direction. A quick tap is a normal click (walk, attack, talk, pick up). Holding still for 0.28 s turns into holding the left button. |
+| Left half of the screen | Floating stick wherever the thumb lands: once it moves 12 px the hero walks that way at full speed, even after the thumb has rested. A quick tap (under 0.3 s) is a normal click (walk, attack, talk, pick up). |
 | Anywhere else | Diablo click: tap to walk, attack, talk or pick up. Hold and drag to keep walking or keep attacking. |
 | Big button, bottom right | Attack. Hold it to fight the nearest monster in sight, favouring the direction you last moved. With no monster near, it uses the nearest NPC, item or prop and its label changes to Mluvit/Vzít/Použít (Talk/Take/Use). |
 | Five buttons on the arc | The RMB/Q/W/E/R skills. Tap casts at the auto-target, or 220 px ahead when there is none. Hold to keep casting; buffs and summons are not repeated. Drag out of the button to aim, and release back on the button to cancel. An empty slot opens the skill picker. |

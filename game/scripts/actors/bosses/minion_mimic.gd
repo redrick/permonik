@@ -59,7 +59,7 @@ func reveal() -> void:
 	if light:
 		light.energy = 0.9
 	Sfx.play_at("coin_bounce", global_position)
-	level.float_text(top_pos(), L.t({"cs": "Cink! Kous!", "en": "Clink! Bite!"}), Color("ffcc55"))
+	level.float_text(top_pos(), Sfx.cry("ohnivy_muzik", {"cs": "Cink! Kous!", "en": "Clink! Bite!"}), Color("ffcc55"))
 
 
 func _light_fuse() -> void:

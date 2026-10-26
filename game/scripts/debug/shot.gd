@@ -19,6 +19,8 @@ func _ready() -> void:
 	if args.has("--menu"):
 		Game.main.ui.screen._show(_arg("--menu", "main"))
 		await get_tree().create_timer(0.5).timeout
+	for k in _arg("--waypoints", "").split(",", false):
+		Game.waypoints[k] = true
 	for p in _arg("--panel", "").split(",", false):
 		Game.main.ui.toggle_panel(p)
 	if args.has("--recipes"):

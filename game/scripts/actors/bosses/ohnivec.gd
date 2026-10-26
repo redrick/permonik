@@ -48,7 +48,7 @@ func _coins(target: Vector2, n: int) -> void:
 			if hit(a, 1.8 if tithe else 0.8, "fire"):
 				a.apply_status("burn", 2.5, {"dps": dmg.x * 0.25, "src": self})
 				if tithe:
-					level.float_text(a.top_pos(), L.t({"cs": "Desátek!", "en": "The tithe!"}), GOLD, true), EMBER)
+					level.float_text(a.top_pos(), Sfx.cry("ohnivec", {"cs": "Desátek!", "en": "The tithe!"}), GOLD, true), EMBER)
 		pr.bounce = 3
 		pr.spin = 14.0
 		pr.life = 3.2

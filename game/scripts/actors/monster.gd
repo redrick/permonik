@@ -314,7 +314,7 @@ func wake() -> void:
 		return
 	aggro = true
 	if su_line != "":
-		level.float_text(top_pos() + Vector2(0, -24), su_line, Color("d9b8ff"), false, 30)
+		level.float_text(top_pos() + Vector2(0, -24), Sfx.cry(su_id, DB.superuniques.get(su_id, {}).get("line", {})), Color("d9b8ff"), false, 30)
 	for m in level.actors_of_team(1):
 		if m != self and not m.aggro and m.global_position.distance_to(global_position) < 260:
 			m.aggro = true
@@ -325,7 +325,7 @@ func wake() -> void:
 func _on_boss_aggro() -> void:
 	var lines: Dictionary = data.get("lines", {})
 	if lines.has("aggro"):
-		level.boss_say(self, L.t(lines.aggro))
+		level.boss_say(self, lines.aggro)
 	Sfx.play("boss_roar")
 
 
@@ -619,7 +619,7 @@ func _on_damaged(_amount: float, _element: String, source: Node) -> void:
 			set_meta("half_said", true)
 			var lines: Dictionary = data.get("lines", {})
 			if lines.has("half"):
-				level.boss_say(self, L.t(lines.half))
+				level.boss_say(self, lines.half)
 
 
 func _on_hit_recover() -> void:

@@ -16,7 +16,7 @@ const RECIPES := [
 	{"cs": "kouzelný předmět + písmeno (šperk Dobro, zbroj Našь, zbraň Slovo) + broušený drahokam → kovaný předmět; kámen určí recept", "en": "magic item + a letter (jewellery Dobro, armour Našь, weapon Slovo) + a cut gem → a crafted item; the stone picks the recipe"},
 	{"cs": "předmět + Rьci a drahokam (2.) / Ukъ (3.) / Chěrъ (4.) → kovaný / hlubinný / navský", "en": "item + Rьci and a gem (grade 2) / Ukъ (3) / Chěrъ (4) → forged / deep / Nav-forged"},
 	{"cs": "3 malé lektvary → 1 velký; 2 velké živé vody + velká rosa → kapradí květ", "en": "3 small potions → 1 large; 2 large living waters + large dew → fern flower"},
-	{"cs": "pečeť vody, kamene, ohně a smrti → Permoníkův desátek", "en": "seals of water, stone, fire and death → Permoník's Tithe"},
+	{"cs": "pečeť vody, kamene, ohně a smrti → Permoníkův desátek (pečeti leží v desátcích za Smorodinou; klíče k nim nechávají strážci pečetí od Noční můry výš)", "en": "seals of water, stone, fire and death → Permoník's Tithe (the seals lie in the tithes beyond the Smorodina; their keys are left by the seal guardians from Noční můra up)"},
 ]
 
 

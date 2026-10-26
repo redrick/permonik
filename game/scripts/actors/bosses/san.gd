@@ -115,7 +115,7 @@ func _breath(p: Actor, h: String) -> void:
 	face_to(p.global_position)
 	set_pose("attack", 1.2)
 	var col: Color = Fx.ELEM[h]
-	shout(L.t(NAMES[h]).to_upper() + "!", L.t(NAMES[h]).to_upper() + "!", col)
+	shout(str(NAMES[h].cs).to_upper() + "!", str(NAMES[h].en).to_upper() + "!", col)
 	Sfx.play_at("fire_cast" if h == "fire" else ("frost_cast" if h == "cold" else "smoke"), global_position)
 	var cb := func(a):
 		match h:

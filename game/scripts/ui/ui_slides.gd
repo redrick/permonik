@@ -82,6 +82,8 @@ func _show_next() -> void:
 	img.texture = t
 	img.visible = t != null
 	text_lbl.text = L.t(it.get("text", ""))
+	if it.get("text") is Dictionary:
+		Sfx.voice("narrator", it.text)
 	text_lbl.anchor_top = 0.78 if t else 0.3
 	text_lbl.anchor_bottom = 0.96 if t else 0.7
 	text_lbl.visible_ratio = 0.0
@@ -132,6 +134,7 @@ func _finish() -> void:
 	if finished:
 		return
 	finished = true
+	Sfx.stop_voice()
 	UiRoot.inst.slides_finished(self, done)
 
 

@@ -303,8 +303,12 @@ quests), ghost, other.
      "lines": [ {"who":"permonik","text":{...}}, {"who":"hero","text":{...}} ],
      "do": ["quest_start:klekani"] },
    { "if": ["always"], "lines": [ … ] } ],
+  "_service": { "heal": {"by": "healer", "cs":"…","en":"…"} },
   "_gossip": { "senkyrka_bara": [ {"cs":"…","en":"…"} ] } }
 ```
+`_service` holds what a townsperson says while doing their trade (`heal`, `identify`, `identify_none`,
+`peddler_poor`); `by` is an NPC role or id, so the voice tool knows who says it. A `{v}` in it is filled
+by the game, and the sentence holding it is shown but not spoken.
 The engine shows the **first** entry whose conditions all hold. Conditions:
 `always`, `quest:<id>:none|active|done`, `quest:<id>:step=<step_id>`, `act:<n>`, `flag:<name>`,
 `!flag:<name>`, `class:<id>`, `has:<item>`. Actions (`do`): `quest_start:<id>`,
@@ -363,6 +367,25 @@ One entry per animated cinematic, keyed by the same ids `slide:<id>` and acts' `
 `title`/`when` label the card on the main menu's Story page, `music` plays during it, `lines` are the
 narration keys the choreography in `scripts/ui/cin_films.gd` says. Films unlock on the Story page
 once seen (`settings.cfg` `[cinema] seen`) or once any save is past that point.
+
+## voices.json
+`{ "narrator": {"voice": "bm_george", "speed": 0.92}, "permonik": {"voice": ["am_santa", "bm_lewis", 0.7], "fx": "rubberband=pitch=1.12:formant=preserved"}, … }`
+Who speaks with which generated voice. `voice` is a Kokoro voice id or `[a, b, weight of a]` to blend two;
+`speed` is Kokoro's; `fx` an ffmpeg audio filter applied to both languages. Speakers: `narrator` (films and
+slides), NPC ids (dialog lines by `who`, gossip), `hero_<class>` (the hero's lines, with the class's own
+`text_<class>` variant when there is one, for every class in classes.json), monster ids (`lines` in
+monsters.json via `Level.boss_say`; `say_t`/`shout` with literal text in `scripts/actors/bosses/<id>.gd`),
+superunique ids (their `line` on waking), any speaker named in an `Sfx.cry("<speaker>", {"cs","en"})` call
+in the scripts, and `reader` (book pages, Kronika lore and codex entries, read on the ▶ button; the
+system's text-to-speech takes over where there is no recording).
+`tools/voice_build.py` writes `game/assets/voice/<lang>/<speaker>/<key>.ogg`, key = first 16 hex of
+sha1("<speaker>|<line text as in the JSON>"); `Sfx.voice_stream` computes the same key, so an edited line
+just falls silent until it is built again. Stage directions in `( )` and `{name}` are not spoken; Czech
+numbers and a few abbreviations (`sv.`, `t. j.`, regnal `II.`) are said in words. English is
+Kokoro; Czech is Pocket-TTS-Czech copying the speaker's English voice, best of several takes as heard by
+Whisper (weak sentences go to `qa_cs.tsv`). A narrated film line waits for the line before it to finish
+and stretches its shot (`UiCinema.say`). Players pick the spoken language (`settings.cfg` `voice_lang`:
+"" = as the text, `cs`, `en`, `off`) and its volume.
 
 ## cinema_layers.json (generated)
 Written by `art/cinema.py`, never by hand: `{ "intro/bell": {"x","y","w","h","cw","ch","pts":{"pivot":[x,y]}} }`.

@@ -85,7 +85,7 @@ func label_sub() -> String:
 func small_line(key: String, dur := 5.0) -> void:
 	var lines: Dictionary = small_data.get("lines", {})
 	if lines.has(key):
-		level.boss_say(self, L.t(lines[key]), dur)
+		level.boss_say(self, lines[key], dur)
 
 
 func _on_boss_aggro() -> void:
@@ -351,7 +351,7 @@ func _always_tick(_delta: float) -> void:
 		tithe_hits += 1
 		if tithe_hits % 10 == 0:
 			p.take_damage(p.hp_max * 0.1, "physical", self, {"no_stun": true})
-			level.float_text(p.top_pos() + Vector2(0, -30), L.t({"cs": "DESÁTEK!", "en": "THE TITHE!"}), Color("ff4a4a"), true)
+			level.float_text(p.top_pos() + Vector2(0, -30), Sfx.cry("permonik_obr", {"cs": "DESÁTEK!", "en": "THE TITHE!"}), Color("ff4a4a"), true)
 			Fx.burst(level, p.global_position + Vector2(0, -50), Color("ff4a4a"), 18, 100.0, 0.6, 0.3, true)
 			Sfx.play_at("laugh_permonik", global_position, 0.7)
 		else:

@@ -13,6 +13,8 @@ var text_scroll: ScrollContainer
 var read_btn: Button
 var speech := ""
 var read_at := 0
+var read_parts: Array = []
+var reading_voice := false
 var current := ""
 
 
@@ -251,6 +253,7 @@ func _show(key: String) -> void:
 		var bk: Dictionary = DB.books.get(key.substr(5), {})
 		var first: Array = bk.get("pages", {}).get(L.lang, [""])
 		_page(L.t(bk.get("title", key)), [[L.t(bk.get("author", "")), UiTheme.DIM], [str(first[0]) if first.size() > 0 else "", Color("e6d9bc")]])
+		_set_read([UiBook.page_text(bk, 0)])
 		var bid := key.substr(5)
 		page.add_child(UiTheme.button(UiTheme.t("book_read"), func(): UiRoot.inst.open_book(bid), 220, 22))
 		return
@@ -258,14 +261,17 @@ func _show(key: String) -> void:
 		var e: Dictionary = DB.lore.get(key.substr(5), {})
 		var mid := str(e.get("monster", ""))
 		_page(L.t(e.get("title", key)), [[L.t(e.get("text", "")), Color("e6d9bc")]], [], _pictures({"monster": [mid]} if mid != "" else {}))
+		_set_read([e.get("text", {})])
 		return
 	var eid := key.substr(6)
 	var e: Dictionary = DB.codex.get(eid, {})
 	var blocks := []
+	var parts := []
 	for mid in e.get("refs", {}).get("monster", []):
 		var lid := "bestiar_" + str(mid)
 		if DB.lore.has(lid) and _lore_visible(lid):
 			blocks.append(["„" + L.t(DB.lore[lid].get("text", "")) + "“", UiTheme.DIM])
+			parts.append(DB.lore[lid].get("text", {}))
 	if not blocks.is_empty():
 		blocks.append(["#" + UiTheme.t("codex_folklore"), UiTheme.GOLD])
 	blocks.append([L.t(e.get("text", "")), Color("e6d9bc")])
@@ -277,6 +283,7 @@ func _show(key: String) -> void:
 		if DB.codex.has(s) and Game.codex_visible(s):
 			see.append(s)
 	_page(L.t(e.get("title", eid)), blocks, see, _pictures(e.get("refs", {})))
+	_set_read(parts + [e.get("text", {}), e.get("game", {})])
 	if not Game.known.has("read:" + eid):
 		Game.known["read:" + eid] = true
 		_open_tab(tab)
@@ -286,6 +293,8 @@ func _page(title: String, blocks: Array, see := [], pics := {}) -> void:
 	title_lbl.text = title
 	_stop_read()
 	speech = title
+	read_parts = []
+	read_btn.visible = _voice() != ""
 	for c in page.get_children():
 		c.queue_free()
 	var big: Array = pics.get("big", [])
@@ -440,7 +449,7 @@ func _pictures(refs: Dictionary) -> Dictionary:
 
 
 # ---------------------------------------------------------------- reading aloud
-# Uses the system's text-to-speech; the button stays hidden when there is no voice for the language.
+# Without a recording the system's text-to-speech reads; the button stays hidden when there is neither.
 static var _voices := {}
 
 
@@ -465,9 +474,19 @@ static func _pick_voice() -> String:
 	return voices[0]
 
 
+# Generated recordings first (tools/voice_build.py); the system voice when this page has none.
+func _set_read(parts: Array) -> void:
+	read_parts = parts
+	read_btn.visible = Sfx.can_read_aloud(parts) or _voice() != ""
+
+
 func _toggle_read() -> void:
-	if DisplayServer.tts_is_speaking():
+	if DisplayServer.tts_is_speaking() or reading_voice:
 		_stop_read()
+		return
+	if Sfx.read_aloud(read_parts):
+		reading_voice = true
+		read_btn.text = "■"
 		return
 	var v := _voice()
 	if v != "" and speech != "":
@@ -479,12 +498,18 @@ func _toggle_read() -> void:
 func _stop_read() -> void:
 	if DisplayServer.tts_is_speaking():
 		DisplayServer.tts_stop()
+	if reading_voice:
+		reading_voice = false
+		Sfx.stop_voice()
 	if read_btn:
 		read_btn.text = "▶"
 
 
 func refresh() -> void:
-	if read_btn and read_btn.text == "■" and Time.get_ticks_msec() - read_at > 1000 and not DisplayServer.tts_is_speaking():
+	if reading_voice and not Sfx.voice_playing():
+		reading_voice = false
+		read_btn.text = "▶"
+	elif read_btn and read_btn.text == "■" and not reading_voice and Time.get_ticks_msec() - read_at > 1000 and not DisplayServer.tts_is_speaking():
 		read_btn.text = "▶"
 
 

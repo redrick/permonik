@@ -7,6 +7,7 @@ var text_lbl: Label
 var page_lbl: Label
 var prev_b: Button
 var next_b: Button
+var read_b: Button
 
 
 func _ready() -> void:
@@ -35,6 +36,9 @@ func _ready() -> void:
 	nav.add_child(page_lbl)
 	next_b = UiTheme.small_button("›", func(): _turn(1), 56)
 	nav.add_child(next_b)
+	read_b = UiTheme.small_button("▶", _toggle_read, 56)
+	read_b.tooltip_text = L.t({"cs": "Přečíst nahlas", "en": "Read aloud"})
+	nav.add_child(read_b)
 	page_i = clampi(int(Game.known.get("page:" + book_id, 0)), 0, maxi(0, _pages().size() - 1))
 	_render()
 
@@ -44,7 +48,37 @@ func _pages() -> Array:
 	return p.get(L.lang, p.get("cs", [])) if p is Dictionary else []
 
 
+# One page in both languages, so the voice can read it in its own language.
+static func page_text(b: Dictionary, i: int) -> Dictionary:
+	var out := {}
+	var p = b.get("pages", {})
+	if p is Dictionary:
+		for lang in p:
+			if i < p[lang].size():
+				out[lang] = str(p[lang][i])
+	return out
+
+
+func _toggle_read() -> void:
+	if Sfx.voice_playing():
+		Sfx.stop_voice()
+	else:
+		Sfx.read_aloud([page_text(DB.books.get(book_id, {}), page_i)])
+	_render()
+
+
+func refresh() -> void:
+	var t := "■" if Sfx.voice_playing() else "▶"
+	if read_b.text != t:
+		read_b.text = t
+
+
+func _exit_tree() -> void:
+	Sfx.stop_voice()
+
+
 func _turn(d: int) -> void:
+	Sfx.stop_voice()
 	page_i = clampi(page_i + d, 0, maxi(0, _pages().size() - 1))
 	Game.known["page:" + book_id] = page_i
 	_render()
@@ -56,6 +90,8 @@ func _render() -> void:
 	page_lbl.text = "%d / %d" % [page_i + 1, maxi(1, pages.size())]
 	prev_b.disabled = page_i == 0
 	next_b.disabled = page_i >= pages.size() - 1
+	read_b.visible = Sfx.can_read_aloud([page_text(DB.books.get(book_id, {}), page_i)])
+	refresh()
 
 
 func _unhandled_input(event: InputEvent) -> void:

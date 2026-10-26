@@ -9,7 +9,8 @@ const STICK_R := 110.0
 const TAP_MOVE := 22.0
 const AIM_START := 44.0
 const LONG_PRESS := 0.55
-const STICK_WAIT := 0.28
+const STICK_START := 12.0
+const TAP_TIME := 0.3
 const REPEAT_AFTER := 0.3
 const NO_REPEAT := ["buff", "summon", "passive"]
 
@@ -81,7 +82,7 @@ func _over_ui(p: Vector2) -> bool:
 
 func _stick_zone(p: Vector2) -> bool:
 	var vs := view.size
-	return p.x < vs.x * 0.45 and p.y > 110.0 and p.y < vs.y - _bar_h()
+	return p.x < vs.x * 0.5 and p.y > 110.0 and p.y < vs.y - _bar_h()
 
 
 func _bar_h() -> float:
@@ -202,7 +203,7 @@ func _on_drag(i: int, p: Vector2) -> void:
 	var moved := p.distance_to(t.start) > TAP_MOVE
 	match t.mode:
 		"stick?":
-			if moved:
+			if p.distance_to(t.start) > STICK_START:
 				t.mode = "stick"
 				stick_finger = i
 				stick_origin = t.start
@@ -232,7 +233,7 @@ func _on_drag(i: int, p: Vector2) -> void:
 func _end(i: int, t: Dictionary, canceled: bool) -> void:
 	match t.mode:
 		"stick?":
-			if not canceled and mouse_finger == -1:
+			if not canceled and mouse_finger == -1 and _now() - t.t < TAP_TIME:
 				_mouse_move(t.start)
 				_click(t.start, MOUSE_BUTTON_LEFT)
 		"stick":
@@ -264,8 +265,7 @@ func _stick_update(p: Vector2) -> void:
 	if off.length() > STICK_R:
 		stick_origin = p - off.normalized() * STICK_R
 		off = p - stick_origin
-	var v := off / STICK_R
-	stick_vec = Vector2.ZERO if v.length() < 0.15 else v.normalized() * clampf((v.length() - 0.15) / 0.5, 0.35, 1.0)
+	stick_vec = Vector2.ZERO if off.length() < STICK_START else off.normalized()
 
 
 # ---------------------------------------------------------------- pad buttons
@@ -361,15 +361,6 @@ func _process(_d: float) -> void:
 					t.long = true
 					_click(t.start, MOUSE_BUTTON_RIGHT)
 					Input.vibrate_handheld(30)
-			"stick?":
-				if now - t.t >= STICK_WAIT:
-					if mouse_finger == -1 and playing:
-						t.mode = "world"
-						mouse_finger = i
-						_mouse_move(t.start)
-						_mouse_button(t.start, MOUSE_BUTTON_LEFT, true)
-					else:
-						t.mode = ""
 			"button":
 				if playing:
 					_hold_button(t)
@@ -417,10 +408,6 @@ func _draw_view() -> void:
 		view.draw_arc(stick_origin, STICK_R, 0, TAU, 48, Color(UiTheme.GOLD, 0.5), 3.0)
 		var knob: Vector2 = stick_origin + (t.get("pos", stick_origin) - stick_origin).limit_length(STICK_R)
 		view.draw_circle(knob, 44.0, Color(UiTheme.GOLD, 0.45))
-	elif not _panels_open():
-		var home := Vector2(230, view.size.y - _bar_h() - 170)
-		view.draw_arc(home, STICK_R, 0, TAU, 48, Color(UiTheme.GOLD, 0.16), 3.0)
-		view.draw_circle(home, 40.0, Color(UiTheme.GOLD, 0.1))
 	for t in pressed.values():
 		if t.btn.id == "skill" and t.get("aiming", false):
 			var ps := _to_screen(Game.player.global_position)

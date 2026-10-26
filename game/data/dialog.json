@@ -766,6 +766,12 @@
      "lines": [{"who": "prevoznik", "text": {"cs": "Groš za cestu. Ty ale ještě nejedeš.", "en": "A groš a crossing. But you're not going yet."}}]}
   ],
 
+  "_service": {
+    "heal": {"by": "healer", "cs": "Rány se zatáhly.", "en": "Your wounds close."},
+    "identify": {"by": "chronicler", "cs": "Přečetl jsem ti znaky. Věcí celkem: {v}.", "en": "I have read the marks for you. Items in all: {v}."},
+    "identify_none": {"by": "chronicler", "cs": "Nemáš nic, co by potřebovalo přečíst.", "en": "You carry nothing that needs reading."},
+    "peddler_poor": {"by": "tremsinsky_muzicek", "cs": "Hm. Málo. Za málo nic.", "en": "Hm. Too little. Nothing for too little."}
+  },
   "_gossip": {
     "kovar_hnevek": [
       {"cs": "Kutná Hora se jmenuje po kutně. Mnich ze Sedlce usnul na stráni, a když se probudil, rostly kolem něj stříbrné výhonky. Hodil na ně kutnu, aby to místo zase našel.", "en": "Kutná Hora is named after a monk's habit. A monk from Sedlec fell asleep on the hillside, and when he woke, silver shoots had sprouted all around him. He threw his habit over them so he could find the place again."},
