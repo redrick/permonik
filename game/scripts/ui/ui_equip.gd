@@ -30,7 +30,7 @@ func _item() -> Item:
 
 func _draw() -> void:
 	var r := Rect2(Vector2.ZERO, size)
-	var hov := r.has_point(get_local_mouse_position())
+	var hov := r.has_point(get_local_mouse_position()) and not TouchPad.active
 	draw_rect(r, Color(0.05, 0.04, 0.035, 0.92))
 	var st := DB.tex("ui/slot_hover" if hov else "ui/slot")
 	if st:
@@ -45,6 +45,8 @@ func _draw() -> void:
 			draw_rect(r.grow(-2), Color(0.3, 0.8, 0.35, 0.18) if ok else Color(0.9, 0.2, 0.2, 0.22))
 	if it:
 		UiTheme.draw_item(self, it, r.grow(-4))
+		if ui.card and ui.card.item == it:
+			draw_rect(r.grow(-2), UiTheme.GOLD, false, 3.0)
 		if ui.identify_mode and it.rarity != Item.NORMAL and not it.identified:
 			draw_rect(r.grow(-2), Color(UiTheme.GOLD, 0.6), false, 2.0)
 	else:
@@ -66,30 +68,48 @@ func _gui_input(event: InputEvent) -> void:
 		return
 	accept_event()
 	var ui := UiRoot.inst
+	if TouchPad.active and ui.held == null and not ui.identify_mode and event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
+		if _item():
+			ui.show_card(_item(), self)
+		else:
+			ui.close_card()
+		return
 	if event.button_index == MOUSE_BUTTON_LEFT:
 		if ui.identify_mode:
 			ui.identify(_item())
 			return
-		if merc:
-			ui.merc_equip_click(slot)
-		else:
-			ui.equip_click(slot)
+		pick_up()
 	elif event.button_index == MOUSE_BUTTON_RIGHT:
 		if ui.identify_mode:
 			ui.identify_mode = false
 			return
-		var it := _item()
-		if it and ui.held == null and Game.ch.inv.add(it):
-			if merc:
-				Game.ch.merc.equip.erase(slot)
-				ui.merc_changed()
-			else:
-				Game.ch.equip.erase(slot)
-				ui.after_equip()
+		if ui.held == null:
+			unequip()
+
+
+func pick_up() -> void:
+	if merc:
+		UiRoot.inst.merc_equip_click(slot)
+	else:
+		UiRoot.inst.equip_click(slot)
+
+
+func unequip() -> void:
+	var it := _item()
+	if it == null or not Game.ch.inv.add(it):
+		if it:
+			Game.msg(L.t("inv_full"), UiTheme.DIM)
+		return
+	if merc:
+		Game.ch.merc.equip.erase(slot)
+		UiRoot.inst.merc_changed()
+	else:
+		Game.ch.equip.erase(slot)
+		UiRoot.inst.after_equip()
 
 
 func tip() -> Dictionary:
 	var it := _item()
-	if it == null or UiRoot.inst.held:
+	if it == null or UiRoot.inst.held or TouchPad.active:
 		return {}
 	return {"lines": it.tooltip(Game.ch)}

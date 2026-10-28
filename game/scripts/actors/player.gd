@@ -56,6 +56,8 @@ func setup(lv: Node) -> void:
 	cam.position_smoothing_speed = 7.0
 	add_child(cam)
 	cam.make_current()
+	if Game.main:
+		cam.zoom = Vector2.ONE * Game.main.world_zoom()
 	Game.ch.changed.connect(_on_char_changed)
 	_on_char_changed()
 
@@ -98,7 +100,7 @@ func _update_cam(delta: float) -> void:
 	cam.position = cam.position.lerp(lead, minf(1.0, delta * (1.6 if moving else 0.8)))
 	var b = level.boss
 	var fight: bool = b != null and is_instance_valid(b) and not b.dead and b.aggro and b.global_position.distance_to(global_position) < 700.0
-	var z := 1.1 if fight else 1.0
+	var z: float = (1.1 if fight else 1.0) * (Game.main.world_zoom() if Game.main else 1.0)
 	cam.zoom = cam.zoom.lerp(Vector2(z, z), minf(1.0, delta * 1.5))
 
 

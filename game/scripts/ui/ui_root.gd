@@ -14,6 +14,8 @@ var popup: Control
 var screen: Control
 var slides: Control
 var held: Item
+var card: UiItemCard
+var book: UiPhoneBook
 var identify_mode := false
 var tip_sources: Array = []
 var tip_box: PanelContainer
@@ -62,6 +64,10 @@ func _tip_panel() -> PanelContainer:
 # ---------------------------------------------------------------- layout
 func _place(c: Control, where: String) -> void:
 	c.set_meta("place", where)
+	if compact() and where in ["left", "right"]:
+		_book().add_panel(c, where)
+		_sync_pause()
+		return
 	c.resized.connect(_fit.bind(c))
 	root.add_child(c)
 	root.move_child(c, root.get_child_count() - 1)
@@ -75,8 +81,8 @@ func _place(c: Control, where: String) -> void:
 			c.anchor_bottom = 1.0
 			c.offset_left = 6
 			c.offset_right = 6
-			c.offset_bottom = -BAR_H - 4
-			c.offset_top = -BAR_H - 4
+			c.offset_bottom = -_bar() - 4
+			c.offset_top = -_bar() - 4
 			c.grow_vertical = Control.GROW_DIRECTION_BEGIN
 		"right":
 			c.anchor_left = 1.0
@@ -85,8 +91,8 @@ func _place(c: Control, where: String) -> void:
 			c.anchor_bottom = 1.0
 			c.offset_left = -6
 			c.offset_right = -6
-			c.offset_bottom = -BAR_H - 4
-			c.offset_top = -BAR_H - 4
+			c.offset_bottom = -_bar() - 4
+			c.offset_top = -_bar() - 4
 			c.grow_horizontal = Control.GROW_DIRECTION_BEGIN
 			c.grow_vertical = Control.GROW_DIRECTION_BEGIN
 		"center":
@@ -96,18 +102,104 @@ func _place(c: Control, where: String) -> void:
 			c.anchor_bottom = 0.5
 			c.offset_left = 0
 			c.offset_right = 0
-			c.offset_top = -BAR_H / 2.0
-			c.offset_bottom = -BAR_H / 2.0
+			c.offset_top = -_bar() / 2.0
+			c.offset_bottom = -_bar() / 2.0
 			c.grow_horizontal = Control.GROW_DIRECTION_BOTH
 			c.grow_vertical = Control.GROW_DIRECTION_BOTH
 		"full":
 			c.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
 
+func _bar() -> float:
+	return Game.main.hud.bar_h() if Game.main and Game.main.hud else float(BAR_H)
+
+
+# A phone-sized screen: side panels open full screen inside the book (UiPhoneBook) instead.
+func compact() -> bool:
+	return root.size.y < 760.0
+
+
+func _book() -> UiPhoneBook:
+	if book == null:
+		close_card()
+		book = UiPhoneBook.new()
+		root.add_child(book)
+		for t in [tip_box, tip_cmp, cursor_layer]:
+			root.move_child(t, -1)
+		card = book.detail
+		Sfx.play("ui_open", 0.5, 0.0)
+	return book
+
+
+func close_book() -> void:
+	if book == null:
+		return
+	_return_held()
+	identify_mode = false
+	for c in [left, right]:
+		_free(c)
+	left = null
+	right = null
+	book.queue_free()
+	book = null
+	card = null
+	_sync_pause()
+
+
+# A tab of the book: switches the page, or closes the book when that page is already shown.
+func phone_page(what: String) -> void:
+	match what:
+		"close":
+			close_book()
+			Sfx.play("ui_close", 0.5, 0.0)
+			return
+		"pause":
+			close_book()
+			show_pause()
+			return
+		"automap":
+			close_book()
+			Game.main.hud.toggle("automap")
+			return
+	if book and book.page() == what:
+		close_book()
+		return
+	_return_held()
+	identify_mode = false
+	_free(left)
+	_free(right)
+	left = null
+	right = null
+	close_card()
+	match what:
+		"inventory":
+			_open_inventory()
+		"hireling":
+			_set_left(UiHireling.new(), what)
+			_open_inventory()
+		"character":
+			_set_left(UiCharacter.new(), what)
+		"skills":
+			_set_left(UiSkills.new(), what)
+		"quests":
+			_set_left(UiQuests.new(), what)
+		"kronika":
+			_set_left(UiKronika.new(), what)
+	Sfx.play("ui_open", 0.5, 0.0)
+
+
+func _set_left(p: Control, kind: String) -> void:
+	left = p
+	left.set_meta("kind", kind)
+	_place(left, "left")
+
+
 func fit_all() -> void:
 	for c in [left, right, modal, popup]:
 		if c and is_instance_valid(c):
 			_fit(c)
+	if card and is_instance_valid(card):
+		card._sig = ""
 
 
 # Panels are laid out at the 1080 px design height; a scaled-up UI on a short screen shrinks them to fit.
@@ -115,7 +207,7 @@ func _fit(c: Control) -> void:
 	var where: String = c.get_meta("place", "full")
 	if where == "full" or c.size.x <= 0.0 or c.size.y <= 0.0:
 		return
-	var bar: float = Game.main.hud.bar_h() if Game.main else float(BAR_H)
+	var bar := _bar()
 	var k := minf(1.0, minf((root.size.x - 12.0) / c.size.x, (root.size.y - bar - 10.0) / c.size.y))
 	match where:
 		"left":
@@ -133,7 +225,7 @@ func _free(c: Control) -> void:
 
 
 func _sync_pause() -> void:
-	var p := modal != null or (left != null and (left is UiVendor or left is UiStash or left is UiKronika))
+	var p := modal != null or book != null or (left != null and (left is UiVendor or left is UiStash or left is UiKronika))
 	Game.paused_ui = p or screen != null or slides != null
 
 
@@ -153,6 +245,11 @@ func close_all() -> void:
 		Game.main.slides_playing = false
 	for c in [left, right, modal, popup, screen, slides]:
 		_free(c)
+	close_card()
+	if book:
+		book.queue_free()
+		book = null
+		card = null
 	left = null
 	right = null
 	modal = null
@@ -172,9 +269,9 @@ func mouse_over_ui() -> bool:
 
 
 func over_ui_at(mp: Vector2) -> bool:
-	if screen or slides:
+	if screen or slides or book:
 		return true
-	for c in [left, right, modal, popup]:
+	for c in [left, right, modal, popup, card]:
 		if c and is_instance_valid(c) and c.visible and c.get_global_rect().has_point(mp):
 			return true
 	return false
@@ -185,6 +282,12 @@ func toggle_panel(what: String) -> void:
 		return
 	_free(popup)
 	popup = null
+	if compact():
+		if book and book.trade():
+			close_all()
+		else:
+			phone_page(what)
+		return
 	if what == "inventory":
 		if right:
 			if left is UiVendor or left is UiStash:
@@ -466,6 +569,58 @@ func vendor_open() -> bool:
 
 func vendor_panel() -> UiVendor:
 	return left as UiVendor
+
+
+# ---------------------------------------------------------------- item card (touch)
+func show_card(it: Item, src: Control) -> void:
+	if card and is_instance_valid(card) and card.item == it and card.src == src:
+		return
+	if card and card.docked:
+		card.show_item(it, src)
+		Sfx.play("ui_click", 0.4, 0.0)
+		return
+	close_card()
+	card = UiItemCard.new()
+	card.item = it
+	card.src = src
+	root.add_child(card)
+	for t in [tip_box, tip_cmp, cursor_layer]:
+		root.move_child(t, -1)
+	Sfx.play("ui_click", 0.4, 0.0)
+
+
+func close_card() -> void:
+	if card and is_instance_valid(card) and card.docked:
+		card.show_item(null, null)
+		return
+	if card and is_instance_valid(card):
+		card.queue_free()
+	card = null
+
+
+func card_height() -> float:
+	return root.size.y - _bar() - 16.0
+
+
+# In the free gap between the open panels when it is wide enough, else over the panel the item is not in.
+func place_card() -> void:
+	if card == null or not is_instance_valid(card) or card.docked:
+		return
+	var sz := card.get_combined_minimum_size()
+	var k := minf(1.0, card_height() / maxf(1.0, sz.y))
+	card.scale = Vector2(k, k)
+	var w := sz.x * k
+	var lx := 6.0
+	var rx := root.size.x - 6.0
+	if left and is_instance_valid(left):
+		lx = left.get_global_rect().end.x + 6.0
+	if right and is_instance_valid(right):
+		rx = right.get_global_rect().position.x - 6.0
+	var x := (lx + rx - w) / 2.0
+	if rx - lx < w:
+		var from_right: bool = right != null and is_instance_valid(right) and right.is_ancestor_of(card.src)
+		x = 6.0 if from_right else root.size.x - w - 6.0
+	card.position = Vector2(x, 8.0)
 
 
 # ---------------------------------------------------------------- item handling

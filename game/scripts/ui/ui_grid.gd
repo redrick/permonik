@@ -62,11 +62,14 @@ func _draw() -> void:
 		draw_rect(Rect2(Vector2(at) * CELL, Vector2(ui.held.size()) * CELL), col)
 	for it: Item in i.items:
 		var r := Rect2(Vector2(it.pos) * CELL, Vector2(it.size()) * CELL)
-		if it == under and ui.held == null:
+		if it == under and ui.held == null and not TouchPad.active:
 			draw_rect(r.grow(-1), Color(1, 0.85, 0.5, 0.12))
 		UiTheme.draw_item(self, it, r)
 		if not (mode == "vendor" and vendor.gamble):
 			UiTheme.draw_upgrade(self, it, r)
+		if ui.card and ui.card.item == it:
+			draw_rect(r.grow(-1), Color(1, 0.85, 0.5, 0.16))
+			draw_rect(r.grow(-2), UiTheme.GOLD, false, 3.0)
 		if ui.identify_mode and mode == "inv" and it.rarity != Item.NORMAL and not it.identified:
 			draw_rect(r.grow(-2), Color(UiTheme.GOLD, 0.5 + 0.3 * sin(Time.get_ticks_msec() / 150.0)), false, 2.0)
 
@@ -78,6 +81,12 @@ func _gui_input(event: InputEvent) -> void:
 	var ui := UiRoot.inst
 	var i := inv()
 	var it: Item = i.item_at(_mouse_cell())
+	if TouchPad.active and ui.held == null and not ui.identify_mode and event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
+		if it:
+			ui.show_card(it, self)
+		else:
+			ui.close_card()
+		return
 	if event.button_index == MOUSE_BUTTON_LEFT:
 		if mode == "vendor":
 			if ui.held:
@@ -103,31 +112,33 @@ func _gui_input(event: InputEvent) -> void:
 		if ui.identify_mode:
 			ui.identify_mode = false
 			return
-		if it and mode == "inv":
-			if ui.vendor_open():
-				ui.vendor_panel().sell(it, false)
-			elif ui.left is UiStash:
-				if (ui.left as UiStash).box().add(it):
-					i.remove(it)
-					ui.changed()
-			elif ui.left is UiForge:
-				if (ui.left as UiForge).box.add(it):
-					i.remove(it)
-					ui.changed()
-			elif ui.left is UiService:
-				if (ui.left as UiService).box.add(it):
-					i.remove(it)
-					ui.changed()
-			else:
-				ui.use_or_equip(it)
-		elif it and mode == "forge":
-			if Game.ch.inv.add(it):
-				i.remove(it)
-				ui.changed()
-		elif it and mode == "stash":
-			if Game.ch.inv.add(it):
-				i.remove(it)
-				ui.changed()
+		if it and mode == "inv" and ui.vendor_open():
+			ui.vendor_panel().sell(it, false)
+		elif it and mode == "inv" and not (ui.left is UiStash or ui.left is UiForge or ui.left is UiService):
+			ui.use_or_equip(it)
+		elif it and mode != "vendor":
+			quick_move(it)
+
+
+# Right click outside a shop: from the bag into the open chest or forge, or from those back into the bag.
+func quick_move(it: Item) -> bool:
+	var ui := UiRoot.inst
+	var to: Inventory = Game.ch.inv
+	if mode == "inv":
+		if ui.left is UiStash:
+			to = (ui.left as UiStash).box()
+		elif ui.left is UiForge:
+			to = (ui.left as UiForge).box
+		elif ui.left is UiService:
+			to = (ui.left as UiService).box
+		else:
+			return false
+	if not to.add(it):
+		Game.msg(L.t("inv_full"), UiTheme.DIM)
+		return false
+	inv().remove(it)
+	ui.changed()
+	return true
 
 
 func _put(ui: UiRoot) -> void:
@@ -166,7 +177,7 @@ func _put(ui: UiRoot) -> void:
 
 
 func tip() -> Dictionary:
-	if UiRoot.inst.held:
+	if UiRoot.inst.held or TouchPad.active:
 		return {}
 	var it: Item = inv().item_at(_mouse_cell())
 	if it == null:

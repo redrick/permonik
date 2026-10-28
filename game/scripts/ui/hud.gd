@@ -6,6 +6,7 @@ const BELT_X := 631
 const SKILL_X := 945
 const SLOT_Y := 72
 const SLOT_GAP := 70
+const XP_PHONE := 10.0
 
 var font: Font
 var root: Control
@@ -36,6 +37,10 @@ var say_text: Label
 var say_t := 0.0
 var banner: Label
 var lvl_btn: Button
+var menu_btns: GridContainer
+var mini: Control
+var xp_back: ColorRect
+var _home := {}
 var automap: Automap
 var minimap: Minimap
 var tracker: QuestTracker
@@ -193,6 +198,7 @@ func _build_bar() -> void:
 		skill_slots.append(s)
 	var touch := TouchPad.wanted()
 	var btns := GridContainer.new()
+	menu_btns = btns
 	btns.columns = 3
 	btns.position = Vector2(214, 52 if touch else 64)
 	btns.add_theme_constant_override("h_separation", 6)
@@ -406,10 +412,72 @@ func fit() -> void:
 	var k := minf(1.0, root.size.x / 1920.0)
 	bar.pivot_offset = Vector2(960, BAR_H)
 	bar.scale = Vector2(k, k)
+	_set_compact(root.size.y < 760.0)
+	var mk := 0.7 if not _home.is_empty() else 1.0
+	minimap.scale = Vector2(mk, mk)
+	minimap.offset_left = -Minimap.SIZE * mk - 14
+	minimap.offset_right = minimap.offset_left + Minimap.SIZE
+	minimap.offset_top = 10
+	minimap.offset_bottom = 10 + Minimap.SIZE
+
+
+# Phone screens: no bar. The orbs sit in the bottom corners over an xp line across the whole bottom edge, the
+# quest tracker is top left; panels open from the touch pad's bag button, skills and potions are on the pad.
+func _set_compact(on: bool) -> void:
+	if mini == null:
+		if not on:
+			return
+		mini = Control.new()
+		mini.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		root.add_child(mini)
+		xp_back = ColorRect.new()
+		xp_back.color = Color(0.04, 0.03, 0.03, 0.85)
+		xp_back.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		mini.add_child(xp_back)
+	var nodes: Array = [hp_orb, mana_orb, hp_lbl, mana_lbl, xp_bar, xp_lbl, lvl_btn]
+	if on and _home.is_empty():
+		for n: Control in nodes:
+			_home[n] = [n.position, n.scale]
+			n.reparent(mini, false)
+	elif not on and not _home.is_empty():
+		for l: Label in [hp_lbl, mana_lbl]:
+			l.add_theme_font_size_override("font_size", 22)
+		for n: Control in nodes:
+			n.reparent(bar, false)
+			n.position = _home[n][0]
+			n.scale = _home[n][1]
+		_home.clear()
+	mini.visible = on
+	bar.visible = not on
+	if not on:
+		return
+	var o := 0.68
+	var w := root.size.x
+	var h := root.size.y
+	var d := 160.0 * o
+	for l: Label in [hp_lbl, mana_lbl]:
+		l.add_theme_font_size_override("font_size", 19)
+	for pair in [[hp_orb, hp_lbl, 6.0], [mana_orb, mana_lbl, w - d - 6.0]]:
+		pair[0].scale = Vector2(o, o)
+		pair[0].position = Vector2(pair[2], h - d - XP_PHONE - 4.0)
+		pair[1].position = pair[0].position + Vector2(d / 2.0 - 70.0, d / 2.0 - 15.0)
+	xp_bar.position = Vector2(0, h - XP_PHONE)
+	xp_bar.size = Vector2(w, XP_PHONE)
+	xp_back.position = xp_bar.position
+	xp_back.size = xp_bar.size
+	xp_lbl.visible = false
+	lvl_btn.position = Vector2(d + 12.0, h - XP_PHONE - 52.0)
+	tracker.position = Vector2(8, 8)
+
+
+func phone() -> bool:
+	return not _home.is_empty()
 
 
 func bar_h() -> float:
-	return BAR_H * bar.scale.y
+	if phone():
+		return XP_PHONE
+	return 0.0 if not bar.visible else BAR_H * bar.scale.y
 
 
 func mouse_over_ui() -> bool:
@@ -419,10 +487,10 @@ func mouse_over_ui() -> bool:
 func over_ui_at(mp: Vector2) -> bool:
 	if not visible:
 		return false
-	if (bar.get_global_transform() * Rect2(0, 30, 1920, BAR_H - 30)).has_point(mp):
+	if bar.visible and (bar.get_global_transform() * Rect2(0, 30, 1920, BAR_H - 30)).has_point(mp):
 		return true
-	for c in [hp_orb, mana_orb]:
-		if (c.get_global_transform() * Rect2(Vector2.ZERO, c.size)).has_point(mp):
+	for c in [hp_orb, mana_orb, lvl_btn]:
+		if c.is_visible_in_tree() and (c.get_global_transform() * Rect2(Vector2.ZERO, c.size)).has_point(mp):
 			return true
 	return tracker.over_controls(mp)
 

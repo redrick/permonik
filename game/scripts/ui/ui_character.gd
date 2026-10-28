@@ -14,25 +14,37 @@ const DERIVED := ["hp", "mana", "armor", "to_hit", "damage", "attack_speed", "bl
 	"res_lightning", "res_cold", "res_poison", "light_radius", "magic_find", "gold_find"]
 
 
+# On a phone the derived stats stand beside the attributes instead of under them.
 func _ready() -> void:
 	custom_minimum_size = Vector2(640, 0)
 	set_title(L.t("character"))
+	var top: VBoxContainer = body
+	var low: VBoxContainer = body
+	if UiRoot.inst.compact():
+		var hb := HBoxContainer.new()
+		hb.add_theme_constant_override("separation", 30)
+		body.add_child(hb)
+		top = VBoxContainer.new()
+		low = VBoxContainer.new()
+		for v in [top, low]:
+			v.add_theme_constant_override("separation", 6)
+			hb.add_child(v)
 	name_lbl = UiTheme.title("", 40)
-	body.add_child(name_lbl)
+	top.add_child(name_lbl)
 	sub_lbl = UiTheme.label("", 24, UiTheme.DIM)
 	sub_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	body.add_child(sub_lbl)
+	top.add_child(sub_lbl)
 	xp_lbl = UiTheme.label("", 20, UiTheme.DIM, true)
 	xp_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	body.add_child(xp_lbl)
-	body.add_child(UiTheme.sep(4))
-	body.add_child(UiTheme.rule(556))
+	top.add_child(xp_lbl)
+	top.add_child(UiTheme.sep(4))
+	top.add_child(UiTheme.rule(556))
 	var g := GridContainer.new()
 	g.columns = 3
 	g.add_theme_constant_override("h_separation", 18)
 	g.add_theme_constant_override("v_separation", 4)
 	g.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	body.add_child(g)
+	top.add_child(g)
 	stat_grid = g
 	for s in CharData.BASE_STATS:
 		var l := UiTheme.label(L.t("stat_" + s), 28)
@@ -49,15 +61,15 @@ func _ready() -> void:
 		stat_btns[s] = b
 	pts_lbl = UiTheme.label("", 24, UiTheme.GOLD)
 	pts_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	body.add_child(pts_lbl)
-	body.add_child(UiTheme.rule(556))
-	body.add_child(UiTheme.sep(2))
+	top.add_child(pts_lbl)
+	top.add_child(UiTheme.rule(556))
+	top.add_child(UiTheme.sep(2))
 	var g2 := GridContainer.new()
 	g2.columns = 2
 	g2.add_theme_constant_override("h_separation", 30)
 	g2.add_theme_constant_override("v_separation", 0)
 	g2.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	body.add_child(g2)
+	low.add_child(g2)
 	for k in DERIVED:
 		var l := UiTheme.label(_name(k), 21, UiTheme.DIM, true)
 		l.custom_minimum_size = Vector2(300, 0)
@@ -67,12 +79,12 @@ func _ready() -> void:
 		v.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		g2.add_child(v)
 		derived[k] = v
-	body.add_child(UiTheme.sep(4))
-	body.add_child(UiTheme.rule(556))
+	low.add_child(UiTheme.sep(4))
+	low.add_child(UiTheme.rule(556))
 	var foot := UiTheme.label("", 20, UiTheme.FAINT, true)
 	foot.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	foot.name = "foot"
-	body.add_child(foot)
+	low.add_child(foot)
 	refresh()
 
 
@@ -123,5 +135,5 @@ func refresh() -> void:
 		if k.begins_with("res_"):
 			var r := int(d.get(k, 0))
 			l.add_theme_color_override("font_color", UiTheme.RED if r < 0 else (UiTheme.GOLD if r >= 75 else UiTheme.INK))
-	var foot: Label = body.get_node("foot")
+	var foot: Label = body.find_child("foot", true, false)
 	foot.text = "%s: %s · %s %d · %s %d/4" % [L.t("menu_difficulty"), L.t("diff_%d" % Game.difficulty), L.t("act"), Game.act, UiTheme.t("seals"), Game.seal_count()]

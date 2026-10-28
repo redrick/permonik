@@ -33,7 +33,7 @@ func _ready() -> void:
 	count_lbl = UiTheme.label("", 18, UiTheme.FAINT, true)
 	lv.add_child(count_lbl)
 	var ls := ScrollContainer.new()
-	ls.custom_minimum_size = Vector2(310, 660)
+	ls.custom_minimum_size = Vector2(310, 460 if UiRoot.inst.compact() else 660)
 	ls.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	lv.add_child(ls)
 	list = VBoxContainer.new()
@@ -60,7 +60,7 @@ func _ready() -> void:
 	head_row.add_child(read_btn)
 	pv.add_child(UiTheme.rule(520))
 	text_scroll = ScrollContainer.new()
-	text_scroll.custom_minimum_size = Vector2(540, 620)
+	text_scroll.custom_minimum_size = Vector2(540, 420 if UiRoot.inst.compact() else 620)
 	text_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	pv.add_child(text_scroll)
 	page = VBoxContainer.new()

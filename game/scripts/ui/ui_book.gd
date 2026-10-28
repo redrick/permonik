@@ -21,7 +21,7 @@ func _ready() -> void:
 	paper.add_theme_stylebox_override("panel", UiTheme.flat(Color("2a2118"), Color("4a3a28"), 2, 26))
 	body.add_child(paper)
 	var sc := ScrollContainer.new()
-	sc.custom_minimum_size = Vector2(700, 600)
+	sc.custom_minimum_size = Vector2(700, 440 if UiRoot.inst.compact() else 600)
 	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	paper.add_child(sc)
 	text_lbl = UiTheme.wrap_label("", 24, Color("e6d9bc"), 660)

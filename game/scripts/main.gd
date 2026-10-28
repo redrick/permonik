@@ -103,11 +103,19 @@ func apply_ui_scale() -> void:
 	ui.fit_all()
 
 
+# Phones show the world at the interface's scale, so the hero, the world and the HUD keep the proportions
+# they have on a monitor.
+func world_zoom() -> float:
+	return ui_scale if hud and hud.phone() else 1.0
+
+
 func auto_ui_scale() -> float:
 	var dpi := float(DisplayServer.screen_get_dpi())
 	if not OS.has_feature("mobile") or dpi <= 0.0:
 		return 1.0
 	var inches := Vector2(DisplayServer.screen_get_size()).length() / dpi
+	if inches < 7.0:
+		return 1.6
 	return 1.3 if inches < 8.0 else 1.0
 
 

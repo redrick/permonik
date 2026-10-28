@@ -21,14 +21,29 @@ Godot's own mouse-from-touch emulation is off. The pad sorts every finger by whe
 ## In panels and menus
 
 - Tap is a left click. Double tap is a double click: it learns a skill, or plays the selected hero.
-- Hold still for 0.55 s, while a gold ring fills, for a right click (equip, use, sell, move to the stash).
-- Slide your finger to move the "mouse" without clicking. This shows tooltips, so you can read an item before picking it up. Sliding also scrolls lists, and dragging a slider moves it.
+- **Items never move on a tap.** Tapping an item in the bag, a chest, a shop, the forge, the doll or the belt (while the bag is open) selects it and opens the item card. The card shows the item in large type, what wearing it would change, and on request the piece worn now. It has one button per action: Buy, Sell, Fill the belt, Equip, Take off, Use, To the belt, Into the chest, Lay it here, To the bag, Identify, and Move. Move puts the item on the finger like a mouse cursor, and the next tap on a cell, a slot, a shop or the ground places it (also into a socket). A tap on an empty cell or × closes the card.
+- Hold still for 0.55 s, while a gold ring fills, for a right click. On items it only opens the card; elsewhere it works as before.
+- Slide your finger to move the "mouse" without clicking. Sliding also scrolls lists, and dragging a slider moves it. Hover tooltips for items are off on touch; the card replaces them.
 
 ## Interface size
 
-Settings → Rozhraní/Interface offers Auto, 100, 115, 130 and 150 %. Auto is 130 % on a screen under 8" diagonal and 100 % otherwise, and `-- --ui-scale X` overrides the setting.
-The setting scales the HUD, the panels, the menus and the touch pad as whole layers. Anything drawn at a fixed design size shrinks back to fit when the scaled screen is too small for it: the 1920 px bar shrinks to the screen width, and panels shrink to the height above the bar.
+Settings → Rozhraní/Interface offers Auto, 100, 115, 130 and 150 %. Auto is 160 % on a screen under 7" diagonal (phones), 130 % under 8" and 100 % otherwise. `-- --ui-scale X` overrides the setting.
+The setting scales the HUD, the panels, the menus and the touch pad as whole layers. Anything drawn at a fixed design size shrinks back to fit when the scaled screen is too small for it: the 1920 px bar shrinks to the screen width, panels shrink to the height above the bar, and menu pages shrink to the screen.
 On touch builds the quest tracker sits top left, so it stays clear of the skill arc.
+
+### Phone layout (logical height under 760 px)
+
+- No HUD bar. Life and mana orbs sit in the bottom corners over a thin xp line across the whole bottom edge; the level-up + is beside the life orb. The quest tracker is top left, folded to the next step on one line (▸ opens it in full). The minimap shrinks to 70 %.
+- The camera zooms in by the interface scale (160 %), so the hero is as big against the HUD and the screen as on a monitor.
+- Next to the minimap: the bag button (opens the book; a gold dot means unspent points), the menu ≡, the item-names eye and, below ground, the portal scroll. Skills, attack and potions are the touch pad's buttons as on a tablet.
+- Every panel opens full screen in one book (`UiPhoneBook`) and the game pauses behind it. Tabs down the left edge: Výbava, Postava, Dovednosti, Úkoly, Kronika, Pomocník (with a hireling), Mapa, then Nabídka (pause menu) and Zavřít. Tapping the open tab closes the book. Pages scale to fill the screen (up to 135 %).
+- The bag page has a narrower doll beside the grid and a fixed detail column on the right instead of the floating card. It shows the tapped item, its buttons, and Zahodit (drop on the ground).
+- A shop, chest, forge, service or hireling opens the book without tabs: their panel, the bag (without the doll) and the detail column, with × in the corner.
+- Dialogue, books, waypoints and the pause menu stay centred windows as on a tablet.
+- Action cluster is tighter on a phone: attack r 70, skills r 43 on a 168 px arc, potions r 36 beside it.
+- The map sheet shrinks to the screen above the xp line; on touch its × (top-left corner of the sheet) closes it, as does tapping the minimap to open it.
+- Menu pages have phone layouts: title beside the buttons on the main page, the hero list with the hero standing beside it and full-size Play/Delete, class cards in a row with the description and name in a column, settings scrolling between the title and Back.
+- Choosing a save folder opens the game's own folder browser (also on tablets). Android's picker returns content:// URIs, and Godot's FileDialog is a separate window the touch layer doesn't reach.
 
 ## Shared device
 

@@ -2,6 +2,7 @@ extends Node
 
 # Touch test (run with --quick --touch --touchtest): feeds raw screen touches and prints PASS/FAIL per step.
 var step := 0
+var snap_n := 0
 var t := 0.0
 var p0 := Vector2.ZERO
 var fails := 0
@@ -127,6 +128,31 @@ func _physics_process(delta: float) -> void:
 		9:
 			if t < 0.2:
 				return
+			Game.main.ui.close_card()
+			var g: UiGrid = Game.main.ui.right.find_children("*", "UiGrid", true, false)[0]
+			if Game.ch.inv.items.is_empty():
+				Game.ch.inv.add(Item.create("krumpac_kovany", 5))
+			var it: Item = Game.ch.inv.items[0]
+			snap_n = Game.ch.inv.items.size()
+			var c := (Vector2(it.pos) + Vector2(it.size()) / 2.0) * UiTheme.CELL
+			p0 = (g.get_global_transform() * c) * Game.main.ui_scale
+			_touch(0, p0, true)
+			_next()
+		10:
+			if t < 0.1:
+				return
+			_touch(0, p0, false)
+			_next()
+		11:
+			if t < 0.3:
+				return
+			var ui: UiRoot = Game.main.ui
+			_check("tap_item_opens_card", ui.card != null and ui.card.item == Game.ch.inv.items[0], str(ui.card))
+			_check("tap_item_moves_nothing", ui.held == null and Game.ch.inv.items.size() == snap_n)
+			_next()
+		12:
+			if t < 0.2:
+				return
 			Game.main.ui.close_all()
 			Game.ch.hp = 10.0
 			pl.hp = 10.0
@@ -137,7 +163,7 @@ func _physics_process(delta: float) -> void:
 				k.pressed = pressed
 				Input.parse_input_event(k)
 			_next()
-		10:
+		13:
 			if t < 0.6:
 				return
 			_check("belt_key_reaches_player", Game.ch.hp > 10.0, str(Game.ch.hp))

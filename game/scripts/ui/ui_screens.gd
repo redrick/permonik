@@ -33,6 +33,39 @@ static func vignette(parent: Control, edge: Color, inner := 0.35) -> TextureRect
 	return t
 
 
+# Phones: Back and the title stay pinned at the top, the settings scroll under them.
+static func options_page(parent: Control, title: String, back: Callable, rebuild: Callable) -> void:
+	var m := MarginContainer.new()
+	m.set_anchors_preset(Control.PRESET_FULL_RECT)
+	for side in ["left", "right", "top", "bottom"]:
+		m.add_theme_constant_override("margin_" + side, 14)
+	m.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	parent.add_child(m)
+	var vb := VBoxContainer.new()
+	vb.add_theme_constant_override("separation", 8)
+	m.add_child(vb)
+	var head := HBoxContainer.new()
+	head.add_theme_constant_override("separation", 16)
+	vb.add_child(head)
+	head.add_child(UiTheme.button("‹ " + L.t("menu_back"), back, 220, 28))
+	var t := UiTheme.title(title, 40)
+	t.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	head.add_child(t)
+	var pad := Control.new()
+	pad.custom_minimum_size = Vector2(220, 0)
+	head.add_child(pad)
+	var sc := ScrollContainer.new()
+	sc.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	vb.add_child(sc)
+	var cc := CenterContainer.new()
+	cc.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	sc.add_child(cc)
+	var p := UiPanel.new()
+	p.body.add_child(options(rebuild))
+	cc.add_child(p)
+
+
 static func center_box(parent: Control) -> VBoxContainer:
 	var cc := CenterContainer.new()
 	cc.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -127,6 +160,27 @@ static func options(rebuild: Callable) -> VBoxContainer:
 		if GroundItem.get_filter() == i:
 			fb.add_theme_color_override("font_color", UiTheme.GOLD)
 		fr.add_child(fb)
+	if TouchPad.wanted():
+		var hr := HBoxContainer.new()
+		hr.add_theme_constant_override("separation", 8)
+		vb.add_child(hr)
+		var hl := UiTheme.label(L.t({"cs": "Vibrace", "en": "Vibration"}), 28)
+		hl.custom_minimum_size = Vector2(200, 0)
+		hr.add_child(hl)
+		for on in [true, false]:
+			var val: bool = on
+			var hb := UiTheme.button(L.t({"cs": "Zapnuto", "en": "On"} if on else {"cs": "Vypnuto", "en": "Off"}), func():
+				TouchPad.buzz = val
+				var cfg := ConfigFile.new()
+				cfg.load("user://settings.cfg")
+				cfg.set_value("main", "vibrate", val)
+				cfg.save("user://settings.cfg")
+				if val:
+					Input.vibrate_handheld(30)
+				rebuild.call(), 170, 22)
+			if TouchPad.buzz == val:
+				hb.add_theme_color_override("font_color", UiTheme.GOLD)
+			hr.add_child(hb)
 	if not OS.has_feature("web"):
 		vb.add_child(_save_dir_row(rebuild))
 	if OS.has_feature("mobile"):
@@ -182,30 +236,27 @@ static func _dir_text(dir: String) -> String:
 	return UiTheme.t("save_dir_default") if dir == Game.DEFAULT_SAVE_DIR else dir
 
 
-# Desktop gets the system folder picker. Android's own picker hands back content:// URIs that plain
-# file access can't use, so there the built-in dialog browses shared storage (needs all-files access).
+# Desktop gets the system folder picker; touch builds browse shared storage in the game (UiFolderPicker).
 static func _pick_dir(on_pick: Callable) -> void:
+	if OS.has_feature("android") or TouchPad.active:
+		var start: String = Game.save_dir if Game.save_dir != Game.DEFAULT_SAVE_DIR else UiFolderPicker.ROOT
+		if not OS.has_feature("android") and start == UiFolderPicker.ROOT:
+			start = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS)
+		UiFolderPicker.open(start, on_pick)
+		return
 	var fd := FileDialog.new()
 	fd.file_mode = FileDialog.FILE_MODE_OPEN_DIR
 	fd.access = FileDialog.ACCESS_FILESYSTEM
 	fd.title = UiTheme.t("save_dir_pick")
 	fd.process_mode = Node.PROCESS_MODE_ALWAYS
-	fd.use_native_dialog = not OS.has_feature("android")
-	if Game.save_dir != Game.DEFAULT_SAVE_DIR:
-		fd.current_dir = Game.save_dir
-	elif OS.has_feature("android"):
-		fd.current_dir = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS).get_base_dir()
-	else:
-		fd.current_dir = OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS)
-	if OS.has_feature("android"):
-		fd.content_scale_factor = Game.main.ui_scale
+	fd.use_native_dialog = true
+	fd.current_dir = Game.save_dir if Game.save_dir != Game.DEFAULT_SAVE_DIR else OS.get_system_dir(OS.SYSTEM_DIR_DOCUMENTS)
 	fd.dir_selected.connect(func(dir: String):
 		fd.queue_free()
 		on_pick.call(dir))
 	fd.canceled.connect(fd.queue_free)
 	Game.main.add_child(fd)
 	fd.popup_centered_ratio(0.85)
-
 
 static func _slider(text: String, v: float, cb: Callable) -> HBoxContainer:
 	var hb := HBoxContainer.new()

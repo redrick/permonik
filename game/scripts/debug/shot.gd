@@ -76,6 +76,24 @@ func _ready() -> void:
 		if Game.level.fog_img:
 			Game.level.fog_img.fill(Color(0, 0, 0, 0))
 			(Game.level.fog.texture as ImageTexture).update(Game.level.fog_img)
+	if args.has("--vendor") and Game.level:
+		for n in Game.level.npcs:
+			if n.role() == _arg("--vendor", "smith"):
+				Game.main.ui.open_vendor(n)
+				break
+	if args.has("--talk") and Game.level:
+		for n in Game.level.npcs:
+			if n.npc_id == _arg("--talk", ""):
+				Game.main.ui.open_npc(n)
+				break
+	if args.has("--folders"):
+		UiFolderPicker.open(OS.get_environment("HOME"), func(_d): pass)
+	if args.has("--card"):
+		await get_tree().create_timer(0.3).timeout
+		for g in get_tree().root.find_children("*", "UiGrid", true, false):
+			for it in (g as UiGrid).inv().items:
+				if it.base_id == _arg("--card", "") and (Game.main.ui.card == null or Game.main.ui.card.item == null):
+					Game.main.ui.show_card(it, g)
 	if args.has("--map"):
 		Game.main.hud.toggle("automap")
 	if args.has("--hide-hud") and Game.main.hud:

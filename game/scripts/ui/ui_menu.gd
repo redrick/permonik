@@ -68,8 +68,37 @@ func _show(p: String) -> void:
 			_options()
 		"story":
 			_story()
+	if p == "options" and _phone():
+		return
 	content.modulate.a = 0.0
-	create_tween().tween_property(content, "modulate:a", 1.0, 0.25)
+	_fit_content(content)
+
+
+# Pages are laid out for a 1080 px tall screen; on a phone they shrink until everything is on screen.
+func _fit_content(c: Control) -> void:
+	await get_tree().process_frame
+	await get_tree().process_frame
+	if not is_instance_valid(c):
+		return
+	var box := Rect2()
+	for n in c.find_children("*", "Control", true, false):
+		var r: Rect2 = (n as Control).get_global_rect()
+		if n is Container or r.size.x >= c.size.x - 1.0 or not (n as Control).is_visible_in_tree():
+			continue
+		box = r if box.size == Vector2.ZERO else box.merge(r)
+	var gr := c.get_global_rect()
+	var k := minf(1.0, minf((gr.size.y - 16.0) / maxf(1.0, box.size.y), (gr.size.x - 16.0) / maxf(1.0, box.size.x)))
+	if k < 1.0:
+		c.pivot_offset = gr.size / 2.0
+		c.scale = Vector2(k, k)
+		var mid := gr.position + gr.size / 2.0
+		var top := mid.y + (box.position.y - mid.y) * k
+		var bottom := mid.y + (box.end.y - mid.y) * k
+		if top < gr.position.y + 8.0:
+			c.position.y += gr.position.y + 8.0 - top
+		elif bottom > gr.end.y - 8.0:
+			c.position.y -= bottom - (gr.end.y - 8.0)
+	create_tween().tween_property(c, "modulate:a", 1.0, 0.25)
 
 
 func _unhandled_key_input(e: InputEvent) -> void:
@@ -122,6 +151,10 @@ func _column() -> VBoxContainer:
 	return vb
 
 
+func _phone() -> bool:
+	return UiRoot.inst != null and UiRoot.inst.compact()
+
+
 func _btn(parent: Control, text: String, cb: Callable, w := 480.0) -> Button:
 	var b := UiTheme.button(text, cb, w, 30)
 	b.custom_minimum_size.y = 64
@@ -131,10 +164,22 @@ func _btn(parent: Control, text: String, cb: Callable, w := 480.0) -> Button:
 
 
 # ---------------------------------------------------------------- main
+# Phones: the title on the left and the buttons beside it, so neither has to shrink.
 func _main() -> void:
 	var vb := _column()
-	_title(vb)
-	vb.add_child(UiTheme.sep(30))
+	if _phone():
+		var hb := HBoxContainer.new()
+		hb.add_theme_constant_override("separation", 40)
+		hb.alignment = BoxContainer.ALIGNMENT_CENTER
+		vb.add_child(hb)
+		_title(hb, 0.72)
+		vb = VBoxContainer.new()
+		vb.add_theme_constant_override("separation", 10)
+		vb.alignment = BoxContainer.ALIGNMENT_CENTER
+		hb.add_child(vb)
+	else:
+		_title(vb)
+		vb.add_child(UiTheme.sep(30))
 	var saves := Game.list_saves()
 	var cont := _btn(vb, L.t("menu_continue"), func(): _load(saves[0].slot))
 	cont.disabled = saves.is_empty()
@@ -174,8 +219,9 @@ func _saves() -> void:
 	UiScreens.dim(content, 0.62)
 	var left := PanelContainer.new()
 	left.add_theme_stylebox_override("panel", UiTheme.flat(Color(0.05, 0.04, 0.035, 0.9), Color("4a3a28"), 2, 18))
-	left.position = Vector2(60, 70)
-	left.size = Vector2(560, 940)
+	var vs := UiRoot.inst.root.size
+	left.position = Vector2(20, 16) if _phone() else Vector2(60, 70)
+	left.size = Vector2(560, vs.y - 32) if _phone() else Vector2(560, 940)
 	content.add_child(left)
 	var lv := VBoxContainer.new()
 	lv.add_theme_constant_override("separation", 10)
@@ -266,6 +312,11 @@ func _hero_stage(s: Dictionary) -> void:
 	stage.size = Vector2(1160, 1000)
 	stage.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	content.add_child(stage)
+	if _phone():
+		var vs := UiRoot.inst.root.size
+		var k := minf(vs.y / 1000.0, (vs.x - 600.0) / 1160.0)
+		stage.scale = Vector2(k, k)
+		stage.position = Vector2(600.0 + (vs.x - 600.0 - 1160.0 * k) / 2.0, (vs.y - 1000.0 * k) / 2.0)
 	stage.add_child(_pool(Color(1.0, 0.85, 0.6, 0.1), Rect2(stage.size.x / 2 - 520, 120, 1040, 900)))
 	stage.add_child(_pool(Color(1.0, 0.78, 0.45, 0.5), Rect2(stage.size.x / 2 - 320, 790, 640, 130)))
 	var fig := TextureRect.new()
@@ -312,6 +363,11 @@ func _hero_stage(s: Dictionary) -> void:
 		bar.add_child(_mini(L.t("delete"), func():
 			confirm_slot = slot
 			_show("saves")))
+	if _phone():
+		var vs := UiRoot.inst.root.size
+		bar.reparent(content, false)
+		bar.position = Vector2(stage.position.x, vs.y - 84.0)
+		bar.size = Vector2(1160.0 * stage.scale.x, 70)
 
 
 func _mini(text: String, cb: Callable) -> Button:
@@ -321,51 +377,72 @@ func _mini(text: String, cb: Callable) -> Button:
 
 
 # ---------------------------------------------------------------- new game
+# Phones: smaller cards in a row on the left, the description, name and buttons in a column beside them.
 func _new() -> void:
 	cards.clear()
+	var ph := _phone()
 	var vb := _column()
 	vb.add_theme_constant_override("separation", 10)
-	vb.add_child(UiTheme.title(UiTheme.t("menu_pick_class"), 50))
+	vb.add_child(UiTheme.title(UiTheme.t("menu_pick_class"), 40 if ph else 50))
 	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 30 if DB.classes.size() <= 4 else 14)
+	row.add_theme_constant_override("separation", 30 if DB.classes.size() <= 4 and not ph else 12)
 	row.alignment = BoxContainer.ALIGNMENT_CENTER
-	vb.add_child(row)
+	var side := vb
+	if ph:
+		var hb := HBoxContainer.new()
+		hb.add_theme_constant_override("separation", 20)
+		hb.alignment = BoxContainer.ALIGNMENT_CENTER
+		vb.add_child(hb)
+		hb.add_child(row)
+		side = VBoxContainer.new()
+		side.add_theme_constant_override("separation", 10)
+		side.alignment = BoxContainer.ALIGNMENT_CENTER
+		hb.add_child(side)
+	else:
+		vb.add_child(row)
 	for cid in DB.classes:
 		row.add_child(_card(cid))
 	var box := PanelContainer.new()
 	box.add_theme_stylebox_override("panel", UiTheme.flat(Color(0.03, 0.025, 0.02, 0.86), Color("3a2e22"), 2, 16))
 	box.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	vb.add_child(box)
+	side.add_child(box)
 	var inner := VBoxContainer.new()
 	inner.add_theme_constant_override("separation", 10)
 	box.add_child(inner)
-	desc_lbl = UiTheme.wrap_label("", 23, UiTheme.INK, 1120)
+	desc_lbl = UiTheme.wrap_label("", 23, UiTheme.INK, 520 if ph else 1120)
 	desc_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	desc_lbl.custom_minimum_size.y = 96
+	desc_lbl.custom_minimum_size.y = 190 if ph else 96
 	inner.add_child(desc_lbl)
-	var form := HBoxContainer.new()
-	form.add_theme_constant_override("separation", 16)
+	var form: BoxContainer = VBoxContainer.new() if ph else HBoxContainer.new()
+	form.add_theme_constant_override("separation", 8 if ph else 16)
 	form.alignment = BoxContainer.ALIGNMENT_CENTER
 	inner.add_child(form)
-	form.add_child(UiTheme.label(L.t("menu_name"), 30))
+	var name_row := HBoxContainer.new()
+	name_row.add_theme_constant_override("separation", 16)
+	name_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	form.add_child(name_row)
+	name_row.add_child(UiTheme.label(L.t("menu_name"), 30))
 	name_edit = LineEdit.new()
-	name_edit.custom_minimum_size = Vector2(340, 52)
+	name_edit.custom_minimum_size = Vector2(340, 56)
 	name_edit.max_length = 18
 	name_edit.placeholder_text = UiTheme.t("menu_default_name")
 	name_edit.text_submitted.connect(func(_t): _start())
-	form.add_child(name_edit)
-	form.add_child(UiTheme.sep(20))
-	form.add_child(UiTheme.label("%s: %s" % [L.t("menu_difficulty"), L.t("diff_0")], 26, UiTheme.DIM))
+	name_row.add_child(name_edit)
+	if not ph:
+		form.add_child(UiTheme.sep(20))
+	var diff := UiTheme.label("%s: %s" % [L.t("menu_difficulty"), L.t("diff_0")], 26, UiTheme.DIM)
+	diff.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	form.add_child(diff)
 	var note := UiTheme.label(UiTheme.t("menu_locked_diff"), 18, UiTheme.FAINT, true)
 	note.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	inner.add_child(note)
 	var btns := HBoxContainer.new()
 	btns.add_theme_constant_override("separation", 24)
 	btns.alignment = BoxContainer.ALIGNMENT_CENTER
-	vb.add_child(btns)
-	var back := UiTheme.button(L.t("menu_back"), func(): _show("main"), 280, 30)
+	side.add_child(btns)
+	var back := UiTheme.button(L.t("menu_back"), func(): _show("main"), 220 if ph else 280, 30)
 	btns.add_child(back)
-	var go := UiTheme.button(L.t("menu_start"), _start, 340, 32)
+	var go := UiTheme.button(L.t("menu_start"), _start, 280 if ph else 340, 32)
 	go.add_theme_color_override("font_color", UiTheme.GOLD)
 	btns.add_child(go)
 	_select(sel_class)
@@ -383,7 +460,7 @@ func _card(cid: String) -> Control:
 	t.texture = DB.tex("ui/class_" + cid)
 	if t.texture == null:
 		t.texture = DB.tex("portraits/hero_" + cid)
-	var wide := DB.classes.size() <= 4
+	var wide := DB.classes.size() <= 4 and not _phone()
 	t.custom_minimum_size = Vector2(300, 450) if wide else Vector2(196, 294)
 	t.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	t.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
@@ -436,7 +513,11 @@ func _start() -> void:
 
 
 # ---------------------------------------------------------------- options
+# Phones: the settings scroll between the title and Back instead of shrinking.
 func _options() -> void:
+	if _phone():
+		UiScreens.options_page(content, L.t("menu_options"), func(): _show("main"), func(): _show("options"))
+		return
 	var vb := _column()
 	vb.add_child(UiTheme.title(L.t("menu_options"), 54))
 	vb.add_child(UiTheme.sep(10))

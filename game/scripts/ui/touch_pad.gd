@@ -15,6 +15,7 @@ const REPEAT_AFTER := 0.3
 const NO_REPEAT := ["buff", "summon", "passive"]
 
 static var active := false
+static var buzz := true
 
 var desktop_test := false
 var font: Font
@@ -41,6 +42,9 @@ func _ready() -> void:
 	layer = 35
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	desktop_test = Game.args.has("--touch")
+	var cfg := ConfigFile.new()
+	cfg.load("user://settings.cfg")
+	buzz = bool(cfg.get_value("main", "vibrate", true))
 	Input.emulate_mouse_from_touch = false
 	font = load("res://assets/fonts/TataHand.ttf")
 	view = Control.new()
@@ -102,20 +106,35 @@ func _layout() -> void:
 	if mm.visible:
 		var r := mm.get_global_rect()
 		buttons.append({"id": "map", "c": r.get_center(), "r": r.size.x / 2.0, "hidden": true})
+	var am: Automap = Game.main.hud.automap
+	if am.visible:
+		var sr := am.sheet.get_global_rect()
+		buttons.append({"id": "map", "c": sr.position + Vector2(50.0, 50.0), "r": 38.0})
 	if _panels_open():
 		return
-	buttons.append({"id": "pause", "c": Vector2(52, 52), "r": 36.0})
-	buttons.append({"id": "items", "c": Vector2(136, 52), "r": 36.0})
-	var c := Vector2(vs.x - 150, vs.y - _bar_h() - 122)
-	buttons.append({"id": "attack", "c": c, "r": 84.0})
+	var top := ["pause", "items"]
+	var at := Vector2(52, 52)
+	var step := 84.0
+	if Game.main.hud.phone():
+		top = ["book", "pause", "items"]
+		at = Vector2((mm.get_global_rect().position.x if mm.visible else vs.x) - 58.0, 52)
+		step = -84.0
+	if Game.level and not Game.level.is_town and _portal_scroll() != null:
+		top.append("portal")
+	for id in top:
+		buttons.append({"id": id, "c": at, "r": 44.0 if id == "book" else 36.0})
+		at.x += step
+	var phone: bool = Game.main.hud.phone()
+	var c := Vector2(vs.x - 185, vs.y - 150) if phone else Vector2(vs.x - 150, vs.y - _bar_h() - 122)
+	buttons.append({"id": "attack", "c": c, "r": 70.0 if phone else 84.0})
 	for k in 5:
 		var a := deg_to_rad(175.0 + k * 27.5)
-		buttons.append({"id": "skill", "arg": k, "c": c + Vector2(cos(a), sin(a)) * 230.0, "r": 50.0})
-	var by := vs.y - _bar_h() - 40
-	buttons.append({"id": "potion", "arg": "heal", "c": Vector2(vs.x - 480, by), "r": 40.0})
-	buttons.append({"id": "potion", "arg": "mana", "c": Vector2(vs.x - 575, by), "r": 40.0})
-	if Game.level and not Game.level.is_town and _portal_scroll() != null:
-		buttons.append({"id": "portal", "c": Vector2(220, 52), "r": 36.0})
+		buttons.append({"id": "skill", "arg": k, "c": c + Vector2(cos(a), sin(a)) * (168.0 if phone else 230.0), "r": 43.0 if phone else 50.0})
+	var by := vs.y - 56 if phone else vs.y - _bar_h() - 40
+	var px := vs.x - (400 if phone else 480)
+	var pr := 36.0 if phone else 40.0
+	buttons.append({"id": "potion", "arg": "heal", "c": Vector2(px, by), "r": pr})
+	buttons.append({"id": "potion", "arg": "mana", "c": Vector2(px - pr * 2.4, by), "r": pr})
 
 
 func _button_at(p: Vector2):
@@ -290,7 +309,9 @@ func _press_button(t: Dictionary) -> void:
 				Input.action_release("show_items")
 		"map":
 			Game.main.hud.toggle("automap")
-	Input.vibrate_handheld(12)
+		"book":
+			Game.main.ui.toggle_panel("inventory")
+	_vibrate(12)
 
 
 func _hold_button(t: Dictionary) -> void:
@@ -334,6 +355,11 @@ func _release_button(t: Dictionary, canceled: bool) -> void:
 				_key(KEY_ESCAPE)
 
 
+func _vibrate(ms: int) -> void:
+	if buzz:
+		Input.vibrate_handheld(ms)
+
+
 func _repeatable(id: String) -> bool:
 	return str(DB.skill(id).get("type", "")) not in NO_REPEAT
 
@@ -360,7 +386,7 @@ func _process(_d: float) -> void:
 				if not t.get("dragging", false) and not t.get("long", false) and now - t.t >= LONG_PRESS:
 					t.long = true
 					_click(t.start, MOUSE_BUTTON_RIGHT)
-					Input.vibrate_handheld(30)
+					_vibrate(30)
 			"button":
 				if playing:
 					_hold_button(t)
@@ -465,6 +491,17 @@ func _draw_button(b: Dictionary, down: bool) -> void:
 			var it := _portal_scroll()
 			if it:
 				_icon(it.icon(), c, r * 1.4)
+		"map":
+			for d in [Vector2(1, 1), Vector2(1, -1)]:
+				view.draw_line(c - d * 14.0, c + d * 14.0, UiTheme.INK, 4.0)
+		"book":
+			var col := UiTheme.INK
+			var bag := Rect2(c + Vector2(-17, -8), Vector2(34, 26))
+			view.draw_rect(bag, col, false, 3.0)
+			view.draw_arc(c + Vector2(0, -8), 10.0, PI, TAU, 16, col, 3.0)
+			view.draw_line(c + Vector2(-17, 1), c + Vector2(17, 1), col, 3.0)
+			if Game.ch.stat_points > 0 or Game.ch.skill_points > 0:
+				view.draw_circle(c + Vector2(r * 0.7, -r * 0.7), 9.0, UiTheme.GOLD)
 		"pause":
 			for k in 3:
 				view.draw_line(c + Vector2(-15, -10 + k * 10), c + Vector2(15, -10 + k * 10), UiTheme.INK, 4.0)

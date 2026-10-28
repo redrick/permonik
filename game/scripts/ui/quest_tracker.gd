@@ -62,21 +62,36 @@ func compact() -> bool:
 	return Game.flags.get("ui_tracker_compact", false)
 
 
+# Phones: folded to the next step on one line until opened.
+func folded_phone() -> bool:
+	return _phone() and not Game.flags.has("ui_tracker_open")
+
+
+func _phone() -> bool:
+	return Game.main != null and Game.main.hud != null and Game.main.hud.phone()
+
+
 func refresh() -> void:
 	var tq := Game.tracked_quests()
 	var sig := str(tq) + str(tq.map(func(q): return Game.quest_on_map(q.qid))) + str(compact()) \
-		+ str(Game.flags.size()) + str(Game.act) + str(Game.seal_count()) + L.lang
+		+ str(Game.flags.size()) + str(Game.act) + str(Game.seal_count()) + L.lang + str(folded_phone())
 	if sig == _sig:
 		return
 	_sig = sig
 	for c in box.get_children():
+		box.remove_child(c)
 		c.queue_free()
 	buttons.clear()
+	reset_size.call_deferred()
 	var short := compact()
 	var ad := DB.act(Game.act)
+	box.custom_minimum_size.x = 0.0 if folded_phone() else W
+	if folded_phone():
+		_one_line(tq, ad)
+		return
 	var head := _row()
 	head.add_child(_line("%s %s · %s" % [L.t("act"), UiQuests._roman(Game.act), L.t(ad.get("name", ""))], 26, UiTheme.GOLD))
-	var fold := UiTheme.small_button("▸" if short else "▾", _toggle_compact, 30)
+	var fold := UiTheme.small_button("▸" if short else "▾", _toggle_phone if _phone() else _toggle_compact, 44 if _phone() else 30)
 	fold.tooltip_text = L.t({"cs": "Zobrazit popisy", "en": "Show descriptions"}) if short else L.t({"cs": "Skrýt popisy", "en": "Hide descriptions"})
 	head.add_child(fold)
 	buttons.append(fold)
@@ -137,6 +152,35 @@ func _toggle_fold(qid: String) -> void:
 		Game.flags.erase("fold:" + qid)
 	else:
 		Game.flags["fold:" + qid] = true
+	refresh()
+
+
+func _one_line(tq: Array, ad: Dictionary) -> void:
+	var txt := "%s %s · %s" % [L.t("act"), UiQuests._roman(Game.act), L.t(ad.get("name", ""))]
+	var mains := tq.filter(func(q): return q.main)
+	if not mains.is_empty():
+		txt = "◆ " + str(mains[0].name)
+	else:
+		for nid in ad.get("town", {}).get("npcs", []):
+			if Game.npc_marker(str(nid)) == "new":
+				txt = "◆ " + L.t({"cs": "Promluv si: %s", "en": "Talk to %s"}) % L.t(DB.npcs.get(nid, {}).get("name", nid))
+				break
+	var row := _row()
+	var b := UiTheme.small_button("▸", _toggle_phone, 44)
+	row.add_child(b)
+	buttons.append(b)
+	var l := _line(txt, 21, Color("f0d8a8"))
+	l.clip_text = true
+	l.custom_minimum_size = Vector2(minf(330.0, font.get_string_size(txt, HORIZONTAL_ALIGNMENT_LEFT, -1, 21).x + 12.0), 0)
+	l.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	row.add_child(l)
+
+
+func _toggle_phone() -> void:
+	if Game.flags.has("ui_tracker_open"):
+		Game.flags.erase("ui_tracker_open")
+	else:
+		Game.flags["ui_tracker_open"] = true
 	refresh()
 
 

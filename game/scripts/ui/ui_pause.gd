@@ -16,6 +16,18 @@ func _ready() -> void:
 func _build() -> void:
 	if holder:
 		holder.queue_free()
+	if in_options and UiRoot.inst.compact():
+		holder = Control.new()
+		holder.set_anchors_preset(Control.PRESET_FULL_RECT)
+		holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		add_child(holder)
+		var shade := ColorRect.new()
+		shade.color = Color(0.03, 0.025, 0.022, 0.92)
+		shade.set_anchors_preset(Control.PRESET_FULL_RECT)
+		shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		holder.add_child(shade)
+		UiScreens.options_page(holder, L.t("menu_options"), on_escape, _build)
+		return
 	var cc := CenterContainer.new()
 	holder = cc
 	cc.set_anchors_preset(Control.PRESET_FULL_RECT)

@@ -9,7 +9,7 @@ func _ready() -> void:
 	custom_minimum_size = Vector2(640, 0)
 	set_title(L.t("quests"))
 	var sc := ScrollContainer.new()
-	sc.custom_minimum_size = Vector2(556, 700)
+	sc.custom_minimum_size = Vector2(556, 520 if UiRoot.inst.compact() else 700)
 	sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	body.add_child(sc)
 	list = VBoxContainer.new()

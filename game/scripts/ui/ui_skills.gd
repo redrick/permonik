@@ -33,18 +33,23 @@ func _ready() -> void:
 			n.chained = i > 0
 			col.add_child(n)
 			nodes.append(n)
-	body.add_child(UiTheme.sep(4))
-	body.add_child(UiTheme.rule(556))
-	var row := HBoxContainer.new()
+	var compact := UiRoot.inst.compact()
+	var row: BoxContainer = VBoxContainer.new() if compact else HBoxContainer.new()
 	row.add_theme_constant_override("separation", 12)
-	body.add_child(row)
+	if compact:
+		row.custom_minimum_size = Vector2(240, 0)
+		cols.add_child(row)
+	else:
+		body.add_child(UiTheme.sep(4))
+		body.add_child(UiTheme.rule(556))
+		body.add_child(row)
 	var atk := SkillNode.new()
 	atk.id = "utok"
 	atk.panel = self
 	atk.compact = true
 	row.add_child(atk)
 	nodes.append(atk)
-	var hint := UiTheme.wrap_label(L.t("rmb_hint"), 19, UiTheme.FAINT, 460)
+	var hint := UiTheme.wrap_label(L.t("rmb_hint"), 19, UiTheme.FAINT, 230 if compact else 460)
 	hint.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	row.add_child(hint)
 	refresh()

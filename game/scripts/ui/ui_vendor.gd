@@ -33,7 +33,7 @@ func _ready() -> void:
 	if npc.role() == "smith":
 		repair_btn = UiTheme.button("", _repair, 300, 22)
 		row.add_child(repair_btn)
-	body.add_child(UiTheme.wrap_label(UiTheme.t("vendor_hint"), 18, UiTheme.FAINT, 556))
+	body.add_child(UiTheme.wrap_label(UiTheme.t("vendor_hint_touch" if TouchPad.active else "vendor_hint"), 18, UiTheme.FAINT, 556))
 	refresh()
 
 

@@ -16,6 +16,7 @@ func _ready() -> void:
 	sheet = TextureRect.new()
 	sheet.texture = DB.tex("ui/map_sheet")
 	sheet.stretch_mode = TextureRect.STRETCH_SCALE
+	sheet.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	sheet.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	sheet.modulate.a = 0.95
 	add_child(sheet)
@@ -42,9 +43,10 @@ func _layout() -> void:
 	if not visible:
 		return
 	var vs := size
-	var k := minf(1.0, minf((vs.x - 60) / SHEET.x, (vs.y - 230) / SHEET.y))
+	var bar: float = Game.main.hud.bar_h() if Game.main and Game.main.hud else 160.0
+	var k := minf(1.0, minf((vs.x - 60) / SHEET.x, (vs.y - bar - 40) / SHEET.y))
 	sheet.size = SHEET * k
-	sheet.position = Vector2((vs.x - sheet.size.x) / 2.0, maxf(20.0, (vs.y - 190 - sheet.size.y) / 2.0))
+	sheet.position = Vector2((vs.x - sheet.size.x) / 2.0, maxf(10.0, (vs.y - bar - sheet.size.y) / 2.0))
 	clip.position = Vector2(60, 90) * k
 	clip.size = sheet.size - Vector2(120, 140) * k
 	view.size = clip.size
