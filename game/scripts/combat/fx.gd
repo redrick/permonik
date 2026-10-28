@@ -173,6 +173,22 @@ static func ground_mark(level: Node, pos: Vector2, radius: float, color: Color, 
 	return s
 
 
+# A faint puff of floor dust where a foot comes down.
+static func scuff(level: Node, pos: Vector2, size: float, color := Color(0.55, 0.5, 0.44)) -> void:
+	var s := Sprite2D.new()
+	s.texture = soft()
+	s.modulate = Color(color.r, color.g, color.b, 0.22)
+	s.scale = Vector2(size / 64.0, size / 64.0 * 0.45)
+	s.global_position = pos
+	s.z_as_relative = false
+	s.z_index = -6
+	level.fx_root.add_child(s)
+	var tw := s.create_tween().set_parallel(true)
+	tw.tween_property(s, "scale", s.scale * 1.8, 0.45).set_ease(Tween.EASE_OUT)
+	tw.tween_property(s, "modulate:a", 0.0, 0.45)
+	tw.chain().tween_callback(s.queue_free)
+
+
 static func sprite_fx(level: Node, id: String, pos: Vector2, dur := 0.6, scale := 1.0, rise := 0.0) -> void:
 	var t := DB.tex("sprites/fx/" + id)
 	if t == null:

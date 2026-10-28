@@ -1,25 +1,25 @@
 {
   "krysa": {
     "name": {"cs": "Krysa z hlubin", "en": "Deep Rat"}, "gender": "f", "act": 1, "level": 1,
-    "ai": "swarm", "hp": 5, "dmg": [1, 3], "armor": 3, "speed": 110, "attack_range": 30, "attack_cd": 1.0,
+    "ai": "swarm", "hp": 5, "dmg": [1, 3], "armor": 3, "speed": 110, "stride": 18, "attack_range": 30, "attack_cd": 1.0,
     "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 0, "poison": 25},
     "xp_mult": 0.5, "size": 10, "pack": [5, 9], "projectile": null, "abilities": [], "light": null, "boss": false
   },
   "sotek": {
     "name": {"cs": "Šotek", "en": "Mine Imp"}, "gender": "m", "act": 1, "level": 2,
-    "ai": "thief", "hp": 12, "dmg": [1, 4], "armor": 8, "speed": 125, "attack_range": 40, "attack_cd": 1.0,
+    "ai": "thief", "hp": 12, "dmg": [1, 4], "armor": 8, "speed": 125, "stride": 30, "attack_range": 40, "attack_cd": 1.0,
     "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 0, "poison": 0},
     "xp_mult": 0.9, "size": 12, "pack": [2, 4], "projectile": null, "abilities": ["steal_gold"], "light": null, "boss": false
   },
   "kostlivy_havir": {
     "name": {"cs": "Kostlivý havíř", "en": "Skeleton Miner"}, "gender": "m", "act": 1, "level": 2,
-    "ai": "melee", "hp": 18, "dmg": [2, 5], "armor": 10, "speed": 70, "attack_range": 50, "attack_cd": 1.4,
+    "ai": "melee", "hp": 18, "dmg": [2, 5], "armor": 10, "speed": 70, "stride": 36, "attack_range": 50, "attack_cd": 1.4,
     "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 25, "poison": 100},
     "xp_mult": 1.0, "size": 18, "pack": [3, 6], "projectile": null, "abilities": [], "light": null, "boss": false
   },
   "kostlivy_kusinik": {
     "name": {"cs": "Kostlivý kušiník", "en": "Skeleton Crossbowman"}, "gender": "m", "act": 1, "level": 3,
-    "ai": "ranged", "hp": 20, "dmg": [2, 6], "armor": 8, "speed": 70, "attack_range": 300, "attack_cd": 2.0,
+    "ai": "ranged", "hp": 20, "dmg": [2, 6], "armor": 8, "speed": 70, "stride": 36, "attack_range": 300, "attack_cd": 2.0,
     "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 25, "poison": 100},
     "xp_mult": 1.1, "size": 18, "pack": [2, 4], "projectile": "bolt", "abilities": [], "light": null, "boss": false
   },
@@ -38,26 +38,26 @@
   },
   "utopenec": {
     "name": {"cs": "Utopenec", "en": "Drowned One"}, "gender": "m", "act": 1, "level": 6,
-    "ai": "melee", "hp": 90, "dmg": [5, 12], "armor": 25, "speed": 55, "attack_range": 55, "attack_cd": 1.6,
+    "ai": "melee", "hp": 90, "dmg": [5, 12], "armor": 25, "speed": 55, "stride": 40, "attack_range": 55, "attack_cd": 1.6,
     "element": "cold", "resist": {"fire": 0, "lightning": 0, "cold": 50, "poison": 25},
     "xp_mult": 1.6, "size": 22, "pack": [2, 5], "projectile": null, "abilities": [], "light": null, "boss": false
   },
 
   "hejkal": {
     "name": {"cs": "Hejkal", "en": "Hejkal"}, "gender": "m", "act": 2, "level": 9,
-    "ai": "charger", "hp": 130, "dmg": [9, 20], "armor": 40, "speed": 85, "attack_range": 55, "attack_cd": 1.5,
+    "ai": "charger", "hp": 130, "dmg": [9, 20], "armor": 40, "speed": 85, "stride": 56, "attack_range": 55, "attack_cd": 1.5,
     "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 25, "poison": 0},
     "xp_mult": 1.4, "size": 26, "pack": [1, 3], "projectile": null, "abilities": ["shout"], "light": null, "boss": false
   },
   "vlk": {
     "name": {"cs": "Vlk", "en": "Wolf"}, "gender": "m", "act": 2, "level": 9,
-    "ai": "swarm", "hp": 50, "dmg": [4, 9], "armor": 35, "speed": 140, "attack_range": 45, "attack_cd": 1.1,
+    "ai": "swarm", "hp": 50, "dmg": [4, 9], "armor": 35, "speed": 140, "stride": 46, "attack_range": 45, "attack_cd": 1.1,
     "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 25, "poison": 0},
     "xp_mult": 0.9, "size": 18, "pack": [4, 7], "projectile": null, "abilities": [], "light": null, "boss": false
   },
   "diva_zena": {
     "name": {"cs": "Divá žena", "en": "Wild Woman"}, "gender": "f", "act": 2, "level": 10,
-    "ai": "ranged", "hp": 100, "dmg": [7, 16], "armor": 35, "speed": 80, "attack_range": 260, "attack_cd": 2.0,
+    "ai": "ranged", "hp": 100, "dmg": [7, 16], "armor": 35, "speed": 80, "stride": 36, "attack_range": 260, "attack_cd": 2.0,
     "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 0, "poison": 25},
     "xp_mult": 1.3, "size": 18, "pack": [2, 4], "projectile": "rock", "abilities": ["heal_pack"], "light": null, "boss": false
   },
@@ -81,20 +81,20 @@
   },
   "vlkodlak": {
     "name": {"cs": "Vlkodlak", "en": "Werewolf"}, "gender": "m", "act": 2, "level": 14,
-    "ai": "melee", "hp": 280, "dmg": [16, 34], "armor": 70, "speed": 120, "attack_range": 60, "attack_cd": 1.3,
+    "ai": "melee", "hp": 280, "dmg": [16, 34], "armor": 70, "speed": 120, "stride": 56, "attack_range": 60, "attack_cd": 1.3,
     "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 25, "poison": 25},
     "xp_mult": 2.2, "size": 30, "pack": [1, 2], "projectile": null, "abilities": ["frenzy", "howl"], "light": null, "boss": false
   },
 
   "cert": {
     "name": {"cs": "Čert", "en": "Devil"}, "gender": "m", "act": 3, "level": 16,
-    "ai": "melee", "hp": 240, "dmg": [12, 26], "armor": 85, "speed": 80, "attack_range": 60, "attack_cd": 1.5,
+    "ai": "melee", "hp": 240, "dmg": [12, 26], "armor": 85, "speed": 80, "stride": 40, "attack_range": 60, "attack_cd": 1.5,
     "element": "physical", "resist": {"fire": 75, "lightning": 0, "cold": 0, "poison": 25},
     "xp_mult": 1.8, "size": 22, "pack": [2, 4], "projectile": null, "abilities": ["chain_pull"], "light": null, "boss": false
   },
   "ohnivy_muzik": {
     "name": {"cs": "Ohnivý mužík", "en": "Fire Sprite"}, "gender": "m", "act": 3, "level": 16,
-    "ai": "exploder", "hp": 120, "dmg": [20, 40], "armor": 40, "speed": 130, "attack_range": 40, "attack_cd": 1.0,
+    "ai": "exploder", "hp": 120, "dmg": [20, 40], "armor": 40, "speed": 130, "stride": 30, "attack_range": 40, "attack_cd": 1.0,
     "element": "fire", "resist": {"fire": 100, "lightning": 0, "cold": 0, "poison": 50},
     "xp_mult": 1.3, "size": 12, "pack": [3, 6], "projectile": null, "abilities": ["explode"],
     "light": {"color": "#ff9a40", "radius": 2}, "boss": false
@@ -108,13 +108,13 @@
   },
   "upir": {
     "name": {"cs": "Upír", "en": "Vampire"}, "gender": "m", "act": 3, "level": 19,
-    "ai": "melee", "hp": 330, "dmg": [18, 38], "armor": 90, "speed": 95, "attack_range": 55, "attack_cd": 1.3,
+    "ai": "melee", "hp": 330, "dmg": [18, 38], "armor": 90, "speed": 95, "stride": 36, "attack_range": 55, "attack_cd": 1.3,
     "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 50, "poison": 100},
     "xp_mult": 2.2, "size": 20, "pack": [1, 3], "projectile": null, "abilities": ["life_steal", "bat_form"], "light": null, "boss": false
   },
   "smolak": {
     "name": {"cs": "Smolák", "en": "Pitch Golem"}, "gender": "m", "act": 3, "level": 21,
-    "ai": "melee", "hp": 520, "dmg": [22, 46], "armor": 140, "speed": 50, "attack_range": 60, "attack_cd": 1.8,
+    "ai": "melee", "hp": 520, "dmg": [22, 46], "armor": 140, "speed": 50, "stride": 48, "attack_range": 60, "attack_cd": 1.8,
     "element": "poison", "resist": {"fire": 0, "lightning": 25, "cold": 25, "poison": 100},
     "xp_mult": 2.6, "size": 30, "pack": [1, 2], "projectile": null, "abilities": ["poison_pool"],
     "light": {"color": "#7dff6a", "radius": 2}, "boss": false
@@ -129,32 +129,32 @@
   },
   "cerny_pes": {
     "name": {"cs": "Černý pes", "en": "Black Dog"}, "gender": "m", "act": 4, "level": 24,
-    "ai": "charger", "hp": 300, "dmg": [20, 40], "armor": 100, "speed": 160, "attack_range": 45, "attack_cd": 1.0,
+    "ai": "charger", "hp": 300, "dmg": [20, 40], "armor": 100, "speed": 160, "stride": 50, "attack_range": 45, "attack_cd": 1.0,
     "element": "physical", "resist": {"fire": 50, "lightning": 0, "cold": 25, "poison": 25},
     "xp_mult": 1.6, "size": 18, "pack": [3, 6], "projectile": null, "abilities": ["howl"], "light": null, "boss": false
   },
   "permonicek": {
     "name": {"cs": "Permoníček", "en": "Little Permoník"}, "gender": "m", "act": 4, "level": 25,
-    "ai": "swarm", "hp": 160, "dmg": [14, 30], "armor": 90, "speed": 130, "attack_range": 35, "attack_cd": 0.9,
+    "ai": "swarm", "hp": 160, "dmg": [14, 30], "armor": 90, "speed": 130, "stride": 21, "attack_range": 35, "attack_cd": 0.9,
     "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 50, "poison": 25},
     "xp_mult": 0.9, "size": 10, "pack": [6, 12], "projectile": null, "abilities": ["steal_gold"], "light": null, "boss": false
   },
   "bes": {
     "name": {"cs": "Běs", "en": "Demon"}, "gender": "m", "act": 4, "level": 27,
-    "ai": "caster", "hp": 480, "dmg": [26, 52], "armor": 130, "speed": 75, "attack_range": 300, "attack_cd": 2.0,
+    "ai": "caster", "hp": 480, "dmg": [26, 52], "armor": 130, "speed": 75, "stride": 48, "attack_range": 300, "attack_cd": 2.0,
     "element": "fire", "resist": {"fire": 50, "lightning": 50, "cold": 0, "poison": 25},
     "xp_mult": 2.8, "size": 26, "pack": [1, 3], "projectile": "firebolt", "abilities": ["curse"], "light": null, "boss": false
   },
   "kostejuv_nesmrtelny": {
     "name": {"cs": "Kostějův nesmrtelný", "en": "Koschei's Deathless Guard"}, "gender": "m", "act": 4, "level": 28,
-    "ai": "melee", "hp": 620, "dmg": [30, 60], "armor": 220, "speed": 70, "attack_range": 60, "attack_cd": 1.5,
+    "ai": "melee", "hp": 620, "dmg": [30, 60], "armor": 220, "speed": 70, "stride": 40, "attack_range": 60, "attack_cd": 1.5,
     "element": "physical", "resist": {"fire": 0, "lightning": 25, "cold": 50, "poison": 100},
     "xp_mult": 3.0, "size": 24, "pack": [2, 4], "projectile": null, "abilities": ["revive"], "light": null, "boss": false
   },
 
   "klekanice": {
     "name": {"cs": "Klekánice", "en": "Klekánice"}, "gender": "f", "act": 1, "level": 3,
-    "ai": "boss", "hp": 280, "dmg": [5, 12], "armor": 20, "speed": 80, "attack_range": 60, "attack_cd": 1.6,
+    "ai": "boss", "hp": 280, "dmg": [5, 12], "armor": 20, "speed": 80, "stride": 28, "attack_range": 60, "attack_cd": 1.6,
     "element": "cold", "resist": {"fire": 0, "lightning": 0, "cold": 50, "poison": 50},
     "xp_mult": 12, "size": 30, "pack": [1, 1], "projectile": null, "abilities": ["fade", "light_only", "bell_summon"],
     "light": null, "boss": true,
@@ -168,7 +168,7 @@
   },
   "kostnik": {
     "name": {"cs": "Kostník ze Sedlce", "en": "Kostník of Sedlec"}, "gender": "m", "act": 1, "level": 5,
-    "ai": "boss", "hp": 650, "dmg": [8, 18], "armor": 45, "speed": 60, "attack_range": 70, "attack_cd": 1.8,
+    "ai": "boss", "hp": 650, "dmg": [8, 18], "armor": 45, "speed": 60, "stride": 94, "attack_range": 70, "attack_cd": 1.8,
     "element": "physical", "resist": {"fire": 0, "lightning": 0, "cold": 50, "poison": 100},
     "xp_mult": 18, "size": 40, "pack": [1, 1], "projectile": "bone", "abilities": ["raise_dead", "reassemble"],
     "light": null, "boss": true,
@@ -182,7 +182,7 @@
   },
   "vodnik": {
     "name": {"cs": "Vodník Hastrman", "en": "Hastrman the Water Goblin"}, "gender": "m", "act": 1, "level": 7,
-    "ai": "boss", "hp": 1150, "dmg": [10, 24], "armor": 60, "speed": 70, "attack_range": 65, "attack_cd": 1.6,
+    "ai": "boss", "hp": 1150, "dmg": [10, 24], "armor": 60, "speed": 70, "stride": 70, "attack_range": 65, "attack_cd": 1.6,
     "element": "cold", "resist": {"fire": 25, "lightning": 0, "cold": 75, "poison": 50},
     "xp_mult": 25, "size": 40, "pack": [1, 1], "projectile": null, "abilities": ["heal_in_water", "soul_cups"],
     "light": null, "boss": true, "seal": "voda",
@@ -196,7 +196,7 @@
   },
   "megera": {
     "name": {"cs": "Megera", "en": "Megera"}, "gender": "f", "act": 2, "level": 11,
-    "ai": "boss", "hp": 1750, "dmg": [14, 30], "armor": 70, "speed": 75, "attack_range": 280, "attack_cd": 1.8,
+    "ai": "boss", "hp": 1750, "dmg": [14, 30], "armor": 70, "speed": 75, "stride": 41, "attack_range": 280, "attack_cd": 1.8,
     "element": "poison", "resist": {"fire": 25, "lightning": 25, "cold": 25, "poison": 75},
     "xp_mult": 30, "size": 30, "pack": [1, 1], "projectile": "soul", "abilities": ["curse", "wolf_minions", "teleport"],
     "light": null, "boss": true,
@@ -210,7 +210,7 @@
   },
   "prokop": {
     "name": {"cs": "Divoký Prokop z Valdeka", "en": "Wild Prokop of Valdek"}, "gender": "m", "act": 2, "level": 13,
-    "ai": "boss", "hp": 2350, "dmg": [20, 42], "armor": 160, "speed": 150, "attack_range": 80, "attack_cd": 1.6,
+    "ai": "boss", "hp": 2350, "dmg": [20, 42], "armor": 160, "speed": 150, "stride": 80, "attack_range": 80, "attack_cd": 1.6,
     "element": "physical", "resist": {"fire": 0, "lightning": 25, "cold": 25, "poison": 100},
     "xp_mult": 40, "size": 50, "pack": [1, 1], "projectile": null, "abilities": ["charge"],
     "light": null, "boss": true,
@@ -224,7 +224,7 @@
   },
   "bazilisek": {
     "name": {"cs": "Bazilišek", "en": "Basilisk"}, "gender": "m", "act": 2, "level": 15,
-    "ai": "boss", "hp": 3050, "dmg": [22, 46], "armor": 200, "speed": 60, "attack_range": 90, "attack_cd": 1.8,
+    "ai": "boss", "hp": 3050, "dmg": [22, 46], "armor": 200, "speed": 60, "stride": 108, "attack_range": 90, "attack_cd": 1.8,
     "element": "poison", "resist": {"fire": 25, "lightning": 25, "cold": 0, "poison": 100},
     "xp_mult": 50, "size": 48, "pack": [1, 1], "projectile": null, "abilities": ["petrify_gaze"],
     "light": null, "boss": true, "seal": "kamen",
@@ -238,7 +238,7 @@
   },
   "strzyga": {
     "name": {"cs": "Strzyga", "en": "Strzyga"}, "gender": "f", "act": 3, "level": 18,
-    "ai": "boss", "hp": 3300, "dmg": [24, 50], "armor": 140, "speed": 100, "attack_range": 60, "attack_cd": 1.4,
+    "ai": "boss", "hp": 3300, "dmg": [24, 50], "armor": 140, "speed": 100, "stride": 80, "attack_range": 60, "attack_cd": 1.4,
     "element": "cold", "resist": {"fire": 0, "lightning": 25, "cold": 50, "poison": 50},
     "xp_mult": 55, "size": 34, "pack": [1, 1], "projectile": "ice_shard", "abilities": ["second_soul"],
     "light": null, "boss": true,
@@ -252,7 +252,7 @@
   },
   "ohnivec": {
     "name": {"cs": "Mincíř Ohnivec", "en": "Ohnivec the Minter"}, "gender": "m", "act": 3, "level": 20,
-    "ai": "boss", "hp": 4200, "dmg": [28, 56], "armor": 180, "speed": 65, "attack_range": 260, "attack_cd": 1.6,
+    "ai": "boss", "hp": 4200, "dmg": [28, 56], "armor": 180, "speed": 65, "stride": 64, "attack_range": 260, "attack_cd": 1.6,
     "element": "fire", "resist": {"fire": 100, "lightning": 25, "cold": 0, "poison": 50},
     "xp_mult": 60, "size": 40, "pack": [1, 1], "projectile": "coin", "abilities": ["fire_wave", "coin_mimic"],
     "light": null, "boss": true,
@@ -266,7 +266,7 @@
   },
   "jezibaba": {
     "name": {"cs": "Ježibaba", "en": "Ježibaba"}, "gender": "f", "act": 3, "level": 22,
-    "ai": "boss", "hp": 4500, "dmg": [30, 62], "armor": 170, "speed": 75, "attack_range": 300, "attack_cd": 1.8,
+    "ai": "boss", "hp": 4500, "dmg": [30, 62], "armor": 170, "speed": 75, "stride": 58, "attack_range": 300, "attack_cd": 1.8,
     "element": "fire", "resist": {"fire": 75, "lightning": 25, "cold": 0, "poison": 50},
     "xp_mult": 70, "size": 34, "pack": [1, 1], "projectile": "firebolt", "abilities": ["oven", "summon_chaloupka"],
     "light": null, "boss": true, "seal": "ohen",
@@ -280,13 +280,13 @@
   },
   "chaloupka": {
     "name": {"cs": "Chaloupka na kuří nožce", "en": "Hut on a Chicken Leg"}, "gender": "f", "act": 3, "level": 22,
-    "ai": "melee", "hp": 2200, "dmg": [36, 70], "armor": 260, "speed": 60, "attack_range": 90, "attack_cd": 2.2,
+    "ai": "melee", "hp": 2200, "dmg": [36, 70], "armor": 260, "speed": 60, "stride": 84, "attack_range": 90, "attack_cd": 2.2,
     "element": "physical", "resist": {"fire": 50, "lightning": 25, "cold": 25, "poison": 100},
     "xp_mult": 20, "size": 56, "pack": [1, 1], "projectile": null, "abilities": ["kick"], "light": null, "boss": false
   },
   "san": {
     "name": {"cs": "Saň Tříhlavá", "en": "The Three-Headed Saň"}, "gender": "f", "act": 4, "level": 26,
-    "ai": "boss", "hp": 6400, "dmg": [34, 70], "armor": 240, "speed": 50, "attack_range": 120, "attack_cd": 2.0,
+    "ai": "boss", "hp": 6400, "dmg": [34, 70], "armor": 240, "speed": 50, "stride": 52, "attack_range": 120, "attack_cd": 2.0,
     "element": "fire", "resist": {"fire": 50, "lightning": 25, "cold": 50, "poison": 50},
     "xp_mult": 90, "size": 64, "pack": [1, 1], "projectile": "firebolt", "abilities": ["three_heads", "regrow_heads"],
     "light": null, "boss": true,
@@ -306,7 +306,7 @@
   },
   "vij": {
     "name": {"cs": "Vij", "en": "Viy"}, "gender": "m", "act": 4, "level": 28,
-    "ai": "boss", "hp": 7600, "dmg": [40, 80], "armor": 300, "speed": 35, "attack_range": 100, "attack_cd": 2.4,
+    "ai": "boss", "hp": 7600, "dmg": [40, 80], "armor": 300, "speed": 35, "stride": 27, "attack_range": 100, "attack_cd": 2.4,
     "element": "physical", "resist": {"fire": 25, "lightning": 25, "cold": 25, "poison": 75},
     "xp_mult": 100, "size": 64, "pack": [1, 1], "projectile": null, "abilities": ["closed_eyes", "deadly_gaze", "eyelid_lifters"],
     "light": null, "boss": true,
@@ -320,7 +320,7 @@
   },
   "kostej": {
     "name": {"cs": "Kostěj Nesmrtelný", "en": "Koschei the Deathless"}, "gender": "m", "act": 4, "level": 30,
-    "ai": "boss", "hp": 9000, "dmg": [44, 88], "armor": 320, "speed": 70, "attack_range": 70, "attack_cd": 1.6,
+    "ai": "boss", "hp": 9000, "dmg": [44, 88], "armor": 320, "speed": 70, "stride": 46, "attack_range": 70, "attack_cd": 1.6,
     "element": "cold", "resist": {"fire": 25, "lightning": 25, "cold": 75, "poison": 100},
     "xp_mult": 120, "size": 40, "pack": [1, 1], "projectile": null, "abilities": ["invulnerable_needle"],
     "light": null, "boss": true, "seal": "smrt",
@@ -348,7 +348,7 @@
   },
   "permonik_obr": {
     "name": {"cs": "Permoník", "en": "Permoník"}, "gender": "m", "act": 4, "level": 32,
-    "ai": "boss", "hp": 12300, "dmg": [50, 100], "armor": 380, "speed": 55, "attack_range": 120, "attack_cd": 2.0,
+    "ai": "boss", "hp": 12300, "dmg": [50, 100], "armor": 380, "speed": 55, "stride": 66, "attack_range": 120, "attack_cd": 2.0,
     "element": "cold", "resist": {"fire": 50, "lightning": 50, "cold": 75, "poison": 75},
     "xp_mult": 250, "size": 72, "pack": [1, 1], "projectile": "rock", "abilities": ["flood", "petrify", "fire", "death", "tithe_light_drain"],
     "light": {"color": "#cfe8ff", "radius": 4}, "boss": true,

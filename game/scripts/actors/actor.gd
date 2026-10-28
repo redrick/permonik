@@ -22,6 +22,10 @@ var mlvl := 1
 var display_name := ""
 var sprite: Sprite2D
 var shadow: Sprite2D
+var shadow_scale := Vector2.ONE
+# A flattened copy of the sprite thrown on the floor away from the hero's lamp.
+var cast: Sprite2D
+var casts := true
 var tex := {}
 var pose := "idle"
 var pose_t := 0.0
@@ -50,6 +54,7 @@ var recoil := 0.0
 var recoil_dir := 1.0
 var stride := 0.0
 var stride_len := 0.0
+var walk_frame := 0
 
 
 func _ready() -> void:
@@ -67,7 +72,8 @@ static func shadow_texture() -> Texture2D:
 		for y in 24:
 			for x in 64:
 				var dd := Vector2((x - 31.5) / 32.0, (y - 11.5) / 12.0).length()
-				img.set_pixel(x, y, Color(0, 0, 0, clampf(1.0 - dd, 0.0, 1.0) * 0.55))
+				var core := Vector2((x - 31.5) / 17.0, (y - 11.5) / 6.5).length()
+				img.set_pixel(x, y, Color(0, 0, 0, clampf(1.0 - dd, 0.0, 1.0) * 0.45 + clampf(1.0 - core, 0.0, 1.0) * 0.35))
 		_shadow_tex = ImageTexture.create_from_image(img)
 	return _shadow_tex
 
@@ -81,7 +87,8 @@ func setup_visual(textures: Dictionary, with_shadow := true, shadow_w := -1.0) -
 		shadow = Sprite2D.new()
 		shadow.texture = shadow_texture()
 		var sw := shadow_w if shadow_w > 0 else radius * 3.2
-		shadow.scale = Vector2(sw / 64.0, sw / 64.0 * 0.9)
+		shadow_scale = Vector2(sw / 64.0, sw / 64.0 * 0.9)
+		shadow.scale = shadow_scale
 		add_child(shadow)
 	rig = Node2D.new()
 	add_child(rig)
@@ -90,6 +97,14 @@ func setup_visual(textures: Dictionary, with_shadow := true, shadow_w := -1.0) -
 	mat.shader = SHADER
 	sprite.material = mat
 	rig.add_child(sprite)
+	if with_shadow and casts:
+		cast = Sprite2D.new()
+		cast.material = mat
+		cast.modulate = Color(0, 0, 0, 0)
+		cast.z_index = -6
+		cast.light_mask = 0
+		add_child(cast)
+		move_child(cast, 0)
 	set_pose("idle", 0.0)
 
 
@@ -285,6 +300,8 @@ func die(_killer: Node) -> void:
 	reset_rig()
 	if shadow:
 		create_tween().tween_property(shadow, "modulate:a", 0.0, 0.6)
+	if cast:
+		cast.visible = false
 	var tw := create_tween()
 	if leaves_corpse():
 		var dir := recoil_dir if recoil_dir != 0.0 else float(-facing)
@@ -424,13 +441,32 @@ func _animate(delta: float) -> void:
 	var rot := 0.0
 	var off := 0.0
 	var sc := Vector2.ONE
+	var lock := 0.0
+	var spread := 0.0
 	if moving and pose_t <= 0.0:
-		stride += velocity.length() * delta / (stride_len if stride_len > 0.0 else maxf(28.0, radius * 2.2))
+		var sl := (stride_len if stride_len > 0.0 else maxf(28.0, radius * 2.2)) * absf(sprite.scale.x)
+		stride += velocity.length() * delta / sl
 		var step := int(stride) % 2
-		bob = -sin(fmod(stride, 1.0) * PI) * 3.0
+		var lift := sin(fmod(stride, 1.0) * PI)
+		spread = 1.0 - lift
+		if float_h <= 0.0:
+			sc.y += lift * 0.018
+			sc.x -= lift * 0.008
+		else:
+			bob = -lift * 3.0
 		rot = 0.035
 		if tex.has("walk4"):
-			set_pose("walk%d" % (int(floor(stride * 2.0 + 0.5)) % 4 + 1))
+			var ph := stride * 2.0 + 0.5
+			var f := int(floor(ph)) % 4 + 1
+			if f != walk_frame:
+				walk_frame = f
+				if f % 2 == 1:
+					_footfall()
+			set_pose("walk%d" % f)
+			if view == "" and velocity.length() > 1.0:
+				var fwd := velocity.x / velocity.length() * facing
+				var t := (fposmod(ph, 1.0) - 0.5) * sl * 0.5 * fwd / maxf(0.1, absf(sprite.scale.x))
+				lock = clampf(t, -32.0, 32.0) / float(sprite.texture.get_width())
 		elif tex.has("walk") and tex.has("walk2"):
 			set_pose("walk" if step == 0 else "walk2")
 		elif tex.has("walk"):
@@ -442,7 +478,8 @@ func _animate(delta: float) -> void:
 	elif pose_t <= 0.0 and pose != "idle":
 		set_pose("idle")
 	else:
-		bob = sin(anim_t * 2.2) * 0.8
+		if float_h > 0.0:
+			bob = sin(anim_t * 2.2) * 0.8
 		sc.y += sin(anim_t * 2.2) * 0.008
 	if swing_t >= 0.0:
 		swing_t += delta * swing_speed
@@ -481,3 +518,39 @@ func _animate(delta: float) -> void:
 	rig.scale = sc * Vector2(1.0 + 0.08 * r, 1.0 - 0.08 * r)
 	lunge = move_toward(lunge, 0.0, delta * 60.0)
 	sprite.position = Vector2(lunge * facing, bob - float_h)
+	if not moving:
+		walk_frame = 0
+	mat_set("lock", lock)
+	mat_set("leg_h", sprite_h * 0.42 / float(sprite.texture.get_height()) if lock != 0.0 else 0.0)
+	mat_set("ground", 0.3 if float_h <= 0.0 else 0.0)
+	if shadow:
+		shadow.scale = shadow_scale * Vector2(1.0 + 0.1 * spread, 1.0)
+	_update_cast()
+
+
+# Footfall on each contact frame of the walk.
+func _footfall() -> void:
+	pass
+
+
+func _update_cast() -> void:
+	if cast == null:
+		return
+	var p: Node2D = Game.player
+	var a := 0.0
+	var d := Vector2.ZERO
+	if p and p != self and float_h <= 0.0 and (shadow == null or shadow.visible):
+		d = global_position - p.global_position
+		var dist := d.length()
+		var r: float = p.light_radius_px() if p.has_method("light_radius_px") else 300.0
+		a = 0.5 * smoothstep(12.0, 60.0, dist) * (1.0 - smoothstep(r * 0.7, r * 1.1, dist)) * sprite.self_modulate.a
+	cast.visible = a > 0.01
+	if not cast.visible:
+		return
+	var k := clampf(d.length() / 170.0, 0.25, 1.1)
+	var y := d.normalized() * -k * 0.55
+	cast.transform = Transform2D(Vector2(sprite.scale.x, 0.0), y * sprite.scale.y, Vector2.ZERO)
+	cast.texture = sprite.texture
+	cast.offset = sprite.offset
+	cast.flip_h = sprite.flip_h
+	cast.modulate = Color(0, 0, 0, a)

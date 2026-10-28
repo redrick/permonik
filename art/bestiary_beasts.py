@@ -33,9 +33,9 @@ QP = {
 }
 for _i, _n in enumerate(WALKS):
     _ca, _la = step(90*_i); _cb, _lb = step(90*_i, 180); _c2 = math.cos(math.radians(180*_i))
-    QP[_n] = dict(tilt=-1.5+0.8*_c2, hipy=28.7-0.4*_c2, hipx=-19,
-                  ff=(1+8*_cb+1.5*_lb, 0), fn=(3+8*_ca+1.5*_la, 0), hf=(-1.5+6.5*_ca+1.5*_la, 0), hn=(-0.5+6.5*_cb+1.5*_lb, 0),
-                  lift=(4*_lb, 4*_la, 3.5*_la, 3.5*_lb), head=-7+2*_c2, jaw=0, tail=-24-6*_c2, crouch=0)
+    QP[_n] = dict(tilt=-1.5+0.8*_c2, hipy=28-0.8*_c2, hipx=-19, fl=(12.5, 13),
+                  ff=(2+11.5*_cb+1.5*_lb, 0), fn=(4+11.5*_ca+1.5*_la, 0), hf=(-1.5+11.5*_ca+1.5*_la, 0), hn=(-0.5+11.5*_cb+1.5*_lb, 0),
+                  lift=(4.5*_lb, 4.5*_la, 4.5*_la, 4.5*_lb), head=-7+2*_c2, jaw=0, tail=-24-6*_c2, crouch=0)
 
 
 def canine(pose, fur, fur_d, fur_l, eyecol, big=1.0, hackles=0.0):
@@ -47,7 +47,7 @@ def canine(pose, fur, fur_d, fur_l, eyecol, big=1.0, hackles=0.0):
 
     def front(j, foot, lift, g):
         target = (foot[0]+sh[0]-3, lift+2.5)
-        a, e, w = ik(j, target, 12, 12.5, -1 if lift < 5 else 1)
+        a, e, w = ik(j, target, *q.get("fl", (12, 12.5)), -1 if lift < 5 else 1)
         tube(chaikin([a, e, w]), 7.5, 4.0, g, sh=0.12)
         paw(w, g, 1 if lift < 5 else 0.6)
 
@@ -278,8 +278,8 @@ RP = {
 }
 for _i, _n in enumerate(WALKS):
     _ca, _la = step(90*_i); _cb, _lb = step(90*_i, 180); _c2 = math.cos(math.radians(180*_i))
-    RP[_n] = dict(tilt=-2+1*_c2, y=3.3-0.2*_c2, ff=(0.5+3.5*_cb+0.8*_lb, 0), fn=(1.5+3.5*_ca+0.8*_la, 0),
-                  hf=(3*_ca+0.8*_la, 0), hn=(1+3*_cb+0.8*_lb, 0), lf=(1.7*_lb, 1.7*_la, 1.7*_la, 1.7*_lb),
+    RP[_n] = dict(tilt=-2+1*_c2, y=3.3-0.2*_c2, ll=3.7, ff=(-1.5+5*_cb+0.8*_lb, 0), fn=(-0.5+5*_ca+0.8*_la, 0),
+                  hf=(5*_ca+0.8*_la, 0), hn=(1+5*_cb+0.8*_lb, 0), lf=(2*_lb, 2*_la, 2*_la, 2*_lb),
                   head=-4+2*_c2, jaw=0, tail=0.5+3.5*math.sin(math.radians(90*_i)))
 
 
@@ -303,7 +303,7 @@ def _krysa(pose):
 
     def leg(j, foot, lift, g, front):
         f = (j[0]+foot[0]+(2 if front else -1), lift+0.8)
-        a, k, w = ik(j, f, 3.4, 3.4, -1 if front else 1)
+        a, k, w = ik(j, f, q.get("ll", 3.4), q.get("ll", 3.4), -1 if front else 1)
         tube(chaikin([a, k, w]), 3.2, 1.8, g, lw=LINE*0.7, sh=0)
         for i in range(3):
             stroke([w, (w[0]+1.6, w[1]-0.4+i*0.4-0.4)], LINE*0.45, g=RAT_TAIL)

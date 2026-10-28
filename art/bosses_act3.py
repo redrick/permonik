@@ -678,7 +678,7 @@ def jezibaba(pose):
     if g:
         (ns, nl), (fs, fl) = g
         lf = ((-8, 26), (-7 + 13 * fs, 4 + 6 * fl))
-        ln_ = ((8, 26), (9 + 8 * ns, 4 + 4 * nl))
+        ln_ = ((8, 26), (9 + 13 * ns, 4 + 4 * nl))
     elif pose == "windup":
         lf, ln_ = ((-8, 26), (-16, 4)), ((8, 26), (14, 4))
     elif pose == "attack":

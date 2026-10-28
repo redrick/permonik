@@ -37,6 +37,7 @@ func setup(lv: Node) -> void:
 	team = 0
 	radius = 15.0
 	stride_len = 40.0
+	casts = false
 	collision_layer = 2
 	collision_mask = 1 | 4
 	var cid := Game.ch.class_id
@@ -376,11 +377,17 @@ func _ai(delta: float) -> void:
 			set_path_to(path.back())
 	else:
 		_stuck = 0.0
-	if moving:
+	if moving and not tex.has("walk4"):
 		step_t -= delta
 		if step_t <= 0.0:
 			step_t = 0.36
 			Sfx.play(_step_sfx(), 0.22, 0.12)
+
+
+func _footfall() -> void:
+	Sfx.play(_step_sfx(), 0.18, 0.12)
+	if not level.is_water(global_position):
+		Fx.scuff(level, global_position + Vector2(facing * 8.0 if view == "" else 0.0, 2.0), 30.0)
 
 
 func _step_sfx() -> String:

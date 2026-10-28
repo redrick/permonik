@@ -110,6 +110,7 @@ Types the engine implements (params in brackets):
   "hp": 18, "dmg": [2, 5], "armor": 10, "speed": 70, "attack_range": 50, "attack_cd": 1.4,
   "element": "physical", "resist": {"fire":0,"lightning":0,"cold":25,"poison":100},
   "xp_mult": 1.0, "size": 18,                 // collision radius px
+  "stride": 36,                               // drawn side-walk step px (heel to heel); one step per this many px moved, so the foot lock fits
   "pack": [3, 6],                              // normal pack size
   "projectile": null,                          // fx id for ranged/caster
   "abilities": [],                             // e.g. "steal_gold" "explode" "drain_mana" "light_drain" "revive" "teleport" "petrify_spit" "heal_pack" "howl"

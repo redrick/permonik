@@ -63,10 +63,10 @@ FIRE_CORE = Col(0.45, "#6b4a3c")
 
 OMP = {
     "idle": dict(s=1.0, hop=0, arms=(-40, 220), lean=0, burst=False),
-    "walk": dict(s=1.0, hop=1, arms=(-125, 305), lean=-14, burst=False, dy=(0.6, 0), fx=(-3.5, 3.5), flick=2),
-    "walk2": dict(s=1.0, hop=4, arms=(-85, 265), lean=-11, burst=False, dy=(4, 0.5), fx=(0, 0), flick=3.5),
-    "walk3": dict(s=1.0, hop=1, arms=(-50, 230), lean=-14, burst=False, dy=(0, 0.6), fx=(3.5, -3.5), flick=2),
-    "walk4": dict(s=1.0, hop=4, arms=(-95, 275), lean=-11, burst=False, dy=(0.5, 4), fx=(0, 0), flick=3.5),
+    "walk": dict(s=1.0, hop=1, arms=(-125, 305), lean=-14, burst=False, dy=(1.2, 0), hx=(-3.5, 3.5), fc=(-6.5, 8.5), flick=2),
+    "walk2": dict(s=1.0, hop=4, arms=(-85, 265), lean=-11, burst=False, dy=(5.5, 0), hx=(0, 0), fc=(2, 1), flick=3.5),
+    "walk3": dict(s=1.0, hop=1, arms=(-50, 230), lean=-14, burst=False, dy=(0, 1.2), hx=(3.5, -3.5), fc=(8.5, -6.5), flick=2),
+    "walk4": dict(s=1.0, hop=4, arms=(-95, 275), lean=-11, burst=False, dy=(0, 5.5), hx=(0, 0), fc=(1, 2), flick=3.5),
     "windup": dict(s=0.9, hop=0, arms=(35, 145), lean=6, burst=False),
     "attack": dict(s=1.25, hop=1, arms=(30, 150), lean=0, burst=True),
 }
@@ -80,7 +80,7 @@ def ohnivy_muzik(pose):
     base, v = view_of(pose)
     if v: return _ohn_fb(base, v == "b")
     q = OMP[base]
-    s = q["s"]; hop = q["hop"]; fx = q.get("fx", (0, 0)); fk = q.get("flick", 0)
+    s = q["s"]; hop = q["hop"]; fk = q.get("flick", 0)
     if q["burst"]:
         glow(0, 20, 28, EMBER, 0.14, 5, 20)
         for k in range(12):
@@ -90,9 +90,9 @@ def ohnivy_muzik(pose):
             stroke([(math.cos(aa)*r0, 18+math.sin(aa)*r0), (math.cos(aa)*r1, 18+math.sin(aa)*r1)], LINE*0.8, g=FLAME, alpha=0.8)
     else:
         glow(0, 16, 20, EMBER, 0.12, 4)
-    for x, dy, f in zip((-3, 3), q.get("dy", (hop, 0)), fx):
-        tube([(x, 9+hop), (x+1+f, 2.5+dy*0.6)], 3, 2.6, FIRE_CORE, lw=LINE*0.8, sh=0)
-        shape(ell(x+2+f, 1.4+dy*0.6, 2.6, 1.4, 12), FIRE_CORE, LINE*0.7)
+    for x, dy, c in zip(q.get("hx", (-3, 3)), q.get("dy", (hop, 0)), q.get("fc", (-1, 5))):
+        tube([(x, 9+hop), (c-1, 2.5+dy*0.6)], 3, 2.6, FIRE_CORE, lw=LINE*0.8, sh=0)
+        shape(ell(c, 1.4+dy*0.6, 2.6, 1.4, 12), FIRE_CORE, LINE*0.7)
     with T(0, 8+hop, s, rot=q["lean"]):
         for side, a in ((-1, q["arms"][1]), (1, q["arms"][0])):
             sx = side*5

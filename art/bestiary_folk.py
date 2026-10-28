@@ -9,10 +9,10 @@ GOLD = Col(0.85, "#f0c64a")
 
 STP = {
     "idle": dict(hip=(0, 13), lean=-14, ff=(-4, 1.5), nf=(4, 1.5), fh=(-2, 12.5), nh=(8, 2), head=-4, swipe=False),
-    "walk": dict(hip=(0, 12.2), lean=-27, ff=(-6, 1.5), nf=(6, 3.0), fh=(8, 6), nh=(-3, 9), head=12, swipe=False),
-    "walk2": dict(hip=(0, 13), lean=-24, ff=(1, 4.5), nf=(-0.5, 1.5), fh=(4, 8), nh=(3, 6), head=8, swipe=False),
-    "walk3": dict(hip=(0, 12.2), lean=-28, ff=(6, 3.0), nf=(-6, 1.5), fh=(-2, 12.5), nh=(9, 6), head=12, swipe=False),
-    "walk4": dict(hip=(0, 13), lean=-24, ff=(-0.5, 1.5), nf=(1, 4.5), fh=(2, 9.5), nh=(5, 5), head=8, swipe=False),
+    "walk": dict(hip=(0, 12.2), lean=-27, ff=(-7.5, 1.5), nf=(7.5, 3.0), fh=(9, 6), nh=(-4, 9), head=12, swipe=False),
+    "walk2": dict(hip=(0, 13), lean=-24, ff=(1, 5.2), nf=(0, 1.5), fh=(4, 8), nh=(3, 6), head=8, swipe=False),
+    "walk3": dict(hip=(0, 12.2), lean=-28, ff=(7.5, 3.0), nf=(-7.5, 1.5), fh=(-2, 12.5), nh=(10, 6), head=12, swipe=False),
+    "walk4": dict(hip=(0, 13), lean=-24, ff=(0, 1.5), nf=(1, 5.2), fh=(2, 9.5), nh=(5, 5), head=8, swipe=False),
     "windup": dict(hip=(1, 12.4), lean=-6, ff=(-6, 1.5), nf=(5, 1.5), fh=(-2, 12.5), nh=(-5, 19), head=6, swipe=False),
     "attack": dict(hip=(-3, 17), lean=-38, ff=(-11, 5), nf=(1, 9), fh=(-2, 12.5), nh=(15, 13), head=26, swipe=True),
 }
@@ -84,10 +84,10 @@ PM_BOOT = Col(0.32, "#5a4234")
 
 PMP = {
     "idle": dict(x=0, lean=-3, ff=(-2.5, 1.2), nf=(2.5, 1.2), nh=(7, 8), fh=(-4, 3), ka=-20, cap=0, swipe=False),
-    "walk": dict(x=0, lean=-9, ff=(-3, 1.2), nf=(3.5, 2.2), nh=(2, 6.5), fh=(2, 3.5), ka=-30, cap=1, swipe=False),
-    "walk2": dict(x=0, lean=-7, ff=(0.5, 3.2), nf=(0, 1.2), nh=(5, 7), fh=(-1.5, 3), ka=-15, cap=4, swipe=False),
-    "walk3": dict(x=0, lean=-10, ff=(3.5, 2.2), nf=(-3, 1.2), nh=(8, 9), fh=(-5, 4), ka=0, cap=2, swipe=False),
-    "walk4": dict(x=0, lean=-7, ff=(0, 1.2), nf=(0.5, 3.2), nh=(6, 8), fh=(-3, 3.5), ka=-8, cap=-1, swipe=False),
+    "walk": dict(x=0, hy=8.0, lean=-9, ff=(-4.5, 1.2), nf=(4.5, 2.2), nh=(2, 6.5), fh=(2, 3.5), ka=-30, cap=1, swipe=False),
+    "walk2": dict(x=0, lean=-7, ff=(0.5, 3.6), nf=(0, 1.2), nh=(5, 7), fh=(-1.5, 3), ka=-15, cap=4, swipe=False),
+    "walk3": dict(x=0, hy=8.0, lean=-10, ff=(4.8, 2.2), nf=(-4.2, 1.2), nh=(8, 9), fh=(-5, 4), ka=0, cap=2, swipe=False),
+    "walk4": dict(x=0, lean=-7, ff=(0, 1.2), nf=(0.5, 3.6), nh=(6, 8), fh=(-3, 3.5), ka=-8, cap=-1, swipe=False),
     "windup": dict(x=1, lean=5, ff=(-3, 1.2), nf=(3, 1.2), nh=(-1, 15), fh=(-4, 3), ka=70, cap=-3, swipe=False),
     "attack": dict(x=-2, lean=-20, ff=(-6, 1.2), nf=(5, 1.2), nh=(13, 11), fh=(-4, 3), ka=-5, cap=10, swipe=True),
 }
@@ -102,7 +102,7 @@ def permonicek(pose):
 
 def _permonicek(pose):
     q = PMP[pose]
-    hip = (q["x"], 8.5)
+    hip = (q["x"], q.get("hy", 8.5))
     lean = q["lean"]
     for f, g in ((q["ff"], PM_BOOT), (q["nf"], PM_BOOT)):
         a, k, w = ik((hip[0]+(1 if f is q["nf"] else -1), hip[1]), (hip[0]+f[0], f[1]+1.0), 4, 3.8, 1)

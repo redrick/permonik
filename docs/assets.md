@@ -29,8 +29,11 @@ Every walking figure has three views: **side** (faces right, engine flips for le
 down the screen, facing the viewer) and **back** (`_b`, walking up). The engine picks the view from the
 movement/attack direction (`Actor.face_to`) and still flips front/back horizontally by direction, so keep
 them near-symmetric. Walks are 4 frames: contact A, passing, contact B, passing (side walk = near leg
-forward, then far leg forward); the engine adds a vertical bob peaking on the passing frames. Arms swing
-against legs, hair/tails/cloth lag a frame. Same canvas, same FEET line, same shadow in every view
+forward, then far leg forward); the engine stretches the figure slightly from the feet on the passing frames. Arms swing
+against legs, hair/tails/cloth lag a frame. The engine foot-locks the side walk (shears the legs so the planted
+foot stays on the floor within a frame), so the planted foot must move back by about half a step between
+consecutive frames, and the step must match the distance travelled: heroes/NPCs share `heroes.LEGS`
+(≈43 px heel to heel for 40 px `stride_len`), monsters set `stride` in `monsters.json` to their drawn step. Same canvas, same FEET line, same shadow in every view
 (Permoník none). `dead` stays side-only.
 
 ## Folders and sizes (game/assets/...)

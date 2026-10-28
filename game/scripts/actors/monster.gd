@@ -101,6 +101,7 @@ func setup(mid: String, level_n: int, lv: Node, champion := false) -> void:
 	dmg = Vector2(float(dd[0]), float(dd[1])) * dm * (1.4 if champion else 1.0)
 	armor = int(float(data.get("armor", 5)) * float(mlvl) / base_l)
 	speed = float(data.get("speed", 80))
+	stride_len = float(data.get("stride", 0))
 	attack_range = float(data.get("attack_range", 50))
 	attack_cd = float(data.get("attack_cd", 1.4))
 	element = str(data.get("element", "physical"))
@@ -576,6 +577,11 @@ func _use_ability(p: Actor, d: float) -> bool:
 					abilities = abilities.filter(func(x): return x != "frenzy")
 					level.float_text(top_pos(), "!!!", Color("ff5544"))
 	return false
+
+
+func _footfall() -> void:
+	if kind == "boss" and level:
+		Fx.scuff(level, global_position, radius * 2.2)
 
 
 var hpbar: Node2D
