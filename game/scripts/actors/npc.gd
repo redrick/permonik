@@ -25,9 +25,13 @@ func setup(id: String, lv: Node) -> void:
 	var t := DB.tex("sprites/npcs/" + id)
 	if t:
 		textures["idle"] = t
-	var tt := DB.tex("sprites/npcs/%s_talk" % id)
-	if tt:
-		textures["attack"] = tt
+	for v in ["", "_f", "_b"]:
+		for p in ["idle", "talk", "walk1", "walk2", "walk3", "walk4"]:
+			if p == "idle" and v == "":
+				continue
+			var tv := DB.tex("sprites/npcs/%s_%s%s" % [id, p, v])
+			if tv:
+				textures[("attack" if p == "talk" else p) + v] = tv
 	if textures.is_empty():
 		textures["idle"] = DB.placeholder("npc_" + id, Vector2i(100, 180), Color("b8a888"))
 	setup_visual(textures, not id.begins_with("permonik"), 44.0)
@@ -84,7 +88,10 @@ func role() -> String:
 func talk_pose() -> void:
 	set_pose("attack", 1.6)
 	if npc_id == "permonik" and Game.act >= 3 and DB.tex("sprites/npcs/permonik_grin"):
-		tex["attack"] = DB.tex("sprites/npcs/permonik_grin")
+		for v in ["", "_f", "_b"]:
+			var g := DB.tex("sprites/npcs/permonik_grin" + v)
+			if g:
+				tex["attack" + v] = g
 		set_pose("attack", 1.6)
 
 

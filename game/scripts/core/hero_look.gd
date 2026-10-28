@@ -9,7 +9,11 @@ const LAYERS := ["headgear_back", "back", "body_far", "weapon_far", "lamp_far", 
 const SLOT_OF := {"headgear_back": "head", "body_far": "body", "weapon_far": "weapon", "lamp_far": "lamp", "offhand": "offhand",
 	"body": "body", "belt": "belt", "lamp": "lamp", "weapon_belt": "weapon", "body_near": "body", "weapon": "weapon", "headgear": "head"}
 const DEFAULTED := ["body", "head", "belt"]
-const POSES := ["idle", "walk1", "walk2", "attack", "cast", "hit", "dead"]
+const POSES := ["idle", "walk1", "walk2", "walk3", "walk4", "windup", "attack", "cast", "hit", "dead"]
+# Front (_f) and back (_b) views; the back hides the lamp behind the body and wears the flek over it.
+const VIEWS := ["", "_f", "_b"]
+const LAYERS_BACK := ["body_far", "weapon_far", "lamp_far", "hand_far", "offhand", "lamp", "legs", "body", "back", "belt",
+	"weapon_belt", "body_near", "weapon", "hand", "head", "headgear", "headgear_back"]
 
 static var _cache := {}
 
@@ -51,9 +55,13 @@ static func textures(cls: String, gear: Dictionary) -> Dictionary:
 		return _cache[k]
 	var out := {}
 	for pose in POSES:
-		var t := _compose("res://assets/sprites/heroes/%s/%s/" % [cls, pose], gear)
-		if t:
-			out[pose] = t
+		for v in VIEWS:
+			var dir := "res://assets/sprites/heroes/%s/%s%s/" % [cls, pose, v]
+			if v != "" and not ResourceLoader.exists(dir + "legs.png"):
+				continue
+			var t := _compose(dir, gear, LAYERS_BACK if v == "_b" else LAYERS)
+			if t:
+				out[pose + v] = t
 	if _cache.size() > 6:
 		_cache.clear()
 	_cache[k] = out
@@ -68,9 +76,9 @@ static func portrait(cls: String, gear: Dictionary) -> Texture2D:
 	return _cache[k]
 
 
-static func _compose(dir: String, gear: Dictionary) -> Texture2D:
+static func _compose(dir: String, gear: Dictionary, order: Array = LAYERS) -> Texture2D:
 	var img: Image = null
-	for layer in LAYERS:
+	for layer in order:
 		var slot: String = SLOT_OF.get(layer, "")
 		var file: String = layer
 		if slot != "":

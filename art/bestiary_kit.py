@@ -112,7 +112,7 @@ def swoosh(pts, w=2.4, col=WHITE, a=0.5):
     for i in range(n):
         p = P[max(0, i-1)]; q = P[min(n-1, i+1)]
         dx, dy = q[0]-p[0], q[1]-p[1]; L = math.hypot(dx, dy) or 1
-        ww = w*math.sin(math.pi*i/(n-1))**0.7*(i/(n-1))**0.5
+        ww = w*max(0.0, math.sin(math.pi*i/(n-1)))**0.7*(i/(n-1))**0.5
         left.append((P[i][0]-dy/L*ww, P[i][1]+dx/L*ww)); right.append((P[i][0]+dy/L*ww, P[i][1]-dx/L*ww))
     fill(left+list(reversed(right)), col, a)
 
@@ -125,6 +125,23 @@ def faint(b, rx, dx=0):
     e = ell(b.w/2+dx, FEET, rx, min(3.0, max(1.6, rx*0.16)), 30)
     fill(e, 0.0, 0.05)
     hatch(e, 1.8, 20, 0.4, 0.0, 0.3)
+
+
+# Poses a drawing can take. A drawing that supports more than the old five sets fn.poses (e.g. = ALL);
+# its pose argument is then e.g. "walk3" or "attack_f". walk..walk4 = contact, passing, contact, passing.
+POSES = ("idle", "walk", "walk2", "windup", "attack")
+POSES4 = ("idle", "walk", "walk2", "walk3", "walk4", "windup", "attack")
+ALL = tuple(p + v for v in ("", "_f", "_b") for p in POSES4)
+
+
+def view_of(pose):
+    """"walk3_f" -> ("walk3", "f"); "idle" -> ("idle", "")"""
+    if pose.endswith(("_f", "_b")): return pose[:-2], pose[-1]
+    return pose, ""
+
+
+def poses_of(fn):
+    return getattr(fn, "poses", POSES)
 
 
 def sprite(fn, pose, shadow=None, flyer=None, dx=0, lift=0, s=1.0):

@@ -102,7 +102,7 @@ func refresh(first := false) -> void:
 		sprite.scale = Vector2.ONE * 0.92
 	else:
 		tex = textures
-		var t: Texture2D = tex.get(pose, tex.get("idle"))
+		var t: Texture2D = tex.get(pose + view, tex.get(pose, tex.get("idle")))
 		sprite.texture = t
 		sprite.offset = Vector2(0, -t.get_height() / 2.0 + 8.0)
 

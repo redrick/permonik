@@ -630,15 +630,21 @@ func _apply_form() -> void:
 		look_key = ""
 		_refresh_look()
 		return
-	var tx := {}
-	for p in ["idle", "walk", "walk2", "attack"]:
-		var t := DB.tex("sprites/monsters/%s_%s" % [form, p])
-		if t:
-			tx[p] = t
+	var tx := Monster.load_tex(form)
 	if not tx.has("idle"):
 		return
-	tex = {"idle": tx.idle, "walk1": tx.get("walk", tx.idle), "walk2": tx.get("walk2", tx.idle), "attack": tx.get("attack", tx.idle),
-		"cast": tx.get("attack", tx.idle), "hit": tx.idle, "dead": tx.idle}
+	tex = {}
+	for v in ["", "_f", "_b"]:
+		if not tx.has("idle" + v):
+			continue
+		var idle: Texture2D = tx["idle" + v]
+		for p in ["idle", "walk1", "walk2", "walk3", "walk4", "windup", "attack"]:
+			if tx.has(p + v):
+				tex[p + v] = tx[p + v]
+		var atk: Texture2D = tx.get("attack" + v, idle)
+		tex["cast" + v] = atk
+		tex["hit" + v] = idle
+	tex["dead"] = tx.idle
 	var t: Texture2D = tex.get(pose, tex.idle)
 	sprite.texture = t
 	sprite.offset = Vector2(0, -t.get_height() / 2.0 + 8.0)
@@ -658,7 +664,7 @@ func _refresh_look() -> void:
 	if textures.is_empty():
 		return
 	tex = textures
-	var t: Texture2D = tex.get(pose, tex.get("idle"))
+	var t: Texture2D = tex.get(pose + view, tex.get(pose, tex.get("idle")))
 	if t:
 		sprite.texture = t
 		sprite.offset = Vector2(0, -t.get_height() / 2.0 + 8.0)

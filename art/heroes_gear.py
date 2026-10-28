@@ -28,7 +28,7 @@ LOOKS = {
     "weapon": ("krumpac", "sekera", "valaska", "palcat", "obusek", "berla", "cep", "kord", "savle", "obourucni_mec",
                "nuz", "hul", "kuse", "luk"),
 }
-POSES = ("idle", "walk1", "walk2", "attack", "cast", "hit", "dead")
+POSES = ("idle", "walk1", "walk2", "walk3", "walk4", "windup", "attack", "cast", "hit", "dead")
 
 STEEL = Col(0.66, "#a3abb5"); STEEL_D = Col(0.45, "#6f7782"); STEEL_L = Col(0.88, "#dde2e8")
 CHAIN = Col(0.55, "#868c94"); FUR = Col(0.4, "#6e4e34"); FUR_L = Col(0.85, "#e3d6bd")
@@ -46,13 +46,13 @@ class Cls:
 
 CLS = {
     "havir": Cls(H.HAV, H.HAV_POSE, H.H_SMOCK, H.H_SMOCK_DK, 52, (58, 62),
-                 {"upright": ("near", 72), "swing": ("near", -16), "flung": ("near", 115), "hang": ("far", -96)},
+                 {"upright": ("near", 72), "swing": ("near", -16), "wind": ("near", 128), "flung": ("near", 115), "hang": ("far", -96)},
                  23, 18, (40, 15)),
     "zbojnice": Cls(H.ZB, H.ZB_POSE, H.Z_SHIRT, RED, 58, (58, 67),
                     {"rest": ("near", 78), "strike": ("near", 35), "flung": ("near", 120), "raised": ("near", 100),
-                     "belt": ("belt", -100)}, 29, 16, (44, 3)),
+                     "belt": ("belt", -100), "chop_back": ("near", 145)}, 29, 16, (44, 3)),
     "vedma": Cls(H.VE, H.VE_POSE, H.V_SHAWL, H.V_BLOUSE, 60, (59, 64),
-                 {"stand": ("near", 92), "thrust": ("near", -4), "raise": ("near", 96), "flung": ("near", 112)},
+                 {"stand": ("near", 92), "thrust": ("near", -4), "raise": ("near", 96), "flung": ("near", 112), "draw": ("near", 8)},
                  26, 16, (-6, 15)),
 }
 
@@ -505,7 +505,7 @@ def body(cls, k, pose, layer, look):
     elif layer == "weapon":
         _, _, Hd, fa = arm_geom(k, 1, near)
         if hold and hold[0] == "near":
-            weapon(look, Hd[0], Hd[1], hold[1], flip=(wpn == "strike"), glow=(wpn == "raise"), plant=(wpn == "stand"))
+            weapon(look, Hd[0], Hd[1], hold[1], flip=(wpn in ("strike", "chop_back")), glow=(wpn == "raise"), plant=(wpn == "stand"))
     elif layer == "hand":
         _, _, Hd, fa = arm_geom(k, 1, near)
         hnd(Hd[0], Hd[1], fa, 2.5 if cls == "havir" else 2.3, open_=op)
@@ -532,7 +532,7 @@ def draw(cls, layer, look, pose, x, y, s):
             body(cls, k, pose, layer, look)
         return
     if layer == "back": cast_shadow(x, y, c.shadow_rx*s, 3*s)
-    with T(x, y + (1.2 if pose in ("hit", "attack") else 0), s, rot=lean_rot(pose)):
+    with T(x, y + (1.2 if pose in ("hit", "attack", "windup") else 0), s, rot=lean_rot(pose)):
         body(cls, k, pose, layer, look)
 
 
@@ -554,6 +554,7 @@ def layer_jobs(scale=1.0, size=240, poses=POSES, folder="sprites/heroes"):
     out = {}
     for cls in CLS:
         for pose in poses:
+            if pose not in CLS[cls].poses: continue
             items = []
             for layer in LAYERS:
                 if skip(cls, layer, pose): continue
@@ -569,14 +570,35 @@ def layer_jobs(scale=1.0, size=240, poses=POSES, folder="sprites/heroes"):
     return out
 
 
+def view_jobs(size=240, folder="sprites/heroes"):
+    import hero_views as V
+    out = {}
+    for cls, sp in V.load().items():
+        for view, sfx in V.VIEWS.items():
+            for pose in sp.poses[view]:
+                items = []
+                for layer in V.ORDER[view]:
+                    if V.skip(cls, layer, pose, view): continue
+                    slot = SLOT_OF.get(layer)
+                    for look in (LOOKS[slot] if slot else (None,)):
+                        if layer == "headgear_back" and not (look == "kapuce" or (look == "default" and sp.cap_back)): continue
+                        name = layer + ("." + look if look else "")
+                        fn = (lambda cls, layer, look, pose, view: lambda b: V.draw(cls, layer, look, pose, view, b.w/2, FEET, H.S_HERO))(cls, layer, look, pose, view)
+                        items.append((name, size, size, fn))
+                out[f"{folder}/{cls}/{pose}{sfx}"] = items
+    return out
+
+
 def jobs():
     j = layer_jobs()
+    j.update(view_jobs())
     j.update(layer_jobs(2.5, 600, ("idle",), "sprites/heroes_big"))
     return j
 
 
 if __name__ == "__main__":
     import sys
+    sys.modules["heroes_gear"] = sys.modules["__main__"]
     import heroes_new
     only_cls = [a for a in sys.argv[1:] if a in CLS]
     sys.argv = [a for a in sys.argv if a not in CLS]

@@ -26,6 +26,7 @@ var tex := {}
 var pose := "idle"
 var pose_t := 0.0
 var facing := 1
+var view := ""
 var status := {}
 var path: Array = []
 var anim_t := 0.0
@@ -93,9 +94,9 @@ func setup_visual(textures: Dictionary, with_shadow := true, shadow_w := -1.0) -
 
 
 func set_pose(p: String, hold := 0.0) -> void:
-	var t: Texture2D = tex.get(p, null)
+	var t: Texture2D = tex.get(p + view, tex.get(p, null))
 	if t == null:
-		t = tex.get("idle", null)
+		t = tex.get("idle" + view, tex.get("idle", null))
 	if t == null:
 		return
 	pose = p
@@ -312,6 +313,17 @@ func face_to(p: Vector2) -> void:
 		facing = 1 if dx > 0 else -1
 	if sprite:
 		sprite.flip_h = facing < 0
+	if tex.has("idle_f"):
+		var dy := p.y - global_position.y
+		var v := view
+		if absf(dy) > absf(dx) * 1.2 and absf(dy) > 2.0:
+			v = "_f" if dy > 0 else "_b"
+		elif absf(dx) > absf(dy) * 1.2:
+			v = ""
+		if v != view:
+			view = v
+			if sprite:
+				set_pose(pose, pose_t)
 
 
 func set_path_to(target: Vector2) -> void:
@@ -417,7 +429,9 @@ func _animate(delta: float) -> void:
 		var step := int(stride) % 2
 		bob = -sin(fmod(stride, 1.0) * PI) * 3.0
 		rot = 0.035
-		if tex.has("walk") and tex.has("walk2"):
+		if tex.has("walk4"):
+			set_pose("walk%d" % (int(floor(stride * 2.0 + 0.5)) % 4 + 1))
+		elif tex.has("walk") and tex.has("walk2"):
 			set_pose("walk" if step == 0 else "walk2")
 		elif tex.has("walk"):
 			set_pose("walk" if step == 0 else "idle")
@@ -458,8 +472,12 @@ func _animate(delta: float) -> void:
 			swing_t = -1.0
 	var r := recoil * recoil
 	recoil = maxf(0.0, recoil - delta * 6.0)
-	rig.position = Vector2(off * facing + recoil_dir * r * 9.0, 0.0)
-	rig.rotation = rot * facing + recoil_dir * r * 0.12
+	if view != "" and tex.has("idle" + view):
+		rig.position = Vector2(recoil_dir * r * 9.0, off * (0.5 if view == "_f" else -0.4))
+		rig.rotation = recoil_dir * r * 0.12
+	else:
+		rig.position = Vector2(off * facing + recoil_dir * r * 9.0, 0.0)
+		rig.rotation = rot * facing + recoil_dir * r * 0.12
 	rig.scale = sc * Vector2(1.0 + 0.08 * r, 1.0 - 0.08 * r)
 	lunge = move_toward(lunge, 0.0, delta * 60.0)
 	sprite.position = Vector2(lunge * facing, bob - float_h)

@@ -23,14 +23,24 @@ Same pencil line, crayon fills, faces and paper grain as the comics, but darker:
   `style3.cast_shadow(...)` under its feet.
 - Every sprite faces **right**. The engine flips for left.
 
+## Views and walk cycles
+
+Every walking figure has three views: **side** (faces right, engine flips for left), **front** (`_f`, walking
+down the screen, facing the viewer) and **back** (`_b`, walking up). The engine picks the view from the
+movement/attack direction (`Actor.face_to`) and still flips front/back horizontally by direction, so keep
+them near-symmetric. Walks are 4 frames: contact A, passing, contact B, passing (side walk = near leg
+forward, then far leg forward); the engine adds a vertical bob peaking on the passing frames. Arms swing
+against legs, hair/tails/cloth lag a frame. Same canvas, same FEET line, same shadow in every view
+(Permoník none). `dead` stays side-only.
+
 ## Folders and sizes (game/assets/...)
 
 | Folder | What | Size |
 |---|---|---|
-| `sprites/heroes/` | in layers (`heroes_gear.py`), so worn gear shows: `<class>/<pose>/<layer>[.<look>].png`, pose ∈ idle, walk1, walk2, attack, cast, hit, dead. Layers back to front: headgear_back, back, body_far, weapon_far, lamp_far, hand_far, offhand, legs, body, belt, lamp, weapon_belt, body_near, weapon, hand, head, headgear. Look = the base item's `icon`; `default` = what the class wears with the slot empty (a `kytel` counts as empty). The game stacks them per gear (`scripts/core/hero_look.gd`). `sprites/heroes_big/<class>/idle/` = the same at 600×600 for the hero list | 240×240 each, figure ~130 px tall, feet at FEET, centred. `dead` lies on the ground in the same canvas. |
-| `sprites/npcs/` | `<npc>.png` + `<npc>_talk.png` | 200×240, figure ~130 px (children / small folk smaller) |
+| `sprites/heroes/` | in layers (`heroes_gear.py`), so worn gear shows: `<class>/<pose>/<layer>[.<look>].png`, pose ∈ idle, walk1, walk2, attack, cast, hit, dead. Every class also has walk3, walk4, windup (side) and front/back views of idle, walk1–4, windup, attack, cast, hit in `<pose>_f/`, `<pose>_b/` (`hero_views.py` framework + a `Spec` per class in `hero_views*.py`; back = front mirrored, its own layer order; dead stays side). Layers back to front: headgear_back, back, body_far, weapon_far, lamp_far, hand_far, offhand, legs, body, belt, lamp, weapon_belt, body_near, weapon, hand, head, headgear. Look = the base item's `icon`; `default` = what the class wears with the slot empty (a `kytel` counts as empty). The game stacks them per gear (`scripts/core/hero_look.gd`). `sprites/heroes_big/<class>/idle/` = the same at 600×600 for the hero list | 240×240 each, figure ~130 px tall, feet at FEET, centred. `dead` lies on the ground in the same canvas. |
+| `sprites/npcs/` | `<npc>.png` (idle) + `<npc>_talk.png`, `<npc>_walk1..4.png`, views `<npc>_idle_f.png`, `<npc>_talk_f.png`, `<npc>_walk1_f.png` … (`_b` likewise). Drawing fn sets `fn.poses` | 200×240, figure ~130 px (children / small folk smaller) |
 | `portraits/` | `<npc>.png` (also heroes: `hero_<class>.png`, bosses: `boss_<id>.png`) | 256×256, head and shoulders, dark vignette background filling the square |
-| `sprites/monsters/` | `<id>_idle.png`, `<id>_walk.png`, `<id>_walk2.png`, `<id>_windup.png`, `<id>_attack.png` (walk optional). `walk2` = the opposite stride of `walk` (2-frame walk cycle; floaters: other flutter/undulation phase), `windup` = attack anticipation (pulled back, arm/jaw raised, no attack effects) | per creature, all poses of one creature **same canvas**, feet at FEET, centred. Small 96–128, medium 192–224, large 256–320, bosses 320–512 |
+| `sprites/monsters/` | `<id>_idle.png`, `<id>_walk.png`, `<id>_walk2.png`, `<id>_windup.png`, `<id>_attack.png` (walk optional). `walk`..`walk4` = 4-frame cycle (contact, passing, contact, passing; floaters: flutter/undulation phases), views `<id>_<pose>_f.png` / `_b.png` for all seven poses (drawing fn sets `fn.poses = bestiary_kit.ALL`, parses `view_of(pose)`), `windup` = attack anticipation (pulled back, arm/jaw raised, no attack effects) | per creature, all poses of one creature **same canvas**, feet at FEET, centred. Small 96–128, medium 192–224, large 256–320, bosses 320–512 |
 | `sprites/fx/` | projectiles and effects (see list) | small, centred, pointing right |
 | `tiles/<set>/` | `floor_0..3.png` 64×64 · `wall_0..2.png` 64×96 (top 64 px = rock top seen from above, bottom 32 px = front face) · `floor_deco_0..3.png` 64×64 transparent overlays (cracks, rubble, rails, puddles, bones) · towns also `path_0..2.png` 128×128 soft footpath decals drawn centred on a 64 px cell so neighbours overlap | |
 | `props/` | `<id>.png`, base (ground contact) at bottom-centre with FEET margin | see list |

@@ -1,5 +1,5 @@
 import common
-from bestiary_kit import sprite
+from bestiary_kit import sprite, poses_of
 import bestiary_dead as D
 import bestiary_beasts as B
 import bestiary_folk as F
@@ -36,13 +36,17 @@ CREATURES = [
 ]
 
 
-def items():
+def items(ids=None):
     out = []
     for cid, w, h, fn, sh, fl, lift, *dx in CREATURES:
-        for p in POSES:
+        if ids and cid not in ids: continue
+        for p in poses_of(fn):
             out.append((f"{cid}_{p}", w, h, sprite(fn, p, sh, fl, dx[0] if dx else 0, lift)))
     return out
 
 
 if __name__ == "__main__":
-    common.run({"sprites/monsters": items()})
+    import sys
+    ids = sys.argv[sys.argv.index("--ids") + 1].split(",") if "--ids" in sys.argv else None
+    if ids: del sys.argv[sys.argv.index("--ids"):sys.argv.index("--ids") + 2]
+    common.run({"sprites/monsters": items(ids)})

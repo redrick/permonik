@@ -69,6 +69,20 @@ static func f_dmg(l: float) -> float:
 	return pow(l, 1.15) + 3.0 * l
 
 
+
+# Side poses plus the front (_f) and back (_b) views where drawn. "walk" doubles as "walk1" so a
+# 4-frame cycle reads walk1..walk4 like the heroes.
+static func load_tex(mid: String) -> Dictionary:
+	var out := {}
+	for v in ["", "_f", "_b"]:
+		for p in ["idle", "walk", "walk2", "walk3", "walk4", "windup", "attack"]:
+			var t := DB.tex("sprites/monsters/%s_%s%s" % [mid, p, v])
+			if t:
+				out[p + v] = t
+		if out.has("walk" + v):
+			out["walk1" + v] = out["walk" + v]
+	return out
+
 func setup(mid: String, level_n: int, lv: Node, champion := false) -> void:
 	id = mid
 	level = lv
@@ -100,11 +114,7 @@ func setup(mid: String, level_n: int, lv: Node, champion := false) -> void:
 	phase_walls = ai == "phaser" or "through_walls" in abilities
 	collision_layer = 4
 	collision_mask = 2 | 4 | (0 if phase_walls else 1)
-	var textures := {}
-	for p in ["idle", "walk", "walk2", "windup", "attack"]:
-		var t := DB.tex("sprites/monsters/%s_%s" % [mid, p])
-		if t:
-			textures[p] = t
+	var textures := load_tex(mid)
 	if textures.is_empty():
 		var sz := int(clampf(radius * 6.0, 64, 400))
 		textures["idle"] = DB.placeholder(mid, Vector2i(sz, sz), Color.from_hsv(float(hash(mid) % 360) / 360.0, 0.4, 0.6))

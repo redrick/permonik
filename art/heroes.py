@@ -72,6 +72,10 @@ LEGS = {  # per leg (back, front): hip x, knee x, knee dy, ankle x, lift, foot r
     "stand": ((-4, -4.5, 0, -5, 0, 0), (4, 4.6, 0, 5, 0, 0)),
     "w1": ((-3, -6, 0, -11, 2.5, -14), (3, 8, 1, 10, 0, 0)),
     "w2": ((-3, 6, 1, 8, 0, 0), (3, -5, 0, -10, 2.5, -14)),
+    "c1": ((-3, -7, 0, -13, 2.2, -20), (3, 8, 0.5, 13, 0.6, 9)),
+    "p1": ((-3, 6, 4, 4, 6, -12), (3, 1.5, 0, 0.5, 0, 0)),
+    "c2": ((-3, 8, 0.5, 13, 0.6, 9), (3, -7, 0, -13, 2.2, -20)),
+    "p2": ((-3, 0.5, 0, -0.5, 0, 0), (3, 7, 4, 5, 6, -12)),
     "lunge": ((-3, -9, -1, -17, 0.5, -8), (3, 13, 3, 13, 0, 0)),
     "brace": ((-3, -8, 0, -12, 0, 0), (3, 4, 0, 8, 1.5, 10)),
     "lie": ((-4, -4.5, 0, -5, 0, 90), (4, 4.6, 0, 5, 0, 90)),
@@ -169,7 +173,7 @@ def kahan(x, y, s=1.0, flame=FLAME, glow=GLOW, body=IRON, lit=True, hook=True):
 
 
 def lean_rot(pose):
-    return {"hit": 10, "attack": -5}.get(pose, 0)
+    return {"hit": 10, "attack": -5, "windup": 5}.get(pose, 0)
 
 
 def figure(body, k, x, y, s, pose, shadow_rx=17, drop=None, shadow=True, lie_w=26):
@@ -252,8 +256,11 @@ H_FLEK = Col(0.3, "#5b4232")
 
 HAV_POSE = {  # legs, near arm, far arm, weapon (angle, L, back), open hand, mood
     "idle": ("stand", ("a", -78, -30), ("a", -98, -84), "upright", False, "think"),
-    "walk1": ("w1", ("a", -74, -28), ("a", -70, -55), "upright", False, "think"),
-    "walk2": ("w2", ("a", -82, -32), ("a", -112, -100), "upright", False, "think"),
+    "walk1": ("c1", ("a", -98, -52), ("a", -66, -36), "upright", False, "think"),
+    "walk2": ("p1", ("a", -84, -36), ("a", -88, -66), "upright", False, "think"),
+    "walk3": ("c2", ("a", -64, -14), ("a", -112, -96), "upright", False, "think"),
+    "walk4": ("p2", ("a", -80, -30), ("a", -94, -74), "upright", False, "think"),
+    "windup": ("brace", ("a", 118, 168), ("k", -2, 104, 1), "wind", False, "determined"),
     "attack": ("lunge", ("k", 38, 80, -1), ("k", 24, 84, -1), "swing", False, "wow"),
     "cast": ("brace", ("a", 62, 88), ("a", -100, -96), "hang", True, "think"),
     "hit": ("brace", ("a", -30, 25), ("a", -150, -160), "flung", False, "worried"),
@@ -329,8 +336,11 @@ Z_BELT = Col(0.32, "#6b4a2e")
 
 ZB_POSE = {
     "idle": ("stand", ("a", -76, -12), ("a", -98, -86), "rest", False, "think"),
-    "walk1": ("w1", ("a", -72, -10), ("a", -70, -55), "rest", False, "think"),
-    "walk2": ("w2", ("a", -80, -14), ("a", -112, -100), "rest", False, "think"),
+    "walk1": ("c1", ("a", -96, -38), ("a", -66, -38), "rest", False, "think"),
+    "walk2": ("p1", ("a", -84, -22), ("a", -88, -68), "rest", False, "think"),
+    "walk3": ("c2", ("a", -62, -2), ("a", -112, -98), "rest", False, "think"),
+    "walk4": ("p2", ("a", -78, -16), ("a", -96, -78), "rest", False, "think"),
+    "windup": ("brace", ("a", 112, 160), ("a", -40, -10), "chop_back", False, "determined"),
     "attack": ("lunge", ("a", 18, 2), ("a", -150, -165), "strike", False, "wow"),
     "cast": ("brace", ("a", 60, 85), ("a", -95, -70), "belt", True, "think"),
     "hit": ("brace", ("a", -25, 30), ("a", -150, -160), "flung", False, "worried"),
@@ -412,8 +422,11 @@ V_HERB = Col(0.45, "#6f8a4a")
 
 VE_POSE = {
     "idle": ("stand", ("k", 27, 80, -1), ("a", -98, -86), "stand", False, "think"),
-    "walk1": ("w1", ("k", 29, 81, -1), ("a", -70, -55), "stand", False, "think"),
-    "walk2": ("w2", ("k", 25, 79, -1), ("a", -112, -100), "stand", False, "think"),
+    "walk1": ("c1", ("k", 24.5, 80, -1), ("a", -66, -40), "stand", False, "think"),
+    "walk2": ("p1", ("k", 27, 80.5, -1), ("a", -88, -70), "stand", False, "think"),
+    "walk3": ("c2", ("k", 30.5, 81.5, -1), ("a", -112, -98), "stand", False, "think"),
+    "walk4": ("p2", ("k", 28, 80.5, -1), ("a", -96, -80), "stand", False, "think"),
+    "windup": ("brace", ("a", -165, -5), ("a", -15, 5), "draw", False, "determined"),
     "attack": ("lunge", ("k", 38, 74, -1), ("k", 22, 77, -1), "thrust", False, "wow"),
     "cast": ("brace", ("k", 22, 118, 1), ("a", -140, -160), "raise", True, "think"),
     "hit": ("brace", ("a", -30, 25), ("a", -150, -160), "flung", False, "worried"),

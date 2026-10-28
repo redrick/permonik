@@ -46,7 +46,7 @@ def register(cid, k, poses, sleeve, cuff, hem, belt_y, weapon_at, lie_w, shadow_
     G.EXTRA[cid] = hooks
 
 
-HEAVY_AT = {"upright": ("near", 72), "swing": ("near", -16), "flung": ("near", 115), "hang": ("far", -96)}
+HEAVY_AT = {"upright": ("near", 72), "swing": ("near", -16), "wind": ("near", 128), "flung": ("near", 115), "hang": ("far", -96)}
 AGILE_AT = {"rest": ("near", 78), "strike": ("near", 35), "flung": ("near", 120), "raised": ("near", 100), "belt": ("belt", -100)}
 CASTER_AT = {"stand": ("near", 92), "thrust": ("near", -4), "raise": ("near", 96), "flung": ("near", 112)}
 
@@ -92,7 +92,11 @@ def ko_head(k, md, look):
     moustache(k, KO_BEARD, w=0.65)
 
 
-register("kovar", KO, H.HAV_POSE, KO_SHIRT, None, 52, (58, 62), HEAVY_AT, 23, 19, (40, 15),
+KO_POSE = dict(H.HAV_POSE,
+               walk1=("c1", ("a", -100, -54), ("a", -64, -34), "upright", False, "think"),
+               walk3=("c2", ("a", -62, -12), ("a", -114, -98), "upright", False, "think"))
+
+register("kovar", KO, KO_POSE, KO_SHIRT, None, 52, (58, 62), HEAVY_AT, 23, 19, (40, 15),
          Hooks(torso=ko_torso, legs=ko_legs, belt=ko_belt, head=ko_head), rolled=True)
 
 
@@ -101,14 +105,18 @@ ZR = dict(H=130, hr=10.8, hy=119, sh_y=104, sh_w=13, hip=61, knee=32, ankle=5, l
 ZR_LINEN = C_("#e6dfcc", 0.9); ZR_RED = C_("#a8282e", 0.35); ZR_FUR = C_("#6a5038", 0.35); ZR_HAIR = C_("#e8e4dc", 0.92); ZR_LEAF = C_("#4f6a2a", 0.4)
 
 
+ZR_SWAY = {"walk1": -2.5, "walk2": -0.5, "walk3": 2.5, "walk4": 0.5, "windup": 2, "attack": -4, "hit": 4}
+
+
 def zr_back(k, pose):
-    cloak = [(-k.sh_w - 2, k.sh_y + 1), (k.sh_w + 2, k.sh_y + 1)] + bez((k.sh_w + 2, k.sh_y + 1), (k.sh_w + 6, 70), (k.sh_w + 8, 40), (k.sh_w + 7, 18)) + \
-        bez((k.sh_w + 7, 18), (4, 15), (-4, 15), (-k.sh_w - 7, 18)) + bez((-k.sh_w - 7, 18), (-k.sh_w - 8, 40), (-k.sh_w - 6, 70), (-k.sh_w - 2, k.sh_y + 1))
+    w = ZR_SWAY.get(pose, 0)
+    cloak = [(-k.sh_w - 2, k.sh_y + 1), (k.sh_w + 2, k.sh_y + 1)] + bez((k.sh_w + 2, k.sh_y + 1), (k.sh_w + 6, 70), (k.sh_w + 8 + w * 0.5, 40), (k.sh_w + 7 + w, 18)) + \
+        bez((k.sh_w + 7 + w, 18), (4 + w, 15), (-4 + w, 15), (-k.sh_w - 7 + w, 18)) + bez((-k.sh_w - 7 + w, 18), (-k.sh_w - 8 + w * 0.5, 40), (-k.sh_w - 6, 70), (-k.sh_w - 2, k.sh_y + 1))
     form(cloak, ZR_FUR, sdx=-2, sdy=1, sh=0.18)
     hatch(cloak, 1.5, 80, 0.35, alpha=0.3)
-    r = k.hr; cy = k.hy
-    hair = bez((-r * 0.9, cy + r * 0.4), (-r * 1.4, cy - r * 0.8), (-r * 1.3, cy - r * 2.6), (-r * 0.6, cy - r * 3.2)) + \
-        bez((-r * 0.6, cy - r * 3.2), (0, cy - r * 3.0), (r * 0.4, cy - r * 2.0), (r * 0.6, cy - r * 0.6))
+    r = k.hr; cy = k.hy; hw = w * 0.4
+    hair = bez((-r * 0.9, cy + r * 0.4), (-r * 1.4, cy - r * 0.8), (-r * 1.3 + hw, cy - r * 2.6), (-r * 0.6 + hw, cy - r * 3.2)) + \
+        bez((-r * 0.6 + hw, cy - r * 3.2), (0 + hw, cy - r * 3.0), (r * 0.4, cy - r * 2.0), (r * 0.6, cy - r * 0.6))
     form(hair, ZR_HAIR, sdx=-1, sdy=0.6, sh=0.12)
 
 
@@ -157,7 +165,15 @@ def zr_headgear(k):
     dot(r * 0.95, cy + r * 0.55, 0.9, C_("#a87a3a", 0.5))
 
 
-register("zrec", ZR, H.VE_POSE, ZR_LINEN, ZR_RED, 62, (60, 64), CASTER_AT, 27, 17, (-6, 15),
+ZR_POSE = dict(H.VE_POSE,
+               walk1=("c1", ("k", 25, 79, -1), ("a", -66, -40), "stand", False, "think"),
+               walk2=("p1", ("k", 27, 80, -1), ("a", -88, -70), "stand", False, "think"),
+               walk3=("c2", ("k", 31, 82, -1), ("a", -114, -102), "stand", False, "think"),
+               walk4=("p2", ("k", 28, 81, -1), ("a", -94, -80), "stand", False, "think"),
+               windup=("brace", ("a", -150, 10), ("a", -40, -15), "wind", True, "determined"))
+ZR_AT = dict(CASTER_AT, wind=("near", 8))
+
+register("zrec", ZR, ZR_POSE, ZR_LINEN, ZR_RED, 62, (60, 64), ZR_AT, 27, 17, (-6, 15),
          Hooks(back=zr_back, torso=zr_torso, legs=zr_legs, belt=zr_belt, head=zr_head, headgear=zr_headgear))
 
 
@@ -166,9 +182,13 @@ VL = dict(H=126, hr=10.8, hy=115, sh_y=100, sh_w=13, hip=59, knee=31, ankle=5, l
 VL_JERK = C_("#4f5a3a", 0.35); VL_PELT = C_("#7a7670", 0.5); VL_PELT_D = C_("#4e4b47", 0.3); VL_TROUS = C_("#5a4a36", 0.35); VL_HAIR = C_("#2e2620", 0.15)
 
 
+VL_SWAY = {"walk1": -2, "walk2": -0.5, "walk3": 2, "walk4": 0.5, "windup": 1.5, "attack": -3, "hit": 3}
+
+
 def vl_back(k, pose):
-    cape = [(-k.sh_w - 1, k.sh_y + 2), (k.sh_w + 1, k.sh_y + 2)] + bez((k.sh_w + 1, k.sh_y + 2), (k.sh_w + 5, 80), (k.sh_w + 4, 62), (k.sh_w + 2, 50)) + \
-        [(6, 46), (0, 52), (-6, 46)] + bez((-k.sh_w - 2, 50), (-k.sh_w - 4, 62), (-k.sh_w - 5, 80), (-k.sh_w - 1, k.sh_y + 2))
+    w = VL_SWAY.get(pose, 0)
+    cape = [(-k.sh_w - 1, k.sh_y + 2), (k.sh_w + 1, k.sh_y + 2)] + bez((k.sh_w + 1, k.sh_y + 2), (k.sh_w + 5, 80), (k.sh_w + 4 + w * 0.5, 62), (k.sh_w + 2 + w, 50)) + \
+        [(6 + w, 46), (w, 52), (-6 + w, 46)] + bez((-k.sh_w - 2 + w, 50), (-k.sh_w - 4 + w * 0.5, 62), (-k.sh_w - 5, 80), (-k.sh_w - 1, k.sh_y + 2))
     form(cape, VL_PELT, sdx=-2, sdy=1, sh=0.18)
     hatch(cape, 1.4, 75, 0.35, alpha=0.3)
 
@@ -231,7 +251,15 @@ def vl_headgear(k):
     dot(r * 0.95, cy + r * 0.9, 0.7, C_("#e8c040", 0.85))
 
 
-register("vlkodlak", VL, H.ZB_POSE, VL_JERK, LEATHER, 54, (57, 61), AGILE_AT, 27, 17, (44, 3),
+VL_POSE = dict(H.ZB_POSE,
+               walk1=("c1", ("a", -100, -40), ("a", -64, -42), "rest", False, "think"),
+               walk2=("p1", ("a", -84, -18), ("a", -88, -72), "rest", False, "think"),
+               walk3=("c2", ("a", -62, -4), ("a", -114, -104), "rest", False, "think"),
+               walk4=("p2", ("a", -80, -16), ("a", -96, -82), "rest", False, "think"),
+               windup=("brace", ("a", 170, 100), ("a", -40, -10), "wind", False, "determined"))
+VL_AT = dict(AGILE_AT, wind=("near", 140))
+
+register("vlkodlak", VL, VL_POSE, VL_JERK, LEATHER, 54, (57, 61), VL_AT, 27, 17, (44, 3),
          Hooks(back=vl_back, torso=vl_torso, legs=vl_legs, belt=vl_belt, head=vl_head, headgear=vl_headgear, headgear_back=vl_hood_back))
 
 
@@ -298,7 +326,15 @@ def al_headgear(k):
     tube(bez((-r * 0.4, cy + r * 1.3), (-r * 1.2, cy + r * 1.9), (-r * 2.0, cy + r * 1.8), (-r * 2.3, cy + r * 1.3)), 1.8, 0.6, C_("#e8e2d8", 0.92), LINE * 0.5, sh=0)
 
 
-register("alchymistka", AL, H.ZB_POSE, AL_BLOUSE, C_("#f2ece0", 0.95), 58, (58, 61), AGILE_AT, 29, 16, (44, 3),
+AL_POSE = dict(H.ZB_POSE,
+               walk1=("c1", ("a", -98, -40), ("a", -68, -44), "rest", False, "think"),
+               walk2=("p1", ("a", -86, -22), ("a", -88, -72), "rest", False, "think"),
+               walk3=("c2", ("a", -66, -2), ("a", -112, -98), "rest", False, "think"),
+               walk4=("p2", ("a", -80, -16), ("a", -96, -84), "rest", False, "think"),
+               windup=("brace", ("a", -172, 168), ("a", -30, -8), "wind", False, "determined"))
+AL_AT = dict(AGILE_AT, wind=("near", 145))
+
+register("alchymistka", AL, AL_POSE, AL_BLOUSE, C_("#f2ece0", 0.95), 58, (58, 61), AL_AT, 29, 16, (44, 3),
          Hooks(back=al_back, torso=al_torso, legs=al_legs, belt=al_belt, head=al_head, headgear=al_headgear))
 
 
@@ -307,13 +343,17 @@ LO = dict(H=120, hr=10.6, hy=108.5, sh_y=94, sh_w=11.8, hip=56, knee=30, ankle=5
 LO_BLOUSE = C_("#f2eee2", 0.95); LO_VEST = C_("#b8282e", 0.35); LO_SKIRT = C_("#3a5a9a", 0.35); LO_HAIR = C_("#d8b060", 0.72); LO_SCARF = C_("#c8322e", 0.38)
 
 
+LO_SWAY = {"walk1": 1.5, "walk2": -1, "walk3": -1.5, "walk4": 1}
+
+
 def lo_back(k, pose):
     bag = ell(-k.sh_w - 3, 72, 7, 9, 20)
     form(bag, C_("#6a4a30", 0.32), sh=0.18)
+    sw = LO_SWAY.get(pose, 0)
     for i, (dx, L) in enumerate(((-2, 24), (1, 30), (4, 20))):
-        tube([(-k.sh_w - 3 + dx, 76), (-k.sh_w - 9 + dx * 2, 76 + L)], 1.6, 1.3, WOOD, LINE * 0.5, sh=0)
-        shape(ell(-k.sh_w - 9 + dx * 2, 76 + L, 1.6, 1.0, 10), BRASS, LINE * 0.4)
-    with T(-k.sh_w - 3, 62, 1, rot=-20):
+        tube([(-k.sh_w - 3 + dx, 76), (-k.sh_w - 9 + dx * 2 + sw, 76 + L)], 1.6, 1.3, WOOD, LINE * 0.5, sh=0)
+        shape(ell(-k.sh_w - 9 + dx * 2 + sw, 76 + L, 1.6, 1.0, 10), BRASS, LINE * 0.4)
+    with T(-k.sh_w - 3, 62, 1, rot=-20 + sw * 4):
         head = bez((-3, 0), (-4, -6), (3, -8), (5, -3)) + bez((5, -3), (4, 0), (1, 1), (-3, 0))
         form(head, C_("#e8dcc0", 0.88), sh=0.12)
         for sx in (-1, 1):
@@ -378,7 +418,15 @@ def lo_headgear(k):
         shape(ell(r * x, cy + r * y, 1.1, 1.1, 10), C_("#f2d060", 0.8), LINE * 0.3)
 
 
-register("loutkarka", LO, H.VE_POSE, LO_BLOUSE, LO_VEST, 58, (58, 63), CASTER_AT, 26, 16, (-6, 15),
+LO_POSE = dict(H.VE_POSE,
+               walk1=("c1", ("k", 24, 80, -1), ("a", -66, -46), "stand", False, "think"),
+               walk2=("p1", ("k", 27, 82, -1), ("a", -88, -74), "stand", False, "think"),
+               walk3=("c2", ("k", 31, 81, -1), ("a", -112, -100), "stand", False, "think"),
+               walk4=("p2", ("k", 28, 83, -1), ("a", -96, -84), "stand", False, "think"),
+               windup=("brace", ("k", -2, 86, -1), ("a", -30, -6), "wind", False, "determined"))
+LO_AT = dict(CASTER_AT, wind=("near", 12))
+
+register("loutkarka", LO, LO_POSE, LO_BLOUSE, LO_VEST, 58, (58, 63), LO_AT, 26, 16, (-6, 15),
          Hooks(back=lo_back, torso=lo_torso, legs=lo_legs, belt=lo_belt, head=lo_head, headgear=lo_headgear, headgear_back=lo_scarf_back))
 
 
