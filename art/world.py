@@ -710,6 +710,41 @@ DECO = {
 DRAW = {k[2:]: v for k, v in globals().items() if k.startswith("d_")}
 
 
+# ------------------------------------------------------------------ scree at a wall foot: 128x64 px, the wall
+# edge runs along the top, the pile thins out toward the floor (engine rotates it for side walls)
+def edge_scree(name, S, v):
+    r = random.Random(seed(name, "edge", v))
+    def d(b):
+        for k in range(4):
+            fill(blob(32 + r.uniform(-4, 4), 29 - k, 26 - k * 4, 5 - k * 0.6, r, n=14, k=0.2), S["floor_d"], 0.18)
+        items = []
+        for _ in range(26):
+            y = 31 - abs(r.gauss(0, 5.5))
+            x = 32 + r.gauss(0, 15 * (0.55 + (y - 14) / 36))
+            if not (4 < x < 60 and 8 < y < 31):
+                continue
+            s_ = r.uniform(0.7, 1.4) + max(0.0, (y - 22)) * r.uniform(0.08, 0.22)
+            items.append((y, x, s_))
+        for y, x, s_ in sorted(items, reverse=True):
+            g = r.choice((S["peb"], S["peb2"], S["face"], S["top_l"]))
+            pebble(chunk(x, y, s_, s_ * 0.72, r), g, w=0.4, sh=0.2, ground=0.3)
+        for _ in range(8):
+            x, y = r.uniform(10, 54), r.uniform(10, 24)
+            dot(x, y, r.uniform(0.25, 0.5), S["peb2"])
+        if "moss" in S:
+            for _ in range(5):
+                fill(blob(r.uniform(10, 54), r.uniform(25, 30), r.uniform(2, 4), r.uniform(1, 1.8), r), S["moss"], 0.75)
+        if "glow" in S:
+            for _ in range(5):
+                x, y = r.uniform(12, 52), r.uniform(18, 29)
+                dot(x, y, 1.1, S["glow"])
+                dot(x, y, 0.5, c("#f0ffd0"))
+        if name == "nav":
+            for _ in range(3):
+                bone(r.uniform(14, 50), r.uniform(18, 27), r.uniform(3, 5), r.uniform(0, 180))
+    return K.to_image(128, 64, d, seed(name, "eimg", v))
+
+
 # ------------------------------------------------------------------ town paths: trodden earth, soft edges so a chain of
 # them reads as a footpath over the grass, not as squares
 def path_decal(name, S, v):
@@ -741,6 +776,9 @@ def build(name):
     walls(name, S)
     for v in range(4):
         save(deco(name, S, v), name, f"floor_deco_{v}")
+    if S["kind"] == "mine":
+        for v in range(4):
+            save(edge_scree(name, S, v), name, f"edge_{v}")
     if S["kind"] == "town":
         for v in range(3):
             save(path_decal(name, S, v), name, f"path_{v}")

@@ -45,6 +45,8 @@ var portal_node: PropNode
 var boss: Monster
 var font: Font
 var tileset_name := ""
+var organic := false
+var fog_off := 1
 var used_cells := {}
 var placed := {}
 var floor_seed := 0
@@ -63,6 +65,7 @@ func build(a: int, f: int, arrive: String) -> void:
 	else:
 		def = DB.floor_def(a, f)
 		tileset_name = str(ad.get("dungeon", {}).get("tileset", "hora"))
+		organic = str(ad.get("dungeon", {}).get("edges", "")) == "organic"
 		gen = DungeonGen.new()
 		floor_seed = hash("%d:%d:%d:%d" % [Game.difficulty, a, f, Game.session_seed])
 		gen.generate(def, floor_seed)
@@ -81,7 +84,9 @@ func build(a: int, f: int, arrive: String) -> void:
 			water[y * w + x] = 1 if v == DungeonGen.WATER else 0
 	_make_layers()
 	_paint_tiles()
-	if not is_town:
+	if organic:
+		_make_rock_edges()
+	elif not is_town:
 		_make_wall_shade()
 	var cm := CanvasModulate.new()
 	cm.color = TOWN_DUSK.get(a, Color(0.4, 0.4, 0.5)) if is_town else DARK.get(a, Color(0.15, 0.135, 0.15)).darkened(f * 0.03)
@@ -277,6 +282,17 @@ func _paint_tiles() -> void:
 				var v := rng.randi_range(0, 2) if rng.randf() < 0.4 else 0
 				var face := y + 1 < h and gen.at(x, y + 1) != DungeonGen.WALL
 				wall_layer.set_cell(c, 10, Vector2i(v + (0 if face else 3), 0))
+				if organic and _near_floor(x, y, 1):
+					floor_layer.set_cell(c, 0, Vector2i(rng.randi_range(0, 3) if rng.randf() < 0.45 else 0, 0))
+	if organic:
+		for y in h:
+			for x in w:
+				if water[y * w + x] == 0 and _near_water(x, y):
+					water_layer.set_cell(Vector2i(x, y), 30, Vector2i.ZERO)
+		for y in range(-EDGE_PAD, h + EDGE_PAD):
+			for x in range(-EDGE_PAD, w + EDGE_PAD):
+				if x < 0 or y < 0 or x >= w or y >= h:
+					wall_layer.set_cell(Vector2i(x, y), 10, Vector2i(3 + (rng.randi_range(0, 2) if rng.randf() < 0.4 else 0), 0))
 
 	if not patches.is_empty():
 		var n := Node2D.new()
@@ -288,6 +304,16 @@ func _paint_tiles() -> void:
 				var r := 46.0 + float(i * 37 % 30)
 				n.draw_texture_rect(tex, Rect2(patches[i] - Vector2(r, r * 0.7), Vector2(r * 2.0, r * 1.4)), false, cols[i % 3]))
 		add_child(n)
+
+
+func _near_water(x: int, y: int) -> bool:
+	for oy in range(-1, 2):
+		for ox in range(-1, 2):
+			var xx := x + ox
+			var yy := y + oy
+			if xx >= 0 and yy >= 0 and xx < w and yy < h and water[yy * w + xx] == 1:
+				return true
+	return false
 
 
 func _near_floor(x: int, y: int, r: int) -> bool:
@@ -1052,7 +1078,7 @@ func _restore_state() -> void:
 		for y in h:
 			for x in w:
 				if explored[y * w + x] == 1:
-					fog_img.set_pixel(x + 1, y + 1, Color(0, 0, 0, 0))
+					_clear_fog(x, y)
 		(fog.texture as ImageTexture).update(fog_img)
 		explored_rev += 1
 
@@ -1531,11 +1557,106 @@ func _explore() -> void:
 				explored[n.y * w + n.x] = 1
 				explored_rev += 1
 				if fog_img:
-					fog_img.set_pixel(n.x + 1, n.y + 1, Color(0, 0, 0, 0))
+					_clear_fog(n.x, n.y)
 					fog_dirty = true
 	if fog_dirty:
 		fog_dirty = false
 		(fog.texture as ImageTexture).update(fog_img)
+
+
+const EDGE_PAD := 8
+
+
+# Organic rock edges (acts.json dungeon "edges": "organic"): the wall tiles get cut along a noisy line by
+# rock_edge.gdshader, the floor darkens softly toward the rock, and scree lies along the wall feet.
+func _make_rock_edges() -> void:
+	var img := Image.create(w + 2, h + 2, false, Image.FORMAT_L8)
+	for y in h + 2:
+		for x in w + 2:
+			img.set_pixel(x, y, Color.WHITE if gen.at(x - 1, y - 1) == DungeonGen.WALL else Color.BLACK)
+	var bl := img.duplicate() as Image
+	for _i in 2:
+		var src := bl.duplicate() as Image
+		for y in h + 2:
+			for x in w + 2:
+				var acc := 0.0
+				for oy in range(-1, 2):
+					for ox in range(-1, 2):
+						acc += src.get_pixel(clampi(x + ox, 0, w + 1), clampi(y + oy, 0, h + 1)).r
+				bl.set_pixel(x, y, Color(acc / 9.0, acc / 9.0, acc / 9.0))
+	var mat := ShaderMaterial.new()
+	mat.shader = preload("res://shaders/rock_edge.gdshader")
+	mat.set_shader_parameter("mask", ImageTexture.create_from_image(img))
+	mat.set_shader_parameter("blur", ImageTexture.create_from_image(bl))
+	mat.set_shader_parameter("mask_size", Vector2(w + 2, h + 2))
+	mat.set_shader_parameter("cell", float(CELL))
+	mat.set_shader_parameter("stride", float(CELL + PAD))
+	wall_layer.material = mat
+	var wm := Image.create(w + 2, h + 2, false, Image.FORMAT_L8)
+	for y in h:
+		for x in w:
+			# rock next to water counts as water so the pool runs under the cut rock instead of stopping short
+			if water[y * w + x] == 1 or (gen.at(x, y) == DungeonGen.WALL and _near_water(x, y)):
+				wm.set_pixel(x + 1, y + 1, Color.WHITE)
+	var wmat := ShaderMaterial.new()
+	wmat.shader = preload("res://shaders/water_edge.gdshader")
+	wmat.set_shader_parameter("mask", ImageTexture.create_from_image(wm))
+	wmat.set_shader_parameter("mask_size", Vector2(w + 2, h + 2))
+	wmat.set_shader_parameter("cell", float(CELL))
+	water_layer.material = wmat
+	var ao := Image.create(w + 2, h + 2, false, Image.FORMAT_RGBA8)
+	for y in h + 2:
+		for x in w + 2:
+			ao.set_pixel(x, y, Color(0, 0, 0, smoothstep(0.2, 0.75, bl.get_pixel(x, y).r) * 0.7))
+	var shade := Sprite2D.new()
+	shade.texture = ImageTexture.create_from_image(ao)
+	shade.centered = false
+	shade.scale = Vector2(CELL, CELL)
+	shade.position = Vector2(-CELL, -CELL)
+	shade.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
+	shade.z_index = -16
+	shade.light_mask = 1 | SHADOW_MASK
+	add_child(shade)
+	_make_scree()
+
+
+func _make_scree() -> void:
+	var tex: Array = []
+	for i in 4:
+		var t := DB.tex("tiles/%s/edge_%d" % [tileset_name, i])
+		if t:
+			tex.append(t)
+	if tex.is_empty():
+		return
+	var rng := RandomNumberGenerator.new()
+	rng.seed = hash(tileset_name) + floor_n * 7 + 3
+	var items := []
+	for y in h:
+		for x in w:
+			if gen.at(x, y) == DungeonGen.WALL:
+				continue
+			var o := Vector2(x * CELL, y * CELL)
+			var n := _rock(x, y - 1)
+			var wl := _rock(x - 1, y)
+			var e := _rock(x + 1, y)
+			if n and rng.randf() < 0.55:
+				items.append([o + Vector2(CELL * 0.5 + rng.randf_range(-14, 14), 10), 0.0, rng.randf() < 0.5])
+			if wl and rng.randf() < 0.35:
+				items.append([o + Vector2(8, CELL * 0.5 + rng.randf_range(-10, 14)), -PI / 2, rng.randf() < 0.5])
+			if e and rng.randf() < 0.35:
+				items.append([o + Vector2(CELL - 8, CELL * 0.5 + rng.randf_range(-10, 14)), PI / 2, rng.randf() < 0.5])
+			if n and (wl or e):
+				items.append([o + Vector2(10 if wl else CELL - 10, 10), (-PI / 4 if wl else PI / 4), rng.randf() < 0.5])
+	var node := Node2D.new()
+	node.z_index = -17
+	node.light_mask = 1 | SHADOW_MASK
+	node.draw.connect(func():
+		for i in items.size():
+			var t: Texture2D = tex[i % tex.size()]
+			node.draw_set_transform(items[i][0], items[i][1], Vector2(-1.0 if items[i][2] else 1.0, 1.0))
+			node.draw_texture(t, Vector2(-t.get_width() * 0.5, -12.0))
+		node.draw_set_transform(Vector2.ZERO))
+	add_child(node)
 
 
 # Contact shadow on the floor along every wall, so rooms read as dug out rather than painted on.
@@ -1577,19 +1698,29 @@ func _make_wall_shade() -> void:
 
 # Unexplored cells stay pitch black; explored ones show dimly under the ambient, like D1's remembered walls.
 func _make_fog() -> void:
-	fog_img = Image.create(w + 2, h + 2, false, Image.FORMAT_RGBA8)
+	# with organic edges the fog also covers the rock drawn past the map edge
+	fog_off = 1 + (EDGE_PAD if organic else 0)
+	fog_img = Image.create(w + fog_off * 2, h + fog_off * 2, false, Image.FORMAT_RGBA8)
 	fog_img.fill(Color(0, 0, 0, 1))
 	fog = Sprite2D.new()
 	fog.texture = ImageTexture.create_from_image(fog_img)
 	fog.centered = false
 	fog.scale = Vector2(CELL, CELL)
-	fog.position = Vector2(-CELL * 1.5, -CELL * 1.5)
+	fog.position = Vector2(-CELL * (fog_off + 0.5), -CELL * (fog_off + 0.5))
 	fog.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	fog.z_index = 30
 	var mat := CanvasItemMaterial.new()
 	mat.light_mode = CanvasItemMaterial.LIGHT_MODE_UNSHADED
 	fog.material = mat
 	add_child(fog)
+
+
+# A border cell also clears the rock drawn past the map edge behind it.
+func _clear_fog(x: int, y: int) -> void:
+	var dx := -1 if x == 0 else (1 if x == w - 1 else 0)
+	var dy := -1 if y == 0 else (1 if y == h - 1 else 0)
+	for k in (EDGE_PAD + 1 if organic and (dx != 0 or dy != 0) else 1):
+		fog_img.set_pixel(x + dx * k + fog_off, y + dy * k + fog_off, Color(0, 0, 0, 0))
 
 
 func in_sight(p: Vector2) -> bool:

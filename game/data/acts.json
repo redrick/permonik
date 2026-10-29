@@ -11,7 +11,7 @@
       "music": "town_hora",
       "npcs": ["permonik", "kosmas", "kovar_hnevek", "korenarka_dorota", "senkyrka_bara"]
     },
-    "dungeon": {"name": {"cs": "Důl Osel", "en": "The Osel Mine"}, "tileset": "hora", "music": "mine_1"},
+    "dungeon": {"name": {"cs": "Důl Osel", "en": "The Osel Mine"}, "tileset": "hora", "music": "mine_1", "edges": "organic"},
     "floors": [
       {"n": 1, "level": 1, "name": {"cs": "Horní štoly", "en": "The Upper Adits"},
        "styles": ["gallery", "mixed"], "size": [90, 90], "water": 0.0,
@@ -45,7 +45,7 @@
       "music": "town_pribram",
       "npcs": ["permonik", "kosmas", "kovar_vojtech", "korenarka_medulina", "hostinsky_kuba", "fabian", "tremsinsky_muzicek"]
     },
-    "dungeon": {"name": {"cs": "Vojtěšská šachta", "en": "The Vojtěch Shaft"}, "tileset": "brdy", "music": "mine_2"},
+    "dungeon": {"name": {"cs": "Vojtěšská šachta", "en": "The Vojtěch Shaft"}, "tileset": "brdy", "music": "mine_2", "edges": "organic"},
     "floors": [
       {"n": 1, "level": 9, "name": {"cs": "Prorostlé štoly", "en": "The Overgrown Adits"},
        "styles": ["gallery", "mixed"], "size": [96, 96], "water": 0.0,
@@ -79,7 +79,7 @@
       "music": "town_jachymov",
       "npcs": ["permonik", "kosmas", "kovar_krystof", "lekarnik_agricola", "senkyrka_rozina"]
     },
-    "dungeon": {"name": {"cs": "Důl Svornost", "en": "The Svornost Mine"}, "tileset": "jachymov", "music": "mine_3"},
+    "dungeon": {"name": {"cs": "Důl Svornost", "en": "The Svornost Mine"}, "tileset": "jachymov", "music": "mine_3", "edges": "organic"},
     "floors": [
       {"n": 1, "level": 16, "name": {"cs": "Smolincové sloje", "en": "The Pitchblende Seams"},
        "styles": ["gallery", "mixed"], "size": [96, 96], "water": 0.0,
@@ -113,7 +113,7 @@
       "music": "town_nav",
       "npcs": ["permonik", "kosmas", "predak_matej", "anicka", "prevoznik"]
     },
-    "dungeon": {"name": {"cs": "Nav", "en": "Nav"}, "tileset": "nav", "music": "mine_4"},
+    "dungeon": {"name": {"cs": "Nav", "en": "Nav"}, "tileset": "nav", "music": "mine_4", "edges": "organic"},
     "floors": [
       {"n": 1, "level": 24, "name": {"cs": "Břeh Smorodiny", "en": "The Banks of the Smorodina"},
        "styles": ["cave", "mixed"], "size": [100, 100], "water": 0.15,

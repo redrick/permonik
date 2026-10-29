@@ -66,6 +66,13 @@ func _ready() -> void:
 		Game.ch.equip[it.slot()] = it
 	if args.has("--equip"):
 		Game.ch.changed.emit()
+	if args.has("--near-water") and Game.level:
+		var lv: Level = Game.level
+		for i in lv.water.size():
+			if lv.water[i] == 1 and i % 7 == 0:
+				Game.player.global_position = lv.cell_center(Vector2i(i % lv.w, i / lv.w)) + Vector2(0, 100)
+				break
+		await get_tree().create_timer(0.5).timeout
 	if args.has("--bright") and Game.level:
 		for c in Game.level.get_children():
 			if c is CanvasModulate:
